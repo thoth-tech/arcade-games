@@ -20,7 +20,7 @@ repository=https://github.com/thoth-tech/arcade-games
 language=C#
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=images/icon.jpg
+image=images/icon.png
 
 # The title of your game (eg. Super Mario)
 title=Game 1
