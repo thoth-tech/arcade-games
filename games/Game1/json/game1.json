@@ -1,0 +1,12 @@
+{
+    "comment":"Enter your game configuration information below",
+    
+    "repo":"https://github.com/sarahgos/Game1.git",
+    "language":"C++",
+    "author":"John Doe",
+    "rating":"G",
+    "image":"images/icon.png",
+    "title":"Game 1",
+    "genre":"Board Game",
+    "exe":"game1.exe"
+}
