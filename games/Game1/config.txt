@@ -8,31 +8,36 @@
 #--------------------------------------------------------------------
 #   Task    |  Who    | Date     | Comments
 #-----------+---------+----------+-----------------------------------
-#  Sprint 1 | AGEORGE | 26032022 | Created
+#  Sprint 1 | AGEORGE | 20220326 | Created
+#-----------+---------+----------+-----------------------------------
+#  Sprint 2 | AGEORGE | 20220511 | Added Description
 #-----------+---------+----------+-----------------------------------
 
 # PLEASE ONLY EDIT CONTENT AFTER THE "=" SIGN FOR EACH CONFIGURATION SETTING  
 
-# Location of git repo (eg. https://github.com/studioant/arcade_game)
-repository=https://github.com/thoth-tech/arcade-games
-
-# Programmnig language the game is written in (eg. C++) 
-language=C#
-
-# Path to your game thumbnail image (eg. images/icon.png)
-image=images/icon.png
-
 # The title of your game (eg. Super Mario)
-title=Game 1
-
-# The genre of your game (eg. Platformer)
-genre=Tile Based
-
-# A classification rating to advise the nature of the content (eg. MA 15+)
-rating=PG
+title=Car Racing
 
 # The name of the author (eg. Jane Doe)
-author=Sally McDougall
+author=Student Name
+
+# The genre of your game (eg. Platformer)
+genre=First Person
+
+# A Description of your game
+description=A real life car racing game
+
+# A classification rating to advise the nature of the content (eg. MA 15+)
+rating=M15+
+
+# Programming language the game is written in (eg. C++)
+language=C++
+
+# Path to your game thumbnail image (eg. images/icon.png)
+image=images/car.png
 
 # Path to the executable (game.exe)
-executable=game1.exe
+executable=car.exe
+
+# Location of git repo (eg. https://github.com/studioant/arcade_game)
+repository=https://github.com/student-name
