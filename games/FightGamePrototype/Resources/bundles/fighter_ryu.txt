@@ -1,0 +1,1 @@
+BITMAP,RyuBmp,ryu_test5.png, 91, 100, 8, 10, 80
