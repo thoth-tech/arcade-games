@@ -15,7 +15,7 @@ fi
 basePath=$(dirname "$1")/
 
 # Removing CRLF characters
-sed -i "s/\r//g" $file
+sed -i "s/\r//g" "${file}"
 
 # Stores all the expected properties
 declare -A propertyDict
@@ -44,7 +44,7 @@ while read line || [ -n "$line" ]; do
 		executableName=${array[1]}
 	fi
 # Closing the file
-done < $file
+done < "$file"
 
 #print propertyDictionary keys and values
 echo "Occurrences of keys in config.txt file:"
@@ -60,14 +60,14 @@ echo ""
 
 echo "Checking if image and executable paths are valid:"
 # Checking if image and executable paths are valid
-if [ -f $basePath$imagePath ]; then
+if [ -f "$basePath$imagePath" ]; then
 	echo "Image file exists"
 else
 	echo "Image file does not exist"
 	errorList+=("Config: Image file does not exist")
 fi
 
-if [ -f $basePath$executableName ]; then
+if [ -f "$basePath$executableName" ]; then
 	echo "Executable file exists"
 else
 	echo "Executable file does not exist"
