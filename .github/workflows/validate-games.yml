@@ -14,6 +14,6 @@ jobs:
           for game in "$GITHUB_WORKSPACE/games/"*
           do
             echo "Validating ${game}"
-            ./config-test.sh ${game}/config.txt
+            ./config-test.sh "${game}"/config.txt
             echo
           done
