@@ -22,11 +22,12 @@ declare -A propertyDict
 propertyDict=( ["repository"]=0 ["language"]=0 ["image"]=0 ["title"]=0 ["genre"]=0 ["rating"]=0 ["author"]=0 ["executable"]=0 ["description"]=0 )
 
 # Reading the file
-while read line; do
+while read line || [ -n "$line" ]; do
 	# Ignoring lines starting with # or empty lines
 	if [[ ${line:0:1} == *"#"* ]] || [[ -z $line ]]; then
 		continue
 	fi
+	echo ${line}
 	# Split string with delimiter "="
 	IFS='=' read -ra array <<< $line
 	# Checking if key is in propertyDictionary
