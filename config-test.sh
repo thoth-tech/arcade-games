@@ -27,7 +27,6 @@ while read line || [ -n "$line" ]; do
 	if [[ ${line:0:1} == *"#"* ]] || [[ -z $line ]]; then
 		continue
 	fi
-	echo ${line}
 	# Split string with delimiter "="
 	IFS='=' read -ra array <<< $line
 	# Checking if key is in propertyDictionary
