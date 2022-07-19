@@ -5,6 +5,15 @@ errorList=()
 # The file to be tested
 file=$1
 
+#Artwork dimensions ('widthxheight' in pixels)
+artworkDimensions="600x540"
+#Install ImageMagick if not already installed (required to verify artworkDimensions)
+if ! [ -x "$(command -v convert)" ]; then
+  echo 'ImageMagick is not installed. Installing...'
+  sudo apt install imagemagick
+fi
+
+
 # Checks if the config file exists
 if [ ! -f "$file" ]; then
 	echo "File '$file' does not exist"
@@ -72,6 +81,18 @@ if [ -f "$basePath$executableName" ]; then
 else
 	echo "Executable file does not exist"
 	errorList+=("Config: Executable path doesn't match")
+fi
+
+echo ""
+
+echo "Checking if the image matches the specified dimensions ($artworkDimensions):"
+# Check if the image file is of the specified dimensions (600x540px)
+imageDimensions=$(identify -format "%[fx:w]x%[fx:h]" "$basePath$imagePath")
+if [ "$imageDimensions" == "$artworkDimensions" ]; then
+	echo "Image dimensions are correct"
+else
+	echo "Image dimensions are not $artworkDimensions"
+	errorList+=("Config: Image dimensions are not 600x540, they are $imageDimensions")
 fi
 
 # Get the length of the errorList
