@@ -36,8 +36,9 @@ language=C++
 # Path to your game thumbnail image (eg. images/icon.png)
 image=images/pong.png
 
-# Path to the executable (game.exe)
-executable=pong.exe
+# Path to platform specific game exe/binary
+win-exe=pong.exe
+linux-bin=pong
 
 # Location of git repo (eg. https://github.com/studioant/arcade_game)
 repository=https://github.com/studioant/pong
