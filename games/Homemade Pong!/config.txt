@@ -22,7 +22,7 @@ title=Homemade Pong!
 author=Anthony George
 
 # The genre of your game (eg. Platformer)
-genre=Paddle Style Game
+genre=Sports
 
 # A Description of your game
 description=A homemade version of the original 1972 table tennis-themed arcade sports video game.
