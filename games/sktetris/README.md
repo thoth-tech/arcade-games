@@ -3,6 +3,8 @@
 sktetris is remake of the original Nintendo Tetris (TM) game released on the
 Nintendo Entertainment System (NES) in 1989.
 
+![sktetris screenshot](sktetris.png)
+
 ## Core repository
 
 This code is a clone with slight alterations to suit embedding in the Arcade Machine. 
