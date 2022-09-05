@@ -5,5 +5,4 @@ LDFLAGS = -O3
 OSFLAGS = 
 
 sktetris: $(src)
-	@mkdir -p bin
-	$(CXX) -o bin/$@ $^ $(LDFLAGS) $(OSFLAGS)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(OSFLAGS)
