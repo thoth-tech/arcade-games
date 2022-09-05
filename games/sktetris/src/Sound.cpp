@@ -2,7 +2,11 @@
 #include "splashkit.h"
 
 struct s_tetris_sfx tetris_load_sfx() {
+#ifdef _WIN32
+	set_resources_path("src\\resources");
+#else
 	set_resources_path("src/resources");
+#endif
 	load_sound_effect("flip", "flip.ogg");
 	load_sound_effect("line", "line.ogg");
 	load_sound_effect("set", "set.ogg");
@@ -13,8 +17,8 @@ struct s_tetris_sfx tetris_load_sfx() {
 
 	struct s_tetris_sfx sfx = {
 		.flip = sound_effect_named("flip"),
-		.line = sound_effect_named("line"),
 		.set = sound_effect_named("set"),
+		.line = sound_effect_named("line"),
 		.move = sound_effect_named("move"),
 		.tetris = sound_effect_named("tetris"),
 		.music_a = music_named("music-a"),
