@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0
       - name: Install SplashKit
         run: | 
-          bash <(curl -s https://raw.githubusercontent.com/zbrydon/skm-test/master/install-scripts/skm-install.sh)
+          bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
       
       - name: Add splashkit to path
         run: echo "$HOME/.splashkit" >> $GITHUB_PATH
@@ -134,7 +134,7 @@ jobs:
             read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
             sudo apt-get update 
             sudo apt install --assume-yes git cmake
-            bash <(curl -s https://raw.githubusercontent.com/zbrydon/skm-test/master/install-scripts/skm-install.sh)            
+            bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)            
             export PATH=$PATH:$HOME/.splashkit
             sudo apt install --assume-yes libsdl2-dev libsdl2-gfx-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-image-dev libncurses-dev libpng-dev libcurl4-openssl-dev libbz2-dev libflac-dev libvorbis-dev libmikmod-dev libwebp-dev libfreetype6-dev
             skm linux install                                 
