@@ -101,9 +101,9 @@ jobs:
       - name: Install SplashKit
         run: |
               bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
-              export PATH=$PATH:/home/runneradmin/.splashkit 
       - name: Compile Game
         run: | 
+              export PATH=$PATH:/home/runneradmin/.splashkit 
               read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
               for dir in ${GAME_DIR[@]}
               do                
