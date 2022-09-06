@@ -21,7 +21,7 @@ jobs:
       - id: get-game-directory
         run: |
           cd $GITHUB_WORKSPACE
-          declare DIRECTORIES=($(git diff origin/main...origin/${GITHUB_HEAD_REF} --dirstat --diff-filter=AM games/ | sed 's/^[ 0-9.]\+% //g'))
+          declare DIRECTORIES=($(git diff origin/main...origin/${GITHUB_HEAD_REF} --dirstat=0 --diff-filter=AM games/ | sed 's/^[ 0-9.]\+% //g'))
           GAME_DIR=()
           for dir in "${DIRECTORIES[@]}"
           do
@@ -99,16 +99,18 @@ jobs:
           fetch-depth: 0
 
       - name: Install SplashKit
-        run: bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
-
+        run: |
+              bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
       - name: Compile Game
-        run: |               
-              cd /home/runneradmin/.splashkit
+        run: | 
+              export PATH=$PATH:/home/runneradmin/.splashkit 
               read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
               for dir in ${GAME_DIR[@]}
               do                
-                game_name=$(basename $dir)               
-                ./skm clang++ $GITHUB_WORKSPACE/$dir/program.cpp -o $GITHUB_WORKSPACE/$dir/${game_name}-windows-program.exe 
+                cd $GITHUB_WORKSPACE/$dir
+                game_name=$(basename $dir)  
+                echo Compiling game $game_name...             
+                skm clang++ program.cpp -o ${game_name}-windows-program.exe 
               done                            
               
 
