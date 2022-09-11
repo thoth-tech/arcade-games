@@ -28,7 +28,10 @@ sed -i "s/\r//g" "${file}"
 
 # Stores all the expected properties
 declare -A propertyDict
-propertyDict=( ["repository"]=0 ["language"]=0 ["image"]=0 ["title"]=0 ["genre"]=0 ["rating"]=0 ["author"]=0 ["executable"]=0 ["description"]=0 )
+propertyDict=( ["repository"]=0 ["language"]=0 ["image"]=0 ["title"]=0 ["genre"]=0 ["rating"]=0 ["author"]=0 ["description"]=0 )
+# Stores all the optional properties
+declare -A optPropertyDict
+optPropertyDict=( ["compile-command"]=0 ["executable"]=0 )
 
 # Reading the file
 while read line || [ -n "$line" ]; do
@@ -42,6 +45,9 @@ while read line || [ -n "$line" ]; do
 	if [[ -v propertyDict[${array[0]}] ]]; then
 		# If key is in propertyDictionary, then increment value
 		propertyDict[${array[0]}]=$((++propertyDict[${array[0]}]))
+	elif [[ -v optPropertyDict[${array[0]}] ]]; then
+		# If key is in optPropertyDictionary, then increment value
+		optPropertyDict[${array[0]}]=$((++optPropertyDict[${array[0]}]))
 	else
 		errorList+=("Key: Invalid, ${array[0]}")
 	fi
@@ -60,14 +66,23 @@ echo "Occurrences of keys in config.txt file:"
 for key in "${!propertyDict[@]}"; do
 	echo "$key: ${propertyDict[$key]}"
 	# If value is equal to one
-	if [ ${propertyDict[$key]} != 1 ]; then
+	if [ ${propertyDict[$key]} -gt 1 ]; then
 		errorList+=("Key: ${key}, invalid number of occurences, ${propertyDict[$key]}")
+	fi
+done
+
+echo "Occurrences of optional keys:"
+for key in "${!optPropertyDict[@]}"; do
+	echo "$key: ${optPropertyDict[$key]}"
+	# If value is greater than one
+	if [ ${optPropertyDict[$key]} -gt 1 ]; then
+		errorList+=("Key: ${key}, invalid number of occurences, ${optPropertyDict[$key]}")
 	fi
 done
 
 echo ""
 
-echo "Checking if image and executable paths are valid:"
+echo "Checking if image path is valid:"
 # Checking if image and executable paths are valid
 if [ -f "$basePath$imagePath" ]; then
 	echo "Image file exists"
@@ -76,12 +91,12 @@ else
 	errorList+=("Config: Image file does not exist")
 fi
 
-if [ -f "$basePath$executableName" ]; then
-	echo "Executable file exists"
-else
-	echo "Executable file does not exist"
-	errorList+=("Config: Executable path doesn't match")
-fi
+# if [ -f "$basePath$executableName" ]; then
+# 	echo "Executable file exists"
+# else
+# 	echo "Executable file does not exist"
+# 	errorList+=("Config: Executable path doesn't match")
+# fi
 
 echo ""
 
