@@ -68,10 +68,7 @@ jobs:
           read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
           for dir in ${GAME_DIR[@]}
           do                               
-            cd $GITHUB_WORKSPACE/$dir
-            game_name=$(basename $dir)
-            echo Compiling game $game_name...
-            skm g++ program.cpp -o ${game_name}-linux-program.out
+            ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-program.out
           done  
 
       - uses: actions/upload-artifact@v3
@@ -106,12 +103,9 @@ jobs:
               export PATH=$PATH:/home/runneradmin/.splashkit 
               read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
               for dir in ${GAME_DIR[@]}
-              do                
-                cd $GITHUB_WORKSPACE/$dir
-                game_name=$(basename $dir)  
-                echo Compiling game $game_name...             
-                skm clang++ program.cpp -o ${game_name}-windows-program.exe 
-              done                            
+              do                               
+                ./compile-game.sh $GITHUB_WORKSPACE/$dir windows-program.exe
+              done                                  
               
 
       - uses: actions/upload-artifact@v3
@@ -145,13 +139,9 @@ jobs:
             sudo apt install --assume-yes libsdl2-dev libsdl2-gfx-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-image-dev libncurses-dev libpng-dev libcurl4-openssl-dev libbz2-dev libflac-dev libvorbis-dev libmikmod-dev libwebp-dev libfreetype6-dev
             skm linux install                                 
             for dir in ${GAME_DIR[@]}
-            do                
-              game_name=$(basename $dir)                    
-              cd $dir
-              echo Compiling game $game_name...                
-              skm g++ program.cpp -o ${game_name}-arm-program.out  
-              cd ./../..                  
-            done             
+            do           
+              ./compile-game.sh $dir arm-program.out
+            done            
 
       - uses: actions/upload-artifact@v3
         with:
