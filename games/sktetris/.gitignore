@@ -1,0 +1,9 @@
+**/*.out*
+**/*.out
+**/logs/*
+**/*.log
+.vscode/*
+bin/*
+**/.DS_Store
+**/*.log
+.DS_Store/*
