@@ -2,7 +2,7 @@ name: Compile Games
 on: 
   repository_dispatch:
   pull_request: 
-      types: [ edited, labeled, unlabeled ] 
+      types: [ opened, reopened, synchronize, labeled, unlabeled ] 
       branches: [ main ] 
 
 jobs:
