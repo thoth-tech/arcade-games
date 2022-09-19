@@ -68,14 +68,14 @@ jobs:
           read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
           for dir in ${GAME_DIR[@]}
           do                               
-            ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-program.out
+            ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-x86.out
           done  
 
       - uses: actions/upload-artifact@v3
         with:
           name: linux-programs
           path: | 
-              **/*-linux-program.out
+              **/linux-x86.out
 
   compile-games-windows:
     runs-on: windows-latest
@@ -104,7 +104,7 @@ jobs:
               read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
               for dir in ${GAME_DIR[@]}
               do                               
-                ./compile-game.sh $GITHUB_WORKSPACE/$dir windows-program.exe
+                ./compile-game.sh $GITHUB_WORKSPACE/$dir windows-x86.exe
               done                                  
               
 
@@ -112,7 +112,7 @@ jobs:
         with:
           name: windows-programs
           path: | 
-              **/*-windows-program.exe
+              **/windows-x86.exe
 
   compile-games-arm:
     runs-on: ubuntu-latest
@@ -140,14 +140,14 @@ jobs:
             skm linux install                                 
             for dir in ${GAME_DIR[@]}
             do           
-              ./compile-game.sh $dir arm-program.out
+              ./compile-game.sh $dir linux-arm.out
             done            
 
       - uses: actions/upload-artifact@v3
         with:
           name: arm-programs
           path: | 
-            **/*-arm-program.out
+            **/linux-arm.out
 
   push-games:
     runs-on: ubuntu-latest
