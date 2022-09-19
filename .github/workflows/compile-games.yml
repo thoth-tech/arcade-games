@@ -75,7 +75,7 @@ jobs:
         with:
           name: linux-programs
           path: | 
-              **/*-linux-program.out
+              **/linux-x86.out
 
   compile-games-windows:
     runs-on: windows-latest
@@ -112,7 +112,7 @@ jobs:
         with:
           name: windows-programs
           path: | 
-              **/*-windows-program.exe
+              **/windows-x86.exe
 
   compile-games-arm:
     runs-on: ubuntu-latest
@@ -147,7 +147,7 @@ jobs:
         with:
           name: arm-programs
           path: | 
-            **/*-arm-program.out
+            **/linux-arm.out
 
   push-games:
     runs-on: ubuntu-latest
