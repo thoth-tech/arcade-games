@@ -13,8 +13,8 @@ void load_resources()
 
 int main()
 {
-    open_window("Venture Adventure", 672, SCREEN_HEIGHT);
-    window_toggle_border("Venture Adventure");
+    open_window("VentureAdventure", 672, SCREEN_HEIGHT);
+    window_toggle_border("VentureAdventure");
     load_resources();
 
     game_data game;
