@@ -178,10 +178,12 @@ jobs:
               cd $GITHUB_WORKSPACE/$dir
               if [ ! -d "builds" ]; then
                 mkdir builds
+              else
+                rm -rf builds/*
               fi     
               cd builds
+
               game_name=$(basename $dir)
-              
               for folder in "${FOLDERS[@]}"
               do
                 chmod 777 $GITHUB_WORKSPACE/$folder/games/${game_name}/*
@@ -194,10 +196,10 @@ jobs:
           cd $GITHUB_WORKSPACE          
           git config user.name github-actions
           git config user.email github-actions@github.com
-          IFS=' ' read -r -a array <<< "${{ needs.get-game-directory.outputs.game-directory }}"
-          for element in "${array[@]}"
+          read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+          for dir in ${GAME_DIR[@]}
           do      
-              git add $element/builds
+            git add $dir/builds
           done
           git commit -m "Compiled Games"
           git push origin HEAD:${GITHUB_HEAD_REF}        
