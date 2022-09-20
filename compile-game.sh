@@ -1,5 +1,5 @@
 GAME_DIR=$1
-BINARY_SUFFIX=$2             
+BINARY_NAME=$2             
 
 cd $GAME_DIR
 
@@ -30,15 +30,15 @@ echo Compiling game $game_name...
 # If command is empty
 if [[ -z "$command" ]]; then
 	echo "No compile command found, using default"
-	skm g++ program.cpp -o ${game_name}-$BINARY_SUFFIX
+	skm g++ program.cpp -o $BINARY_NAME
 else
 	# If command starts with skm
 	if [[ $command == "skm"* ]]; then
 	echo Appending output flag and name/loc 
-	command+=" -o ${game_name}-$BINARY_SUFFIX"
+	command+=" -o $BINARY_NAME"
 	else
 	echo Assuming usage of makefile, appending output name/loc 
-	command+=" ${game_name}-$BINARY_SUFFIX"
+	command+=" $BINARY_NAME"
 	fi
 	echo "Running compile command: $command"
 	eval $command
