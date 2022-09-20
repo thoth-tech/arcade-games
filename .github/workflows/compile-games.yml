@@ -131,18 +131,23 @@ jobs:
           export_github_env: true
           bind_mount_repository: true
           commands: |            
-            read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"                             
+            read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+            sudo apt-get update 
+            sudo apt install --assume-yes git cmake
+            bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)            
+            export PATH=$PATH:$HOME/.splashkit
+            sudo apt install --assume-yes libsdl2-dev libsdl2-gfx-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-image-dev libncurses-dev libpng-dev libcurl4-openssl-dev libbz2-dev libflac-dev libvorbis-dev libmikmod-dev libwebp-dev libfreetype6-dev
+            skm linux install                                 
             for dir in ${GAME_DIR[@]}
             do           
-              cd $dir
-              touch linux-arm.out
-            done            
+              ./compile-game.sh $dir linux-arm.out   
+            done      
 
       - uses: actions/upload-artifact@v3
         with:
           name: arm-programs
           path: | 
-            **/linux-arm.out
+            $GITHUB_WORKSPACE/**/**/linux-arm.out
 
   push-games:
     runs-on: ubuntu-latest
