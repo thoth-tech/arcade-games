@@ -75,7 +75,7 @@ jobs:
         with:
           name: linux-programs
           path: | 
-              **/!builds/linux-x86.out
+              **/**/!builds/linux-x86.out
 
   compile-games-windows:
     runs-on: windows-latest
