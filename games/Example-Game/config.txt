@@ -7,3 +7,4 @@ language=C++
 image=images/icon.png
 executable=N/A
 repository=N/A
+compile-command=skm g++ program.cpp 
