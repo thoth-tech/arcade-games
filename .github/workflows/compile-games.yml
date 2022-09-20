@@ -75,7 +75,7 @@ jobs:
         with:
           name: linux-programs
           path: | 
-              $GITHUB_WORKSPACE/*/*/linux-x86.out
+              $GITHUB_WORKSPACE/**/**/linux-x86.out
 
   compile-games-windows:
     runs-on: windows-latest
