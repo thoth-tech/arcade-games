@@ -147,7 +147,7 @@ jobs:
         with:
           name: arm-programs
           path: | 
-            $GITHUB_WORKSPACE/**/**/linux-arm.out
+            $GITHUB_WORKSPACE/*/*/linux-arm.out
 
   push-games:
     runs-on: ubuntu-latest
