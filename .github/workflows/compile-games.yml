@@ -68,14 +68,14 @@ jobs:
           read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
           for dir in ${GAME_DIR[@]}
           do                               
-            ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-program.out
+            ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-x86.out
           done  
 
       - uses: actions/upload-artifact@v3
         with:
           name: linux-programs
           path: | 
-              **/*-linux-program.out
+            **/games/*/linux-x86.out
 
   compile-games-windows:
     runs-on: windows-latest
@@ -104,7 +104,7 @@ jobs:
               read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
               for dir in ${GAME_DIR[@]}
               do                               
-                ./compile-game.sh $GITHUB_WORKSPACE/$dir windows-program.exe
+                ./compile-game.sh $GITHUB_WORKSPACE/$dir windows-x86.exe
               done                                  
               
 
@@ -112,7 +112,7 @@ jobs:
         with:
           name: windows-programs
           path: | 
-              **/*-windows-program.exe
+              **/games/*/windows-x86.exe
 
   compile-games-arm:
     runs-on: ubuntu-latest
@@ -140,14 +140,14 @@ jobs:
             skm linux install                                 
             for dir in ${GAME_DIR[@]}
             do           
-              ./compile-game.sh $dir arm-program.out
-            done            
+              ./compile-game.sh $dir linux-arm.out   
+            done      
 
       - uses: actions/upload-artifact@v3
         with:
           name: arm-programs
           path: | 
-            **/*-arm-program.out
+            **/games/*/linux-arm.out
 
   push-games:
     runs-on: ubuntu-latest
@@ -175,44 +175,24 @@ jobs:
       
       - name: Files downloaded
         run: |
+            read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+
             FOLDERS=("windows-downloads" "linux-downloads" "arm-downloads")
-            for folder in "${FOLDERS[@]}"
-            do
-              IFS=' ' read -r -a array <<< "${{ needs.get-game-directory.outputs.game-directory }}"
-              for element in "${array[@]}"
-              do              
-                cd $GITHUB_WORKSPACE/$element
-                pwd
-                ls            
-                if [ ! -d "builds" ]; then
-                  mkdir builds
-                fi              
-                IFS='/' read -r -a game_name <<< "$element"
-                cd $GITHUB_WORKSPACE/$folder/games/${game_name[-1]}
-                pwd
-                ls
-                if [ -d "builds" ]; then
-                  rm -rf builds
-                fi
-                chmod 777 *
-                for filename in *; do
-                  echo "$filename"                            
-                  IFS='-' read -r -a file_array <<< "$filename"                     
-                  unset file_array[-1]
-                  unset file_array[-1]
-                  S=""
-                  for x in "${!file_array[@]}"
-                  do              
-                    if [ $x == $((${#file_array[@]} - 1)) ]; then
-                      S+="${file_array[$x]}"
-                    else
-                      S+="${file_array[$x]}-"
-                    fi
-                  done
-                  if [ ${game_name[-1]} == $S ]; then
-                    cp $filename $GITHUB_WORKSPACE/$element/builds
-                  fi
-                done
+            for dir in ${GAME_DIR[@]}
+            do    
+              cd $GITHUB_WORKSPACE/$dir
+              if [ ! -d "builds" ]; then
+                mkdir builds
+              else
+                rm -rf builds/*
+              fi     
+              cd builds
+
+              game_name=$(basename $dir)
+              for folder in "${FOLDERS[@]}"
+              do
+                chmod 777 $GITHUB_WORKSPACE/$folder/games/${game_name}/*
+                cp $GITHUB_WORKSPACE/$folder/games/${game_name}/* .
               done
             done
 
@@ -221,10 +201,10 @@ jobs:
           cd $GITHUB_WORKSPACE          
           git config user.name github-actions
           git config user.email github-actions@github.com
-          IFS=' ' read -r -a array <<< "${{ needs.get-game-directory.outputs.game-directory }}"
-          for element in "${array[@]}"
+          read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+          for dir in ${GAME_DIR[@]}
           do      
-              git add $element/builds
+            git add $dir/builds
           done
           git commit -m "Compiled Games"
           git push origin HEAD:${GITHUB_HEAD_REF}        
