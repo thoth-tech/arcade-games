@@ -1,50 +1,10 @@
-#-- ARCADE MACHINE GAME CONFIG FILE --#
-#-- For THOTH TECH - Splashkit Crew - Applications Team
-#--------------------------------------------------------------------
-#-- File: config.txt
-#-- Description: Configuration data for Arcade Machine games
-#--------------------------------------------------------------------
-#-- Maintenance Log --
-#--------------------------------------------------------------------
-#   Task    |  Who    | Date     | Comments
-#-----------+---------+----------+-----------------------------------
-#  Sprint 1 | AGEORGE | 20220326 | Created
-#-----------+---------+----------+-----------------------------------
-#  Sprint 2 | AGEORGE | 20220511 | Added Description
-#-----------+---------+----------+-----------------------------------
-#  Sprint 3 | AGEORGE | 20220828 | Added win, linux and macos params
-#-----------+---------+----------+-----------------------------------
-
-#--------------------------------------------------------------------
-# PLEASE ONLY EDIT CONTENT AFTER THE "=" SIGN FOR EACH CONFIGURATION SETTING  
-#--------------------------------------------------------------------
-
-# The title of your game (eg. Super Mario)
 title=Below The Surface
-
-# The name of the author (eg. Jane Doe)
 author=Build A Game Team - Semester 2 2022
-
-# The genre of your game (eg. Platformer)
 genre=Puzzle Platformer
-
-# A Description of your game
 description=Head Below The Surface to save Thoth City from being flooded...
-
-# A classification rating to advise the nature of the content (eg. MA 15+)
 rating=G
-
-# Programming language the game is written in (eg. C++) 
 language=C++
-
-# Path to your game thumbnail image (eg. images/icon.png)
 image=title_card.png
-
-# Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
+executable=N/A
 repository=http://github.com/thoth-tech/build-a-game-team
-
-# [Optional] Uncomment to include path to the game executable (game.exe)
-#executable=game.exe
-
-# [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
-#compile-command=skm g++ *.cpp
+compile-command=skm g++ program.cpp 
