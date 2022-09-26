@@ -1,0 +1,21 @@
+SplashKit Animation
+//ID,CELL,DUR,NEXT
+
+//Idle
+f:[100-101], [0-1], 10,
+
+//Pop Up
+f:[102-104], [1-3], 6,
+
+//Pop Down
+f:105, 3, 6, 106
+f:106, 2, 6, 107
+f:107, 1, 6,
+
+//Wiggle
+f:[108-110], [4-6], 6, 
+
+i:Idle, 100
+i:PopUp, 102
+i:PopDown, 105
+i:Wiggle, 108
