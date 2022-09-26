@@ -40,14 +40,11 @@ language=C++
 # Path to your game thumbnail image (eg. images/icon.png)
 image=images/icon.png
 
-# Path to the Windows executable (game.exe)
-win-exe=game.exe
-
-# Path to the Linux binaries (game)
-linux-bin=game
-
-# Path to the MacOS binaries (MACOS/game)
-macos-bin=MACOS/game
-
 # Location of git repo (eg. https://github.com/studioant/arcade_game)
 repository=https://github.com/yourname/yourgame
+
+# [Optional] Path to the game executable (game.exe) - Uncomment if required
+#executable=game.exe
+
+# [Optional] Specific compile command - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp') - Uncomment  if required
+#compile-command=skm g++ *.cpp

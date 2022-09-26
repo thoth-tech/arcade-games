@@ -34,10 +34,11 @@ language=C
 # Path to your game thumbnail image (eg. images/icon.png)
 image=sktetris.png
 
-# Path to the executable (game.exe)
-executable=
-macos-bin=sktetris-macos
-linux-bin=
-
 # Location of git repo (eg. https://github.com/studioant/arcade_game)
 repository=https://github.com/isdampe/sktetris
+
+# [Optional] Path to the game executable (game.exe) - Uncomment if required
+#executable=game.exe
+
+# [Optional] Specific compile command - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp') - Uncomment  if required
+compile-command=make
