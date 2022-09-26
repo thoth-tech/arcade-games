@@ -12,6 +12,7 @@ Table of contents
     - [Quit Request](#quit-request)
     - [Window Size](#window-size)
     - [Window Border](#window-border)
+    - [Resources](#resources)
     - [Other](#other)
   - [Controls](#controls)
     - [Player One](#player-one)
@@ -66,6 +67,31 @@ int main()
 {
     open_window("my-game", width, height);
     window_toggle_border("my-game");
+}
+```
+
+### Resources
+
+SplashKit locates the resources directory in different places for different operating systems.
+To ensure your resources are located correctly, please include the following in your program.cpp file:  
+
+```cpp
+#ifdef _WIN32
+#define PATH_SEP "\\"
+#else
+#define PATH_SEP "/"
+#endif
+```
+
+Then in main:
+
+```cpp
+int main()
+{
+    // other code...
+
+    // before get resource bundle
+    set_resources_path("Resources", PATH_SEP);
 }
 ```
 
