@@ -40,7 +40,7 @@ language=C++
 # Path to your game thumbnail image (eg. images/icon.png)
 image=images/pong.png
 
-# Location of git repo (eg. https://github.com/studioant/arcade_game)
+# Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
 repository=https://github.com/studioant/arcade_game
 
 # [Optional] Path to the game executable (game.exe) - Uncomment if required

@@ -36,13 +36,15 @@ rating=PG
 
 # Programming language the game is written in (eg. C++) 
 language=C++
+
+# Path to your game thumbnail image (eg. images/icon.png)
 image=images/icon.png
 
-# Location of git repo (eg. https://github.com/studioant/arcade_game)
+# Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
 repository=https://github.com/yourname/yourgame
 
-# [Optional] Path to the game executable (game.exe) - Uncomment if required
+# [Optional] Uncomment to include path to the game executable (game.exe)
 #executable=game.exe
 
-# [Optional] Specific compile command - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp') - Uncomment  if required
+# [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
 #compile-command=skm g++ *.cpp
