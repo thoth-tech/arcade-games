@@ -1,0 +1,2 @@
+ANIM, RoachAnim, roach.txt
+BITMAP,Roach,Roach.png, 64, 32, 4, 2, 8

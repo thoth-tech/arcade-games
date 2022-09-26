@@ -1,0 +1,95 @@
+SplashKit Animation
+//ID,CELL,DUR,NEXT
+
+//-----Right Movements-----
+
+//Right Idle
+f:100, 3, 4, 
+
+//Right Run
+f:[101-102], [2-3], 4,
+
+//Right Jump
+f:103, 7, 4,
+
+//Right Attack
+f:[104-105], [0-1], 7,
+
+//Right Fall 
+f:[106-107], [5-6], 7,
+
+//Right Dying
+f:108, 5, 5, 109
+f:109, 9, 5,
+
+//Right Spawn
+f:110, 3, 5, 111
+f:111, 9, 5,
+
+//Right Crouch
+f:112, 4, 5,
+
+//Right Animation Identifiers
+i:RightIdle, 100
+i:RightRun, 101
+i:RightJump, 103
+i:RightAttack, 104
+i:RightFall, 106
+i:RightDying, 108
+i:RightSpawn, 110
+i:RightCrouch, 112
+
+
+//-----Left Movements-----
+
+//Left Idle
+f:200, 15, 4,
+
+//Left Run
+f:[201-202], [14-15], 4,
+
+//Left Jump
+f:203, 19, 4, 
+
+//Left Attack
+f:[204-205], [12-13], 7,
+
+//Left Fall
+f:[206-207], [17-18], 4,
+
+//Left Dying
+f:208, 17, 5, 209
+f:209, 21, 5,
+
+//Left Spawn
+f:210, 15, 5, 211
+f:211, 21, 5,
+
+//Left Crouch
+f:212, 16, 5,
+
+//Left Animation Identifiers
+i:LeftIdle, 200
+i:LeftRun, 201
+i:LeftJump, 203
+i:LeftAttack, 204
+i:LeftFall, 206
+i:LeftDying, 208
+i:LeftSpawn, 210
+i:LeftCrouch, 212
+
+//-----Dance Movements-----
+f: [300-303], [28-31], 6, 304
+f: 304, 30, 6, 305
+f: 305, 29, 6,
+
+//Dance
+i:Dance, 300
+
+//----Climb Movements----
+f: [306-309], [24-27], 5,
+f: 310, 26, 5,
+
+//Climb
+i:Climb, 306
+i:ClimbIdle, 310
