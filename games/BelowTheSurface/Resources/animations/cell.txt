@@ -1,0 +1,54 @@
+SplashKit Animation
+//ID,CELL,DUR,NEXT
+
+//Water Animation
+
+//Flow Down
+f: 100, 0, 7, 101
+f: 101, 1, 7,
+
+//Water Flash
+f: 102, 0, 7, 103
+f: 103, 100, 2, 104
+f: 104, 1, 7, 105
+f: 105, 100, 2,
+
+//Water Top
+f: 106, 2, 7, 107
+f: 107, 3, 7,
+
+//Water Two Sides
+f: 108, 4, 7, 109
+f: 109, 5, 7,
+
+//Water Left
+f: 110, 6, 7, 111
+f: 111, 7, 7,
+
+//Water Right
+f: 112, 8, 7, 113
+f: 113, 9, 7,
+
+//Water Lake
+f: 114, 10, 7, 115
+f: 115, 11, 7,
+
+//Door Animation1
+f: [200-202], [0-2], 10,
+
+//Door Animation2
+f: [203-205], [3-5], 10,
+
+//Toxic Animation
+f:[300-304], [0-4], 8,
+
+i:WaterFlow, 100
+i:WaterFlash, 102
+i:WaterTop, 106
+i:WaterTwoSide, 108
+i:WaterLeft, 110
+i:WaterRight, 112
+i:WaterLake, 114
+i:Door_Open, 200
+i:Door_Portal, 203
+i:ToxicFlow, 300
