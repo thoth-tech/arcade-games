@@ -1,0 +1,14 @@
+SplashKit Animation
+//ID,CELL,DUR,NEXT
+
+//Left
+//Fly
+f:[100-103], [0-3], 3, 
+
+//Right
+//Fly
+f:[200-203], [4-7], 3, 
+
+//Identifiers
+i:LeftFly, 100
+i:RightFly, 200

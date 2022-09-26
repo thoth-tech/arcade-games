@@ -36,8 +36,6 @@ rating=PG
 
 # Programming language the game is written in (eg. C++) 
 language=C++
-
-# Path to your game thumbnail image (eg. images/icon.png)
 image=images/icon.png
 
 # Location of git repo (eg. https://github.com/studioant/arcade_game)
