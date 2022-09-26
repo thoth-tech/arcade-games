@@ -12,7 +12,11 @@ Table of contents
     - [Quit Request](#quit-request)
     - [Window Size](#window-size)
     - [Window Border](#window-border)
+    - [Other](#other)
   - [Controls](#controls)
+    - [Player One](#player-one)
+    - [Player Two](#player-two)
+    - [General](#general)
   - [Compiling](#compiling)
   - [Artwork](#artwork)
   - [Configuration](#configuration)
@@ -60,17 +64,45 @@ use SplashKit’s `window_toggle_border();` function after the `open_window()` f
 ```cpp
 int main()
 {
-    open_window("my game", width, height);
-    window_toggle_border("my game");
+    open_window("my-game", width, height);
+    window_toggle_border("my-game");
 }
 ```
 
+### Other
+
+To ensure the arcade machine can retrieve files using path information, please refrain from adding whitespace to any file path.
+**Example:**
+Use `my-game` instead of `my game`.. etc.
+
 ## Controls
+
+The following keys are required to be the functional keys of your game to be compatible with the arcade machine.  
+
+### Player One
+
+Up: `W` | Left: `A` | Down `S` | Right: `D`
+Weak(1): `R` | Weak(2): `F`
+Med(1) : `T` | Med(2) : `G`
+Hard(1): `Y` | Hard(2): `H`
+
+### Player Two
+
+Up: `UP_ARROW` | Left: `LEFT_ARROW` | Down: `DOWN_ARROW` | Right: `RIGHT_ARROW`
+Weak(1): `U` | Weak(2): `J`
+Med(1) : `I` | Med(2) : `K`
+Hard(1): `O` | Hard(2): `L`
+
+### General
+
+Start: `ENTER`
+Escape: `ESC`
 
 ## Compiling
 
-Only Windows compiled games are supported atm... (Brief windows compilation explanation required
-here)
+The compiling of your game is handled automatically through GitHub actions.
+Your game will be compiled into executables compatible with Windows, Linux and MacOS operating systems.  
+**Please ensure all program files (.h and .cpp) are provided in your pull request**  
 
 ## Artwork
 
