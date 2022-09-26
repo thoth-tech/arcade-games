@@ -1,0 +1,22 @@
+ANIM, PlayerAnim, player.txt
+BITMAP,purpleGuy,PurpleGuy.png, 32, 64, 4, 8, 32 
+BITMAP,blueGuy,BlueGuy.png, 32, 64, 4, 8, 32
+BITMAP,pinkGirl,PinkGirl.png, 32, 64, 4, 8, 32
+BITMAP,redGuy,RedGuy.png, 32, 64, 4, 8, 32
+BITMAP,greenGuy,GreenGuy.png, 32, 64, 4, 8, 32
+
+SOUND, Jump, Jump.wav
+SOUND, HeadHit, HeadHit.wav
+SOUND, TurnPipe, TurnPipe.wav
+SOUND, Dead, Dead.wav
+SOUND, Hurt, Hurt.wav
+SOUND, Water, Water.wav
+SOUND, Pickup, Pickup.wav
+SOUND, EnemyDead, EnemyDead.wav
+SOUND, Toxic, Toxic.mp3
+SOUND, PickHeart, PickHeart.wav
+SOUND, Jumpfall, Jumpfall.wav
+SOUND, Attack, Attack.wav
+
+
+

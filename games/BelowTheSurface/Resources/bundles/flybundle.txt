@@ -1,0 +1,4 @@
+BITMAP, FlyGreen, fly_green.png,32,32,4,2,8
+BITMAP, FlyRed, fly_red.png,32,32,4,2,8
+BITMAP, FlyPurp, fly_purp.png,32,32,4,2,8
+ANIM, FlyAnim, fly.txt
