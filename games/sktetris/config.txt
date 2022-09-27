@@ -41,4 +41,4 @@ repository=https://github.com/isdampe/sktetris
 #executable=game.exe
 
 # [Optional] Specific compile command - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp') - Uncomment  if required
-compile-command=skm g++ *.cpp -o sktetris
+compile-command=skm g++ src/*.cpp -o sktetris
