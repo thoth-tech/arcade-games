@@ -47,4 +47,4 @@ repository=https://github.com/studioant/arcade_game
 #executable=pong.exe
 
 # [Optional] Specific compile command - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp') - Uncomment  if required
-compile-command=skm clang++ *.cpp -o pong
+#compile-command=skm clang++ *.cpp -o pong
