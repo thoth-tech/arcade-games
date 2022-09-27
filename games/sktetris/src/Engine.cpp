@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <stdbool.h>
+#include <ctime> // for Windows sake
 #include "Engine.h"
 #include "Render.h"
 #include "Gameplay.h"
