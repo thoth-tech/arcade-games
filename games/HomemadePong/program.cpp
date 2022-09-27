@@ -63,8 +63,9 @@ void score(ball_data &ball, int x, int y)
 
 int main()
 {
-    open_window("Homemade Pong", SCREEN_WIDTH, SCREEN_HEIGHT);
-
+    open_window("pong", SCREEN_WIDTH, SCREEN_HEIGHT);
+    window_toggle_border("pong");
+    
     load_resources();
 
     int y = SCREEN_HEIGHT/2;
