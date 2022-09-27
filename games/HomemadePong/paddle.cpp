@@ -38,7 +38,7 @@ void controls_p1(paddle_data &paddle)
         sprite_set_y(paddle.paddle_sprite, paddle.y);
     }
 
-    if(key_typed(C_KEY)) paddle.color = random_color();
+    if(key_typed(F_KEY)) paddle.color = random_color();
 
     if(key_down(W_KEY))
     {
@@ -74,7 +74,7 @@ void controls_p2(paddle_data &paddle)
             sprite_set_y(paddle.paddle_sprite, paddle.y);
         }
 
-        if(key_typed(RIGHT_CTRL_KEY)) paddle.color = random_color();
+        if(key_typed(J_KEY)) paddle.color = random_color();
 
         if(key_down(UP_KEY)) 
         {
