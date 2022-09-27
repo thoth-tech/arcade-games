@@ -1,0 +1,12 @@
+{
+    "comment":"Enter your game configuration information below",
+    
+    "repo":"https://github.com/sarahgos/Game3.git",
+    "language":"C++",
+    "author":"Sally McDougall",
+    "rating":"M",
+    "image":"images/icon.png",
+    "title":"Game 3",
+    "genre":"Board Game",
+    "exe":"game3.exe"
+}
