@@ -36,9 +36,11 @@ language=C++
 # Path to your game thumbnail image (eg. images/icon.png)
 image=images/pong.png
 
-# Path to platform specific game exe/binary
-win-exe=pong.exe
-linux-bin=pong
-
 # Location of git repo (eg. https://github.com/studioant/arcade_game)
 repository=https://github.com/studioant/pong
+
+# [Optional] Uncomment to include path to the game executable (game.exe)
+#executable=game.exe
+
+# [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
+compile-command=skm g++ *.cpp
