@@ -1,0 +1,7 @@
+BITMAP,coin,coin.png
+BITMAP,thothWhite,thoth-white.png
+BITMAP,thothBrown,thoth-brown.png
+ANIM,RyuTest,fighter.txt
+FONT,normalFont,EarthrealmRegular.ttf
+FONT,fancyFont,EarthrealmAcademy.ttf
+FONT,thothFont,Freedom.ttf
