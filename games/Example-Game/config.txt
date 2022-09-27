@@ -1,0 +1,10 @@
+title=Example Game
+author=Riley Dellios
+genre=Testing
+description=A boilerplate application to test automatic compilation
+rating=N/A
+language=C++
+image=images/icon.png
+executable=N/A
+repository=N/A
+compile-command=skm g++ program.cpp 

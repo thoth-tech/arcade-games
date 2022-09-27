@@ -1,0 +1,41 @@
+// Tiles & Art
+BITMAP,tiles,forest_tiles.png
+BITMAP,stairs,stairs.png
+BITMAP,title,title.png
+
+// Sprite
+//BITMAP,hero,hero7.png
+
+
+// Objects
+BITMAP,box4,box4.png
+
+// Sounds
+SOUND,diamond,diamond.wav
+SOUND,win,win.mp3
+
+
+// Programming, Game Design & Development by Anthony George
+
+// Game Music by Michael George
+
+// Hero Attribution
+// Curt - cjc83486 - https://opengameart.org/content/rpg-character
+
+// Tile Art Attribution
+// 
+
+// Spider Art Attribution
+// Tuomo Untinen
+
+// Sound - diamond
+// DrMinky - https://freesound.org/s/166184/
+
+// Sound - stairs
+// thejoshuachang - https://freesound.org/people/thejoshuachang/sounds/203081/
+
+// Music
+// Two Finger Johnny by Kevin MacLeod
+// Link: https://incompetech.filmmusic.io/song/5008-two-finger-johnny
+// License: http://creativecommons.org/licenses/by/4.0/
+
