@@ -1,0 +1,42 @@
+SplashKit Animation
+
+//Frames are declared with an f: and contain
+//the following comma separated values
+//ID,CELL,DUR,NEXT
+f:40,1,1,40
+f:41,7,1,41
+f:42,13,1,42
+f:43,19,1,43
+
+//Multi-frame: ranges are in[]
+//[a-b] = numbers from a to b inclusive
+//[a,b,c] = explicit values
+//[a-b,c] = combination
+f:[0-2],[0-2],10,0
+f:[6-8],[6-8],10,6
+f:[12-14],[12-14],10,12
+f:[18-20],[18-20],10,18
+//f:[3-5],[3-5],10,3
+//f:[9-11],[9-11],10,9
+//f:[15-17],[15-17],10,15
+//f:[21-23],[21-23],10,21
+
+//vectors
+v:[0-2],0,4
+v:[6-8],-4,0
+v:[12-14],4,0
+v:[18-20],0,-4
+v:40,0,0
+v:41,0,0
+v:42,0,0
+v:43,0,0
+
+//identifiers
+i:w_down,0
+i:w_left,6
+i:w_right,12
+i:w_up,18
+i:s_down,40
+i:s_left,41
+i:s_right,42
+i:s_up,43
