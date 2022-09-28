@@ -11,7 +11,7 @@ paddle_data new_paddle(int x, int y)
     result.y = y;
     result.w = 10;
     result.l = 100;
-    result.color = COLOR_WHITE;
+    result.col = COLOR_WHITE;
 
     sprite_set_x(result.paddle_sprite, result.x);
     sprite_set_y(result.paddle_sprite, result.y);
@@ -38,7 +38,7 @@ void controls_p1(paddle_data &paddle)
         sprite_set_y(paddle.paddle_sprite, paddle.y);
     }
 
-    if(key_typed(F_KEY)) paddle.color = random_color();
+    if(key_typed(F_KEY)) paddle.col = random_color();
 
     if(key_down(W_KEY))
     {
@@ -74,7 +74,7 @@ void controls_p2(paddle_data &paddle)
             sprite_set_y(paddle.paddle_sprite, paddle.y);
         }
 
-        if(key_typed(J_KEY)) paddle.color = random_color();
+        if(key_typed(J_KEY)) paddle.col = random_color();
 
         if(key_down(UP_KEY)) 
         {
