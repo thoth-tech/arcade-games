@@ -1,0 +1,10 @@
+// Bitmaps
+BITMAP,paddle,paddle.png
+
+// Fonts
+FONT,roboto,Roboto-Bold.ttf
+
+// Sounds
+SOUND,pop,Pop.ogg
+SOUND,score,Score.ogg
+
