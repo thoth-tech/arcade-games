@@ -12,7 +12,7 @@ struct paddle_data
 {
     float x, y;
     int w, l;
-    color color;
+    color col;
     string name;
     sprite paddle_sprite;
 };
