@@ -47,7 +47,7 @@ void end_level(bool successful)
 	}
 }
 
-void draw_blocks(block_data blocks[], int remaining_blocks)
+void draw_blocks(block_data blocks[])
 {
     // Draw blocks to the screen
     for (int i = 0; i < BLOCKS_IN_LEVEL1; i++)
@@ -121,7 +121,7 @@ int main()
 
     // Draw the environment
     clear_screen(COLOR_BLACK);
-    draw_blocks(blocks, remaining_blocks); // Draw blocks
+    draw_blocks(blocks); // Draw blocks
     fill_circle(COLOR_WHITE, ball.x, ball.y, BALL_RADIUS); // Draw ball
     fill_rectangle(COLOR_WHITE, paddle_x, PADDLE_Y, PADDLE_LENGTH, PADDLE_HEIGHT); // Draw paddle
 
@@ -133,7 +133,7 @@ int main()
 		if (key_down(LEFT_KEY) and paddle_x > 10) paddle_x -= PADDLE_SPEED; //moving left
 		if (key_down(RIGHT_KEY) and paddle_x < screen_width() - PADDLE_LENGTH - 10) paddle_x += PADDLE_SPEED; //moving right
 		
-        // Change ball movement
+        // Ball collision
         // Bounce off walls
         if (ball.x - BALL_RADIUS <= 0) ball.right = true; // Bounce off left wall
         if (ball.x + BALL_RADIUS >= screen_width()) ball.right = false; // Bounce off right wall
@@ -150,26 +150,37 @@ int main()
         // Bounce off blocks
         for (int i = 0; i < BLOCKS_IN_LEVEL1; i++)
         {
-            if (ball.y - BALL_RADIUS == blocks[i].y + BLOCK_HEIGHT and (ball.x >= blocks[i].x and ball.x <= blocks[i].x + BLOCK_WIDTH and !blocks[i].broken))
-			{
-				ball.up = false; // Bounce off bottom of block
-				break_block(blocks, i, score, remaining_blocks); // Break block
-			}
-            if (ball.y + BALL_RADIUS == blocks[i].y and (ball.x >= blocks[i].x and ball.x <= blocks[i].x + BLOCK_WIDTH and !blocks[i].broken)) 
-			{
-				ball.up = true; // Bounce off top of block
-				break_block(blocks, i, score, remaining_blocks); // Break block
-			}
-            if (ball.x - BALL_RADIUS == blocks[i].x + BLOCK_WIDTH and (ball.y >= blocks[i].y and ball.y <= blocks[i].y + BLOCK_HEIGHT and !blocks[i].broken)) 
-			{
-				ball.right = true; // Bounce off right of block
-				break_block(blocks, i, score, remaining_blocks); // Break block
-			}
-            if (ball.x + BALL_RADIUS == blocks[i].x and (ball.y >= blocks[i].y and ball.y <= blocks[i].y + BLOCK_HEIGHT and !blocks[i].broken))
-			{
-				ball.right = false; // Bounce off left of block
-				break_block(blocks, i, score, remaining_blocks); // Break block
-			}
+            if (!blocks[i].broken)
+            {
+                // Vertically
+                if (ball.x >= blocks[i].x and ball.x <= blocks[i].x + BLOCK_WIDTH)
+                {
+                    if (ball.y - BALL_RADIUS == blocks[i].y + BLOCK_HEIGHT) // Bottom of block
+                    {
+                        ball.up = false;
+                        break_block(blocks, i, score, remaining_blocks);
+                    }
+                    if (ball.y + BALL_RADIUS == blocks[i].y) // Top of block
+                    {
+                        ball.up = true;
+                        break_block(blocks, i, score, remaining_blocks);
+                    }
+                }
+                // Horizontally
+                if (ball.y + BALL_RADIUS >= blocks[i].y and ball.y - BALL_RADIUS < blocks[i].y + BLOCK_HEIGHT)
+                {
+                    if (ball.x - BALL_RADIUS == blocks[i].x + BLOCK_WIDTH) // Right of block
+                    {
+                        ball.right = true;
+                        break_block(blocks, i, score, remaining_blocks);
+                    }
+                    if (ball.x + BALL_RADIUS == blocks[i].x) // Left of block
+                    {
+                        ball.right = false;
+                        break_block(blocks, i, score, remaining_blocks);
+                    }
+                }
+            }
         }
 
         // Update ball locations
@@ -187,7 +198,7 @@ int main()
         
         // Redraw everything
 		clear_screen(COLOR_BLACK);
-		draw_blocks(blocks, remaining_blocks); // Draw blocks
+		draw_blocks(blocks); // Draw blocks
 		if (!game_over) fill_circle(COLOR_WHITE, ball.x, ball.y, BALL_RADIUS); // Draw ball
 		fill_rectangle(COLOR_WHITE, paddle_x, PADDLE_Y, PADDLE_LENGTH, PADDLE_HEIGHT); // Draw paddle
 		draw_text("SCORE: " + to_string(score), COLOR_WHITE, font_named("default"), 20, 20, 20); // Draw score
