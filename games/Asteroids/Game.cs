@@ -11,7 +11,7 @@ public class Game
     private List<Score> _PlayerScores = new List<Score>();
     private int _playersNo;
     private string? _p1Ship, _p2Ship;
-    public bool GameStarted{get; private set; }
+    public bool GameStarted { get; private set; }
     private bool _GameOverP1 = false;
     private bool _GameOverP2 = false;
 
@@ -19,30 +19,32 @@ public class Game
 
 
 
-    public Game(Window gameWindow,int playersNo,string? p1Ship,string? p2Ship)
+    public Game(Window gameWindow, int playersNo, string? p1Ship, string? p2Ship)
     {
         _GameWindow = gameWindow;
         _playersNo = playersNo;
         _p1Ship = p1Ship;
         _p2Ship = p2Ship;
         GameStarted = true;
-        _Players = new List <Player>();
-        _TempPlayers = new List <Player>();
-        
+        _Players = new List<Player>();
+        _TempPlayers = new List<Player>();
+
         if (playersNo == 1)
         {
-            _Players.Add(new Player(gameWindow,"Player 1",p1Ship,playersNo));
-            _PlayerScores.Add(new Player1Score(gameWindow,"Player 1"));
+            _Players.Add(new Player(gameWindow, "Player 1", p1Ship, playersNo));
+            _PlayerScores.Add(new Player1Score(gameWindow, "Player 1"));
         }
         else if (playersNo == 2)
         {
-            _Players.Add(new Player(gameWindow,"Player 1",p1Ship,playersNo));
-            _Players.Add(new Player(gameWindow,"Player 2",p2Ship,playersNo));
-            _PlayerScores.Add(new Player1Score(gameWindow,"Player 1"));
-            _PlayerScores.Add(new Player2Score(gameWindow,"Player 2"));
+            _Players.Add(new Player(gameWindow, "Player 1", p1Ship, playersNo));
+            _Players.Add(new Player(gameWindow, "Player 2", p2Ship, playersNo));
+            _PlayerScores.Add(new Player1Score(gameWindow, "Player 1"));
+            _PlayerScores.Add(new Player2Score(gameWindow, "Player 2"));
         }
 
-        _gameLevel = new Level1(_GameWindow,this);
+
+        _gameLevel = new Debuglvl(_GameWindow, this);
+        //_gameLevel = new Level1(_GameWindow, this);
 
     }
 
@@ -55,17 +57,17 @@ public class Game
     {
         _GameWindow.Clear(Color.Black);
         _gameLevel.Draw();
-        foreach(Player p in _Players)
+        foreach (Player p in _Players)
         {
             p.Draw();
         }
-        
-        foreach(Score s in _PlayerScores)
+
+        foreach (Score s in _PlayerScores)
         {
             s.Draw();
         }
 
-        
+
         _GameWindow.Refresh(60);
 
     }
@@ -74,8 +76,8 @@ public class Game
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
         const int FontSize = 120;
-        _GameWindow.Clear(Color.Black);       
-        foreach(Score s in _PlayerScores)
+        _GameWindow.Clear(Color.Black);
+        foreach (Score s in _PlayerScores)
         {
             s.Draw();
         }
@@ -89,22 +91,28 @@ public class Game
 
     public void HandleInput()
     {
-        foreach(Player p in _Players)
-        {p.HandleInput();}
+        foreach (Player p in _Players)
+        { p.HandleInput(); }
         if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) GameOver();
     }
     public void Updates()
     {
         List<Player> KillPlayer = new List<Player>();
-        foreach(Player p in _Players)
+        foreach (Enemy e in _gameLevel.Enemies)
+        {
+            if (e.CanShoot) HitCheck(e);
+
+        }
+        foreach (Player p in _Players)
         {
             p.Updates();
             HitCheck(p);
-            if(p.IsDead) KillPlayer.Add(p);
+            if (p.IsDead) KillPlayer.Add(p);
         }
+
         _gameLevel.Update();
 
-        foreach(Player p in KillPlayer)
+        foreach (Player p in KillPlayer)
         {
             _Players.Remove(p);
             foreach (Score s in _PlayerScores)
@@ -164,11 +172,32 @@ public class Game
                     }
                 }
             }
+            // if (e.CanShoot)
+            // {
+            //     Tuple<String, int> PlayerHitCheckResult = player.HitCheck(e);
+            // }
         }
-
-
     }
 
+    public void HitCheck(Enemy enemy)
+    {
+        foreach (Player p in _Players)
+        {
+            Tuple<String, int> HitCheckResult = enemy.HitCheck(p);
+
+            if (HitCheckResult.Item1 == "Life") // Look at re-spwarning Player in centre
+            {
+                foreach (Score s in _PlayerScores)
+                {
+                    if (s.Name == p.Name)
+                    {
+                        s.DownLife();
+                        p.Killed();
+                    }
+                }
+            }
+        }
+    }
 }
 
 
