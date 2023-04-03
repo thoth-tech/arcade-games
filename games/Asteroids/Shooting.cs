@@ -117,3 +117,44 @@ public class BossSmallShot : Shooting
         SplashKit.FillCircle(Color.Red, _shotCircle);
     }
 }
+
+public class RedEnergyBall : Shooting
+{
+    
+    private Bitmap _EnergyBall;
+    private AnimationScript _EnergyBallScript;
+    private Sprite _EnergyBallSprite;
+    public RedEnergyBall(Point2D fromPT, Player player)
+    {
+        const int SPEED = 5;
+        _X = fromPT.X;
+        _Y = fromPT.Y;
+        Point2D toPT = new Point2D();
+        toPT.X = player.X;
+        toPT.Y = player.Y;
+        Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
+        _Velocity = SplashKit.VectorMultiply(direction, SPEED);
+        
+        //_EnergyBall = new Bitmap("RedEnergyBall", "RedEnergyBall.png");
+        _EnergyBall = new Bitmap("RedEnergyBall", "Player.png");
+        //_EnergyBall.SetCellDetails(100, 100, 3, 3, 9);
+        //_EnergyBallScript = SplashKit.LoadAnimationScript("RedEnergyBall", "RedEnergyBall.txt");
+        //_EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall, _EnergyBallScript);
+        _EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall);
+
+    }
+        public override bool HitCheck(Player player)
+    {
+        bool hit = false;
+        if (SplashKit.SpriteBitmapCollision(_EnergyBallSprite,player.HitBMP(), player.X, player.Y )) hit = true;
+
+        return hit;
+    }
+    public override bool HitCheck(Enemy enemy) { return false; }
+     public override void Update()
+    {
+        // _X += _Velocity.X;
+        // _Y += _Velocity.Y;
+        _EnergyBallSprite.AddToVelocity(_Velocity);
+    }
+}

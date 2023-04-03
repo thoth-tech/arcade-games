@@ -544,9 +544,11 @@ public class Boss1 : Enemy
     private List<Shooting> _KillShots = new List<Shooting>();
     private Timer _shootingTime;
     private Window _gameWindow;
-    private int _shootingTimeShot;
+    private int _shootingSmallShot, _shootingEnergyShot;
+    private Game _game;
 
-    public Boss1(Window gameWindow) : base(gameWindow)
+
+    public Boss1(Window gameWindow, Game game) : base(gameWindow)
     {
         _Boss = new Bitmap("Boss1", "MotherShipAll.png");
         _Boss.SetCellDetails(400, 300, 3, 2, 6);
@@ -566,20 +568,13 @@ public class Boss1 : Enemy
         _YDown = true;
         CanShoot = true;
         _opt = SplashKit.OptionWithAnimation(_BossAnimation);
-        // if (SplashKit.HasTimer("Boss1Shooting"))
-        // {
-        //     _shootingTime = SplashKit.TimerNamed("Boss1Shooting");
-        //     _shootingTime.Reset();
-        // }
-        // else
-        // {
-        //     _shootingTime = SplashKit.CreateTimer("Boss1Shooting");
-        // }
         _shootingTime = SplashKit.CreateTimer("Boss1Shooting");
         _shootingTime.Stop();
         _shootingTime.Reset();
-        _shootingTimeShot = 1;
+        _shootingSmallShot = 1;
+        _shootingEnergyShot = 1;
         _gameWindow = gameWindow;
+        _game = game;
 
 
 
@@ -655,14 +650,19 @@ public class Boss1 : Enemy
                 {
                     Y--;
                 }
-                Console.WriteLine("Time Before Start" + _shootingTime.Ticks);
-                Console.WriteLine("TimeShot " + _shootingTimeShot);
+
                 if (!_shootingTime.IsStarted) _shootingTime.Start();
 
-                if (_shootingTime.Ticks / 800 == _shootingTimeShot)
+                if (_shootingTime.Ticks / 800 == _shootingSmallShot)
                 {
                     ShootSmall();
-                    _shootingTimeShot++;
+                    _shootingSmallShot++;
+                }
+
+                if (_shootingTime.Ticks / 5000 == _shootingEnergyShot)
+                {
+                    RedEnergyBall();
+                    _shootingEnergyShot++;
                 }
                 break;
 
@@ -756,6 +756,18 @@ public class Boss1 : Enemy
 
     }
 
+    private void RedEnergyBall()
+    {
+        Point2D fromPT = new Point2D();
+        fromPT.X = X + _Boss.CellCenter.X;
+        fromPT.Y = Y + _Boss.CellCenter.Y;
+        foreach (Player p in _game.Players)
+        {
+            Shooting ShotType = new RedEnergyBall(fromPT, p);
+            _shots.Add(ShotType);
+        }
+
+    }
 }
 
 

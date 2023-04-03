@@ -53,8 +53,13 @@ public class Game
         _gameLevel = lvl;
     }
 
+    public List<Player> Players
+    {
+        get { return _Players; }
+    }
     public void Draw()
     {
+        SplashKit.DrawAllSprites();
         _GameWindow.Clear(Color.Black);
         _gameLevel.Draw();
         foreach (Player p in _Players)
@@ -143,6 +148,7 @@ public class Game
         {
             if (_GameOverP1 && _GameOverP2) GameOver();
         }
+        SplashKit.UpdateAllSprites();
     }
 
     public void HitCheck(Player player)
