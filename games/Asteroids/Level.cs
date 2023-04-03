@@ -205,7 +205,7 @@ public class Level1 : Level
                 if (!_EnemySpawned.ContainsKey("Boss1"))
                 {
                     _EnemySpawned.Add("Boss1", true);
-                    Enemies.Add(new Boss1(_gameWindow));
+                    Enemies.Add(new Boss1(_gameWindow,_game));
                 }
                 break;
 
@@ -263,7 +263,7 @@ public class Debuglvl : Level
                 if (!_EnemySpawned.ContainsKey("Boss1"))
                 {
                     _EnemySpawned.Add("Boss1", true);
-                    Enemies.Add(new Boss1(_gameWindow));
+                    Enemies.Add(new Boss1(_gameWindow, _game));
                 }
                 break;
 
