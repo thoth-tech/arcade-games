@@ -12,24 +12,21 @@ output:
 
 Table of Content(up to date)
 
-1. [Name of the Game](#Name-of-the-Game)
-2. [Genre](#Genre)
-3. [Art style](#Art-style)
-4. [What is the Game](#What-is-the-Game)
-5. [How the Game works](#How-the-Game-works)
+- [1. Name of the Game](#1-name-of-the-game)
+- [2. Genre](#2-genre)
+- [3. Art style](#3-art-style)
+- [4. What is the Game](#4-what-is-the-game)
+- [5. How the Game works](#5-how-the-game-works)
+  - [5.1. How the Game is Played Solo](#51-how-the-game-is-played-solo)
+  - [5.2. How the Game is PLayed Cooperatively](#52-how-the-game-is-played-cooperatively)
+  - [5.3. How the Game is Won](#53-how-the-game-is-won)
+  - [5.4. How the Game is Lost](#54-how-the-game-is-lost)
+- [6. Levels](#6-levels)
+- [7. Enemies](#7-enemies)
+- [8. Tools](#8-tools)
+- [9 Reference Game](#9-reference-game)
+- [10. Lore](#10-lore)
 
-   5.1 [How the Game is Played Solo](#How-the-Game-is-Played-Solo)
-   
-   5.2 [How the Game is Played Cooperatively](#How-the-Game-is-Played-Cooperatively)
-
-   5.3 [How the Game is Won](#How-the-Game-is-Won)
-
-   5.4 [How the Game is Lost](#How-the-Game-is-Lost)
-   
-6. [Levels](#Levels)
-7. [Enemies](#Enemies)
-8. [Tools](#Tools)
-9. [Reference Game](#Reference-Game) 
 
 
 
@@ -116,3 +113,4 @@ Tools used fr developing game is SplashKit with C#.
 
 ![Visual of Game 4](img7.png){width="45%"}
 
+## 10. Lore
