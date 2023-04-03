@@ -212,5 +212,64 @@ public class Level1 : Level
         }
         base.Update();
     }
+}
+
+public class Debuglvl : Level
+{
+    private Timer _lvlTimer;
+    private Font _GameFont;
+    private Game _game;
+
+
+    public Debuglvl(Window GameWindow, Game game) : base(GameWindow, game)
+    {
+        _lvlTimer = new Timer("lvl1Timer");
+        _lvlTimer.Start();
+        _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
+        _game = game;
+
+    }
+
+    public override void Draw()
+    {
+        double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
+        const int FontSize = 80;
+        int X_GameText = _gameWindow.Width / 2 - 115;
+        int Y_GameText = _gameWindow.Height / 6;
+
+        if (lvlTimer < 1.5) //1.5
+        {
+            SplashKit.DrawTextOnWindow(_gameWindow, "Testing", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
+        }
+        /*         else if (lvlTimer > 151 && lvlTimer < 160) //151
+                {
+                    SplashKit.DrawBitmap(lvlComplete,129,262);
+                } */
+
+        base.Draw();
+
+    }
+
+    public override void Update()
+    {
+        double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
+        // Enemies.Add(createEnemy("Large", 4, _wWidth / 2 - 100, -200, _wWidth / 2 - 100, _wHeight / 2 - 100));
+        switch (lvlTimer)
+        {
+            case < 1.5:
+                //don't spawn until level starts
+                break;
+            case 5: //153
+                if (!_EnemySpawned.ContainsKey("Boss1"))
+                {
+                    _EnemySpawned.Add("Boss1", true);
+                    Enemies.Add(new Boss1(_gameWindow));
+                }
+                break;
+
+        }
+        base.Update();
+    }
+
 
 }
