@@ -22,10 +22,16 @@ Table of Content(up to date)
   - [5.3. How the Game is Won](#53-how-the-game-is-won)
   - [5.4. How the Game is Lost](#54-how-the-game-is-lost)
 - [6. Levels](#6-levels)
-- [7. Enemies](#7-enemies)
-- [8. Tools](#8-tools)
-- [9 Reference Game](#9-reference-game)
-- [10. Lore](#10-lore)
+- [7. Tools](#7-tools)
+- [8 Reference Game](#8-reference-game)
+- [9. Lore](#9-lore)
+  - [9.1 Mission](#91-mission)
+  - [9.2 Enemies](#92-enemies)
+    - [9.2.1  Meteors](#921--meteors)
+    - [9.2.2 Solider ship](#922-solider-ship)
+    - [9.2.3 Army general ship](#923-army-general-ship)
+    - [9.2.4 Boss ship](#924-boss-ship)
+  - [9.3 Main Reason](#93-main-reason)
 
 
 
@@ -79,19 +85,11 @@ Level 2 : Player will get attacked by Meteors and will tackle them using shooter
 
 Level 3 : Player will get attacked by Meteors and will tackle them using shooter but will get power ups like life or more stronger shooters. More obstructions and At-last Boss ship will arrive
 
-## 7. Enemies
-There are three enemies for each level.
 
-Solider ship : This ship will arrive at end of level 1 and it will be the weakest among three ships.
-
-Army general ship : This ship will arrive at end of level 2 and it will be the stronger than Solider ship.
-
-Boss ship : This ship will arrive at end of level 3 and it will be the strongest among three ships.
-
-## 8. Tools 
+## 7. Tools 
 Tools used fr developing game is SplashKit with C#. 
 
-## 9 Reference Game
+## 8 Reference Game
 
 ![Menu Part](img1.png){width="45%"}
 
@@ -113,4 +111,25 @@ Tools used fr developing game is SplashKit with C#.
 
 ![Visual of Game 4](img7.png){width="45%"}
 
-## 10. Lore
+## 9. Lore
+
+### 9.1 Mission
+A planet named SplashKit got attacked by Aliens 👾 and they capture few people from planet. TO rescue them from alien a highly trained astraunot is sent into space. But while travlling to the Main Boss Spaceshuttle, he encounters differnt enemies in his journey. Your mission is to help astraunot reach his destination and defeat all enemies. You have to kill all the enemies in way, tackle all hurdle and finally after defeating boss ship you will finally save all people. 
+
+### 9.2 Enemies
+In the journey to save people, you will encounter three enemies.
+
+#### 9.2.1  Meteors
+In he journey, you will be hit by random floating meteors in the space. You have hit them using your shooters. 
+
+#### 9.2.2 Solider ship
+This shi will arrive at end of level 1 and it will be the weakest among three ships. In the beginning of the journey you will first encounter solider ship which will be not much strong and will be easy to destroy. It will shoot at you and you have to shoot at it to win level. 
+
+#### 9.2.3 Army general ship 
+This ship will arrive at end of level 2 and it will be the stronger than Solider ship. In between of the journey you will later encounter army general ship which will be stronger but not the strongest and will be bit difficult to destroy. It will shoot at you and you have to shoot at it to win level. 
+
+#### 9.2.4 Boss ship 
+This ship will arrive at end of level 3 and it will be the strongest among three ships. In end of the journey you will encounter Boss ship which will be the strongest and will be difficult to destroy. It will shoot at you and you have to shoot at it to win and you will finally save people.
+
+### 9.3 Main Reason
+
