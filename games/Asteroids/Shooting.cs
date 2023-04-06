@@ -191,7 +191,6 @@ public class RedEnergyBall : Shooting
     ~RedEnergyBall()
     {
         Console.WriteLine("RedEnergyBall is destroyed");
-        SplashKit.FreeBitmap(_EnergyBall);
 
     }
 
