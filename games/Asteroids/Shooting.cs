@@ -24,6 +24,12 @@ public abstract class Shooting
 
     // }
 
+
+    public virtual void freesprite()
+    {
+        //Does nothing but allows inherited classes to free their own sprite
+    }
+
     public virtual void Draw()
     {
         SplashKit.FillCircle(Color.White, _X, _Y, Radius);
@@ -122,7 +128,7 @@ public class RedEnergyBall : Shooting
 {
 
     private Bitmap _EnergyBall;
-    //private AnimationScript _EnergyBallScript;
+    private AnimationScript _EnergyBallScript;
     private Sprite _EnergyBallSprite;
     public RedEnergyBall(Point2D fromPT, Player player)
     {
@@ -135,12 +141,11 @@ public class RedEnergyBall : Shooting
         Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
         _Velocity = SplashKit.VectorMultiply(direction, SPEED);
 
-        //_EnergyBall = new Bitmap("RedEnergyBall", "RedEnergyBall.png");
-        _EnergyBall = new Bitmap("RedEnergyBall", "Player.png");
-        //_EnergyBall.SetCellDetails(100, 100, 3, 3, 9);
-        //_EnergyBallScript = SplashKit.LoadAnimationScript("RedEnergyBall", "RedEnergyBall.txt");
-        //_EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall, _EnergyBallScript);
-        _EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall);
+        _EnergyBall = new Bitmap("RedEnergyBall", "RedEnergyBall_9_frames_updated.png");
+        _EnergyBall.SetCellDetails(150, 150, 3, 3, 9);
+        _EnergyBallScript = SplashKit.LoadAnimationScript("RedEnergyBall", "RedEnergyBall.txt");
+        _EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall, _EnergyBallScript);
+        _EnergyBallSprite.StartAnimation("Start");
         _EnergyBallSprite.Position = fromPT;
 
     }
@@ -150,7 +155,7 @@ public class RedEnergyBall : Shooting
         if (SplashKit.SpriteBitmapCollision(_EnergyBallSprite, player.HitBMP(), player.X, player.Y))
         {
             hit = true;
-            SplashKit.FreeSprite(_EnergyBallSprite);
+            //SplashKit.FreeSprite(_EnergyBallSprite);
         }
 
         return hit;
@@ -171,10 +176,22 @@ public class RedEnergyBall : Shooting
         if (_EnergyBallSprite.Offscreen())
         {
             Offscreen = true;
-            SplashKit.FreeSprite(_EnergyBallSprite);
+            //SplashKit.FreeSprite(_EnergyBallSprite);
         }
         return Offscreen;
 
+
+    }
+
+    public override void freesprite()
+    {
+        SplashKit.FreeSprite(_EnergyBallSprite);
+    }
+
+    ~RedEnergyBall()
+    {
+        Console.WriteLine("RedEnergyBall is destroyed");
+        SplashKit.FreeBitmap(_EnergyBall);
 
     }
 
