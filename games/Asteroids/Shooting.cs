@@ -35,7 +35,7 @@ public abstract class Shooting
         _Y += _Velocity.Y;
     }
 
-    public bool IsOffscreen(Window screen)
+    public virtual bool IsOffscreen(Window screen)
     {
         bool Offscreen = false;
 
@@ -120,9 +120,9 @@ public class BossSmallShot : Shooting
 
 public class RedEnergyBall : Shooting
 {
-    
+
     private Bitmap _EnergyBall;
-    private AnimationScript _EnergyBallScript;
+    //private AnimationScript _EnergyBallScript;
     private Sprite _EnergyBallSprite;
     public RedEnergyBall(Point2D fromPT, Player player)
     {
@@ -134,27 +134,48 @@ public class RedEnergyBall : Shooting
         toPT.Y = player.Y;
         Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
         _Velocity = SplashKit.VectorMultiply(direction, SPEED);
-        
+
         //_EnergyBall = new Bitmap("RedEnergyBall", "RedEnergyBall.png");
         _EnergyBall = new Bitmap("RedEnergyBall", "Player.png");
         //_EnergyBall.SetCellDetails(100, 100, 3, 3, 9);
         //_EnergyBallScript = SplashKit.LoadAnimationScript("RedEnergyBall", "RedEnergyBall.txt");
         //_EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall, _EnergyBallScript);
         _EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall);
+        _EnergyBallSprite.Position = fromPT;
 
     }
-        public override bool HitCheck(Player player)
+    public override bool HitCheck(Player player)
     {
         bool hit = false;
-        if (SplashKit.SpriteBitmapCollision(_EnergyBallSprite,player.HitBMP(), player.X, player.Y )) hit = true;
+        if (SplashKit.SpriteBitmapCollision(_EnergyBallSprite, player.HitBMP(), player.X, player.Y))
+        {
+            hit = true;
+            SplashKit.FreeSprite(_EnergyBallSprite);
+        }
 
         return hit;
     }
     public override bool HitCheck(Enemy enemy) { return false; }
-     public override void Update()
+    public override void Update()
     {
-        // _X += _Velocity.X;
-        // _Y += _Velocity.Y;
-        _EnergyBallSprite.AddToVelocity(_Velocity);
+        _EnergyBallSprite.X += Convert.ToSingle(_Velocity.X);
+        _EnergyBallSprite.Y += Convert.ToSingle(_Velocity.Y);
+        //_EnergyBallSprite.AddToVelocity(_Velocity);
+
     }
+
+    public override bool IsOffscreen(Window screen)
+    {
+        bool Offscreen = false;
+
+        if (_EnergyBallSprite.Offscreen())
+        {
+            Offscreen = true;
+            SplashKit.FreeSprite(_EnergyBallSprite);
+        }
+        return Offscreen;
+
+
+    }
+
 }

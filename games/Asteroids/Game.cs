@@ -59,9 +59,10 @@ public class Game
     }
     public void Draw()
     {
-        SplashKit.DrawAllSprites();
+
         _GameWindow.Clear(Color.Black);
         _gameLevel.Draw();
+        SplashKit.DrawAllSprites();
         foreach (Player p in _Players)
         {
             p.Draw();
@@ -114,8 +115,10 @@ public class Game
             HitCheck(p);
             if (p.IsDead) KillPlayer.Add(p);
         }
-
+        
+        SplashKit.UpdateAllSprites();
         _gameLevel.Update();
+        
 
         foreach (Player p in KillPlayer)
         {
@@ -148,7 +151,7 @@ public class Game
         {
             if (_GameOverP1 && _GameOverP2) GameOver();
         }
-        SplashKit.UpdateAllSprites();
+
     }
 
     public void HitCheck(Player player)
