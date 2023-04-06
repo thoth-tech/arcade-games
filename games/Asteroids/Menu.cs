@@ -1,5 +1,14 @@
+using System.Runtime.Serialization.Json;
+using System.Net.NetworkInformation;
 using System;
 using SplashKitSDK;
+
+// 
+// 
+// 
+// 
+// 
+// 
 
 public class Menu
 {
@@ -14,7 +23,13 @@ public class Menu
     private int _MainMenuOption;
     private int _ShipSelection;
     private int _Lockout;
-    private Bitmap _Ship1, _Ship2, _Ship3, _Ship4;
+    private LinkedList<Bitmap> _ShipsBMP;
+    private SplashKitSDK.Triangle _tri;
+    private KeyCallback kcbP1;
+
+    
+    int X_GameText;               // given the window should be fixed, this should be only done once.
+    int Y_GameText;
 
 
     public enum MenuOption
@@ -28,32 +43,83 @@ public class Menu
     public Menu(Window gameWindow)
     {
         _gameWindow = gameWindow;
-        GameStarted = false;
         _GameFont = new Font("pricedown_bl", "pricedown_bl.otf");
-        _MainMenuOption = 1;
-        _Menu = MenuOption.MainMenu;
-        _ShipSelection = 1;
-        players = 0;
-        _Lockout = -5;
-        _Ship1 = SplashKit.LoadBitmap("Ship1", "BlueShip.png");
-        _Ship2 = SplashKit.LoadBitmap("Ship2", "SpaceShip.png");
-        _Ship3 = SplashKit.LoadBitmap("Ship3", "RedShip.png");
-        _Ship4 = SplashKit.LoadBitmap("Ship4", "FighterShip.png");
+
+        X_GameText = _gameWindow.Width / 2 - 125;               // given the window should be fixed, this should be only done once.
+        Y_GameText = _gameWindow.Height / 6;
+
+        ReSetup();
+
+        _tri = new Triangle();
+        _ShipsBMP = retrieveShipsJSON();
+
+        testSpr = testSprite();
+        testSpr.X = 200;
+        testSpr.Y = 200;
+
+        sprHand = new SpriteEventHandler(testFunction);
+        //testSpr.CallOnEvent(sprHand);
+        SplashKit.SpriteCallOnEvent(testSpr,sprHand);
+
+        kcbP1 = new KeyCallback(HandleInputP1);
+        SplashKit.RegisterCallbackOnKeyTyped(kcbP1);
+       
+    }
+
+    Sprite testSpr;
+    private Sprite testSprite()
+    {
+        Bitmap b = SplashKit.LoadBitmap("testRock", "RockLarge.png");
+        b.SetCellDetails(200,200,3,3,9);
+        AnimationScript scr = SplashKit.LoadAnimationScript("testRock", "rock.txt");
+
+        Sprite spr = SplashKit.CreateSprite(b, scr);
+
+        spr.StartAnimation("normal");        
+
+        return spr;
+
+    }
+
+    private void runSprite()
+    {
+        
+        testSpr.Draw();
+
+        
+        testSpr.Update();
+
+        // String temp = String.Format("{0},{1},{2},{3}   {4}",testSpr.AnimationName(),0,0,0,0); 
+       //SplashKit.DrawTextOnWindow(_gameWindow, temp, Color.White, _GameFont, 40, 30, 400);
+
+    }
+
+    private LinkedList<Bitmap> retrieveShipsJSON()
+    {
+        LinkedList<Bitmap> tempShips = new LinkedList<Bitmap>();
+        Json jsonShips = SplashKit.JsonFromFile("Playerships.json");
+        List<String> listShips = new List<string>();
+        SplashKit.JsonReadArray(jsonShips, "Ships", ref listShips);
+        
+        for (int i = 0; i < listShips.Count(); i++)
+        {
+            tempShips.AddLast(SplashKit.LoadBitmap("Ship" + (i+1).ToString(), listShips[i]));
+        }
+
+        return tempShips;
     }
 
     private void ReSetup()
     {
+            GameStarted = false;
+            _MainMenuOption = 0;
             _Menu = MenuOption.MainMenu;
             players = 0;
             _Lockout = -5;
-            _Ship1.Free();
-            _Ship2.Free();
-            _Ship3.Free();
-            _Ship4.Free();
-            _Ship1 = SplashKit.LoadBitmap("Ship1", "BlueShip.png");
-            _Ship2 = SplashKit.LoadBitmap("Ship2", "SpaceShip.png");
-            _Ship3 = SplashKit.LoadBitmap("Ship3", "RedShip.png");
-            _Ship4 = SplashKit.LoadBitmap("Ship4", "FighterShip.png");
+            _ShipSelection = 0;
+
+            _titleColor = Color.White;
+
     }
 
     public void DrawMenu()
@@ -68,7 +134,7 @@ public class Menu
                 
                 break;
             case MenuOption.Player2ShipSelection:
-                if (_Lockout == _ShipSelection) _ShipSelection += 1;
+                //if (_Lockout == _ShipSelection) _ShipSelection++;
                 DrawShipSelection("2","A to Move Left","D to Move Right","Space to Select");
                 break;
         }
@@ -77,43 +143,82 @@ public class Menu
     private void DrawMainMenu()
     {
         _gameWindow.Clear(Color.Black);
-        int X_GameText = _gameWindow.Width / 2 - 125;
-        int Y_GameText = _gameWindow.Height / 6;
+
+        const int Offset_AddY = 300;
         const int Offset_GameText = 80;
         const int FontSize = 80;
 
-        SplashKit.DrawTextOnWindow(_gameWindow, "1  Player", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
-        SplashKit.DrawTextOnWindow(_gameWindow, "2 Player", Color.White, _GameFont, FontSize, X_GameText, Y_GameText + Offset_GameText);
-        SplashKit.DrawTextOnWindow(_gameWindow, "Quit", Color.White, _GameFont, FontSize, X_GameText, Y_GameText + Offset_GameText * 2);
+        DrawMainMenuTitle();
 
-        if (_MainMenuOption == 1)
+        SplashKit.DrawTextOnWindow(_gameWindow, "1  Player", Color.White, _GameFont, FontSize, X_GameText, Y_GameText + Offset_AddY);
+        SplashKit.DrawTextOnWindow(_gameWindow, "2 Player", Color.White, _GameFont, FontSize, X_GameText, Y_GameText + Offset_AddY + Offset_GameText);
+        SplashKit.DrawTextOnWindow(_gameWindow, "Quit", Color.White, _GameFont, FontSize, X_GameText, Y_GameText + Offset_AddY + Offset_GameText * 2);
+
+         
+        double Y_triangle = Y_GameText + Offset_GameText * _MainMenuOption + Offset_AddY;
+        SplashKit.FillTriangle(Color.White, X_GameText - 40, Y_triangle + 35, X_GameText - 20, Y_triangle + 55, X_GameText - 40, Y_triangle + 75);
+
+        //runSprite();
+    }
+
+
+    private Color _titleColor;
+    private int _titleColorDelta;
+    private const int _titleColorDeltaRate = 3;
+    private void DrawMainMenuTitle()
+    {  
+        
+        const int FontSize = 200;
+        int titleX = (int)(_gameWindow.Width / 2 - (SplashKit.TextWidth("Asteroids",_GameFont,FontSize)/2));
+        const int titleY = 40;
+
+        if (_titleColor.R >= 1)
         {
-            SplashKit.FillTriangle(Color.White, X_GameText - 40, Y_GameText + 33, X_GameText - 20, Y_GameText + 53, X_GameText - 40, Y_GameText + 73);
+            _titleColorDelta = -_titleColorDeltaRate;
         }
-        else if (_MainMenuOption == 2)
+        else if (_titleColor.R <= .1)
         {
-            SplashKit.FillTriangle(Color.White, X_GameText - 40, Y_GameText + Offset_GameText + 35, X_GameText - 20, Y_GameText + Offset_GameText + 55, X_GameText - 40, Y_GameText + Offset_GameText + 75);
+            _titleColorDelta = _titleColorDeltaRate;
         }
-        else if (_MainMenuOption == 3)
-        {
-            SplashKit.FillTriangle(Color.White, X_GameText - 40, Y_GameText + Offset_GameText * 2 + 35, X_GameText - 20, Y_GameText + Offset_GameText * 2 + 55, X_GameText - 40, Y_GameText + Offset_GameText * 2 + 75);
-        }
+
+        int tempColorVal = (int)(_titleColor.R * 255 + _titleColorDelta);
+        _titleColor =  SplashKit.RGBColor(tempColorVal,tempColorVal,tempColorVal);
+        
+
+        SplashKit.DrawTextOnWindow(_gameWindow, "ASTEROIDS", _titleColor, _GameFont, FontSize, titleX, titleY);
+
+        //String tempRGB = String.Format("{0},{1},{2},{3}   {4}",_titleColor.R*255,_titleColor.G*255,_titleColor.B*255,_titleColor.A*255,_titleColorDelta); 
+       //SplashKit.DrawTextOnWindow(_gameWindow, tempRGB, Color.White, _GameFont, 40, 30, 400);
 
     }
 
     private void DrawShipSelection(string Player,string MoveLeft, string MoveRight,string Select)
     {
         _gameWindow.Clear(Color.Black);
-        int Y_Ships = (_gameWindow.Height - _Ship1.Height) / 2;
-        int X_Ships = (_gameWindow.Width - _Ship1.Width) / 5;
-        int X_Ship1 = X_Ships * 1, X_Ship2 = X_Ships * 2, X_Ship3 = X_Ships * 3, X_Ship4 = X_Ships * 4;
-        int Y_Ship1 = Y_Ships, Y_Ship2 = Y_Ships, Y_Ship3 = Y_Ships, Y_Ship4 = Y_Ships;
+        int Y_Ships = (_gameWindow.Height - _ShipsBMP.First().Height) / 2;
+        int X_Ships = (_gameWindow.Width - _ShipsBMP.First().Width) / (_ShipsBMP.Count + 1);
         const int FontSize = 60;
+        
+        for (int i = 0; i < _ShipsBMP.Count(); i++)
+        {
+            Bitmap temp = _ShipsBMP.ElementAt(i);
 
-        _Ship1.Draw(X_Ship1, Y_Ship1);
-        _Ship2.Draw(X_Ship2, Y_Ship2);
-        _Ship3.Draw(X_Ship3, Y_Ship3);
-        _Ship4.Draw(X_Ship4, Y_Ship4);
+            temp.Draw(X_Ships * (i+1), Y_Ships);
+
+            // draw rectangle around ship currently selected
+            if (_ShipSelection == i)
+            {
+                SplashKit.DrawRectangle(Color.White, SplashKit.BitmapBoundingRectangle(temp, X_Ships * (i+1), Y_Ships));
+            }
+
+            // use if original lockout 
+            // if (_Lockout == i)
+            // {
+            //     SplashKit.DrawRectangle(Color.Red, SplashKit.BitmapBoundingRectangle(temp, X_Ships * (i+1), Y_Ships));
+            //     temp.DrawLine(Color.Red, 0, 0, temp.Width, temp.Height);
+            //     temp.DrawLine(Color.Red, temp.Width, 0, 0, temp.Height);
+            // }
+        }
 
         SplashKit.DrawTextOnWindow(_gameWindow, $"Player {Player} Select Your Ship", Color.White, _GameFont, FontSize,75,200);
         SplashKit.DrawTextOnWindow(_gameWindow, "Controls", Color.White, _GameFont, 40,75,550);
@@ -121,50 +226,11 @@ public class Menu
         SplashKit.DrawTextOnWindow(_gameWindow, MoveRight, Color.White, _GameFont, 30,75,640);
         SplashKit.DrawTextOnWindow(_gameWindow, Select, Color.White, _GameFont, 30,75,680);
 
-        switch (_ShipSelection)
-        {
-            case 1:
-                SplashKit.DrawRectangle(Color.White, SplashKit.BitmapBoundingRectangle(_Ship1, X_Ship1, Y_Ship1));
-                break;
-            case 2:
-                SplashKit.DrawRectangle(Color.White, SplashKit.BitmapBoundingRectangle(_Ship2, X_Ship2, Y_Ship2));
-                break; 
-            case 3:
-                SplashKit.DrawRectangle(Color.White, SplashKit.BitmapBoundingRectangle(_Ship3, X_Ship3, Y_Ship3));
-                break;
-            case 4:
-                SplashKit.DrawRectangle(Color.White, SplashKit.BitmapBoundingRectangle(_Ship4, X_Ship4, Y_Ship4));
-                break;
-        }
-
-        switch (_Lockout)
-        {
-            case 1:
-                SplashKit.DrawRectangle(Color.Red, SplashKit.BitmapBoundingRectangle(_Ship1, X_Ship1, Y_Ship1));
-                _Ship1.DrawLine(Color.Red, 0, 0, _Ship1.Width, _Ship1.Height);
-                _Ship1.DrawLine(Color.Red, _Ship1.Width, 0, 0, _Ship1.Height);
-                break;
-            case 2:
-                SplashKit.DrawRectangle(Color.Red, SplashKit.BitmapBoundingRectangle(_Ship2, X_Ship2, Y_Ship2));
-                _Ship2.DrawLine(Color.Red, 0, 0, _Ship1.Width, _Ship1.Height);
-                _Ship2.DrawLine(Color.Red, _Ship1.Width, 0, 0, _Ship1.Height);
-                break;
-            case 3:
-                SplashKit.DrawRectangle(Color.Red, SplashKit.BitmapBoundingRectangle(_Ship3, X_Ship3, Y_Ship3));
-                _Ship3.DrawLine(Color.Red, 0, 0, _Ship1.Width, _Ship1.Height);
-                _Ship3.DrawLine(Color.Red, _Ship1.Width, 0, 0, _Ship1.Height);
-                break;
-            case 4:
-                SplashKit.DrawRectangle(Color.Red, SplashKit.BitmapBoundingRectangle(_Ship4, X_Ship4, Y_Ship4));
-                _Ship4.DrawLine(Color.Red, 0, 0, _Ship1.Width, _Ship1.Height);
-                _Ship4.DrawLine(Color.Red, _Ship1.Width, 0, 0, _Ship1.Height);
-                break;
-        }
-
     }
 
     public void Selection()
     {
+        
         switch (_Menu)
         {
             case MenuOption.MainMenu:
@@ -179,38 +245,75 @@ public class Menu
         }
     }
 
+
+    private void testFunction(IntPtr s, int e)
+    {
+        Console.Out.Write("BAD");
+    }
+
+    private void HandleInputP1(int key)
+    {
+        Console.Out.WriteLine("TYPED: " + key);
+
+        switch ((KeyCode)key)
+        {
+            case KeyCode.LeftKey:
+            break;
+            case KeyCode.RightKey:
+            break;
+            case KeyCode.UpKey:
+            break;
+            case KeyCode.DownKey:
+            break;
+
+            case KeyCode.ReturnKey:
+            break;
+        }
+    }
+
+    private void InputLeftKey()
+    {
+        if (_Menu == MenuOption.Player1ShipSelection || _Menu == MenuOption.Player2ShipSelection)
+        {
+            _ShipSelection = indexCheck(_ShipSelection,-1);
+        }
+    }
+
+    SpriteEventHandler sprHand;
     private void HandleInputMainMenu()
     {
         if (SplashKit.KeyTyped(KeyCode.UpKey))
         {
-            if (_MainMenuOption == 1) { _MainMenuOption = 3; }
-            else { _MainMenuOption -= 1; }
+            _MainMenuOption = _MainMenuOption <= 0 ? 2 : _MainMenuOption - 1;
+            testSpr.StartAnimation("explode");
+            //testSpr.CallOnEvent();
         }
         else if (SplashKit.KeyTyped(KeyCode.DownKey))
         {
-            if (_MainMenuOption == 3) { _MainMenuOption = 1; }
-            else { _MainMenuOption += 1; }
+            _MainMenuOption = _MainMenuOption >= 2 ? 0 : _MainMenuOption + 1;
+            testSpr.StartAnimation("normal");
         }
         else if (SplashKit.KeyTyped(KeyCode.ReturnKey))
         {
             switch (_MainMenuOption)
             {
-                case 1:
+                case 0:
                     _Menu = MenuOption.Player1ShipSelection;
                     players = 1;
                     break;
 
-                case 2:
+                case 1:
                     _Menu = MenuOption.Player1ShipSelection;
                     players = 2;
                     break;
-                case 3:
+                case 2:
                     quit = true;
                     break;
             }
         }
     }
 
+    
     private int LockOutCheck(int selection, int change)
     {
         int newSelection = selection + change;
@@ -231,39 +334,37 @@ public class Menu
             else return newSelection;
         }
     }
+    
+
+    // does not check for lock out after out of array bounds check
+    private int indexCheck(int selection, int change)
+    {
+        int newSel = selection + change;                           // changed value
+        //newSel = _Lockout == newSel ? newSel + change : newSel;     // check if value overlaps with lock out selection, push further
+        if (newSel < 0)     newSel = _ShipsBMP.Count()-1;             // if value below min
+        else if (newSel > _ShipsBMP.Count() - 1) newSel = 0;            // if value above max
+
+        return newSel;
+    }
 
 
     private void HandleInputPlayer1Selection()
     {
         if (SplashKit.KeyTyped(KeyCode.LeftKey))
         {
-            _ShipSelection = LockOutCheck(_ShipSelection,-1);
+            _ShipSelection = indexCheck(_ShipSelection,-1);
         }
         else if (SplashKit.KeyTyped(KeyCode.RightKey))
         {
-            _ShipSelection = LockOutCheck(_ShipSelection,1);
+            _ShipSelection = indexCheck(_ShipSelection,1);
         }
         else if (SplashKit.KeyTyped(KeyCode.ReturnKey))
         {
-            switch (_ShipSelection)
-            {
-                case 1:
-                    p1Ship = _Ship1.Filename;
-                    _Lockout = 1;
-                    break;
-                case 2:
-                    p1Ship = _Ship2.Filename;
-                    _Lockout = 2;
-                    break;
-                case 3:
-                    p1Ship = _Ship3.Filename;
-                    _Lockout = 3;
-                    break;
-                case 4:
-                    p1Ship = _Ship4.Filename;
-                    _Lockout = 4;
-                    break;
-            }
+            p1Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
+            //_Lockout = _ShipSelection;
+
+            
+            _ShipsBMP.Remove(_ShipsBMP.ElementAt(_ShipSelection));          
 
             if (players == 1)
             {
@@ -272,7 +373,7 @@ public class Menu
             else if (players == 2)
             {
                 _Menu = MenuOption.Player2ShipSelection;
-                _ShipSelection = 1;
+                _ShipSelection = 0;
             }
 
         }
@@ -287,29 +388,15 @@ public class Menu
     {
         if (SplashKit.KeyTyped(KeyCode.AKey))
         {
-            _ShipSelection = LockOutCheck(_ShipSelection,-1);
+            _ShipSelection = indexCheck(_ShipSelection,-1);
         }
         else if (SplashKit.KeyTyped(KeyCode.DKey))
         {
-            _ShipSelection = LockOutCheck(_ShipSelection,1);
+            _ShipSelection = indexCheck(_ShipSelection,1);
         }
         else if (SplashKit.KeyTyped(KeyCode.SpaceKey))
         {
-            switch (_ShipSelection)
-            {
-                case 1:
-                    p2Ship = _Ship1.Filename;
-                    break;
-                case 2:
-                    p2Ship = _Ship2.Filename;
-                    break;
-                case 3:
-                    p2Ship = _Ship3.Filename;
-                    break;
-                case 4:
-                    p2Ship = _Ship4.Filename;
-                    break;
-            }
+            p2Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
 
             GameStarted = true;
         }
