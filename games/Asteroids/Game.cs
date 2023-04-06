@@ -43,8 +43,8 @@ public class Game
         }
 
 
-        //_gameLevel = new Debuglvl(_GameWindow, this);
-        _gameLevel = new Level1(_GameWindow, this);
+        _gameLevel = new Debuglvl(_GameWindow, this);
+        //_gameLevel = new Level1(_GameWindow, this);
 
     }
 
@@ -89,8 +89,8 @@ public class Game
         }
         int X_GameText = _GameWindow.Width / 2 - 270;
         int Y_GameText = _GameWindow.Height / 3;
-        SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
         SplashKit.FreeAllSprites();
+        SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
         _GameWindow.Refresh(60);
         SplashKit.Delay(5000);
         GameStarted = false;

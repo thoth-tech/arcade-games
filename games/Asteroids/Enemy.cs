@@ -535,7 +535,7 @@ public class Boss1 : Enemy
     private AnimationScript _BossScript;
     private DrawingOptions _opt;
     private bool _ShieldUp;
-    private int _ShieldHealth;
+    private int _ShieldHealth, _ShipHealth;
     private bool _ShieldFlash;
     private string _Phase;
     private bool _XRight;
@@ -559,8 +559,9 @@ public class Boss1 : Enemy
         Height = _Boss.CellHeight;
         Width = _Boss.CellWidth;
         _ShieldUp = true;
-        _ShieldHealth = 15; // was 300
+        _ShieldHealth = 15; // was 100
         _ShieldFlash = false;
+        _ShipHealth = 50;
         _Phase = "Start";
         X = gameWindow.Width / 2 - _Boss.CellWidth / 2;
         Y = -299;
@@ -601,8 +602,21 @@ public class Boss1 : Enemy
             }
             else
             {
-                if (_BossAnimation.Ended) _BossAnimation.Assign("CriticalDamage");
+                if (_ShipHealth <= 10)
+                {
+                    if (_BossAnimation.Ended) _BossAnimation.Assign("CriticalDamage");
+                }
+                else
+                {
+                    if (_BossAnimation.Ended) _BossAnimation.Assign("ShieldDown");
+                }
+
             }
+        }
+        else
+        {
+            if (_BossAnimation.Ended) _BossAnimation.Assign("CriticalDamage");
+            //if (_BossAnimation.Ended) _BossAnimation.Assign("Dying"); // to be added to the animation
         }
 
         foreach (Shooting s in _shots)
@@ -668,9 +682,57 @@ public class Boss1 : Enemy
                     _shootingEnergyShot++;
                 }
                 break;
+            case "End":
+                if (X < 200) _XRight = true;
+                if (X + Width > _gameWindow.Width - 200) _XRight = false;
+                if (Y < 50) _YDown = true;
+                if (Y > 70) _YDown = false;
+
+                if (_XRight == true)
+                {
+                    X += 2;
+                }
+                else
+                {
+                    X -= 2;
+                }
+
+                if (_YDown == true)
+                {
+                    Y++;
+                }
+                else
+                {
+                    Y--;
+                }
+                if (_shootingTime.Ticks / 2000 == _shootingEnergyShot)
+                {
+                    RedEnergyBall();
+                    _shootingEnergyShot++;
+                }
+                break;
+            case "Dead":
+                if (_BossAnimation.Ended && _shots.Count == 0)  IsDead = true;
+
+                break;
+        }
+        if (_ShieldHealth < 0)
+        {
+            if (_ShieldUp == true)
+            {
+                _Phase = "End";
+                _shootingTime.Reset();
+                _shootingEnergyShot = 1;
+            }
+            _ShieldUp = false;
 
         }
-        if (_ShieldHealth < 0) _ShieldUp = false;
+        if (_ShipHealth < 0)
+        {
+            _IsDying = true;
+            _Phase = "Dead";
+        }
+
 
         foreach (Shooting s in _shots)
         {
@@ -708,6 +770,10 @@ public class Boss1 : Enemy
         {
             _ShieldHealth -= 1;
             _ShieldFlash = true;
+        }
+        else
+        {
+            _ShipHealth -= 1;
         }
 
         return new Tuple<string, int>("Score", 10);
