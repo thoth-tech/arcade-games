@@ -43,8 +43,8 @@ public class Game
         }
 
 
-        _gameLevel = new Debuglvl(_GameWindow, this);
-        //_gameLevel = new Level1(_GameWindow, this);
+        //_gameLevel = new Debuglvl(_GameWindow, this);
+        _gameLevel = new Level1(_GameWindow, this);
 
     }
 
