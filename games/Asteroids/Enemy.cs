@@ -559,7 +559,7 @@ public class Boss1 : Enemy
         Height = _Boss.CellHeight;
         Width = _Boss.CellWidth;
         _ShieldUp = true;
-        _ShieldHealth = 15; // was 100
+        _ShieldHealth = 100; // was 100
         _ShieldFlash = false;
         _ShipHealth = 50;
         _Phase = "Start";
