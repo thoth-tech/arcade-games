@@ -112,6 +112,7 @@ public class Player
         if (SplashKit.KeyDown(KeyCode.UpKey)) Move(Speed);
         if (SplashKit.KeyDown(KeyCode.DownKey)) { }
         if (SplashKit.KeyTyped(KeyCode.RightCtrlKey)) { Shoot(); }
+        if (SplashKit.KeyTyped(KeyCode.LeftCtrlKey)) { Shoot(); }
 
     }
 

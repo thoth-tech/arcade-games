@@ -177,31 +177,17 @@ public class Level1 : Level
             case < 50:
                 RockRandomSpawn(5, 0.03);
                 break;
-            case < 60:
-                RockRandomSpawn(6, 0.03);
-                break;
-            case < 70:
-                RockRandomSpawn(6, 0.04);
-                break;
-            case < 80:
-                RockRandomSpawn(6, 0.04);
-                break;
-            case 85: //150.0
-                if (!_EnemySpawned.ContainsKey("85 Time"))
+            case 55: //150.0
+                if (!_EnemySpawned.ContainsKey("55 Time"))
                 {
-                    _EnemySpawned.Add("85 Time", true);
+                    _EnemySpawned.Add("55 Time", true);
                     Enemies.Add(createEnemy("Large", 4, _wWidth / 2 - 100, -200, _wWidth / 2 - 100, _wHeight / 2 - 100));
                     Enemies.Add(createEnemy("Large", 4, _wWidth / 2 - 100, _wHeight, _wWidth / 2 - 100, _wHeight / 2 - 100));
                     Enemies.Add(createEnemy("Large", 4, -200, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
                     Enemies.Add(createEnemy("Large", 4, _wWidth, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
-
-                    /*                  Enemies.Add(createEnemy("Large",4,0,0,_wWidth/2-100,_wHeight/2-100));
-                                        Enemies.Add(createEnemy("Large",4,0,_wHeight,_wWidth/2-100,_wHeight/2-100));
-                                        Enemies.Add(createEnemy("Large",4,_wWidth,_wHeight,_wWidth/2-100,_wHeight/2-100));
-                                        Enemies.Add(createEnemy("Large",4,0,0,_wWidth/2-100,_wHeight/2-100)); */
                 }
                 break;
-            case 90: //153
+            case 60: //153
                 if (!_EnemySpawned.ContainsKey("Boss1"))
                 {
                     _EnemySpawned.Add("Boss1", true);
