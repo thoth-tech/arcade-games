@@ -12,7 +12,8 @@ public abstract class Level
     protected Game _game;
     protected int _wHeight, _wWidth;
     protected Bitmap lvlComplete;
-
+    private Timer _completeTimer;
+    private Level? _NextLevel;
 
     public Level(Window GameWindow, Game game)
     {
@@ -21,12 +22,41 @@ public abstract class Level
         _wHeight = _gameWindow.Height;
         _wWidth = _gameWindow.Width;
         lvlComplete = new Bitmap("levelComplete", "Lvlcomplete.png");
+        _completeTimer = new Timer("completeTimer");
+
     }
 
     public virtual void Draw()
     {
         foreach (Enemy e in Enemies)
-        { e.Draw(); }
+        {
+            e.Draw();
+        }
+        levelCompleteDraw();
+    }
+
+    protected void levelComplete(Level NextLevel)
+    {
+        if (!_completeTimer.IsStarted) _completeTimer.Start();
+        _NextLevel = NextLevel;
+    }
+
+    private void levelCompleteDraw()
+    {
+        double Timer = Math.Round((_completeTimer.Ticks / 1000.0), 1);
+        int X_GameText = _gameWindow.Width / 2 - lvlComplete.Width / 2;
+        int Y_GameText = _gameWindow.Height / 6;
+        if (_completeTimer.IsStarted && Timer < 5.0)
+        {
+            SplashKit.DrawBitmap(lvlComplete, X_GameText, Y_GameText);
+        }
+        else if (_completeTimer.IsStarted && Timer > 5.0)
+        {
+            _completeTimer.Stop();
+            _completeTimer.Reset();
+            if (_NextLevel != null) _game.Nextlvl(_NextLevel);
+
+        }
 
     }
 
@@ -157,6 +187,7 @@ public class Level1 : Level
     {
         double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
 
+
         switch (lvlTimer)
         {
             case < 1.5:
@@ -191,24 +222,30 @@ public class Level1 : Level
                 if (!_EnemySpawned.ContainsKey("Boss1"))
                 {
                     _EnemySpawned.Add("Boss1", true);
-                    Enemies.Add(new Boss1(_gameWindow,_game));
+                    Enemies.Add(new Boss1(_gameWindow, _game));
                 }
                 break;
 
         }
+
+        if (_EnemySpawned.ContainsKey("Boss1") && Enemies.Count == 0)
+        {
+            levelComplete(new Level2(_gameWindow, _game));
+        }
+
         base.Update();
     }
 }
 
-public class Debuglvl : Level
+public class Level2 : Level
 {
     private Timer _lvlTimer;
     private Font _GameFont;
-    
+    private int X_GameText, Y_GameText;
 
-    public Debuglvl(Window GameWindow, Game game) : base(GameWindow, game)
+    public Level2(Window GameWindow, Game game) : base(GameWindow, game)
     {
-        _lvlTimer = new Timer("lvl1Timer");
+        _lvlTimer = new Timer("lvl2Timer");
         _lvlTimer.Start();
         _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
         _game = game;
@@ -219,17 +256,69 @@ public class Debuglvl : Level
     {
         double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
         const int FontSize = 80;
-        int X_GameText = _gameWindow.Width / 2 - 115;
-        int Y_GameText = _gameWindow.Height / 6;
+        X_GameText = _gameWindow.Width / 2 - 115;
+        Y_GameText = _gameWindow.Height / 6;
+
+        if (lvlTimer < 2) //1.5
+        {
+            SplashKit.DrawTextOnWindow(_gameWindow, "Level 2 Place Hold", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
+        }
+
+        base.Draw();
+
+    }
+
+    public override void Update()
+    {
+        double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
+        switch (lvlTimer)
+        {
+            case < 1.5:
+                //don't spawn until level starts
+                break;
+            case 2: //153
+                _game.GameOver();
+                break;
+
+        }
+
+
+        base.Update();
+    }
+}
+public class Debuglvl : Level
+{
+    private Timer _lvlTimer;
+    private Font _GameFont;
+    private int X_GameText, Y_GameText;
+
+    public Debuglvl(Window GameWindow, Game game) : base(GameWindow, game)
+    {
+        _lvlTimer = new Timer("DebugTimer");
+        _lvlTimer.Start();
+        _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
+        _game = game;
+
+    }
+
+    public override void Draw()
+    {
+        double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
+        const int FontSize = 80;
+        X_GameText = _gameWindow.Width / 2 - 115;
+        Y_GameText = _gameWindow.Height / 6;
+
+        if (lvlTimer == 0)
+        {
+            Console.WriteLine("level timer reset");
+        }
+
+
 
         if (lvlTimer < 1.5) //1.5
         {
             SplashKit.DrawTextOnWindow(_gameWindow, "Testing", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
         }
-        /*         else if (lvlTimer > 151 && lvlTimer < 160) //151
-                {
-                    SplashKit.DrawBitmap(lvlComplete,129,262);
-                } */
 
         base.Draw();
 
@@ -251,8 +340,13 @@ public class Debuglvl : Level
                     Enemies.Add(new Boss1(_gameWindow, _game));
                 }
                 break;
+        }
+        if (_EnemySpawned.ContainsKey("Boss1") && Enemies.Count == 0)
+        {
+            levelComplete(new Level2(_gameWindow, _game));
 
         }
+
         base.Update();
     }
 

@@ -11,7 +11,7 @@ f:2,2,1,
 //f:5,5,3,3
 
 
-f:[3-5],[3-5],15,3
+f:[3-5],[3-5],15,
 
 // -- Animation Identifiers --
 i:ShieldUp,0
