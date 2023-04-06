@@ -218,8 +218,7 @@ public class Debuglvl : Level
 {
     private Timer _lvlTimer;
     private Font _GameFont;
-    private Game _game;
-
+    
 
     public Debuglvl(Window GameWindow, Game game) : base(GameWindow, game)
     {

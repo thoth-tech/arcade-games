@@ -609,7 +609,7 @@ public class Boss1 : Enemy
         {
             s.Draw();
         }
-        
+
         _Boss.Draw(X, Y, _opt);
 
     }
@@ -679,7 +679,10 @@ public class Boss1 : Enemy
         }
 
         foreach (Shooting s in _KillShots)
-        { _shots.Remove(s); }
+        {
+            s.freesprite();
+            _shots.Remove(s);
+        }
         _KillShots.Clear();
 
     }

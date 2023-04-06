@@ -90,6 +90,7 @@ public class Game
         int X_GameText = _GameWindow.Width / 2 - 270;
         int Y_GameText = _GameWindow.Height / 3;
         SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
+        SplashKit.FreeAllSprites();
         _GameWindow.Refresh(60);
         SplashKit.Delay(5000);
         GameStarted = false;
@@ -103,6 +104,9 @@ public class Game
     }
     public void Updates()
     {
+
+        _gameLevel.Update();
+        SplashKit.UpdateAllSprites();
         List<Player> KillPlayer = new List<Player>();
         foreach (Enemy e in _gameLevel.Enemies)
         {
@@ -115,10 +119,9 @@ public class Game
             HitCheck(p);
             if (p.IsDead) KillPlayer.Add(p);
         }
-        
-        SplashKit.UpdateAllSprites();
-        _gameLevel.Update();
-        
+
+
+
 
         foreach (Player p in KillPlayer)
         {
