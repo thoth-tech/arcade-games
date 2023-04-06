@@ -1,5 +1,3 @@
-using System.Runtime.Serialization.Json;
-using System.Net.NetworkInformation;
 using System;
 using SplashKitSDK;
 
@@ -50,19 +48,19 @@ public class Menu
 
         ReSetup();
 
-        _tri = new Triangle();
-        _ShipsBMP = retrieveShipsJSON();
+        _tri = new Triangle();                              // main menu selection triangle
+        
 
         testSpr = testSprite();
         testSpr.X = 200;
         testSpr.Y = 200;
 
-        sprHand = new SpriteEventHandler(testFunction);
-        //testSpr.CallOnEvent(sprHand);
-        SplashKit.SpriteCallOnEvent(testSpr,sprHand);
+        sprHand = new SpriteEventHandler(testFunction);     // test delegate function
+        testSpr.CallOnEvent(sprHand);
+        //SplashKit.SpriteCallOnEvent(testSpr,sprHand);       // Sprite does not fire event, does not work
 
         kcbP1 = new KeyCallback(HandleInputP1);
-        SplashKit.RegisterCallbackOnKeyTyped(kcbP1);
+        SplashKit.RegisterCallbackOnKeyTyped(kcbP1);        // key callback works
        
     }
 
@@ -118,6 +116,8 @@ public class Menu
             _Lockout = -5;
             _ShipSelection = 0;
 
+            _ShipsBMP = retrieveShipsJSON();
+
             _titleColor = Color.White;
 
     }
@@ -158,7 +158,7 @@ public class Menu
         double Y_triangle = Y_GameText + Offset_GameText * _MainMenuOption + Offset_AddY;
         SplashKit.FillTriangle(Color.White, X_GameText - 40, Y_triangle + 35, X_GameText - 20, Y_triangle + 55, X_GameText - 40, Y_triangle + 75);
 
-        //runSprite();
+        runSprite();
     }
 
 
