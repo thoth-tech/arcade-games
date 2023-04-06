@@ -604,11 +604,14 @@ public class Boss1 : Enemy
                 if (_BossAnimation.Ended) _BossAnimation.Assign("CriticalDamage");
             }
         }
-        _Boss.Draw(X, Y, _opt);
+
         foreach (Shooting s in _shots)
         {
             s.Draw();
         }
+        
+        _Boss.Draw(X, Y, _opt);
+
     }
 
     public override void Update()
