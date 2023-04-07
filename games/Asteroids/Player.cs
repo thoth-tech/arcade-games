@@ -13,7 +13,7 @@ public class Player
     private string _Player;
     private List<Shooting> _KillShots = new List<Shooting>();
     public bool IsDead { get; private set; }
-    private Timer _InvulnerableTime;
+    private SplashKitSDK.Timer _InvulnerableTime;
     private bool _IsInvulnerable;
 
     public string Name { get { return _Player; } }
@@ -26,7 +26,7 @@ public class Player
         _Player = Player;
         _shots = new List<Shooting>();
         IsDead = false;
-        _InvulnerableTime = new Timer($"{Player} Invulnerable");
+        _InvulnerableTime = new SplashKitSDK.Timer($"{Player} Invulnerable");
         _InvulnerableTime.Start();
         _IsInvulnerable = true;
         if (PlayersNo == 1)
