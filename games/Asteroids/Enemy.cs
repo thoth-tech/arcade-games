@@ -542,7 +542,7 @@ public class Boss1 : Enemy
     private bool _YDown;
     private List<Shooting> _shots = new List<Shooting>();
     private List<Shooting> _KillShots = new List<Shooting>();
-    private Timer _shootingTime;
+    private SplashKitSDK.Timer _shootingTime;
     private Window _gameWindow;
     private int _shootingSmallShot, _shootingEnergyShot;
     private Game _game;

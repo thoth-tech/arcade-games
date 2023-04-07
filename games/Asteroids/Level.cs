@@ -12,7 +12,7 @@ public abstract class Level
     protected Game _game;
     protected int _wHeight, _wWidth;
     protected Bitmap lvlComplete;
-    private Timer _completeTimer;
+    private SplashKitSDK.Timer _completeTimer;
     private Level? _NextLevel;
 
     public Level(Window GameWindow, Game game)
@@ -22,7 +22,7 @@ public abstract class Level
         _wHeight = _gameWindow.Height;
         _wWidth = _gameWindow.Width;
         lvlComplete = new Bitmap("levelComplete", "Lvlcomplete.png");
-        _completeTimer = new Timer("completeTimer");
+        _completeTimer = new SplashKitSDK.Timer("completeTimer");
 
     }
 
@@ -239,13 +239,13 @@ public class Level1 : Level
 
 public class Level2 : Level
 {
-    private Timer _lvlTimer;
+    private SplashKitSDK.Timer _lvlTimer;
     private Font _GameFont;
     private int X_GameText, Y_GameText;
 
     public Level2(Window GameWindow, Game game) : base(GameWindow, game)
     {
-        _lvlTimer = new Timer("lvl2Timer");
+        _lvlTimer = new SplashKitSDK.Timer("lvl2Timer");
         _lvlTimer.Start();
         _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
         _game = game;
@@ -288,13 +288,13 @@ public class Level2 : Level
 }
 public class Debuglvl : Level
 {
-    private Timer _lvlTimer;
+    private SplashKitSDK.Timer _lvlTimer;
     private Font _GameFont;
     private int X_GameText, Y_GameText;
 
     public Debuglvl(Window GameWindow, Game game) : base(GameWindow, game)
     {
-        _lvlTimer = new Timer("DebugTimer");
+        _lvlTimer = new SplashKitSDK.Timer("DebugTimer");
         _lvlTimer.Start();
         _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
         _game = game;

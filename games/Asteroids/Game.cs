@@ -29,6 +29,8 @@ public class Game
         _Players = new List<Player>();
         _TempPlayers = new List<Player>();
 
+        SplashKit.FreeAllSprites();
+
         if (playersNo == 1)
         {
             _Players.Add(new Player(gameWindow, "Player 1", p1Ship, playersNo));
