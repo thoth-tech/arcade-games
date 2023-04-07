@@ -14,6 +14,7 @@ public abstract class Enemy
     protected int _IsDyingCount;
     public bool SpawnSmallRocks { get; protected set; }
     public bool SmallRocksSpawned { get; set; }
+    public bool CanShoot { get; protected set; } //{ get { return CanShoot; } protected set { CanShoot = false; } }
 
 
     protected double _Angle;
@@ -26,7 +27,7 @@ public abstract class Enemy
 
     public virtual Circle[] HitCircle()
     {
-        Circle[] Cir = {SplashKit.CircleAt(X + (Height / 2), Y + (Width / 2), Width / 4)};
+        Circle[] Cir = { SplashKit.CircleAt(X + (Height / 2), Y + (Width / 2), Width / 4) };
         return Cir;
     }
 
@@ -46,6 +47,11 @@ public abstract class Enemy
     private void Rotation(double change)
     {
         _Angle = (_Angle + change) % 360;
+    }
+
+    public virtual Tuple<String, int> HitCheck(Player player)
+    {
+        return new Tuple<string, int>("False", 0);
     }
 
 
@@ -129,7 +135,6 @@ public class RockLarge : Enemy
         Height = _Rock.CellHeight;
         Width = _Rock.CellWidth;
         GetSpeed = Speed;
-
         Point2D fromPt;
         Point2D tmpPT = base.RndfromPt();
         if (fX == -1)
@@ -525,32 +530,52 @@ public class RockSmallTriple : Enemy
 
 public class Boss1 : Enemy
 {
-    Bitmap _Boss;
+    private Bitmap _Boss;
+    private Animation _BossAnimation;
+    private AnimationScript _BossScript;
+    private DrawingOptions _opt;
     private bool _ShieldUp;
-    private int _ShieldHealth;
+    private int _ShieldHealth, _ShipHealth;
     private bool _ShieldFlash;
-    private int _DamageLoop;
     private string _Phase;
     private bool _XRight;
     private bool _YDown;
+    private List<Shooting> _shots = new List<Shooting>();
+    private List<Shooting> _KillShots = new List<Shooting>();
+    private SplashKitSDK.Timer _shootingTime;
+    private Window _gameWindow;
+    private int _shootingSmallShot, _shootingEnergyShot;
+    private Game _game;
 
-    public Boss1(Window gameWindow) : base(gameWindow)
+
+    public Boss1(Window gameWindow, Game game) : base(gameWindow)
     {
         _Boss = new Bitmap("Boss1", "MotherShipAll.png");
         _Boss.SetCellDetails(400, 300, 3, 2, 6);
+        _BossScript = SplashKit.LoadAnimationScript("MotherShip", "MotherShip1.txt");
+        _BossAnimation = _BossScript.CreateAnimation("ShieldUp");
         _RotationSpeed = 0;
         _Angle = 0;
         Height = _Boss.CellHeight;
         Width = _Boss.CellWidth;
         _ShieldUp = true;
-        _ShieldHealth = 15; // was 300
+        _ShieldHealth = 100; // was 100
         _ShieldFlash = false;
-        _DamageLoop = 1;
+        _ShipHealth = 50;
         _Phase = "Start";
-        X = 200;
+        X = gameWindow.Width / 2 - _Boss.CellWidth / 2;
         Y = -299;
         _XRight = true;
         _YDown = true;
+        CanShoot = true;
+        _opt = SplashKit.OptionWithAnimation(_BossAnimation);
+        _shootingTime = SplashKit.CreateTimer("Boss1Shooting");
+        _shootingTime.Stop();
+        _shootingTime.Reset();
+        _shootingSmallShot = 1;
+        _shootingEnergyShot = 1;
+        _gameWindow = gameWindow;
+        _game = game;
 
 
 
@@ -559,7 +584,7 @@ public class Boss1 : Enemy
 
     public override void Draw()
     {
-        DrawingOptions opt;
+
 
         if (_IsDying == false)
         {
@@ -567,95 +592,175 @@ public class Boss1 : Enemy
             {
                 if (_ShieldFlash == true)
                 {
-                    opt = SplashKit.OptionWithBitmapCell(1);
+                    if (_BossAnimation.Ended) _BossAnimation.Assign("ShieldFlash");
                     _ShieldFlash = false;
                 }
                 else
                 {
-                    opt = SplashKit.OptionWithBitmapCell(0);
+                    if (_BossAnimation.Ended) _BossAnimation.Assign("ShieldUp");
                 }
             }
             else
             {
-                switch(_DamageLoop)
+                if (_ShipHealth <= 10)
                 {
-                    case 1:
-                        opt = SplashKit.OptionWithBitmapCell(3);
-                        _DamageLoop = 2;
-                        break;
-                    case 2:
-                        opt = SplashKit.OptionWithBitmapCell(4);
-                        _DamageLoop = 3;
-                        break;
-                    case 3:
-                        opt = SplashKit.OptionWithBitmapCell(5);
-                        _DamageLoop = 1;
-                        break;
-                    default:
-                        opt = SplashKit.OptionWithBitmapCell(2);
-                        break;
+                    if (_BossAnimation.Ended) _BossAnimation.Assign("CriticalDamage");
                 }
+                else
+                {
+                    if (_BossAnimation.Ended) _BossAnimation.Assign("ShieldDown");
+                }
+
             }
-            _Boss.Draw(X, Y, opt);
         }
+        else
+        {
+            if (_BossAnimation.Ended) _BossAnimation.Assign("CriticalDamage");
+            //if (_BossAnimation.Ended) _BossAnimation.Assign("Dying"); // to be added to the animation
+        }
+
+        foreach (Shooting s in _shots)
+        {
+            s.Draw();
+        }
+
+        _Boss.Draw(X, Y, _opt);
 
     }
 
     public override void Update()
     {
-        switch(_Phase)
+        _BossAnimation.Update();
+        switch (_Phase)
         {
             case "Start":
-                if(Y<=50)
+                if (Y <= 50)
+                {
+                    Y++;
+
+                }
+                else
+                {
+                    _Phase = "Mid";
+                }
+                break;
+            case "Mid":
+                if (X < 200) _XRight = true;
+                if (X + Width > _gameWindow.Width - 200) _XRight = false;
+                if (Y < 50) _YDown = true;
+                if (Y > 70) _YDown = false;
+
+                if (_XRight == true)
+                {
+                    X += 2;
+                }
+                else
+                {
+                    X -= 2;
+                }
+
+                if (_YDown == true)
                 {
                     Y++;
                 }
                 else
                 {
-                    _Phase = "Mid";                   
+                    Y--;
+                }
+
+                if (!_shootingTime.IsStarted) _shootingTime.Start();
+
+                if (_shootingTime.Ticks / 800 == _shootingSmallShot)
+                {
+                    ShootSmall();
+                    _shootingSmallShot++;
+                }
+
+                if (_shootingTime.Ticks / 5000 == _shootingEnergyShot)
+                {
+                    RedEnergyBall();
+                    _shootingEnergyShot++;
                 }
                 break;
-            case "Mid":
-                    if(X<100) _XRight = true;
-                    if(X+Width>700) _XRight = false;
-                    if(Y<50) _YDown = true;
-                    if(Y>70) _YDown = false;
+            case "End":
+                if (X < 200) _XRight = true;
+                if (X + Width > _gameWindow.Width - 200) _XRight = false;
+                if (Y < 50) _YDown = true;
+                if (Y > 70) _YDown = false;
 
-                    if(_XRight == true)
-                    {
-                        X++;
-                    }
-                    else
-                    {
-                        X--;
-                    }
+                if (_XRight == true)
+                {
+                    X += 2;
+                }
+                else
+                {
+                    X -= 2;
+                }
 
-                    if(_YDown == true)
-                    {
-                        Y++;
-                    }
-                    else
-                    {
-                        Y--;
-                    }                   
+                if (_YDown == true)
+                {
+                    Y++;
+                }
+                else
+                {
+                    Y--;
+                }
+                if (_shootingTime.Ticks / 2000 == _shootingEnergyShot)
+                {
+                    RedEnergyBall();
+                    _shootingEnergyShot++;
+                }
                 break;
-            
-            
+            case "Dead":
+                if (_BossAnimation.Ended && _shots.Count == 0)  IsDead = true;
+
+                break;
         }
-        if(_ShieldHealth<0) _ShieldUp = false;
+        if (_ShieldHealth < 0)
+        {
+            if (_ShieldUp == true)
+            {
+                _Phase = "End";
+                _shootingTime.Reset();
+                _shootingEnergyShot = 1;
+            }
+            _ShieldUp = false;
+
+        }
+        if (_ShipHealth < 0)
+        {
+            _IsDying = true;
+            _Phase = "Dead";
+        }
+
+
+        foreach (Shooting s in _shots)
+        {
+            s.Update();
+            if (s.IsOffscreen(_gameWindow)) _KillShots.Add(s);
+        }
+
+        foreach (Shooting s in _KillShots)
+        {
+            s.freesprite();
+            _shots.Remove(s);
+        }
+        _KillShots.Clear();
+
     }
 
 
 
-        public override Tuple<String,int> HitBy(Player wasHitBy)
-    { 
-/*             if(_IsDying)
-        {return new Tuple<string, int>("False",0);}
-        _IsDying = true;
-        return new Tuple<string, int>("Life",-1);  */
-        return new Tuple<string, int>("False",0);
+    public override Tuple<String, int> HitBy(Player wasHitBy)
+    {
+        /*             if(_IsDying)
+                {return new Tuple<string, int>("False",0);}
+                _IsDying = true;
+                return new Tuple<string, int>("Life",-1);  */
+        return new Tuple<string, int>("Life", -1);
+        // return new Tuple<string, int>("False", 0);
     }
-    
+
     public override Tuple<String, int> HitBy(Shooting wasHitBy)
     {
         /*         if(_IsDying)
@@ -666,12 +771,16 @@ public class Boss1 : Enemy
             _ShieldHealth -= 1;
             _ShieldFlash = true;
         }
+        else
+        {
+            _ShipHealth -= 1;
+        }
 
         return new Tuple<string, int>("Score", 10);
     }
     public override Circle[] HitCircle()
     {
-        Circle[] Cir = 
+        Circle[] Cir =
         {
             SplashKit.CircleAt(X + 198, Y + 116, 102),
             SplashKit.CircleAt(X + 293, Y + 112, 78),
@@ -680,6 +789,57 @@ public class Boss1 : Enemy
         return Cir;
     }
 
+    public override Tuple<String, int> HitCheck(Player player)
+    {
+        foreach (Shooting s in _shots)
+        {
+            if (s.HitCheck(player))
+            {
+                _KillShots.Add(s);
+                if (!player.IsInvulnerable)
+                {
+                    return new Tuple<string, int>("Life", -1);
+                }
+            }
+        }
+        return new Tuple<string, int>("False", 0);
+
+    }
+
+    private void ShootSmall()
+    {
+        Shooting ShotType;
+        Point2D pt1 = new Point2D();
+        Point2D pt2 = new Point2D();
+        Point2D pt3 = new Point2D();
+        pt1.X = X + _Boss.CellCenter.X;
+        pt1.Y = Y + _Boss.CellCenter.Y;
+        pt2.X = X + _Boss.CellCenter.X - 20;
+        pt2.Y = Y + _Boss.CellCenter.Y;
+        pt3.X = X + _Boss.CellCenter.X + 20;
+        pt3.Y = Y + _Boss.CellCenter.Y;
+
+        ShotType = new BossSmallShot(pt1, 90);
+        _shots.Add(ShotType);
+        ShotType = new BossSmallShot(pt1, 70);
+        _shots.Add(ShotType);
+        ShotType = new BossSmallShot(pt1, 110);
+        _shots.Add(ShotType);
+
+    }
+
+    private void RedEnergyBall()
+    {
+        Point2D fromPT = new Point2D();
+        fromPT.X = X + _Boss.CellCenter.X;
+        fromPT.Y = Y + _Boss.CellCenter.Y;
+        foreach (Player p in _game.Players)
+        {
+            Shooting ShotType = new RedEnergyBall(fromPT, p);
+            _shots.Add(ShotType);
+        }
+
+    }
 }
 
 
@@ -692,5 +852,6 @@ public class Boss1 : Enemy
 Game Asteroid Assets provided by
 Hansjörg Malthaner, http://opengameart.org/users/varkalandar
 Écrivain  https://opengameart.org/users/%C3%A9crivain, https://opengameart.org/content/rocks
+Boss 1 Assets constructed form paid canva assets
 
  */
