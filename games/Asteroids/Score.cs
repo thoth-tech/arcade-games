@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public abstract class Score
 {
 
-    protected Timer _ScoreTimer;
+    protected SplashKitSDK.Timer _ScoreTimer;
     //protected List<Bitmap> _LivesBitmap = new List<Bitmap>();
     protected Bitmap _LivesBitmap;
     protected Window _GameWindow;
@@ -26,7 +26,7 @@ public abstract class Score
         {
             _LivesBitmap.Add(new Bitmap($"Lives {i}", "images/heart.png"));          
         } */
-        _ScoreTimer = new Timer($"{player} Timer");
+        _ScoreTimer = new SplashKitSDK.Timer($"{player} Timer");
         _LivesBitmap = new Bitmap($"Lives", "heart.png");        
         _GameWindow = gameWindow;
         _ScoreTimer.Start();

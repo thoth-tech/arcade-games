@@ -151,13 +151,13 @@ public abstract class Level
 
 public class Level1 : Level
 {
-    private Timer _lvlTimer;
+    private SplashKitSDK.Timer _lvlTimer;
     private Font _GameFont;
 
 
     public Level1(Window GameWindow, Game game) : base(GameWindow, game)
     {
-        _lvlTimer = new Timer("lvl1Timer");
+        _lvlTimer = new SplashKitSDK.Timer("lvl1Timer");
         _lvlTimer.Start();
         _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
 
