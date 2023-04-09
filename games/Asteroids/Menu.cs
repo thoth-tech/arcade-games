@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using SplashKitSDK;
 
 // 
@@ -119,6 +118,16 @@ public class Menu
 
             _ShipsBMP = retrieveShipsJSON();
 
+            if (SplashKit.HasBitmap("Player 1"))
+            {
+                SplashKit.FreeBitmap(SplashKit.BitmapNamed("Player 1"));
+            }
+
+            if (SplashKit.HasBitmap("Player 2"))
+            {
+                SplashKit.FreeBitmap(SplashKit.BitmapNamed("Player 2"));
+            }
+
             _titleColor = Color.White;
 
     }
@@ -143,7 +152,6 @@ public class Menu
 
     private void DrawMainMenu()
     {
-        _gameWindow.Clear(Color.Black);
 
         const int Offset_AddY = 300;
         const int Offset_GameText = 80;
@@ -159,7 +167,7 @@ public class Menu
         double Y_triangle = Y_GameText + Offset_GameText * _MainMenuOption + Offset_AddY;
         SplashKit.FillTriangle(Color.White, X_GameText - 40, Y_triangle + 35, X_GameText - 20, Y_triangle + 55, X_GameText - 40, Y_triangle + 75);
 
-        runSprite();
+        //runSprite();
     }
 
 
@@ -195,7 +203,7 @@ public class Menu
 
     private void DrawShipSelection(string Player,string MoveLeft, string MoveRight,string Select)
     {
-        _gameWindow.Clear(Color.Black);
+        
         int Y_Ships = (_gameWindow.Height - _ShipsBMP.First().Height) / 2;
         int X_Ships = (_gameWindow.Width - _ShipsBMP.First().Width) / (_ShipsBMP.Count + 1);
         const int FontSize = 60;
@@ -364,7 +372,7 @@ public class Menu
             p1Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             //_Lockout = _ShipSelection;
 
-            
+            //Console.Out.WriteLine(p1Ship);
             _ShipsBMP.Remove(_ShipsBMP.ElementAt(_ShipSelection));          
 
             if (players == 1)
@@ -398,6 +406,7 @@ public class Menu
         else if (SplashKit.KeyTyped(KeyCode.SpaceKey))
         {
             p2Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
+            //Console.Out.WriteLine(p2Ship);
 
             GameStarted = true;
         }
