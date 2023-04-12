@@ -21,7 +21,7 @@ public class Player
 
     public Player(Window gameWindow, string Player, string PlayerShip, int PlayersNo)
     {
-        _gameWindow = gameWindow;
+        _gameWindow = gameWindow;       
         _Ship = new Bitmap(Player, PlayerShip);
         _Angle = 0;
         _Player = Player;

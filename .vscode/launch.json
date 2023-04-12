@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/games/Asteroids/bin/Debug/netcoreapp6.0/Asteroids.dll",
+            "program": "${workspaceFolder}/games/Asteroids/bin/Debug/netcoreapp7.0/Asteroids.dll",
             "args": [],
             "cwd": "${workspaceFolder}/games/Asteroids",
             "console": "internalConsole",
