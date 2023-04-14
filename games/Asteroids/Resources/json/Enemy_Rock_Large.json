@@ -1,0 +1,9 @@
+{
+    "name" : "RockLarge",
+    "bmp_fp" : "RockLarge.png",
+    "cell_details" : [200,200,3,3,9],
+    "anchor_pos" : [100,100],
+    "anim_fp" : "RockLarge.txt",
+    "pack" : "Enemy",
+    "mass" : 10
+}
