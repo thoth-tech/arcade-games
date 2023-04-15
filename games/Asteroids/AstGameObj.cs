@@ -8,34 +8,39 @@ public class AstGameObj
     
     public float rotSpeed {get; set;}
 
-    private int _health { get; set; }        // integer health, could be decimal if needed
-    private int _maxHP { get; } 
+    // use these in json values object
+    //private int _health { get; set; }        // integer health, could be decimal if needed
+    //private int _maxHP { get; } 
+
+    // json object, to hold dynamic values
+    // instead of coding specific variables for things, use json to hold them
+    // i.e health, is dying,
+    public Json _values { get; private set;}
 
     /*
-    JSON VALUES
+    JSON LOAD VALUES
     "bmp_FP"  filepath of bitmap
     "name"  general name of object, store name in splashkit
     "cell_details" 5 index array
     "anim_fp"       string filepath of script file
+    "start_anim"    string name of animation to play on initialization
     "anchor_pos"    2 index array, XY position of anchor position
     "mass"      mass value of sprite
     "pack"      sprite pack to be assigned          // NOT USED CURRENTLY, "default" is the initial pack assigned at start
-    "hp_max"     number value for max health        // NOT USED
     */
 
-    /*
-    public AstGameObj(String bmpName, Point2D pos, Vector2D dir, double rot)
-    {
-        _selfSprite = SplashKit.CreateSprite(SplashKit.BitmapNamed(bmpName));
-        // other stuff
-    }
-    */
-
-    //
     public AstGameObj(Json jsonInfo)
     {   
         // make sprite
         _sprite = constructSprite(jsonInfo);
+
+        // if json has a values object
+        if (jsonInfo.HasKey("values"))
+        {
+            _values = jsonInfo.ReadObject("values");
+        }
+        else
+            _values = new Json();
 
     }
 
@@ -70,7 +75,7 @@ public class AstGameObj
         // seperated feom cell if you want a offcenter anchor
         if (jsonInfo.HasKey("anchor_pos"))
         {
-            tempList = new List<double>();
+            //tempList = new List<double>();
             jsonInfo.ReadArray("anchor_pos",ref tempList);
             tempPos.X = tempList[0];
             tempPos.Y = tempList[1];
@@ -82,6 +87,7 @@ public class AstGameObj
             AnimationScript scr = SplashKit.LoadAnimationScript(name,jsonInfo.ReadString("anim_fp"));
 
             spr = SplashKit.CreateSprite(name,bmp,scr);
+            spr.StartAnimation(jsonInfo.ReadString("start_anim"));
         }
         else                                        // no animation script file path
         {
@@ -96,21 +102,26 @@ public class AstGameObj
         return spr;
     }
 
-    // call if want to update rotation value and fix velocity to heading value
+    // call if want to update rotation value by rotation speed value
     // i hate this roundabout way to sidestep the rotation effect
     public void updateAngle()
     {
         if (rotSpeed != 0)
         {
-            // get angle prior to change
-            double currVectAngle = SplashKit.VectorAngle(_sprite.Velocity) + _sprite.Rotation;
-            
-            _sprite.Rotation += rotSpeed;           // ADD ROTATION CHANGE
-
-            // translate velocity to new angle
-            _sprite.Velocity = SplashKit.VectorFromAngle(currVectAngle - _sprite.Rotation,_sprite.Speed);
+            rotateSprite(rotSpeed);
         }
+    }
+
+    // single instance rotation
+    public void rotateSprite(float angle)
+    {
+        // get angle prior to change
+        double currVectAngle = SplashKit.VectorAngle(_sprite.Velocity) + _sprite.Rotation;
         
+        _sprite.Rotation += angle;           // ADD ROTATION CHANGE
+
+        // translate velocity to new angle
+        _sprite.Velocity = SplashKit.VectorFromAngle(currVectAngle - _sprite.Rotation,_sprite.Speed);
     }
 
     // function to handle rotation agnostic vector addition
