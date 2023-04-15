@@ -4,6 +4,11 @@
     "cell_details" : [200,200,3,3,9],
     "anchor_pos" : [100,100],
     "anim_fp" : "RockLarge.txt",
+    "start_anim" : "normal",
     "pack" : "Enemy",
-    "mass" : 10
+    "mass" : 10,
+    "values" : 
+    {
+        "frames_offscreen" : 0
+    }
 }
