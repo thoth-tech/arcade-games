@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using SplashKitSDK;
 using System.Collections.Generic;
 
@@ -25,7 +24,8 @@ public class Menu
     private int _Lockout;
     private LinkedList<Bitmap> _ShipsBMP;
     private SplashKitSDK.Triangle _tri;
-    private KeyCallback kcbP1;
+
+    private List<AstGameObj> _GameObjs;      // sprite object list
 
     
     int X_GameText;               // given the window should be fixed, this should be only done once.
@@ -52,45 +52,98 @@ public class Menu
 
         _tri = new Triangle();                              // main menu selection triangle
         
-
-        testSpr = testSprite();
-        testSpr.X = 200;
-        testSpr.Y = 200;
-
-        sprHand = new SpriteEventHandler(testFunction);     // test delegate function
-        testSpr.CallOnEvent(sprHand);
-        //SplashKit.SpriteCallOnEvent(testSpr,sprHand);       // Sprite does not fire event, does not work
-
-        kcbP1 = new KeyCallback(HandleInputP1);
-        SplashKit.RegisterCallbackOnKeyTyped(kcbP1);        // key callback works
-       
     }
 
-    Sprite testSpr;
-    private Sprite testSprite()
+    private void initRocks()
     {
-        Bitmap b = SplashKit.LoadBitmap("testRock", "RockLarge.png");
-        b.SetCellDetails(200,200,3,3,9);
-        AnimationScript scr = SplashKit.LoadAnimationScript("testRock", "rock.txt");
+        Json j = SplashKit.JsonFromFile("Enemy_Rock_Large.json");
+        _GameObjs = new List<AstGameObj>();
+        //SplashKit.CreateSpritePack(j.ReadString("pack"));
+        //SplashKit.SelectSpritePack(j.ReadString("pack"));
 
-        Sprite spr = SplashKit.CreateSprite(b, scr);
+        Vector2D vect = new Vector2D();
+        vect.X = 1;
+        vect.Y = 1;
 
-        spr.StartAnimation("normal");        
+        AstGameObj aso;
+        const int numRocks = 5;
+        for (int i = 0; i < numRocks; i++)
+        {
+            aso = new AstGameObj(j);
 
-        return spr;
+            initMove(aso);
+
+            aso._sprite.CollisionKind = CollisionTestKind.PixelCollisions;
+            
+            _GameObjs.Add(aso);
+        }
+
+    }
+
+    private void initMove(AstGameObj aso)
+    {
+        const double VELRANGE = 10, VELMIN = 5;
+        const float ROTRANGE = 10, ROTMIN = 5;    
+        int randStart = SplashKit.Rnd(0,4);         // 1 - 3 range
+        float randPercS = SplashKit.Rnd();
+        Point2D start = new Point2D(), end = SplashKit.RandomWindowPoint(_gameWindow);
+
+        int sprWidth = aso._sprite.Width, sprHeight = aso._sprite.Height;
+
+       
+        if (randStart < 2) // of four values, initialize a side to start on.
+        {
+            start.X = randStart == 0 ? -sprWidth : _gameWindow.Width + sprWidth;        // left or right to start
+            start.Y = randPercS * (_gameWindow.Height + sprHeight*2) - sprHeight;         // randomize height
+        }
+        else
+        {
+            start.Y = randStart == 2 ? -sprHeight : _gameWindow.Height + sprHeight;       // top or bottom to start
+            start.X = randPercS * (_gameWindow.Width + sprWidth*2) - sprWidth;          // randomize width
+        }
+
+        //Console.Out.WriteLine(String.Format("R:{0}  ({1},{2})",randInt,start.X,start.Y));
+
+        aso.rotSpeed = ROTRANGE * SplashKit.Rnd() - ROTMIN;     // value can be negative
+
+        aso._sprite.Position = start;           // set start point
+        Vector2D vect = SplashKit.UnitVector(SplashKit.VectorPointToPoint(start,end));      // get unit vector of path
+        vect = SplashKit.VectorMultiply(vect,VELRANGE * SplashKit.Rnd() + VELMIN);      //  randomize speed
+        aso.setVelocity(vect);                    // set velocity
 
     }
 
     private void runSprite()
     {
         
-        testSpr.Draw();
+        //SplashKit.SelectSpritePack("Enemy");
+        SplashKit.DrawAllSprites();
+        SplashKit.UpdateAllSprites();
 
-        
-        testSpr.Update();
+        const int FRAMESBEFORERESET = 60;
+        for (int i = 0; i < _GameObjs.Count; i++)
+        {
+            AstGameObj tempASO = _GameObjs[i];
+            tempASO.updateAngle();
+            
+            if (tempASO._sprite.Offscreen())
+            {
+                int framesOff = tempASO._values.ReadInteger("frames_offscreen") + 1;
+                
+                if (framesOff > FRAMESBEFORERESET)
+                {   
+                    initMove(tempASO);
+                    framesOff = 0;
+                }
 
-        // String temp = String.Format("{0},{1},{2},{3}   {4}",testSpr.AnimationName(),0,0,0,0); 
-       //SplashKit.DrawTextOnWindow(_gameWindow, temp, Color.White, _GameFont, 40, 30, 400);
+                tempASO._values.AddNumber("frames_offscreen",framesOff);      // ADD METHOD IS ACTUALLY SET, OVERWRITES VALUE
+            }
+            else
+                tempASO._values.AddNumber("frames_offscreen",0);
+
+        }
+    
+        //Console.Out.WriteLine(String.Format("{0},{1} : {2},{3}",temp._sprite.X,temp._sprite.Y,temp._sprite.Dx,temp._sprite.Dy));
 
     }
 
@@ -109,7 +162,7 @@ public class Menu
         return tempShips;
     }
 
-    private void ReSetup()
+    public void ReSetup()
     {
             GameStarted = false;
             _MainMenuOption = 0;
@@ -120,7 +173,19 @@ public class Menu
 
             _ShipsBMP = retrieveShipsJSON();
 
+            if (SplashKit.HasBitmap("Player 1"))
+            {
+                SplashKit.FreeBitmap(SplashKit.BitmapNamed("Player 1"));
+            }
+
+            if (SplashKit.HasBitmap("Player 2"))
+            {
+                SplashKit.FreeBitmap(SplashKit.BitmapNamed("Player 2"));
+            }
+
             _titleColor = Color.White;
+
+            initRocks();
 
     }
 
@@ -144,11 +209,12 @@ public class Menu
 
     private void DrawMainMenu()
     {
-        _gameWindow.Clear(Color.Black);
 
         const int Offset_AddY = 300;
         const int Offset_GameText = 80;
         const int FontSize = 80;
+
+        runSprite();
 
         DrawMainMenuTitle();
 
@@ -160,7 +226,7 @@ public class Menu
         double Y_triangle = Y_GameText + Offset_GameText * _MainMenuOption + Offset_AddY;
         SplashKit.FillTriangle(Color.White, X_GameText - 40, Y_triangle + 35, X_GameText - 20, Y_triangle + 55, X_GameText - 40, Y_triangle + 75);
 
-        runSprite();
+        
     }
 
 
@@ -196,7 +262,7 @@ public class Menu
 
     private void DrawShipSelection(string Player,string MoveLeft, string MoveRight,string Select)
     {
-        _gameWindow.Clear(Color.Black);
+        
         int Y_Ships = (_gameWindow.Height - _ShipsBMP.First().Height) / 2;
         int X_Ships = (_gameWindow.Width - _ShipsBMP.First().Width) / (_ShipsBMP.Count + 1);
         const int FontSize = 60;
@@ -247,53 +313,15 @@ public class Menu
         }
     }
 
-
-    private void testFunction(IntPtr s, int e)
-    {
-        Console.Out.Write("BAD");
-    }
-
-    private void HandleInputP1(int key)
-    {
-        Console.Out.WriteLine("TYPED: " + key);
-
-        switch ((KeyCode)key)
-        {
-            case KeyCode.LeftKey:
-            break;
-            case KeyCode.RightKey:
-            break;
-            case KeyCode.UpKey:
-            break;
-            case KeyCode.DownKey:
-            break;
-
-            case KeyCode.ReturnKey:
-            break;
-        }
-    }
-
-    private void InputLeftKey()
-    {
-        if (_Menu == MenuOption.Player1ShipSelection || _Menu == MenuOption.Player2ShipSelection)
-        {
-            _ShipSelection = indexCheck(_ShipSelection,-1);
-        }
-    }
-
-    SpriteEventHandler sprHand;
     private void HandleInputMainMenu()
     {
         if (SplashKit.KeyTyped(KeyCode.UpKey))
         {
             _MainMenuOption = _MainMenuOption <= 0 ? 2 : _MainMenuOption - 1;
-            testSpr.StartAnimation("explode");
-            //testSpr.CallOnEvent();
         }
         else if (SplashKit.KeyTyped(KeyCode.DownKey))
         {
             _MainMenuOption = _MainMenuOption >= 2 ? 0 : _MainMenuOption + 1;
-            testSpr.StartAnimation("normal");
         }
         else if (SplashKit.KeyTyped(KeyCode.ReturnKey))
         {
@@ -365,7 +393,6 @@ public class Menu
             p1Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             //_Lockout = _ShipSelection;
 
-            
             _ShipsBMP.Remove(_ShipsBMP.ElementAt(_ShipSelection));          
 
             if (players == 1)
@@ -379,7 +406,7 @@ public class Menu
             }
 
         }
-        else if (SplashKit.KeyTyped(KeyCode.EscapeKey)) // New key needed to back out of ship selection
+        else if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) // New key needed to back out of ship selection
         {
             ReSetup();
         }
@@ -399,10 +426,9 @@ public class Menu
         else if (SplashKit.KeyTyped(KeyCode.SpaceKey))
         {
             p2Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
-
             GameStarted = true;
         }
-        else if (SplashKit.KeyTyped(KeyCode.EscapeKey)) // New key needed to back out of ship selection
+        else if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) // New key needed to back out of ship selection
         {
             ReSetup();
         }

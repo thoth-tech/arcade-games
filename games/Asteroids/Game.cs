@@ -26,22 +26,17 @@ public class Game
         _p1Ship = p1Ship;
         _p2Ship = p2Ship;
         GameStarted = true;
-        _Players = new List<Player>();
-        _TempPlayers = new List<Player>();
+        _Players = new List <Player>();
+        _TempPlayers = new List <Player>();
 
-        SplashKit.FreeAllSprites();
-
-        if (playersNo == 1)
+        _Players.Add(new Player(gameWindow,"Player 1",p1Ship,playersNo));
+        _PlayerScores.Add(new Player1Score(gameWindow,"Player 1"));
+        _Players[0]._PlayerScore = _PlayerScores[0];
+        if (playersNo == 2)
         {
-            _Players.Add(new Player(gameWindow, "Player 1", p1Ship, playersNo));
-            _PlayerScores.Add(new Player1Score(gameWindow, "Player 1"));
-        }
-        else if (playersNo == 2)
-        {
-            _Players.Add(new Player(gameWindow, "Player 1", p1Ship, playersNo));
-            _Players.Add(new Player(gameWindow, "Player 2", p2Ship, playersNo));
-            _PlayerScores.Add(new Player1Score(gameWindow, "Player 1"));
-            _PlayerScores.Add(new Player2Score(gameWindow, "Player 2"));
+            _Players.Add(new Player(gameWindow,"Player 2",p2Ship,playersNo));
+            _PlayerScores.Add(new Player2Score(gameWindow,"Player 2"));
+            _Players[1]._PlayerScore = _PlayerScores[1];
         }
 
 
@@ -61,8 +56,6 @@ public class Game
     }
     public void Draw()
     {
-
-        _GameWindow.Clear(Color.Black);
         _gameLevel.Draw();
         SplashKit.DrawAllSprites();
         foreach (Player p in _Players)
@@ -74,18 +67,14 @@ public class Game
         {
             s.Draw();
         }
-
-
-        _GameWindow.Refresh(60);
-
+  
     }
 
     public void GameOver()
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
-        const int FontSize = 120;
-        _GameWindow.Clear(Color.Black);
-        foreach (Score s in _PlayerScores)
+        const int FontSize = 120;  
+        foreach(Score s in _PlayerScores)
         {
             s.Draw();
         }
@@ -104,59 +93,34 @@ public class Game
         { p.HandleInput(); }
         if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) GameOver();
     }
+
     public void Updates()
     {
-
-        _gameLevel.Update();
-        SplashKit.UpdateAllSprites();
-        List<Player> KillPlayer = new List<Player>();
-        foreach (Enemy e in _gameLevel.Enemies)
+        for (int i = 0; i < _Players.Count(); i++)
         {
-            if (e.CanShoot) HitCheck(e);
+            _Players[i].Updates();
+            HitCheck(_Players[i]);
+            if (_Players[i].IsDead) _Players[i].Respawn(_playersNo);
 
-        }
-        foreach (Player p in _Players)
-        {
-            p.Updates();
-            HitCheck(p);
-            if (p.IsDead) KillPlayer.Add(p);
-        }
-
-
-
-
-        foreach (Player p in KillPlayer)
-        {
-            _Players.Remove(p);
-            foreach (Score s in _PlayerScores)
+            if (_Players[i]._PlayerScore.IsDead)
             {
-                if (!s.IsDead && s.Name == p.Name)
-                {
-                    if (p.Name == "Player 1")
-                    {
-                        _Players.Add(new Player(_GameWindow, "Player 1", _p1Ship, _playersNo));
-                    }
-                    else if (p.Name == "Player 2")
-                    {
-                        _Players.Add(new Player(_GameWindow, "Player 2", _p2Ship, _playersNo));
-                    }
-                }
+                _Players.Remove(_Players[i]);
+                i--;
             }
         }
+
+        _gameLevel.Update();
+
+        bool _GameOver = true;
         foreach (Score s in _PlayerScores)
         {
-            if (s.IsDead && s.Name == "Player 1") _GameOverP1 = true;
-            if (s.IsDead && s.Name == "Player 2") _GameOverP2 = true;
+            _GameOver = s.IsDead ? _GameOver : false;
         }
-        if (_playersNo == 1)
+        if (_GameOver)
         {
-            if (_GameOverP1) GameOver();
+            GameOver();
         }
-        else
-        {
-            if (_GameOverP1 && _GameOverP2) GameOver();
-        }
-
+        
     }
 
     public void HitCheck(Player player)
@@ -167,24 +131,12 @@ public class Game
 
             if (HitCheckResult.Item1 == "Life") // Look at re-spwarning Player in centre
             {
-                foreach (Score s in _PlayerScores)
-                {
-                    if (s.Name == player.Name)
-                    {
-                        s.DownLife();
-                        player.Killed();
-                    }
-                }
+                player._PlayerScore.DownLife();
+                player.Killed();
             }
             else if (HitCheckResult.Item1 == "Score")
             {
-                foreach (Score s in _PlayerScores)
-                {
-                    if (s.Name == player.Name)
-                    {
-                        s.ScoreUp(HitCheckResult.Item2);
-                    }
-                }
+                player._PlayerScore.ScoreUp(HitCheckResult.Item2);
             }
             // if (e.CanShoot)
             // {
