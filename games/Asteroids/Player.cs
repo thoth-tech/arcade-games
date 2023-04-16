@@ -5,17 +5,19 @@ using System.Collections.Generic;
 public class Player
 {
     private Window _gameWindow;
-    private List<Shooting> _shots;
+
     public double X { get; private set; }
     public double Y { get; private set; }
     private Bitmap _Ship;
     private double _Angle;
     private string _Player;
+    private List<Shooting> _shots = new List<Shooting>();
     private List<Shooting> _KillShots = new List<Shooting>();
     public bool IsDead { get; private set; }
     private SplashKitSDK.Timer _InvulnerableTime;
-    private bool _IsInvulnerable;
+    //private bool _IsInvulnerable;
     public Score _PlayerScore { get; set; }
+    public bool IsInvulnerable { get; private set; }
 
     public string Name { get { return _Player; } }
 
@@ -33,7 +35,7 @@ public class Player
         IsDead = false;
         _InvulnerableTime = new SplashKitSDK.Timer($"{Player} Invulnerable");
         _InvulnerableTime.Start();
-        _IsInvulnerable = true;
+        IsInvulnerable = true;
         if (PlayersNo == 1)
         {
             Y = (_gameWindow.Height - _Ship.Height) / 2;
@@ -64,7 +66,7 @@ public class Player
         IsDead = false;
         _InvulnerableTime = new SplashKitSDK.Timer($"{_Player} Invulnerable");
         _InvulnerableTime.Start();
-        _IsInvulnerable = true;
+        IsInvulnerable = true;
 
         if (PlayersNo == 1)
         {
@@ -97,7 +99,7 @@ public class Player
         {
             s.Draw();
         }
-        if (_IsInvulnerable)
+        if (IsInvulnerable)
         {
 
             if ((_InvulnerableTime.Ticks / 250) % 2 == 0)
@@ -148,6 +150,7 @@ public class Player
         if (SplashKit.KeyDown(KeyCode.UpKey)) Move(Speed);
         if (SplashKit.KeyDown(KeyCode.DownKey)) { }
         if (SplashKit.KeyTyped(KeyCode.RightCtrlKey)) { Shoot(); }
+        if (SplashKit.KeyTyped(KeyCode.LeftCtrlKey)) { Shoot(); }
 
     }
 
@@ -172,7 +175,7 @@ public class Player
 
     private void Shoot()
     {
-        Shooting ShotType = new Shooting(_Ship.Center, _Angle, this);
+        Shooting ShotType = new PlayerShot(_Ship.Center, _Angle, this);
         _shots.Add(ShotType);
     }
 
@@ -192,7 +195,7 @@ public class Player
 
         if (_InvulnerableTime.Ticks > 1500) //1500
         {
-            _IsInvulnerable = false;
+            IsInvulnerable = false;
             _InvulnerableTime.Stop();
             _InvulnerableTime.Reset();
         }
@@ -201,18 +204,23 @@ public class Player
 
     }
 
+    public Bitmap HitBMP()
+    {
+        return _Ship;
+    }
+
     public Tuple<String, int> HitCheck(Enemy enemy)
     {
-        if (!_IsInvulnerable && !IsDead)
+        if (!IsInvulnerable && !IsDead)
         {
             bool hit = false;
-            
-            foreach( Circle e in enemy.HitCircle())
+
+            foreach (Circle e in enemy.HitCircle())
             {
-                if(SplashKit.BitmapCircleCollision(_Ship, X, Y, e)) hit = true;
+                if (SplashKit.BitmapCircleCollision(_Ship, X, Y, e)) hit = true;
             }
 
-            if(hit)
+            if (hit)
             { return enemy.HitBy(this); }
         }
 
