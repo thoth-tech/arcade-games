@@ -28,19 +28,19 @@ Table of Content(up to date)
   - [9.1 Mission](#91-mission)
   - [9.2 Enemies](#92-enemies)
     - [9.2.1  Meteors](#921--meteors)
-    - [9.2.2 Solider ship](#922-solider-ship)
+    - [9.2.2 Soldier ship](#922-soldier-ship)
     - [9.2.3 Army general ship](#923-army-general-ship)
     - [9.2.4 Boss ship](#924-boss-ship)
   - [9.3 Main Reason](#93-main-reason)
 - [10. Appendices](#10-appendices)
-  - [10.1 Minor, Major, and final Victory conditions](#101minor,-major,-and-final-victory-conditions)
-  - [10.2 Minor and Major Loss Conditions](#102minor-and-major-loss-condition)
-  - [10.3 Active Challenges](#103active-challenges)
-    - [10.3.1 Manuvering The Ship](#1031manuvering-the-ship)
-    - [10.3.2 Defeating Boss Ships](#1032defeating-boss-ships)
-  - [10.4 Game Rules](#104game-rules)
-  - [10.5 Internal Economy](#105internal-economy)
-  - [10.6 Player Psychology](#106player-psychology)
+  - [10.1 Minor, Major, and final Victory conditions](#101-minor-major-and-final-victory-conditions)
+  - [10.2 Minor and Major loss Conditions](#102-minor-and-major-loss-conditions)
+  - [10.3 Active Challenges](#103-active-challenges)
+    - [10.3.1 Manuevering the ship](#1031-manuevering-the-ship)
+    - [10.3.2 Deafeating boss ships](#1032-deafeating-boss-ships)
+  - [10.4 Game Rules](#104-game-rules)
+  - [10.5 Internal Economy](#105-internal-economy)
+  - [10.6 Player Psychology](#106-player-psychology)
 
 
 
@@ -100,25 +100,25 @@ Tools used fr developing game is SplashKit with C#.
 
 ## 8 Reference Game
 
-![Menu Part](img1.png){width="45%"}
+![Menu Part](/images/img1.png){width="45%"}
 
 
-![Player Selection](img2.png){width="45%"}
+![Player Selection](/images/img2.png){width="45%"}
 
 
-![Multi-PLayer PLay](img3.png){width="45%"}
+![Multi-PLayer PLay](/images/img3.png){width="45%"}
 
 
-![Visual of Game 1](img4.png){width="45%"}
+![Visual of Game 1](/images/img4.png){width="45%"}
 
 
-![Visual of Game 2](img5.png){width="45%"}
+![Visual of Game 2](/images/img5.png){width="45%"}
 
 
-![Visual of Game 3](img6.png){width="45%"}
+![Visual of Game 3](/images/img6.png){width="45%"}
 
 
-![Visual of Game 4](img7.png){width="45%"}
+![Visual of Game 4](/images/img7.png){width="45%"}
 
 ## 9. Lore
 
@@ -141,6 +141,7 @@ This ship will arrive at end of level 2 and it will be stronger than the Soldier
 This ship will arrive at end of level 3 and it will be the strongest amongst the three ships you encounter. at the end of the journey you will encounter the Boss ship which will be the strongest and will be difficult to destroy. It will shoot at you and you have to shoot at it to win and after defeating the boss ship you will have successfully rescued the captured people..
 
 ### 9.3 Main Reason
+The Scientist of SplashKit planet have invented a potion of immortallity and to gain the potion Alien attacked the planet and cpatured them. 
 
 ## 10. Appendices
 
@@ -155,19 +156,15 @@ Major: the major loss condition is running out of lives, as this causes a game o
 
 ### 10.3 Active Challenges
 
-  #### 10.3.1 Manuevering the ship
-  What the PLayer does: the player controls the ship by rotating left and right, moving forwards and backwards, and shooting. using these controls the player must       shoot at and avoid enemies.
-  What is shown to the player: the player is first shown the ship they control, they get to see it moving and see the projectiles as they shoot. they will then be       shown the asteroids and alien ships they must avoid and destroy.
-  what validates the players actions: over time as the player survives longer they will gain more points, also for destroying asteroids and alien ships they will         collect even more points totalling up to a potential high score.
+#### 10.3.1 Manuevering the ship
+What the PLayer does: the player controls the ship by rotating left and right, moving forwards and backwards, and shooting. using these controls the player must shoot at and avoid enemies. What is shown to the player: the player is first shown the ship they control, they get to see it moving and see the projectiles as they shoot. they will then be shown the asteroids and alien ships they must avoid and destroy. What validates the players actions: over time as the player survives longer they will gain more points, also for destroying asteroids and alien ships they will collect even more points totalling up to a potential high score.
 
-  #### 10.3.2 Deafeating boss ships
-  what the player does: the player must shoot at the boss ships until they have taken enough damage to be destroyed
-  what is shown to the player: whenver the player hits the boss ship a small animation is played to let the player know they are acheiving something, an animation will   also be shown when the ship is finally destroyed
-  What validates the players actions: when boss ships are defeated the player will recieve a lot of points and will move onto the next level of the game, when the       final boss ship is destroyed the player will have beaten the game.
+#### 10.3.2 Deafeating boss ships
+what the player does: the player must shoot at the boss ships until they have taken enough damage to be destroyed. what is shown to the player: whenver the player hits the boss ship a small animation is played to let the player know they are acheiving something, an animation will also be shown when the ship is finally destroyed. What validates the players actions: when boss ships are defeated the player will recieve a lot of points and will move onto the next level of the game, when the final boss ship is destroyed the player will have beaten the game.
 
-  ### 10.4 Game Rules
+### 10.4 Game Rules
 
-  ### 10.5 Internal Economy
+### 10.5 Internal Economy
 
-  ### 10.6 Player Psychology
+### 10.6 Player Psychology
 
