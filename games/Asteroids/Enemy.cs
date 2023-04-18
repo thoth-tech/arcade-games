@@ -30,7 +30,10 @@ public abstract class Enemy
         Circle[] Cir = { SplashKit.CircleAt(X + (Height / 2), Y + (Width / 2), Width / 4) };
         return Cir;
     }
-
+    public virtual Sprite HitSprite()
+    {
+        return null;
+    }
     public Enemy(Window gameWindow)
     {
         _gameWindow = gameWindow;
@@ -44,7 +47,7 @@ public abstract class Enemy
 
     public void KillTest() { _IsDying = true; }
 
-    private void Rotation(double change)
+    protected void Rotation(double change)
     {
         _Angle = (_Angle + change) % 360;
     }
@@ -54,7 +57,10 @@ public abstract class Enemy
         return new Tuple<string, int>("False", 0);
     }
 
-
+    public virtual void freesprite()
+    {
+        //Does nothing but allows inherited classes to free their own sprite
+    }
     public virtual void Update()
     {
 
@@ -528,6 +534,167 @@ public class RockSmallTriple : Enemy
 
 }
 
+public class BlueRock : Enemy
+{
+    private Bitmap _Rock;
+    private Sprite _RockSprite;
+    public BlueRock(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
+    {
+        _RotationSpeed = RotationSpeed;
+        _Angle = 0;
+        _Rock = new Bitmap("Rock4", "BlueRock_150x150.png");
+        //_Rock.SetCellDetails(200, 200, 3, 3, 9);
+        _RockSprite = SplashKit.CreateSprite(_Rock);
+        //_RockSprite.MoveTo(150,150);
+
+        _RockSprite.AddValue("Health", 5);
+        Height = _Rock.CellHeight;
+        Width = _Rock.CellWidth;
+        GetSpeed = Speed;
+        Point2D fromPt;
+        Point2D tmpPT = base.RndfromPt();
+        if (fX == -1)
+        {
+            fromPt.X = tmpPT.X;
+        }
+        else
+        {
+            X = fX;
+            fromPt.X = fX;
+        }
+
+        if (fY == -1)
+        {
+            fromPt.Y = tmpPT.Y;
+        }
+        else
+        {
+            Y = fY;
+            fromPt.Y = fY;
+        }
+
+        Point2D toPt;
+        if (tX == -1)
+        {
+            toPt.X = gameWindow.Width / 2 + SplashKit.Rnd(-100, 100);
+        }
+        else
+        {
+            toPt.X = tX;
+        }
+
+        if (tY == -1)
+        {
+            toPt.Y = gameWindow.Height / 2 + SplashKit.Rnd(-100, 100);
+        }
+        else
+        {
+            toPt.Y = tY;
+        }
+
+        Vector2D dir;
+        dir = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPt, toPt));
+
+        _Velocity = SplashKit.VectorMultiply(dir, Speed);
+    }
+
+    public override void Update()
+    {
+        Rotation(_RotationSpeed);
+        _RockSprite.Rotation = Convert.ToSingle(_Angle);
+        if (_IsDying)
+        {
+            _IsDyingCount += 1;
+        }
+        else
+        {
+            X += _Velocity.X;
+            Y += _Velocity.Y;
+            _RockSprite.MoveTo(X, Y);
+        }
+
+        if (_IsDying) IsDead = true;
+
+
+    }
+    public override Tuple<String, int> HitBy(Shooting wasHitBy)
+    {
+        if (_IsDying) return new Tuple<string, int>("False", 0);
+        if (_RockSprite.Value("Health") > 0)
+        {
+            _RockSprite.SetValue("Health", _RockSprite.Value("Health") - 1);
+            return new Tuple<string, int>("Score", 10);
+        }
+        else
+        {
+            _IsDying = true;
+            return new Tuple<string, int>("Score", 50);
+        }
+    }
+
+    public override void freesprite()
+    {
+        SplashKit.FreeSprite(_RockSprite);
+    }
+
+    public override Sprite HitSprite()
+    {
+        return _RockSprite;
+    }
+    public override void Draw()
+    {
+        //     DrawingOptions opt;
+
+
+        //     if (_IsDying == false)
+        //     {
+        //         opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
+        //         _Rock.Draw(X, Y, opt);
+        //     }
+        //     else
+        //     {
+        //         switch (_IsDyingCount)
+        //         {
+        //             case < 12:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(1));
+        //                 break;
+        //             case < 23:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(2));
+        //                 break;
+        //             case < 34:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(3));
+        //                 break;
+        //             case < 45:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(4));
+        //                 SpawnSmallRocks = true;
+        //                 break;
+        //             case < 56:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(5));
+        //                 break;
+        //             case < 68:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(6));
+        //                 break;
+        //             case < 79:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(7));
+        //                 break;
+        //             case < 90:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(8));
+        //                 IsDead = true;
+
+        //                 break;
+        //             default:
+        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
+
+        //                 break;
+        //         }
+        //         _Rock.Draw(X, Y, opt);
+        //     }
+    }
+
+
+}
+
+
 public class Boss1 : Enemy
 {
     private Bitmap _Boss;
@@ -712,7 +879,7 @@ public class Boss1 : Enemy
                 }
                 break;
             case "Dead":
-                if (_BossAnimation.Ended && _shots.Count == 0)  IsDead = true;
+                if (_BossAnimation.Ended && _shots.Count == 0) IsDead = true;
 
                 break;
         }
@@ -748,6 +915,7 @@ public class Boss1 : Enemy
         _KillShots.Clear();
 
     }
+
 
 
 
@@ -841,6 +1009,7 @@ public class Boss1 : Enemy
 
     }
 }
+
 
 
 

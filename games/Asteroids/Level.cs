@@ -120,6 +120,7 @@ public abstract class Level
 
         foreach (Enemy e in KillEnemy)
         {
+            e.freesprite();
             Enemies.Remove(e);
         }
 
@@ -333,11 +334,16 @@ public class Debuglvl : Level
             case < 1.5:
                 //don't spawn until level starts
                 break;
-            case 5: //153
-                if (!_EnemySpawned.ContainsKey("Boss1"))
+            case > 1.5: //153
+                // if (!_EnemySpawned.ContainsKey("Boss1"))
+                // {
+                //     _EnemySpawned.Add("Boss1", true);
+                //     Enemies.Add(new Boss1(_gameWindow, _game));
+                // }
+                // break;
+                if (SplashKit.Rnd() < 0.01)
                 {
-                    _EnemySpawned.Add("Boss1", true);
-                    Enemies.Add(new Boss1(_gameWindow, _game));
+                    Enemies.Add(new BlueRock(_gameWindow, 4, 3));
                 }
                 break;
         }
