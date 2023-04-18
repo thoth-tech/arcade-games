@@ -335,16 +335,16 @@ public class Debuglvl : Level
                 //don't spawn until level starts
                 break;
             case > 1.5: //153
-                // if (!_EnemySpawned.ContainsKey("Boss1"))
-                // {
-                //     _EnemySpawned.Add("Boss1", true);
-                //     Enemies.Add(new Boss1(_gameWindow, _game));
-                // }
-                // break;
-                if (SplashKit.Rnd() < 0.01)
-                {
-                    Enemies.Add(new BlueRock(_gameWindow, 4, 3));
-                }
+                        if (!_EnemySpawned.ContainsKey("Boss1"))
+                        {
+                            _EnemySpawned.Add("Boss1", true);
+                            Enemies.Add(new Boss1(_gameWindow, _game));
+                        }
+                        // break;
+                        // if (SplashKit.Rnd() < 0.01)
+                        // {
+                        //     Enemies.Add(new BlueRock(_gameWindow, 4, 3));
+                        // }
                 break;
         }
         if (_EnemySpawned.ContainsKey("Boss1") && Enemies.Count == 0)

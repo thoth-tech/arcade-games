@@ -121,7 +121,7 @@ public class Player
 
     private void Rotation(double change)
     {
-        _Angle = (_Angle + change) % 360;
+        _Angle = (_Angle + change) ; //% 360
     }
 
     private void Move(double Speed)
