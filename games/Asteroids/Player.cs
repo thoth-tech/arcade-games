@@ -21,7 +21,7 @@ public class Player
 
     public Player(Window gameWindow, string Player, string PlayerShip, int PlayersNo)
     {
-        _gameWindow = gameWindow;       
+        _gameWindow = gameWindow;
         _Ship = new Bitmap(Player, PlayerShip);
         _Angle = 0;
         _Player = Player;
@@ -181,9 +181,11 @@ public class Player
             {
                 if (SplashKit.BitmapCircleCollision(_Ship, X, Y, e)) hit = true;
             }
-
-            if (hit)
-            { return enemy.HitBy(this); }
+            if (enemy.HitSprite() != null)
+            {
+                if (SplashKit.SpriteBitmapCollision(enemy.HitSprite(), _Ship, X, Y)) hit = true;
+            }
+            if (hit) return enemy.HitBy(this);
         }
 
         foreach (Shooting s in _shots)

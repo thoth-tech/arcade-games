@@ -12,7 +12,7 @@ public class Program
     public static void Main()
     {
         Window gameWindow = new Window("Asteroids", 1600, 900);
-        gameWindow.ToggleBorder();
+        //gameWindow.ToggleBorder();
         Game Game = null;
         Menu Menu = null;
 

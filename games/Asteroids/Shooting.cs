@@ -51,7 +51,10 @@ public abstract class Shooting
         }
         return Offscreen;
     }
-
+    public virtual float damage()
+    {
+        return 1; //default damage for a shot
+    }
     public abstract bool HitCheck(Enemy enemy);
     public abstract bool HitCheck(Player player);
 
@@ -81,6 +84,10 @@ public class PlayerShot : Shooting
         foreach (Circle e in enemy.HitCircle())
         {
             if (SplashKit.CirclesIntersect(tmpShot, e)) hit = true;
+        }
+        if (enemy.HitSprite() != null)
+        {
+            if (SplashKit.CirclesIntersect(enemy.HitSprite().CollisionCircle(), tmpShot)) hit = true; //change this over to sprites if everything is a sprite
         }
 
         return hit;
