@@ -13,8 +13,7 @@ using namespace std;
 const int BLOCKS_IN_LEVEL1 = 32; // Number of blocks to be spawned in level 1
 const int BLOCKS_IN_LEVEL2 = 35;
 const int BLOCKS_IN_LEVEL3 = 44;
-const int BLOCKS_IN_LEVEL4 = 110;
-const int BLOCKS_IN_LEVEL5 = 120;
+const int BLOCKS_IN_LEVEL4 = 120;
 
 const double BLOCK_WIDTH = 60; // Block width
 const double BLOCK_HEIGHT = 20; // Block height
@@ -50,7 +49,7 @@ struct block_data
     block_kind kind; // Type of brick
     powerups powerup; // Powerup that appear after brick is destroyed
     int hitpoint; // How many hits left to be destroyed
-    color color; // Color of block
+    string bitmap; // Bitmap used for the block
 };
 
 struct ball_data
@@ -84,24 +83,24 @@ block_data create_block(double x, double y, block_kind kind, powerups powerup)
     {
         case SINGLE_HIT:
             block.hitpoint = 1;
-            block.color = COLOR_BLUE;
+            block.bitmap = "block_single_hit";
             break;
         case DOUBLE_HIT:
             block.hitpoint = 2;
-            block.color = COLOR_YELLOW;
+            block.bitmap = "block_double_hit_1";
             break;
         case HIDDEN:
             block.hitpoint = 2;
-            block.color = COLOR_BLACK;
+            block.bitmap = "block_hidden_1";
             break;
     }
     switch (powerup) //for now I'm using colours to distinguish powerup blocks, but this might not be ideal as it overrides the type colour
     {
         case MULTI_BALL:
-            block.color = COLOR_PURPLE;
+            block.bitmap = "block_multi_ball";
             break;
         case SCORE_MULTIPLY:
-            block.color = COLOR_RED;
+            block.bitmap = "block_multiplier";
             break;
         default:
             break;
@@ -127,8 +126,9 @@ void draw_blocks(block_data blocks[], int blocks_in_level)
     {
 		if (blocks[i].hitpoint > 0) //broken blocks aren't drawn
 		{
-			fill_rectangle(blocks[i].color, blocks[i].x, blocks[i].y, BLOCK_WIDTH, BLOCK_HEIGHT);
-			draw_rectangle(COLOR_BLACK, blocks[i].x, blocks[i].y, BLOCK_WIDTH, BLOCK_HEIGHT);
+			//fill_rectangle(blocks[i].color, blocks[i].x, blocks[i].y, BLOCK_WIDTH, BLOCK_HEIGHT);
+			//draw_rectangle(COLOR_BLACK, blocks[i].x, blocks[i].y, BLOCK_WIDTH, BLOCK_HEIGHT);
+            draw_bitmap(blocks[i].bitmap, blocks[i].x, blocks[i].y);
 		}
     }
 }
@@ -143,7 +143,11 @@ void break_block(block_data blocks[], int block_index, int &score, int &remainin
     }
     else if (blocks[block_index].kind == DOUBLE_HIT)
     {
-        blocks[block_index].color = COLOR_BEIGE; // Change color of bricks hit but not destroyed yet
+        blocks[block_index].bitmap = "block_double_hit_2"; // Change color of bricks hit but not destroyed yet
+    }
+    else if (blocks[block_index].kind == HIDDEN)
+    {
+        blocks[block_index].bitmap = "block_hidden_2";
     }	
 }
 
@@ -253,40 +257,8 @@ block_data * spawn_blocks_level3(int &remaining_blocks)
 }
 block_data * spawn_blocks_level4(int &remaining_blocks)
 {
-    remaining_blocks = BLOCKS_IN_LEVEL4; // Number of blocks remaining
-    static block_data blocks[BLOCKS_IN_LEVEL4]; // Array containing blocks to be destroyed
-    int index = 0;
-    block_data block;
-
-    for (int i = 0; i < 5; i++) // draw 10 layers
-    {
-        for (int j = 0; j < 10; j++) // draw 10 blocks
-        {
-            double x = 100 + j * BLOCK_WIDTH;
-            double y = 300 - i * 2 * BLOCK_HEIGHT;
-            block_kind kind = DOUBLE_HIT;
-            powerups powerup = NO_POWERUP;
-            block = create_block(x, y, kind, powerup);
-            blocks[index] = block;
-            index++;
-        }
-        for (int j = 0; j < 12; j++) // draw 12 blocks
-        {
-            double x = 40 + j * BLOCK_WIDTH;
-            double y = 300 - BLOCK_HEIGHT - i * 2 * BLOCK_HEIGHT;
-            block_kind kind = SINGLE_HIT;
-            powerups powerup = NO_POWERUP;
-            block = create_block(x, y, kind, powerup);
-            blocks[index] = block;
-            index++;
-        }
-    }
-    return blocks;
-}
-block_data * spawn_blocks_level5(int &remaining_blocks)
-{
-    static block_data blocks[BLOCKS_IN_LEVEL5];
-    remaining_blocks = BLOCKS_IN_LEVEL5;
+    static block_data blocks[BLOCKS_IN_LEVEL4];
+    remaining_blocks = BLOCKS_IN_LEVEL4;
     block_data block;
     int index = 0;
     for(int i = 0; i < 10; i++)
@@ -307,6 +279,20 @@ int main()
 	load_resource_bundle("game_bundle", "bundle.txt");
     open_window("DX Ball Game", 800, 600);
     window_toggle_border("DX Ball Game");
+
+    load_bitmap("ball", "ball.png");
+    load_bitmap("paddle", "platform.png");
+
+    load_bitmap("block_single_hit", "5.png");
+    load_bitmap("block_double_hit_1", "8.png");
+    load_bitmap("block_double_hit_2", "9.png");
+    load_bitmap("block_hidden_1", "transparent.png");
+    load_bitmap("block_hidden_2", "3.png");
+
+    // bitmap for blocks with multipliers, might be adjusted once decided how to represent the multipliers
+    load_bitmap("block_multi_ball", "4.png");
+    load_bitmap("block_multiplier", "10.png");
+    
 	
     block_data *blocks;
     int remaining_blocks;
@@ -341,7 +327,7 @@ int main()
     // Draw the environment
     clear_screen(COLOR_BLACK);
     draw_blocks(blocks, blocks_in_level); // Draw blocks
-    fill_rectangle(COLOR_WHITE, paddle_x, PADDLE_Y, PADDLE_LENGTH, PADDLE_HEIGHT); // Draw paddle
+    draw_bitmap("paddle", paddle_x, PADDLE_Y);
 
     while(!key_down(ESCAPE_KEY))
     {
@@ -365,10 +351,6 @@ int main()
                     blocks = spawn_blocks_level4(remaining_blocks);
                     blocks_in_level = BLOCKS_IN_LEVEL4;
                     break;
-                case 5:
-                    blocks = spawn_blocks_level5(remaining_blocks);
-                    blocks_in_level = BLOCKS_IN_LEVEL5;
-                    break;
                 default:
                     game_won = true;
                     game_over = true;
@@ -391,8 +373,8 @@ int main()
 		process_events(); //check keyboard state
 		
         // Player controls
-		if (key_down(LEFT_KEY) and paddle_x > 10) paddle_x -= PADDLE_SPEED; //moving left
-		if (key_down(RIGHT_KEY) and paddle_x < screen_width() - PADDLE_LENGTH - 10) paddle_x += PADDLE_SPEED; //moving right
+		if (key_down(A_KEY) and paddle_x > 10) paddle_x -= PADDLE_SPEED; //moving left
+		if (key_down(D_KEY) and paddle_x < screen_width() - PADDLE_LENGTH - 10) paddle_x += PADDLE_SPEED; //moving right
 		
 		for(int i = 0; i < current_balls.size(); i++)
 		{
@@ -491,11 +473,12 @@ int main()
 		draw_blocks(blocks, blocks_in_level); // Draw blocks
 		for(int i = 0; i < current_balls.size(); i++)
 		{
-			fill_circle(COLOR_WHITE, current_balls[i].x, current_balls[i].y, BALL_RADIUS); // Draw ball
+			//fill_circle(COLOR_WHITE, current_balls[i].x, current_balls[i].y, BALL_RADIUS); // Draw ball
+            draw_bitmap("ball", current_balls[i].x, current_balls[i].y);
 		}
-		fill_rectangle(COLOR_WHITE, paddle_x, PADDLE_Y, PADDLE_LENGTH, PADDLE_HEIGHT); // Draw paddle
+		draw_bitmap("paddle", paddle_x, PADDLE_Y); // Draw paddle
 		draw_text("SCORE: " + to_string(score) + " MULTIPLIER: x" + to_string(score_multiplier) + " " + to_string(timer), COLOR_WHITE, font_named("default"), 20, 20, 20); // Draw score
-		
+
 		//draw win/lose messages when level ends
 		if (game_over)
 		{
@@ -524,12 +507,12 @@ int main()
                 // Draw the environment
                 clear_screen(COLOR_BLACK);
                 draw_blocks(blocks, blocks_in_level); // Draw blocks
-                fill_rectangle(COLOR_WHITE, paddle_x, PADDLE_Y, PADDLE_LENGTH, PADDLE_HEIGHT); // Draw paddle
+                draw_bitmap("paddle", paddle_x, PADDLE_Y); // Draw paddle
             }
 		}
 
         // Shortcut button to change level for development purpose
-        //if (key_typed(NUM_1_KEY)) { next_level = true; current_level++; }
+        if (key_typed(NUM_1_KEY)) { next_level = true; current_level++; }
 
         refresh_screen(60);
     }
