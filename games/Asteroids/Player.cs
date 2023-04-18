@@ -15,6 +15,8 @@ public class Player
     private List<Shooting> _KillShots = new List<Shooting>();
     public bool IsDead { get; private set; }
     private SplashKitSDK.Timer _InvulnerableTime;
+    //private bool _IsInvulnerable;
+    public Score _PlayerScore { get; set; }
     public bool IsInvulnerable { get; private set; }
 
     public string Name { get { return _Player; } }
@@ -22,9 +24,14 @@ public class Player
     public Player(Window gameWindow, string Player, string PlayerShip, int PlayersNo)
     {
         _gameWindow = gameWindow;
-        _Ship = new Bitmap(Player, PlayerShip);
-        _Angle = 0;
+        _Ship = SplashKit.LoadBitmap(Player,PlayerShip);
         _Player = Player;
+
+        Respawn(PlayersNo);
+        /*
+        _Angle = 0;
+        
+        _shots = new List<Shooting>();
         IsDead = false;
         _InvulnerableTime = new SplashKitSDK.Timer($"{Player} Invulnerable");
         _InvulnerableTime.Start();
@@ -48,7 +55,38 @@ public class Player
                 X = (gameWindow_8th * 2 - _Ship.Width / 2);
             }
         }
+        */
 
+    }
+
+    public void Respawn(int PlayersNo)
+    {
+        _Angle = 0;
+        _shots = new List<Shooting>();
+        IsDead = false;
+        _InvulnerableTime = new SplashKitSDK.Timer($"{_Player} Invulnerable");
+        _InvulnerableTime.Start();
+        IsInvulnerable = true;
+
+        if (PlayersNo == 1)
+        {
+            Y = (_gameWindow.Height - _Ship.Height) / 2;
+            X = (_gameWindow.Width - _Ship.Width) / 2;
+        }
+        else
+        {
+            int gameWindow_8th = _gameWindow.Width / 3;
+            if (_Player == "Player 1")
+            {
+                Y = (_gameWindow.Height - _Ship.Height) / 2;
+                X = (gameWindow_8th - _Ship.Width / 2);
+            }
+            else if (_Player == "Player 2")
+            {
+                Y = (_gameWindow.Height - _Ship.Height) / 2;
+                X = (gameWindow_8th * 2 - _Ship.Width / 2);
+            }
+        }
     }
 
     public void Killed()
