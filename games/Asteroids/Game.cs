@@ -26,22 +26,22 @@ public class Game
         _p1Ship = p1Ship;
         _p2Ship = p2Ship;
         GameStarted = true;
-        _Players = new List <Player>();
-        _TempPlayers = new List <Player>();
+        _Players = new List<Player>();
+        _TempPlayers = new List<Player>();
 
-        _Players.Add(new Player(gameWindow,"Player 1",p1Ship,playersNo));
-        _PlayerScores.Add(new Player1Score(gameWindow,"Player 1"));
+        _Players.Add(new Player(gameWindow, "Player 1", p1Ship, playersNo));
+        _PlayerScores.Add(new Player1Score(gameWindow, "Player 1"));
         _Players[0]._PlayerScore = _PlayerScores[0];
         if (playersNo == 2)
         {
-            _Players.Add(new Player(gameWindow,"Player 2",p2Ship,playersNo));
-            _PlayerScores.Add(new Player2Score(gameWindow,"Player 2"));
+            _Players.Add(new Player(gameWindow, "Player 2", p2Ship, playersNo));
+            _PlayerScores.Add(new Player2Score(gameWindow, "Player 2"));
             _Players[1]._PlayerScore = _PlayerScores[1];
         }
 
 
-        //_gameLevel = new Debuglvl(_GameWindow, this);
-        _gameLevel = new Level1(_GameWindow, this);
+        _gameLevel = new Debuglvl(_GameWindow, this);
+        //_gameLevel = new Level1(_GameWindow, this);
 
     }
 
@@ -67,14 +67,14 @@ public class Game
         {
             s.Draw();
         }
-  
+
     }
 
     public void GameOver()
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
-        const int FontSize = 120;  
-        foreach(Score s in _PlayerScores)
+        const int FontSize = 120;
+        foreach (Score s in _PlayerScores)
         {
             s.Draw();
         }
@@ -111,7 +111,14 @@ public class Game
         }
 
         _gameLevel.Update();
+        SplashKit.UpdateAllSprites();
+        
+        foreach (Enemy e in _gameLevel.Enemies)
+        {
+            if (e.CanShoot) HitCheck(e);
 
+        }
+        
         bool _GameOver = true;
         foreach (Score s in _PlayerScores)
         {
@@ -121,7 +128,7 @@ public class Game
         {
             GameOver();
         }
-        
+
     }
 
     public void HitCheck(Player player)
