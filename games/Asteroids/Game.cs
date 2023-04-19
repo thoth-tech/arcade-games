@@ -80,7 +80,7 @@ public class Game
         }
         int X_GameText = _GameWindow.Width / 2 - 270;
         int Y_GameText = _GameWindow.Height / 3;
-        SplashKit.FreeAllBitmaps();
+        //SplashKit.FreeAllBitmaps();
         SplashKit.FreeAllSprites();
         SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
         _GameWindow.Refresh(60);
