@@ -6,7 +6,7 @@ using namespace std;
 /*
  * Todo:
  *
- * add more levels and ability to start again after losing
+ * apply score multiplier sprites
  * maybe add a game data struct to store game state info
  */
 
@@ -18,7 +18,6 @@ const int BLOCKS_IN_LEVEL4 = 120;
 const double BLOCK_WIDTH = 60; // Block width
 const double BLOCK_HEIGHT = 20; // Block height
 const double BALL_RADIUS = 8; // Radius of ball
-const double BALL_SLOW_SPEED = 2; // Speed of a newly created ball before being bounced
 const double BALL_SPEED = 4; // Speed of ball movement
 const double PADDLE_SPEED = 8; //Speed of paddle movement
 const double PADDLE_Y = 550; // Location of paddle on the y axis
@@ -58,8 +57,27 @@ struct ball_data
     double y; // Location on the y axis
     bool up; // Direction vertically, either up or down
     bool right; // Direction horizontally, either right or left
-    double speed; // Speed of the ball's movement
 };
+
+struct powerup_drop_data
+{
+	double x; // Location on the x axis
+    double y; // Location on the y axis
+	powerups kind; // Type of powerup
+};
+
+bitmap get_powerup_bitmap(powerups kind)
+{
+	switch(kind)
+	{
+	case MULTI_BALL:
+		return bitmap_named("dropped_multi_ball");
+	case SCORE_MULTIPLY:
+		return bitmap_named("dropped_multiplier");
+	default:
+		return bitmap_named("dropped_multi_ball"); //default to multiball if kind is invalid
+	}
+}
 
 void end_level(bool successful)
 {
@@ -94,7 +112,7 @@ block_data create_block(double x, double y, block_kind kind, powerups powerup)
             block.bitmap = "block_hidden_1";
             break;
     }
-    switch (powerup) //for now I'm using colours to distinguish powerup blocks, but this might not be ideal as it overrides the type colour
+    switch (powerup)
     {
         case MULTI_BALL:
             block.bitmap = "block_multi_ball";
@@ -109,7 +127,7 @@ block_data create_block(double x, double y, block_kind kind, powerups powerup)
     return block;
 }
 
-ball_data create_ball(double x, double y, bool up, bool right, double speed)
+ball_data create_ball(double x, double y, bool up, bool right)
 {
 	ball_data ball;
     ball.x = x;
@@ -275,7 +293,7 @@ block_data * spawn_blocks_level4(int &remaining_blocks)
 }
 
 int main()
-{
+{	
 	load_resource_bundle("game_bundle", "bundle.txt");
     open_window("DX Ball Game", 800, 600);
     window_toggle_border("DX Ball Game");
@@ -292,6 +310,9 @@ int main()
     // bitmap for blocks with multipliers, might be adjusted once decided how to represent the multipliers
     load_bitmap("block_multi_ball", "4.png");
     load_bitmap("block_multiplier", "10.png");
+	
+	load_bitmap("dropped_multi_ball", "dropped_multiball.png");
+	load_bitmap("dropped_multiplier", "dropped_multiplier.png");
     
 	
     block_data *blocks;
@@ -317,9 +338,11 @@ int main()
     blocks[index] = block;
 	*/
 	
+	vector<powerup_drop_data> current_powerups;
+	
 	vector<ball_data> current_balls;
     // Spawn first ball at starting location
-	current_balls.push_back(create_ball(screen_width()/2, 500, true, true, BALL_SPEED));
+	current_balls.push_back(create_ball(screen_width()/2, 500, true, true));
 
     // Paddle starting location at the x axis
     double paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
@@ -362,7 +385,7 @@ int main()
             
             // Spawn ball at starting location
 			current_balls.clear();
-			current_balls.push_back(create_ball(screen_width()/2, 500, true, true, BALL_SPEED));
+			current_balls.push_back(create_ball(screen_width()/2, 500, true, true));
 
             // Paddle starting location at the x axis
             paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
@@ -394,13 +417,14 @@ int main()
 					//lose the game if there are no more balls remaining
 					game_won = false;
 					game_over = true;
+					
+					current_powerups.clear(); // Remove existing powerup drops
 				}
 			}
 			// Bounce off paddle
             if ((PADDLE_Y <= current_balls[i].y + BALL_RADIUS and current_balls[i].y + BALL_RADIUS <= PADDLE_Y + BALL_SPEED) and (current_balls[i].x + BALL_RADIUS >= paddle_x and current_balls[i].x - BALL_RADIUS <= paddle_x + PADDLE_LENGTH))
             {
                 current_balls[i].up = true;
-                if (current_balls[i].speed == BALL_SLOW_SPEED) current_balls[i].speed = BALL_SPEED; //accelerate slowed balls
             }
 			// Bounce off blocks
 			for (int j = 0; j < blocks_in_level; j++)
@@ -440,16 +464,15 @@ int main()
                             collision = true;
 						}
 					}
-                    if (collision) // if the ball collided with any side of a block
+                    if (collision and blocks[j].powerup != NO_POWERUP) // if the ball collided with any side of a powerup block
                     {
-                        //apply multi ball powerup
-                        if (blocks[j].powerup == MULTI_BALL) current_balls.push_back(create_ball(blocks[j].x, blocks[j].y, current_balls[i].up, current_balls[i].right, BALL_SLOW_SPEED)); //slow new balls to make them easier to catch
-                        //apply score multiplier powerup
-                        else if (blocks[j].powerup == SCORE_MULTIPLY)
-                        {
-                            timer = MULTIPLIER_DURATION; // set timer for MULTIPLIER_DURATION seconds
-                            score_multiplier++;
-                        }
+						//create powerup drop
+						powerup_drop_data new_powerup;
+						new_powerup.x = blocks[j].x;
+						new_powerup.y = blocks[j].y;
+						new_powerup.kind = blocks[j].powerup;
+						
+						current_powerups.push_back(new_powerup);
                     }
 				}
 			}
@@ -459,6 +482,37 @@ int main()
 			else current_balls[i].y += 1 * BALL_SPEED;
 			if (current_balls[i].right) current_balls[i].x += 1 * BALL_SPEED;
 			else current_balls[i].x -= 1 * BALL_SPEED;
+		}
+		
+		for(int i = 0; i < current_powerups.size(); i++) //update powerup drops
+		{
+			// Update powerup drop locations
+			current_powerups[i].y += BALL_SPEED/2; //powerup drops move at half the speed of balls
+			
+			//hit the bottom of the screen
+			if(current_powerups[i].y + BALL_RADIUS >= screen_height())
+			{
+				//remove powerup
+				current_powerups[i] = current_powerups[current_powerups.size()-1];
+				current_powerups.pop_back();
+			}
+			//get caught by paddle
+			if ((PADDLE_Y <= current_powerups[i].y + BALL_RADIUS and current_powerups[i].y + BALL_RADIUS <= PADDLE_Y + (BALL_SPEED/2)) and (current_powerups[i].x + BALL_RADIUS >= paddle_x and current_powerups[i].x - BALL_RADIUS <= paddle_x + PADDLE_LENGTH))
+			{
+				bool direction = (bool)rnd(0,2); //generate random 0 or 1 for horizontal direction
+
+				//apply multi ball powerup
+                if (current_powerups[i].kind == MULTI_BALL) current_balls.push_back(create_ball(current_powerups[i].x, PADDLE_Y + 10, true, direction)); //create ball above the paddle with a random horizontal direction
+                //apply score multiplier powerup
+                else if (current_powerups[i].kind == SCORE_MULTIPLY)
+                {
+                    timer = MULTIPLIER_DURATION; // set timer for MULTIPLIER_DURATION seconds
+                    score_multiplier++;
+                }
+				//remove powerup drop
+				current_powerups[i] = current_powerups[current_powerups.size()-1];
+				current_powerups.pop_back();
+			}
 		}
 		
 		//win level if level is completed
@@ -471,10 +525,14 @@ int main()
         // Redraw everything
 		clear_screen(COLOR_BLACK);
 		draw_blocks(blocks, blocks_in_level); // Draw blocks
-		for(int i = 0; i < current_balls.size(); i++)
+		for(int i = 0; i < current_balls.size(); i++) // Draw balls
 		{
-			//fill_circle(COLOR_WHITE, current_balls[i].x, current_balls[i].y, BALL_RADIUS); // Draw ball
+			//fill_circle(COLOR_WHITE, current_balls[i].x, current_balls[i].y, BALL_RADIUS);
             draw_bitmap("ball", current_balls[i].x, current_balls[i].y);
+		}
+		for(int i = 0; i < current_powerups.size(); i++) // Draw powerup drops
+		{
+			draw_bitmap(get_powerup_bitmap(current_powerups[i].kind),current_powerups[i].x,current_powerups[i].y);
 		}
 		draw_bitmap("paddle", paddle_x, PADDLE_Y); // Draw paddle
 		draw_text("SCORE: " + to_string(score) + " MULTIPLIER: x" + to_string(score_multiplier) + " " + to_string(timer), COLOR_WHITE, font_named("default"), 20, 20, 20); // Draw score
@@ -499,7 +557,7 @@ int main()
                 blocks_in_level = BLOCKS_IN_LEVEL1;
 
                 // Spawn first ball at starting location
-                current_balls.push_back(create_ball(screen_width() / 2, 500, true, true, BALL_SPEED));
+                current_balls.push_back(create_ball(screen_width() / 2, 500, true, true));
 
                 // Paddle starting location at the x axis
                 paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
@@ -518,4 +576,3 @@ int main()
     }
     return 0;
 }
-
