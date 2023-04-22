@@ -1,0 +1,50 @@
+#-- ARCADE MACHINE GAME CONFIG FILE --#
+#-- For THOTH TECH - Splashkit Crew - Applications Team
+#--------------------------------------------------------------------
+#-- File: config.txt
+#-- Description: Configuration data for Arcade Machine games
+#--------------------------------------------------------------------
+#-- Maintenance Log --
+#--------------------------------------------------------------------
+#   Task    |  Who    | Date     | Comments
+#-----------+---------+----------+-----------------------------------
+#  Sprint 1 | [tba] | [tba]  | [tba] 
+#-----------+---------+----------+-----------------------------------
+#  Sprint 2 | [tba]  | [tba]  | [tba] 
+#-----------+---------+----------+-----------------------------------
+#  Sprint 3 | [tba]  | [tba]  | [tba] 
+#-----------+---------+----------+-----------------------------------
+
+#--------------------------------------------------------------------
+# PLEASE ONLY EDIT CONTENT AFTER THE "=" SIGN FOR EACH CONFIGURATION SETTING  
+#--------------------------------------------------------------------
+
+# The title of your game (eg. Super Mario)
+title=DX Ball Game
+
+# The name of the author (eg. Jane Doe)
+author=SWANNY AURELLIA, TULSI BALAMURALI, NORMAN SPENCER, HARNEY HALLS.
+
+# The genre of your game (eg. Platformer)
+genre=Brick breaker
+
+# A Description of your game
+description=Break all of the bricks before moving onto each level.
+
+# A classification rating to advise the nature of the content (eg. MA 15+)
+rating=G
+
+# Programming language the game is written in (eg. C++) 
+language=C++
+
+# Path to your game thumbnail image (eg. images/icon.png)
+image=images/icon.png
+
+# Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
+repository=https://github.com/swanos/arcade-games/tree/main/games/DXBallGame
+
+# [Optional] Uncomment to include path to the game executable (game.exe)
+#executable=game.exe
+
+# [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
+#compile-command=skm g++ *.cpp
