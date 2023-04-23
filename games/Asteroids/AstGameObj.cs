@@ -55,7 +55,7 @@ public class AstGameObj
         Sprite spr;
         Point2D tempPos = new Point2D();
         List<double> tempList = new List<double>();          // 5 index
-
+        Console.WriteLine(SplashKit.HasBitmap(name));
         if (SplashKit.HasBitmap(name))              // exist already? load existing bitmap into sprite
         {
             bmp = SplashKit.BitmapNamed(name);

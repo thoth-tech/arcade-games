@@ -538,13 +538,26 @@ public class BlueRock : Enemy
 {
     private Bitmap _Rock;
     private Sprite _RockSprite;
+    private AnimationScript _RockAnimation;
     public BlueRock(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
     {
         _RotationSpeed = RotationSpeed;
         _Angle = 0;
-        _Rock = new Bitmap("Rock4", "BlueRock_150x150.png");
-        //_Rock.SetCellDetails(200, 200, 3, 3, 9);
-        _RockSprite = SplashKit.CreateSprite(_Rock);
+        // _Rock = new Bitmap("Rock4", "BlueRockSpriteSheet.png");
+        if (SplashKit.HasBitmap("Rock4"))
+        {
+            _Rock = SplashKit.BitmapNamed("Rock4");
+        }
+        else
+        {
+            _Rock = SplashKit.LoadBitmap("Rock4", "BlueRockSpriteSheet.png");
+        }
+        _Rock.SetCellDetails(150, 150, 3, 3, 9);
+        _RockAnimation = SplashKit.LoadAnimationScript("Rock4Ani", "BlueRock.txt");
+        _RockSprite = SplashKit.CreateSprite(_Rock, _RockAnimation);
+        _RockSprite.AnchorPoint = new Point2D() { X = 75, Y = 75 };
+        _RockSprite.StartAnimation("normal");
+
         //_RockSprite.MoveTo(150,150);
 
         _RockSprite.AddValue("Health", 5);
@@ -600,38 +613,51 @@ public class BlueRock : Enemy
 
     public override void Update()
     {
-        Rotation(_RotationSpeed);
-        _RockSprite.Rotation = Convert.ToSingle(_Angle);
+
         if (_IsDying)
         {
             _IsDyingCount += 1;
         }
         else
         {
+            Rotation(_RotationSpeed);
+            _RockSprite.Rotation = Convert.ToSingle(_Angle);
             X += _Velocity.X;
             Y += _Velocity.Y;
             _RockSprite.MoveTo(X, Y);
         }
 
-        if (_IsDying) IsDead = true;
-
+        if (_RockSprite.AnimationName() == "dying" && _RockSprite.AnimationHasEnded) IsDead = true;
 
     }
     public override Tuple<String, int> HitBy(Shooting wasHitBy)
     {
+        int tmpscore = 0;
         if (_IsDying) return new Tuple<string, int>("False", 0);
         if (_RockSprite.Value("Health") > 0)
         {
             _RockSprite.SetValue("Health", _RockSprite.Value("Health") - 1);
-            return new Tuple<string, int>("Score", 10);
+            _RockSprite.StartAnimation("hit");
+            tmpscore = 10;
         }
-        else
+        if (_RockSprite.Value("Health") == 0)
         {
             _IsDying = true;
-            return new Tuple<string, int>("Score", 50);
+            _RockSprite.StartAnimation("dying");
+            tmpscore = +50;
+
         }
+        return new Tuple<string, int>("Score", tmpscore);
     }
 
+    public override Tuple<String, int> HitBy(Player wasHitBy)
+    {
+        if (_IsDying)
+        { return new Tuple<string, int>("False", 0); }
+        _IsDying = true;
+        _RockSprite.StartAnimation("dying");
+        return new Tuple<string, int>("Life", -1);
+    }
     public override void freesprite()
     {
         SplashKit.FreeSprite(_RockSprite);
@@ -642,54 +668,8 @@ public class BlueRock : Enemy
         return _RockSprite;
     }
     public override void Draw()
-    {
-        //     DrawingOptions opt;
+    { }
 
-
-        //     if (_IsDying == false)
-        //     {
-        //         opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-        //         _Rock.Draw(X, Y, opt);
-        //     }
-        //     else
-        //     {
-        //         switch (_IsDyingCount)
-        //         {
-        //             case < 12:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(1));
-        //                 break;
-        //             case < 23:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(2));
-        //                 break;
-        //             case < 34:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(3));
-        //                 break;
-        //             case < 45:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(4));
-        //                 SpawnSmallRocks = true;
-        //                 break;
-        //             case < 56:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(5));
-        //                 break;
-        //             case < 68:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(6));
-        //                 break;
-        //             case < 79:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(7));
-        //                 break;
-        //             case < 90:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(8));
-        //                 IsDead = true;
-
-        //                 break;
-        //             default:
-        //                 opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-
-        //                 break;
-        //         }
-        //         _Rock.Draw(X, Y, opt);
-        //     }
-    }
 
 
 }
@@ -916,7 +896,14 @@ public class Boss1 : Enemy
 
     }
 
-
+    public override void freesprite()
+    {
+        foreach (Shooting s in _KillShots)
+        {
+            s.freesprite();
+            _shots.Remove(s);
+        }
+    }
 
 
     public override Tuple<String, int> HitBy(Player wasHitBy)
@@ -1012,8 +999,335 @@ public class Boss1 : Enemy
 
 
 
+public class Boss2 : Enemy
+{
+    private Bitmap _Boss;
+    private Animation _BossAnimation;
+    private AnimationScript _BossScript;
+    private DrawingOptions _opt;
+    private string _Phase;
+    private List<Shooting> _shots = new List<Shooting>();
+    private List<Shooting> _KillShots = new List<Shooting>();
+    private SplashKitSDK.Timer _shootingTime, _MoveTimer, _ShotTimer, _RedEnergyBallTimer;
+    private Window _gameWindow;
+    private int _shootingSmallShot, _shootingEnergyShot;
+    private Game _game;
+    private List<Sprite> _ShipList = new List<Sprite>();
+    private List<double> _time = new List<double>();
+    private double _radius;
+    private int _Y_point;
+    private int _playerKillThreshold;
+    private bool _LaserFiring = false;
+    private int[] _FrameCount;
+    private bool[] _firstShot;
 
 
+    public Boss2(Window gameWindow, Game game) : base(gameWindow)
+    {
+
+        _gameWindow = gameWindow;
+        _game = game;
+
+        _Boss = new Bitmap("Boss2", "MotherShipAll.png");
+        _Boss.SetCellDetails(400, 300, 3, 2, 6);
+        _BossScript = SplashKit.LoadAnimationScript("MotherShip", "MotherShip1.txt");
+        double window_3rd = _gameWindow.Width / 4;
+        Height = _Boss.CellHeight;
+        Width = _Boss.CellWidth;
+
+        Console.WriteLine("Ship Spawn");
+        for (int i = 1; i <= 3; i++)
+        {
+            _ShipList.Add(SplashKit.CreateSprite(_Boss, _BossScript));
+            Sprite _tmpShip = _ShipList.Last();
+            _tmpShip.AddValue("Health", 50);
+            _tmpShip.StartAnimation("ShieldUp");
+            _tmpShip.MoveTo(window_3rd * i - (Width / 2), -Height);
+            Point2D toPoint = new Point2D { X = window_3rd * i - (Width / 2), Y = 200 };
+            // _tmpShip.VectorTo(toPoint);
+
+        }
+        _Y_point = (int)(-Height);
+        _Phase = "Main";
+        Console.WriteLine("Constructor Done");
+
+        if (!SplashKit.HasTimer("Boss2MoveTimer")) _MoveTimer = SplashKit.CreateTimer("Boss2MoveTimer");
+        else _MoveTimer = SplashKit.TimerNamed("Boss2MoveTimer");
+        if (!_MoveTimer.IsStarted) _MoveTimer.Start();
+
+        if (!SplashKit.HasTimer("Boss2Shooting")) _shootingTime = SplashKit.CreateTimer("Boss2Shooting");
+        else _shootingTime = SplashKit.CreateTimer("Boss2Shooting");
+        if (!_shootingTime.IsStarted) _shootingTime.Start();
+
+        if (!SplashKit.HasTimer("Boss2Shoot")) _ShotTimer = SplashKit.CreateTimer("Boss2Shoot");
+        else _ShotTimer = SplashKit.CreateTimer("Boss2Shoot");
+        _ShotTimer.Stop();
+
+        if (!SplashKit.HasTimer("Boss2RedEnergyBall")) _RedEnergyBallTimer = SplashKit.CreateTimer("Boss2RedEnergyBall");
+        else _RedEnergyBallTimer = SplashKit.CreateTimer("Boss2RedEnergyBall");
+        _RedEnergyBallTimer.Stop();
+
+        //if player goes above this they will be killed
+        _playerKillThreshold = 300;
+
+        // Set up variables for the figure 8 pattern
+        _time.Add((-1000)); //far left
+        _time.Add((0)); //middle
+        _time.Add(+1000); //far right
+
+        CanShoot = true;
+        _firstShot = new bool[_ShipList.Count];
+        _FrameCount = new int[_ShipList.Count];
+
+        // _BossAnimation = _BossScript.CreateAnimation("ShieldUp");
+        // _RotationSpeed = 0;
+        // _Angle = 0;
+
+
+        // X = gameWindow.Width / 2 - _Boss.CellWidth / 2;
+        // Y = -299;
+
+
+        // _opt = SplashKit.OptionWithAnimation(_BossAnimation);
+        // _shootingTime = SplashKit.CreateTimer("Boss1Shooting");
+        // _shootingTime.Stop();
+        // _shootingTime.Reset();
+    }
+
+    public override void Draw()
+    {
+        if (_IsDying == false)
+        {
+            foreach (Shooting s in _shots)
+            {
+                s.Draw();
+            }
+        }
+    }
+    public override void Update()
+    {
+        int yChange = _Y_point > 60 ? 0 : 2;
+        _Y_point += yChange;
+        for (int i = 0; i < _ShipList.Count; i++)
+        {
+            Sprite s = _ShipList[i];
+            int b = 600;
+            int c = 200;
+            double t = (_MoveTimer.Ticks + _time[i]) * 2 * Math.PI / 5000;
+            //Console.WriteLine(_MoveTimer.Ticks / 1000);
+            // Calculate the new position based on the Lemniscate of Bernoulli curve
+            float x = (float)((_gameWindow.Width / 2 - Width / 2) + b * Math.Cos(t) / (1 + Math.Pow(Math.Sin(t), 2)));
+            float y = (float)(_Y_point + c * Math.Sin(t) * Math.Cos(t) / (1 + Math.Pow(Math.Sin(t), 2)));
+
+            // Set the sprite position
+            s.X = x;
+            s.Y = y;
+        }
+
+        if (_MoveTimer.Ticks / 1000 > 2)
+        {
+            if (_shootingTime.Ticks / 100 > 40)
+            {
+                _MoveTimer.Pause();
+                _shootingTime.Stop();
+                if (!_ShotTimer.IsStarted) _ShotTimer.Start();
+                FireLaser();
+
+            }
+
+            // if (_ShotTimer.Ticks / 1000 > 2)
+            // {
+            //     _shootingTime.Start();
+            //     _ShotTimer.Stop();
+            //     _MoveTimer.Resume();
+            // }
+        }
+
+        LaserUpdate();
+        PlayerUpdate();
+        ShotUpdate();
+
+    }
+
+    private void FireLaser()
+    {
+        _LaserFiring = true;
+        for (int i = 0; i < _firstShot.Count(); i++)
+        {
+            _firstShot[i] = true;
+        }
+
+        for (int i = 0; i < _FrameCount.Count(); i++)
+        {
+            _FrameCount[i] = 19;
+        }
+
+
+    }
+
+    private void LaserUpdate()
+    {
+        if (_LaserFiring)
+        {
+            int ShotCount = _shots.Count();
+            for (int u = 0; u < _ShipList.Count; u++)
+            {
+                Sprite s = _ShipList[u];
+                Point2D fromPT = new Point2D { X = s.X, Y = s.CenterPoint.Y };
+
+                // Console.WriteLine("First" +u);
+                if (_firstShot[u])
+                {
+                    // Console.WriteLine("Second First Shot" +u);
+                    Shooting ShotType = new Laser(fromPT, _FrameCount[u]);
+                    _shots.Add(ShotType);
+                    _FrameCount[u]--;
+                    _firstShot[u] = false;
+
+                }
+                else
+                {
+                    Shooting target = _shots[ShotCount - (3 - u)];
+                    // Console.WriteLine("Target y " + target.Y);
+                    // Console.WriteLine("Shot Count " + _shots.Count());
+                    // Console.WriteLine("Shot Index" + (_shots.Count - (3 - u)));
+                    if (target.Y > s.CenterPoint.Y + 95)
+                    {
+                        // Console.WriteLine("Second All" +u);
+                        Shooting ShotType = new Laser(fromPT, _FrameCount[u]);
+                        _shots.Add(ShotType);
+                        _FrameCount[u]--;
+                    }
+                }
+
+            }
+            Console.WriteLine("Ouside Loop");
+            if (Array.TrueForAll(_FrameCount, value =>
+            {
+                Console.WriteLine((value < 0));
+                return (value < 0);
+            }))
+            {
+                Console.WriteLine("LaserFiring = false");
+                _LaserFiring = false;
+                _ShotTimer.Stop();
+                _shootingTime.Start();
+                _MoveTimer.Resume();
+            }
+        }
+    }
+    private void PlayerUpdate()
+    {
+        foreach (Player p in _game.Players)
+        {
+            if (p.Y < _playerKillThreshold)
+            {
+                if (!_RedEnergyBallTimer.IsStarted) _RedEnergyBallTimer.Start();
+                if (_RedEnergyBallTimer.Ticks / 500 > 1)
+                {
+                    _RedEnergyBallTimer.Stop();
+                    RedEnergyBall(p);
+                }
+            }
+        }
+    }
+    private void ShotUpdate()
+    {
+        foreach (Shooting s in _shots)
+        {
+            s.Update();
+            if (s.IsOffscreen(_gameWindow)) _KillShots.Add(s);
+        }
+
+        foreach (Shooting s in _KillShots)
+        {
+            s.freesprite();
+            _shots.Remove(s);
+        }
+        _KillShots.Clear();
+    }
+    public override void freesprite()
+    {
+        foreach (Shooting s in _KillShots)
+        {
+            s.freesprite();
+            _shots.Remove(s);
+        }
+    }
+
+
+    public override Tuple<String, int> HitBy(Player wasHitBy)
+    {
+        /*             if(_IsDying)
+                {return new Tuple<string, int>("False",0);}
+                _IsDying = true;
+                return new Tuple<string, int>("Life",-1);  */
+        return new Tuple<string, int>("Life", -1);
+        // return new Tuple<string, int>("False", 0);
+    }
+
+    public override Tuple<String, int> HitBy(Shooting wasHitBy)
+    {
+        /*         if(_IsDying)
+                {return new Tuple<string, int>("False",0);} */
+        //_IsDying = true;
+
+
+        return new Tuple<string, int>("Score", 10);
+    }
+    public override Circle[] HitCircle()
+    {
+        //Need to rework this wait untill you have proper model
+        Circle[] Cir = new Circle[_ShipList.Count * 3];
+        for (int i = 0; i < _ShipList.Count; i++)
+        {
+            //Cir[i] = _ShipList[i].CollisionCircle();
+            Cir[i] = SplashKit.CircleAt(_ShipList[i].X + 198, _ShipList[i].Y + 116, 102);
+            Cir[i + 3] = SplashKit.CircleAt(_ShipList[i].X + 293, _ShipList[i].Y + 112, 78);
+            Cir[i + 6] = SplashKit.CircleAt(_ShipList[i].X + 102, _ShipList[i].Y + 112, 78);
+        }
+        return Cir;
+    }
+
+    public override Tuple<String, int> HitCheck(Player player)
+    {
+        foreach (Shooting s in _shots)
+        {
+            if (s.HitCheck(player))
+            {
+                _KillShots.Add(s);
+                if (!player.IsInvulnerable)
+                {
+                    return new Tuple<string, int>("Life", -1);
+                }
+            }
+        }
+        return new Tuple<string, int>("False", 0);
+
+    }
+
+
+    private void RedEnergyBall(Player p)
+    {
+        foreach (Sprite s in _ShipList)
+        {
+            Point2D fromPT = new Point2D();
+            fromPT.X = s.X + _Boss.CellCenter.X;
+            fromPT.Y = s.Y + _Boss.CellCenter.Y;
+            Shooting ShotType = new RedEnergyBall(fromPT, p);
+            _shots.Add(ShotType);
+        }
+    }
+}
+
+
+public class smallShip : Boss2
+{
+    public smallShip(Window gameWindow, Game game) : base(gameWindow, game)
+    {
+
+    }
+}
 
 
 
