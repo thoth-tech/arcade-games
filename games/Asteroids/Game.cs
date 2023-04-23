@@ -42,6 +42,7 @@ public class Game
 
         _gameLevel = new Debuglvl(_GameWindow, this);
         //_gameLevel = new Level1(_GameWindow, this);
+        //_gameLevel = new Level2(_GameWindow, this);
 
     }
 
@@ -74,14 +75,24 @@ public class Game
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
         const int FontSize = 120;
+
+        _GameWindow.Clear(Color.Black);
         foreach (Score s in _PlayerScores)
         {
             s.Draw();
         }
         int X_GameText = _GameWindow.Width / 2 - 270;
         int Y_GameText = _GameWindow.Height / 3;
-        SplashKit.FreeAllBitmaps();
-        SplashKit.FreeAllSprites();
+        Console.WriteLine(SplashKit.CurrentSpritePack());
+        //SplashKit.FreeAllBitmaps();
+        //SplashKit.FreeAllSprites(); //There seems to be an issue with the FreeAllSprites Procedure
+        //SplashKit.FreeAllAnimationScripts();
+
+        foreach (Enemy e in _gameLevel.Enemies)
+        {
+            e.freesprite();
+
+        }
         SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
         _GameWindow.Refresh(60);
         SplashKit.Delay(5000);
@@ -112,13 +123,13 @@ public class Game
 
         _gameLevel.Update();
         SplashKit.UpdateAllSprites();
-        
+
         foreach (Enemy e in _gameLevel.Enemies)
         {
             if (e.CanShoot) HitCheck(e);
 
         }
-        
+
         bool _GameOver = true;
         foreach (Score s in _PlayerScores)
         {
