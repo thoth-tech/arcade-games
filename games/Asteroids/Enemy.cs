@@ -1001,14 +1001,14 @@ public class Boss1 : Enemy
 
 public class Boss2 : Enemy
 {
-    private Bitmap _Boss;
-    private Animation _BossAnimation;
-    private AnimationScript _BossScript;
+    protected Bitmap _Boss;
+    protected Animation _BossAnimation;
+    protected AnimationScript _BossScript;
     private DrawingOptions _opt;
-    private string _Phase;
+    protected string _Phase;
     private List<Shooting> _shots = new List<Shooting>();
     private List<Shooting> _KillShots = new List<Shooting>();
-    private SplashKitSDK.Timer _shootingTime, _MoveTimer, _ShotTimer, _RedEnergyBallTimer;
+    protected SplashKitSDK.Timer _shootingTime, _MoveTimer, _ShotTimer, _RedEnergyBallTimer;
     private Window _gameWindow;
     private int _shootingSmallShot, _shootingEnergyShot;
     private Game _game;
@@ -1038,12 +1038,7 @@ public class Boss2 : Enemy
         Console.WriteLine("Ship Spawn");
         for (int i = 1; i <= 3; i++)
         {
-            _ShipList.Add(SplashKit.CreateSprite(_Boss, _BossScript));
-            Sprite _tmpShip = _ShipList.Last();
-            _tmpShip.AddValue("Health", 50);
-            _tmpShip.StartAnimation("ShieldUp");
-            _tmpShip.MoveTo(window_3rd * i - (Width / 2), -Height);
-            Point2D toPoint = new Point2D { X = window_3rd * i - (Width / 2), Y = 200 };
+
             // _tmpShip.VectorTo(toPoint);
 
         }
@@ -1323,9 +1318,15 @@ public class Boss2 : Enemy
 
 public class smallShip : Boss2
 {
+    private Sprite _Ship;
     public smallShip(Window gameWindow, Game game) : base(gameWindow, game)
     {
-
+            _Ship = SplashKit.CreateSprite(_Boss, _BossScript));
+            Sprite _tmpShip = _ShipList.Last();
+            _tmpShip.AddValue("Health", 50);
+            _tmpShip.StartAnimation("ShieldUp");
+            _tmpShip.MoveTo(window_3rd * i - (Width / 2), -Height);
+            Point2D toPoint = new Point2D { X = window_3rd * i - (Width / 2), Y = 200 };
     }
 }
 
