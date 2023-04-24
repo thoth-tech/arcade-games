@@ -7,7 +7,6 @@ using namespace std;
  * Todo:
  *
  * apply score multiplier sprites
- * replace bitmaps for powerups
  * add powerups in other levels
  */
 
@@ -160,6 +159,24 @@ void draw_blocks()
     // Draw blocks to the screen
     for (int i = 0; i < game_data.blocks_in_level; i++)
     {
+        if (game_data.blocks[i].powerup == SCORE_MULTIPLY)
+        {
+            switch (game_data.score_multiplier)
+            {
+                case 1:
+                    game_data.blocks[i].powerup_bitmap = "block_multiplier";
+                    break;
+                case 2:
+                    game_data.blocks[i].powerup_bitmap = "block_multiplier_3";
+                    break;
+                case 3:
+                    game_data.blocks[i].powerup_bitmap = "block_multiplier_4";
+                    break;
+                default:
+                    game_data.blocks[i].powerup_bitmap = "block_multiplier_5";
+                    break;
+            }
+        }
 		if (game_data.blocks[i].hitpoint > 0) //broken blocks aren't drawn
 		{
             draw_bitmap(game_data.blocks[i].block_bitmap, game_data.blocks[i].x, game_data.blocks[i].y);
@@ -324,6 +341,9 @@ void load_resources()
 
     load_bitmap("block_multi_ball", "multiball_block.png");
     load_bitmap("block_multiplier", "multiplier_block.png");
+    load_bitmap("block_multiplier_3", "multiplier_3_block.png");
+    load_bitmap("block_multiplier_4", "multiplier_4_block.png");
+    load_bitmap("block_multiplier_5", "multiplier_5_block.png");
 	
 	load_bitmap("dropped_multi_ball", "dropped_multiball.png");
 	load_bitmap("dropped_multiplier", "dropped_multiplier.png"); 
@@ -331,39 +351,39 @@ void load_resources()
 void start_level()
 {
     switch (game_data.current_level)
-        {
-            case 1:
-                game_data.blocks = spawn_blocks_level1();
-                game_data.blocks_in_level = BLOCKS_IN_LEVEL1;
-                break;
-            case 2: 
-                game_data.blocks = spawn_blocks_level2();
-                game_data.blocks_in_level = BLOCKS_IN_LEVEL2;
-                break;
-            case 3: 
-                game_data.blocks = spawn_blocks_level3();
-                game_data.blocks_in_level = BLOCKS_IN_LEVEL3;
-                break;
-            case 4:
-                game_data.blocks = spawn_blocks_level4();
-                game_data.blocks_in_level = BLOCKS_IN_LEVEL4;                    
-                break;
-            default:
-                game_data.game_won = true;
-                game_data.game_over = true;
-                break;
-        }
-        // Reset score multiplier
-        game_data.score_multiplier = 1;
-        game_data.timer = 0;
-            
-        // Spawn ball at starting location
-		game_data.current_balls.clear();
-		game_data.current_balls.push_back(create_ball(screen_width()/2, 500, true, true));
+    {
+        case 1:
+            game_data.blocks = spawn_blocks_level1();
+            game_data.blocks_in_level = BLOCKS_IN_LEVEL1;
+            break;
+        case 2: 
+            game_data.blocks = spawn_blocks_level2();
+            game_data.blocks_in_level = BLOCKS_IN_LEVEL2;
+            break;
+        case 3: 
+            game_data.blocks = spawn_blocks_level3();
+            game_data.blocks_in_level = BLOCKS_IN_LEVEL3;
+            break;
+        case 4:
+            game_data.blocks = spawn_blocks_level4();
+            game_data.blocks_in_level = BLOCKS_IN_LEVEL4;                    
+            break;
+        default:
+            game_data.game_won = true;
+            game_data.game_over = true;
+            break;
+    }
+    // Reset score multiplier
+    game_data.score_multiplier = 1;
+    game_data.timer = 0;
+        
+    // Spawn ball at starting location
+    game_data.current_balls.clear();
+    game_data.current_balls.push_back(create_ball(screen_width()/2, 500, true, true));
 
-        // Paddle starting location at the x axis
-        game_data.paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
-        game_data.next_level = false;
+    // Paddle starting location at the x axis
+    game_data.paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
+    game_data.next_level = false;
 }
 void check_ball_collision(int i)
 {

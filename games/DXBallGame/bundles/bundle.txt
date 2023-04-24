@@ -1,1 +1,0 @@
-FONT,default,VCR_OSD_MONO.ttf
