@@ -1004,7 +1004,7 @@ public class Boss2 : Enemy
     protected Bitmap _Boss;
     protected Animation _BossAnimation;
     protected AnimationScript _BossScript;
-    private DrawingOptions _opt;
+
     protected string _Phase;
     private List<Shooting> _shots = new List<Shooting>();
     private List<Shooting> _KillShots = new List<Shooting>();
@@ -1319,15 +1319,18 @@ public class Boss2 : Enemy
 public class smallShip : Boss2
 {
     private Sprite _Ship;
-    public smallShip(Window gameWindow, Game game) : base(gameWindow, game)
+    public smallShip(Window gameWindow, Game game, int ShipNo) : base(gameWindow, game)
     {
-            _Ship = SplashKit.CreateSprite(_Boss, _BossScript));
-            Sprite _tmpShip = _ShipList.Last();
-            _tmpShip.AddValue("Health", 50);
-            _tmpShip.StartAnimation("ShieldUp");
-            _tmpShip.MoveTo(window_3rd * i - (Width / 2), -Height);
-            Point2D toPoint = new Point2D { X = window_3rd * i - (Width / 2), Y = 200 };
+            _Ship = SplashKit.CreateSprite(_Boss, _BossScript);
+            _Ship.AddValue("Health", 50);
+            _Ship.StartAnimation("ShieldUp");
+            //_Ship.MoveTo(window_3rd * i - (Width / 2), -Height);
+           // Point2D toPoint = new Point2D { X = window_3rd * i - (Width / 2), Y = 200 };
     }
+
+
+
+
 }
 
 
