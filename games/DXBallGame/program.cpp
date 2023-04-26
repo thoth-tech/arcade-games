@@ -2,13 +2,8 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
-/*
- * Todo:
- *
- * apply score multiplier sprites
- * add powerups in other levels
- */
 
 const int BLOCKS_IN_LEVEL1 = 32; // Number of blocks to be spawned in level 1
 const int BLOCKS_IN_LEVEL2 = 35;
@@ -86,7 +81,9 @@ bitmap get_powerup_bitmap(powerups kind)
 	case MULTI_BALL:
 		return bitmap_named("dropped_multi_ball");
 	case SCORE_MULTIPLY:
-		return bitmap_named("dropped_multiplier");
+		if (game_data.score_multiplier < 5) return bitmap_named("dropped_multiplier_" + to_string(game_data.score_multiplier+1));
+		else return bitmap_named("dropped_multiplier_5"); //prevent missing bitmap errors
+		
 	default:
 		return bitmap_named("dropped_multi_ball"); //default to multiball if kind is invalid
 	}
@@ -134,7 +131,7 @@ block_data create_block(double x, double y, block_kind kind, powerups powerup)
             block.powerup_bitmap = "block_multi_ball";
             break;
         case SCORE_MULTIPLY:
-            block.powerup_bitmap = "block_multiplier";
+            block.powerup_bitmap = "block_multiplier_2";
             break;
         default:
             block.powerup_bitmap = "block_multi_ball"; //default if kind is invalid
@@ -161,21 +158,15 @@ void draw_blocks()
     {
         if (game_data.blocks[i].powerup == SCORE_MULTIPLY)
         {
-            switch (game_data.score_multiplier)
-            {
-                case 1:
-                    game_data.blocks[i].powerup_bitmap = "block_multiplier";
-                    break;
-                case 2:
-                    game_data.blocks[i].powerup_bitmap = "block_multiplier_3";
-                    break;
-                case 3:
-                    game_data.blocks[i].powerup_bitmap = "block_multiplier_4";
-                    break;
-                default:
-                    game_data.blocks[i].powerup_bitmap = "block_multiplier_5";
-                    break;
-            }
+			if (game_data.score_multiplier < 5)
+			{
+				game_data.blocks[i].powerup_bitmap = ("block_multiplier_" + to_string(game_data.score_multiplier + 1)); 
+			}
+			else
+			{
+				game_data.blocks[i].powerup_bitmap = ("block_multiplier_5");
+			}
+			
         }
 		if (game_data.blocks[i].hitpoint > 0) //broken blocks aren't drawn
 		{
@@ -340,13 +331,22 @@ void load_resources()
     load_bitmap("block_hidden_2", "3.png");
 
     load_bitmap("block_multi_ball", "multiball_block.png");
-    load_bitmap("block_multiplier", "multiplier_block.png");
+    load_bitmap("block_multiplier_2", "multiplier_block.png");
     load_bitmap("block_multiplier_3", "multiplier_3_block.png");
     load_bitmap("block_multiplier_4", "multiplier_4_block.png");
     load_bitmap("block_multiplier_5", "multiplier_5_block.png");
 	
+	load_bitmap("block_multiplier_2_filled", "multiplier_2_block_filled.png");
+	load_bitmap("block_multiplier_3_filled", "multiplier_3_block_filled.png");
+	load_bitmap("block_multiplier_4_filled", "multiplier_4_block_filled.png");
+	load_bitmap("block_multiplier_5_filled", "multiplier_5_block_filled.png");
+	
 	load_bitmap("dropped_multi_ball", "dropped_multiball.png");
-	load_bitmap("dropped_multiplier", "dropped_multiplier.png"); 
+	load_bitmap("dropped_multiplier_2", "dropped_multiplier_2.png");
+	load_bitmap("dropped_multiplier_3", "dropped_multiplier_3.png");
+	load_bitmap("dropped_multiplier_4", "dropped_multiplier_4.png");
+	load_bitmap("dropped_multiplier_5", "dropped_multiplier_5.png");
+	
 }
 void start_level()
 {
@@ -384,6 +384,31 @@ void start_level()
     // Paddle starting location at the x axis
     game_data.paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
     game_data.next_level = false;
+}
+void reset_game()
+{
+	game_data.score = 0;
+	game_data.game_over = false;
+	game_data.game_won = false;
+	game_data.current_level = 1;
+	game_data.next_level = false;
+	game_data.timer = 0;
+	game_data.score_multiplier = 1;
+
+	// Spawn blocks
+	game_data.blocks = spawn_blocks_level1();
+	game_data.blocks_in_level = BLOCKS_IN_LEVEL1;
+
+	// Spawn first ball at starting location
+	game_data.current_balls.push_back(create_ball(screen_width() / 2, 500, true, true));
+
+	// Paddle starting location at the x axis
+	game_data.paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
+
+	// Draw the environment
+	clear_screen(COLOR_BLACK);
+	draw_blocks(); // Draw blocks
+	draw_bitmap("paddle", game_data.paddle_x, PADDLE_Y); // Draw paddle
 }
 void check_ball_collision(int i)
 {
@@ -470,6 +495,37 @@ void update_ball_location(int i)
     else game_data.current_balls[i].x -= BALL_SPEED;
 }
 
+void update_powerup_drops(int i)
+{
+	// Update powerup drop locations
+	game_data.current_powerups[i].y += BALL_SPEED/2; //powerup drops move at half the speed of balls
+	
+	//hit the bottom of the screen
+	if(game_data.current_powerups[i].y + BALL_RADIUS >= screen_height())
+	{
+		//remove powerup
+		game_data.current_powerups[i] = game_data.current_powerups[game_data.current_powerups.size()-1];
+		game_data.current_powerups.pop_back();
+	}
+	//get caught by paddle
+	if ((PADDLE_Y <= game_data.current_powerups[i].y + BALL_RADIUS and game_data.current_powerups[i].y + BALL_RADIUS <= PADDLE_Y + (BALL_SPEED/2)) and (game_data.current_powerups[i].x + BALL_RADIUS >= game_data.paddle_x and game_data.current_powerups[i].x - BALL_RADIUS <= game_data.paddle_x + PADDLE_LENGTH))
+	{
+		bool direction = (bool)rnd(0,2); //generate random 0 or 1 for horizontal direction
+
+		//apply multi ball powerup
+		if (game_data.current_powerups[i].kind == MULTI_BALL) game_data.current_balls.push_back(create_ball(game_data.current_powerups[i].x, PADDLE_Y + 10, true, direction)); //create ball above the paddle with a random horizontal direction
+		//apply score multiplier powerup
+		else if (game_data.current_powerups[i].kind == SCORE_MULTIPLY)
+		{
+			game_data.timer = MULTIPLIER_DURATION; // set timer for MULTIPLIER_DURATION seconds
+			if(game_data.score_multiplier < 5) game_data.score_multiplier++;
+		}
+		//remove powerup drop
+		game_data.current_powerups[i] = game_data.current_powerups[game_data.current_powerups.size()-1];
+		game_data.current_powerups.pop_back();
+	}
+}
+
 void draw_game()
 {
     clear_screen(COLOR_BLACK);
@@ -484,7 +540,19 @@ void draw_game()
         draw_bitmap(get_powerup_bitmap(game_data.current_powerups[i].kind),game_data.current_powerups[i].x,game_data.current_powerups[i].y);
     }
     draw_bitmap("paddle", game_data.paddle_x, PADDLE_Y); // Draw paddle
-    draw_text("SCORE: " + to_string(game_data.score) + " MULTIPLIER: x" + to_string(game_data.score_multiplier) + " " + to_string(game_data.timer), COLOR_WHITE, font_named("default"), 20, 20, 20); // Draw score
+    draw_text("SCORE:" + to_string(game_data.score), COLOR_WHITE, font_named("default"), 35, 20, 20); // Draw score
+	if (game_data.score_multiplier > 1) //Draw multiplier guage
+	{
+		//Draw multiplier background
+		draw_bitmap("block_multiplier_" + to_string(game_data.score_multiplier), 170 + (20*floor(log10(game_data.score))), 24, option_scale_bmp(1,1));
+		
+		//Draw multiplier foreground
+		bitmap filled_bitmap = bitmap_named("block_multiplier_" + to_string(game_data.score_multiplier) + "_filled"); //Get bitmap with appropriate number
+		rectangle bitmap_part = bitmap_bounding_rectangle(filled_bitmap); //Create bounding rectange for displaying part of the sprite's height
+		bitmap_part.height = bitmap_height(filled_bitmap) * game_data.timer/10.0; //Shrink foreground as the timer goes down
+		bitmap_part.y = bitmap_height(filled_bitmap) - bitmap_part.height; //Move foreground down to line up with background
+		draw_bitmap(filled_bitmap, 171 + (20*floor(log10(game_data.score))), 25 + (bitmap_height(filled_bitmap) - bitmap_part.height), option_scale_bmp(1,1,option_part_bmp(bitmap_part))); //draw foreground
+	}
 }
 
 int main()
@@ -494,14 +562,6 @@ int main()
 
     // Load resources
     load_resources();
-
-	// spawn only one block for testing winning a level
-	/*
-	block_data block; 
-    block.x = 600;
-    block.y = 300;
-    blocks[index] = block;
-	*/
 
     while(!key_down(ESCAPE_KEY))
     {
@@ -520,87 +580,45 @@ int main()
 		if (key_down(A_KEY) and game_data.paddle_x > 10) game_data.paddle_x -= PADDLE_SPEED; //moving left
 		if (key_down(D_KEY) and game_data.paddle_x < screen_width() - PADDLE_LENGTH - 10) game_data.paddle_x += PADDLE_SPEED; //moving right
 		
+		//update balls
 		for(int i = 0; i < game_data.current_balls.size(); i++)
 		{
             check_ball_collision(i);
             update_ball_location(i);
 		}
 		
+		//update powerup drops
 		for(int i = 0; i < game_data.current_powerups.size(); i++) //update powerup drops
 		{
-			// Update powerup drop locations
-			game_data.current_powerups[i].y += BALL_SPEED/2; //powerup drops move at half the speed of balls
-			
-			//hit the bottom of the screen
-			if(game_data.current_powerups[i].y + BALL_RADIUS >= screen_height())
-			{
-				//remove powerup
-				game_data.current_powerups[i] = game_data.current_powerups[game_data.current_powerups.size()-1];
-				game_data.current_powerups.pop_back();
-			}
-			//get caught by paddle
-			if ((PADDLE_Y <= game_data.current_powerups[i].y + BALL_RADIUS and game_data.current_powerups[i].y + BALL_RADIUS <= PADDLE_Y + (BALL_SPEED/2)) and (game_data.current_powerups[i].x + BALL_RADIUS >= game_data.paddle_x and game_data.current_powerups[i].x - BALL_RADIUS <= game_data.paddle_x + PADDLE_LENGTH))
-			{
-				bool direction = (bool)rnd(0,2); //generate random 0 or 1 for horizontal direction
-
-				//apply multi ball powerup
-                if (game_data.current_powerups[i].kind == MULTI_BALL) game_data.current_balls.push_back(create_ball(game_data.current_powerups[i].x, PADDLE_Y + 10, true, direction)); //create ball above the paddle with a random horizontal direction
-                //apply score multiplier powerup
-                else if (game_data.current_powerups[i].kind == SCORE_MULTIPLY)
-                {
-                    game_data.timer = MULTIPLIER_DURATION; // set timer for MULTIPLIER_DURATION seconds
-                    game_data.score_multiplier++;
-                }
-				//remove powerup drop
-				game_data.current_powerups[i] = game_data.current_powerups[game_data.current_powerups.size()-1];
-				game_data.current_powerups.pop_back();
-			}
+			update_powerup_drops(i);
 		}
-		
+        
+        // Redraw everything
+		draw_game();
+
 		// Win level if all blocks are destroyed
 		if (game_data.remaining_blocks == 0)
 		{
 			game_data.next_level = true;
             game_data.current_level++;
 		}
-        
-        // Redraw everything
-		draw_game();
-
 		// Draw win/lose messages when level ends
 		if (game_data.game_over)
 		{
 			end_level(game_data.game_won);
-
-            if (key_typed(R_KEY)) //restart the game, can be moved to a function if we make a game data struct
-            {
-                game_data.score = 0;
-                game_data.game_over = false;
-                game_data.game_won = false;
-                game_data.current_level = 1;
-                game_data.next_level = false;
-                game_data.timer = 0;
-                game_data.score_multiplier = 1;
-
-                // Spawn blocks
-                game_data.blocks = spawn_blocks_level1();
-                game_data.blocks_in_level = BLOCKS_IN_LEVEL1;
-
-                // Spawn first ball at starting location
-                game_data.current_balls.push_back(create_ball(screen_width() / 2, 500, true, true));
-
-                // Paddle starting location at the x axis
-                game_data.paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
-
-                // Draw the environment
-                clear_screen(COLOR_BLACK);
-                draw_blocks(); // Draw blocks
-                draw_bitmap("paddle", game_data.paddle_x, PADDLE_Y); // Draw paddle
-            }
+			
+			if (key_typed(R_KEY)) reset_game();
 		}
 
         // Shortcut button to change level for development purpose
         if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
+		
+		// Shortcut button to increase multiplier for development purpose
+		if (key_typed(G_KEY))
+		{
+			game_data.timer = MULTIPLIER_DURATION;
+            if(game_data.score_multiplier < 5) game_data.score_multiplier++;
+		}
 
         refresh_screen(60);
     }
