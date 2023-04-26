@@ -65,6 +65,7 @@ struct
     int remaining_blocks;       // Blocks remaining to destroy to complete level
     int blocks_in_level;        // Initial number of blocks
     int score = 0;              // Current score (default starting score = 0)
+    bool game_start = false;    // True if player has started the game
     bool game_over = false;     // True if all levels complete or no more ball remaining
     bool game_won = false;      // True if all levels complete
     int current_level = 1;      // Current level (default starting level = 1)
@@ -171,8 +172,11 @@ void draw_blocks()
 		if (game_data.blocks[i].hitpoint > 0) //broken blocks aren't drawn
 		{
             draw_bitmap(game_data.blocks[i].block_bitmap, game_data.blocks[i].x, game_data.blocks[i].y);
-            draw_bitmap(game_data.blocks[i].powerup_bitmap, game_data.blocks[i].x, game_data.blocks[i].y);
-		}
+            if (!(game_data.blocks[i].kind == HIDDEN && game_data.blocks[i].hitpoint > 1))
+            {
+                draw_bitmap(game_data.blocks[i].powerup_bitmap, game_data.blocks[i].x, game_data.blocks[i].y);
+            }
+        }
     }
 }
 
@@ -183,6 +187,16 @@ void break_block(block_data blocks[], int block_index, int &score, int &remainin
     if(blocks[block_index].hitpoint == 0)
     {
         remaining_blocks--;
+        if (game_data.blocks[block_index].powerup != NO_POWERUP) // if the ball collided with any side of a powerup block
+        {
+            //create powerup drop
+            powerup_drop_data new_powerup;
+            new_powerup.x = game_data.blocks[block_index].x;
+            new_powerup.y = game_data.blocks[block_index].y;
+            new_powerup.kind = game_data.blocks[block_index].powerup;
+            
+            game_data.current_powerups.push_back(new_powerup);
+        }
     }
     else if (blocks[block_index].kind == DOUBLE_HIT)
     {
@@ -209,10 +223,10 @@ block_data * spawn_blocks_level1()
     }
     for (int i = 0; i < 6; i++)
     {
-        block = create_block(220 + i * BLOCK_WIDTH, 320, SINGLE_HIT, MULTI_BALL);
+        block = create_block(220 + i * BLOCK_WIDTH, 320, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
-        block = create_block(220 + i * BLOCK_WIDTH, 280, SINGLE_HIT, SCORE_MULTIPLY);
+        block = create_block(220 + i * BLOCK_WIDTH, 280, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
@@ -233,6 +247,25 @@ block_data * spawn_blocks_level1()
         block = create_block(340 + i * BLOCK_WIDTH, 240, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
+    }
+
+    for (int i = 0; i < 6; i++)
+    {
+        do
+        {
+            index = rand() % BLOCKS_IN_LEVEL1;
+        } while (blocks[index].powerup != NO_POWERUP);
+        blocks[index].powerup = MULTI_BALL;
+        blocks[index].powerup_bitmap = "block_multi_ball";
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        do
+        {
+            index = rand() % BLOCKS_IN_LEVEL1;
+        } while (blocks[index].powerup != NO_POWERUP);
+        blocks[index].powerup = SCORE_MULTIPLY;
+        blocks[index].powerup_bitmap = "block_multiplier_2";
     }
 
     return blocks;
@@ -271,6 +304,25 @@ block_data * spawn_blocks_level2()
     block = create_block(700, 240, SINGLE_HIT, NO_POWERUP);
     blocks[index] = block;
 
+    for (int i = 0; i < 5; i++)
+    {
+        do
+        {
+            index = rand() % BLOCKS_IN_LEVEL2;
+        } while (blocks[index].powerup != NO_POWERUP);
+        blocks[index].powerup = MULTI_BALL;
+        blocks[index].powerup_bitmap = "block_multi_ball";
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        do
+        {
+            index = rand() % BLOCKS_IN_LEVEL2;
+        } while (blocks[index].powerup != NO_POWERUP);
+        blocks[index].powerup = SCORE_MULTIPLY;
+        blocks[index].powerup_bitmap = "block_multiplier_2";
+    }
+
     return blocks;
 }
 block_data * spawn_blocks_level3()
@@ -296,6 +348,25 @@ block_data * spawn_blocks_level3()
         index++;
     }
 
+    for (int i = 0; i < 8; i++)
+    {
+        do
+        {
+            index = rand() % BLOCKS_IN_LEVEL3;
+        } while (blocks[index].powerup != NO_POWERUP);
+        blocks[index].powerup = MULTI_BALL;
+        blocks[index].powerup_bitmap = "block_multi_ball";
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        do
+        {
+            index = rand() % BLOCKS_IN_LEVEL3;
+        } while (blocks[index].powerup != NO_POWERUP);
+        blocks[index].powerup = SCORE_MULTIPLY;
+        blocks[index].powerup_bitmap = "block_multiplier_2";
+    }
+
     return blocks;
 }
 block_data * spawn_blocks_level4()
@@ -314,6 +385,25 @@ block_data * spawn_blocks_level4()
         }
     }
 
+    for (int i = 0; i < 30; i++)
+    {
+        do
+        {
+            index = rand() % BLOCKS_IN_LEVEL4;
+        } while (blocks[index].powerup != NO_POWERUP);
+        blocks[index].powerup = MULTI_BALL;
+        blocks[index].powerup_bitmap = "block_multi_ball";
+    }
+    for (int i = 0; i < 20; i++)
+    {
+        do
+        {
+            index = rand() % BLOCKS_IN_LEVEL4;
+        } while (blocks[index].powerup != NO_POWERUP);
+        blocks[index].powerup = SCORE_MULTIPLY;
+        blocks[index].powerup_bitmap = "block_multiplier_2";
+    }
+
     return blocks;
 }
 
@@ -323,6 +413,7 @@ void load_resources()
 
     load_bitmap("ball", "ball.png");
     load_bitmap("paddle", "platform.png");
+    load_bitmap("title", "title.png");
 
     load_bitmap("block_single_hit", "5.png");
     load_bitmap("block_double_hit_1", "8.png");
@@ -342,11 +433,18 @@ void load_resources()
 	load_bitmap("block_multiplier_5_filled", "multiplier_5_block_filled.png");
 	
 	load_bitmap("dropped_multi_ball", "dropped_multiball.png");
-	load_bitmap("dropped_multiplier_2", "dropped_multiplier_2.png");
+	load_bitmap("dropped_multiplier_2", "dropped_multiplier.png");
 	load_bitmap("dropped_multiplier_3", "dropped_multiplier_3.png");
 	load_bitmap("dropped_multiplier_4", "dropped_multiplier_4.png");
 	load_bitmap("dropped_multiplier_5", "dropped_multiplier_5.png");
 	
+}
+void show_title_screen()
+{
+    clear_screen(COLOR_BLACK);
+    draw_bitmap("title", 0, 0);
+    draw_text("Press r to start", COLOR_WHITE, font_named("default"), 25, 250, 430);
+    if (key_typed(R_KEY)) game_data.game_start = true;
 }
 void start_level()
 {
@@ -380,6 +478,9 @@ void start_level()
     // Spawn ball at starting location
     game_data.current_balls.clear();
     game_data.current_balls.push_back(create_ball(screen_width()/2, 500, true, true));
+
+    // Remove powerups dropping from last level
+    game_data.current_powerups.clear();
 
     // Paddle starting location at the x axis
     game_data.paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
@@ -439,50 +540,35 @@ void check_ball_collision(int i)
     // Bounce off blocks
     for (int j = 0; j < game_data.blocks_in_level; j++)
     {
-        bool collision = false;
         if (game_data.blocks[j].hitpoint > 0)
         {
             // Vertically
-            if (game_data.current_balls[i].x >= game_data.blocks[j].x and game_data.current_balls[i].x <= game_data.blocks[j].x + BLOCK_WIDTH)
+            if (game_data.current_balls[i].x > game_data.blocks[j].x and game_data.current_balls[i].x < game_data.blocks[j].x + BLOCK_WIDTH)
             {
                 if (game_data.blocks[j].y + BLOCK_HEIGHT - BALL_SPEED <= game_data.current_balls[i].y - BALL_RADIUS and game_data.current_balls[i].y - BALL_RADIUS <= game_data.blocks[j].y + BLOCK_HEIGHT) // Bottom of block
                 {
                     game_data.current_balls[i].up = false;
                     break_block(game_data.blocks, j, game_data.score, game_data.remaining_blocks, game_data.score_multiplier);
-                    collision = true;
                 }
                 if (game_data.blocks[j].y <= game_data.current_balls[i].y + BALL_RADIUS and game_data.current_balls[i].y + BALL_RADIUS <= game_data.blocks[j].y + BALL_SPEED) // Top of block
                 {
                     game_data.current_balls[i].up = true;
                     break_block(game_data.blocks, j, game_data.score, game_data.remaining_blocks, game_data.score_multiplier);
-                    collision = true;
                 }
             }
             // Horizontally
-            if (game_data.current_balls[i].y + BALL_RADIUS >= game_data.blocks[j].y and game_data.current_balls[i].y - BALL_RADIUS < game_data.blocks[j].y + BLOCK_HEIGHT)
+            if (game_data.current_balls[i].y + BALL_RADIUS > game_data.blocks[j].y and game_data.current_balls[i].y - BALL_RADIUS < game_data.blocks[j].y + BLOCK_HEIGHT)
             {
                 if (game_data.blocks[j].x + BLOCK_WIDTH <= game_data.current_balls[i].x - BALL_RADIUS - BALL_SPEED and game_data.current_balls[i].x - BALL_RADIUS <= game_data.blocks[j].x + BLOCK_WIDTH) // Right of block
                 {
                     game_data.current_balls[i].right = true;
                     break_block(game_data.blocks, j, game_data.score, game_data.remaining_blocks, game_data.score_multiplier);
-                    collision = true;
                 }
                 if (game_data.blocks[j].x <= game_data.current_balls[i].x + BALL_RADIUS and game_data.current_balls[i].x + BALL_RADIUS <= game_data.blocks[j].x + BALL_SPEED) // Left of block
                 {
                     game_data.current_balls[i].right = false;
                     break_block(game_data.blocks, j, game_data.score, game_data.remaining_blocks, game_data.score_multiplier);
-                    collision = true;
                 }
-            }
-            if (collision and game_data.blocks[j].powerup != NO_POWERUP) // if the ball collided with any side of a powerup block
-            {
-                //create powerup drop
-                powerup_drop_data new_powerup;
-                new_powerup.x = game_data.blocks[j].x;
-                new_powerup.y = game_data.blocks[j].y;
-                new_powerup.kind = game_data.blocks[j].powerup;
-                
-                game_data.current_powerups.push_back(new_powerup);
             }
         }
     }
@@ -565,61 +651,69 @@ int main()
 
     while(!key_down(ESCAPE_KEY))
     {
-        if (game_data.timer > 0) game_data.timer -= (1.0 / 60.0); //count down 1/60 seconds every frame if the timer is in use
-        else if (game_data.timer < 0) game_data.timer = 0;
-        else game_data.score_multiplier = 1;
-        
-        // Start level
-        if (game_data.next_level)
-        {
-            start_level();
-        }
-
 		process_events(); //check keyboard state
-        // Player controls
-		if (key_down(A_KEY) and game_data.paddle_x > 10) game_data.paddle_x -= PADDLE_SPEED; //moving left
-		if (key_down(D_KEY) and game_data.paddle_x < screen_width() - PADDLE_LENGTH - 10) game_data.paddle_x += PADDLE_SPEED; //moving right
-		
-		//update balls
-		for(int i = 0; i < game_data.current_balls.size(); i++)
-		{
-            check_ball_collision(i);
-            update_ball_location(i);
-		}
-		
-		//update powerup drops
-		for(int i = 0; i < game_data.current_powerups.size(); i++) //update powerup drops
-		{
-			update_powerup_drops(i);
-		}
+
+        if(!game_data.game_start)
+        {
+            show_title_screen();
+        }
+        else
+        {
+            if (game_data.timer > 0) game_data.timer -= (1.0 / 60.0); //count down 1/60 seconds every frame if the timer is in use
+            else if (game_data.timer < 0) game_data.timer = 0;
+            else game_data.score_multiplier = 1;
+            
+            // Start level
+            if (game_data.next_level)
+            {
+                start_level();
+            }
+
+            // Player controls
+            if (key_down(A_KEY) and game_data.paddle_x > 10) game_data.paddle_x -= PADDLE_SPEED; //moving left
+            if (key_down(D_KEY) and game_data.paddle_x < screen_width() - PADDLE_LENGTH - 10) game_data.paddle_x += PADDLE_SPEED; //moving right
+            
+            //update balls
+            for(int i = 0; i < game_data.current_balls.size(); i++)
+            {
+                check_ball_collision(i);
+                update_ball_location(i);
+            }
+            
+            //update powerup drops
+            for(int i = 0; i < game_data.current_powerups.size(); i++) //update powerup drops
+            {
+                update_powerup_drops(i);
+            }
+            
+            // Redraw everything
+            draw_game();
+
+            // Win level if all blocks are destroyed
+            if (game_data.remaining_blocks == 0)
+            {
+                game_data.next_level = true;
+                game_data.current_level++;
+            }
+            // Draw win/lose messages when level ends
+            if (game_data.game_over)
+            {
+                end_level(game_data.game_won);
+                
+                if (key_typed(R_KEY)) reset_game();
+            }
+
+            // Shortcut button to change level for development purpose
+            if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
+            
+            // Shortcut button to increase multiplier for development purpose
+            if (key_typed(G_KEY))
+            {
+                game_data.timer = MULTIPLIER_DURATION;
+                if(game_data.score_multiplier < 5) game_data.score_multiplier++;
+            }
+        }
         
-        // Redraw everything
-		draw_game();
-
-		// Win level if all blocks are destroyed
-		if (game_data.remaining_blocks == 0)
-		{
-			game_data.next_level = true;
-            game_data.current_level++;
-		}
-		// Draw win/lose messages when level ends
-		if (game_data.game_over)
-		{
-			end_level(game_data.game_won);
-			
-			if (key_typed(R_KEY)) reset_game();
-		}
-
-        // Shortcut button to change level for development purpose
-        if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
-		
-		// Shortcut button to increase multiplier for development purpose
-		if (key_typed(G_KEY))
-		{
-			game_data.timer = MULTIPLIER_DURATION;
-            if(game_data.score_multiplier < 5) game_data.score_multiplier++;
-		}
-
         refresh_screen(60);
     }
     return 0;
