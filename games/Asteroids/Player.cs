@@ -121,7 +121,7 @@ public class Player
 
     private void Rotation(double change)
     {
-        _Angle = (_Angle + change) % 360;
+        _Angle = (_Angle + change) ; //% 360
     }
 
     private void Move(double Speed)
@@ -219,9 +219,11 @@ public class Player
             {
                 if (SplashKit.BitmapCircleCollision(_Ship, X, Y, e)) hit = true;
             }
-
-            if (hit)
-            { return enemy.HitBy(this); }
+            if (enemy.HitSprite() != null)
+            {
+                if (SplashKit.SpriteBitmapCollision(enemy.HitSprite(), _Ship, X, Y)) hit = true;
+            }
+            if (hit) return enemy.HitBy(this);
         }
 
         foreach (Shooting s in _shots)
