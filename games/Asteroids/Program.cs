@@ -8,7 +8,7 @@ public class Program
     public static void Main()
     {
         Window gameWindow = new Window("Asteroids", 1600, 900);
-        //gameWindow.ToggleBorder();
+        gameWindow.ToggleBorder();
         Game Game = null;
         Menu Menu = new Menu(gameWindow);
 
@@ -21,11 +21,13 @@ public class Program
             ftl.Reset();
             SplashKit.ProcessEvents();
             gameWindow.Clear(Color.Black);      // reset screen 
+
             if (SplashKit.KeyTyped(KeyCode.EscapeKey)) _GameExit = true;
             if (gameWindow.CloseRequested) _GameExit = true;
-
+            
             if (!Menu.GameStarted)
             {
+                
                 Menu.DrawMenu();
                 Menu.Selection();
 
@@ -33,7 +35,7 @@ public class Program
                 //    System.Environment.Exit(1); //if player selects quite close window
                 if (Menu.quit == true) _GameExit = true;  //if player selects quite close window
 
-                if (Menu.GameStarted) 
+                if (Menu.GameStarted)
                     Game = new Game(gameWindow, Menu.players, Menu.p1Ship, Menu.p2Ship);   // create new game instance
 
             }

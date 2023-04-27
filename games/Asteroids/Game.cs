@@ -8,14 +8,11 @@ public class Game
     private List<Player> _Players;
     private List<Player> _TempPlayers;
     private Level _gameLevel;
-    private List<Score> _PlayerScores = new List<Score>();
     private int _playersNo;
-    private string? _p1Ship, _p2Ship;
     public bool GameStarted { get; private set; }
-    private bool _GameOverP1 = false;
-    private bool _GameOverP2 = false;
 
-    //private Players Player; temp for testing
+    private int _GameOverCount;
+
 
 
 
@@ -23,31 +20,25 @@ public class Game
     {
         _GameWindow = gameWindow;
         _playersNo = playersNo;
-        _p1Ship = p1Ship;
-        _p2Ship = p2Ship;
         GameStarted = true;
-        _Players = new List<Player>();
-        _TempPlayers = new List<Player>();
+        _Players = new List <Player>();
+        _TempPlayers = new List <Player>();
+        _GameOverCount = -1;
 
-        _Players.Add(new Player(gameWindow, "Player 1", p1Ship, playersNo));
-        _PlayerScores.Add(new Player1Score(gameWindow, "Player 1"));
-        _Players[0]._PlayerScore = _PlayerScores[0];
+        _Players.Add(new Player(gameWindow,"Player 1",p1Ship,playersNo));
+        _Players[0]._PlayerScore = new Player1Score(gameWindow,"Player 1");
         if (playersNo == 2)
         {
-            _Players.Add(new Player(gameWindow, "Player 2", p2Ship, playersNo));
-            _PlayerScores.Add(new Player2Score(gameWindow, "Player 2"));
-            _Players[1]._PlayerScore = _PlayerScores[1];
+            _Players.Add(new Player(gameWindow,"Player 2",p2Ship,playersNo));
+            _Players[1]._PlayerScore = new Player2Score(gameWindow,"Player 2");
         }
 
-        SplashKit.FreeAllSprites();
-        if (!SplashKit.HasSpritePack("Ships")) SplashKit.CreateSpritePack("Ships");
-        if (!SplashKit.HasSpritePack("Enemies")) SplashKit.CreateSpritePack("Enemies");
-        if (!SplashKit.HasSpritePack("Shots")) SplashKit.CreateSpritePack("Shots");
+        SplashKit.CreateSpritePack("Game");
+        SplashKit.SelectSpritePack("Game");
 
         //_gameLevel = new Debuglvl(_GameWindow, this);
-        _gameLevel = new Level1(_GameWindow, this);
-        //_gameLevel = new Level2(_GameWindow, this);
-
+        _gameLevel = new Jsonlvl(_GameWindow, this, "Level_Test.json");
+        //_gameLevel = new Level1(_GameWindow, this);
 
     }
 
@@ -64,57 +55,48 @@ public class Game
     {
         _gameLevel.Draw();
 
-        SplashKit.SelectSpritePack("Shots");
         SplashKit.DrawAllSprites();
-
-        SplashKit.SelectSpritePack("Ships");
-        SplashKit.DrawAllSprites();
-
-        SplashKit.SelectSpritePack("Enemies");
-        SplashKit.DrawAllSprites();
-
-        // SplashKit.SelectSpritePack("Default");
-        // SplashKit.DrawAllSprites();
 
         foreach (Player p in _Players)
         {
-            p.Draw();
+            if (!p._PlayerScore.IsDead)
+            {
+                p.Draw();
+            }
+            p._PlayerScore.Draw();
         }
 
-        foreach (Score s in _PlayerScores)
+        if (_GameOverCount > -1)
         {
-            s.Draw();
+            DrawGameOver();
         }
-
     }
 
-    public void GameOver()
+    public void GameOver()  // using this version for some reason retains old sprites
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
-        const int FontSize = 120;
-
-        _GameWindow.Clear(Color.Black);
-        foreach (Score s in _PlayerScores)
+        const int FontSize = 120;  
+        foreach(Player p in _Players)
         {
-            s.Draw();
+            p._PlayerScore.Draw();
         }
         int X_GameText = _GameWindow.Width / 2 - 270;
         int Y_GameText = _GameWindow.Height / 3;
-        //SplashKit.SelectSpritePack("Default");
-        //Console.WriteLine(SplashKit.CurrentSpritePack());
-        //SplashKit.FreeAllBitmaps();
-        //SplashKit.FreeAllSprites(); //There seems to be an issue with the FreeAllSprites Procedure
-        //SplashKit.FreeAllAnimationScripts();
-
-        foreach (Enemy e in _gameLevel.Enemies)
-        {
-            e.freesprite();
-
-        }
         SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
         _GameWindow.Refresh(60);
         SplashKit.Delay(5000);
+        SplashKit.FreeSpritePack("Game");
         GameStarted = false;
+    }
+
+    public void DrawGameOver()
+    {
+        Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
+        const int FontSize = 120;  
+
+        int X_GameText = _GameWindow.Width / 2 - 270;
+        int Y_GameText = _GameWindow.Height / 3;
+        SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
     }
 
     public void HandleInput()
@@ -126,48 +108,37 @@ public class Game
 
     public void Updates()
     {
+        SplashKit.UpdateAllSprites();
+
+        bool _GameOver = true;
         for (int i = 0; i < _Players.Count(); i++)
         {
-            _Players[i].Updates();
-            HitCheck(_Players[i]);
-            if (_Players[i].IsDead) _Players[i].Respawn(_playersNo);
-
-            if (_Players[i]._PlayerScore.IsDead)
+            if (!_Players[i]._PlayerScore.IsDead)
             {
-                _Players.Remove(_Players[i]);
-                i--;
+                _Players[i].Updates();
+                HitCheck(_Players[i]);
+                if (_Players[i].IsDead) _Players[i].Respawn(_playersNo);
             }
+            _GameOver = _Players[i]._PlayerScore.IsDead ? _GameOver : false;
         }
 
         _gameLevel.Update();
-        SplashKit.SelectSpritePack("Shots");
-        SplashKit.UpdateAllSprites();
 
-        SplashKit.SelectSpritePack("Ships");
-        SplashKit.UpdateAllSprites();
-
-        SplashKit.SelectSpritePack("Enemies");
-        SplashKit.UpdateAllSprites();
-
-        // SplashKit.SelectSpritePack("Default");
-        // SplashKit.UpdateAllSprites();
-
-        foreach (Enemy e in _gameLevel.Enemies)
+        if (_GameOver && _GameOverCount == -1)
         {
-            if (e.CanShoot) HitCheck(e);
-
+            _GameOverCount = 0;
+            //GameOver();
         }
-
-        bool _GameOver = true;
-        foreach (Score s in _PlayerScores)
+        else if (_GameOverCount > -1)
         {
-            _GameOver = s.IsDead ? _GameOver : false;
+            _GameOverCount++;
+            if  (_GameOverCount > 120)
+            {
+                GameStarted = false;
+                SplashKit.FreeSpritePack("Game");
+            }
         }
-        if (_GameOver)
-        {
-            GameOver();
-        }
-
+        
     }
 
     public void HitCheck(Player player)
@@ -200,14 +171,8 @@ public class Game
 
             if (HitCheckResult.Item1 == "Life") // Look at re-spwarning Player in centre
             {
-                foreach (Score s in _PlayerScores)
-                {
-                    if (s.Name == p.Name)
-                    {
-                        s.DownLife();
-                        p.Killed();
-                    }
-                }
+                p._PlayerScore.DownLife();
+                p.Killed();
             }
         }
     }
