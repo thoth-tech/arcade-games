@@ -5,7 +5,6 @@
     "anchor_pos" : [100,100],
     "anim_fp" : "RockLarge.txt",
     "start_anim" : "normal",
-    "pack" : "Enemy",
     "mass" : 10,
     "values" : 
     {
