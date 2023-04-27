@@ -223,12 +223,16 @@ public class Laser : Shooting
 
         // Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
         // _Velocity = SplashKit.VectorMultiply(direction, SPEED);
-        
 
-        if (SplashKit.HasBitmap("BigLaser")) _laserImg = SplashKit.BitmapNamed("BigLaser");
-        else _laserImg = SplashKit.LoadBitmap("BigLaser", "BigLaser.png");
-        _laserImg.SetCellDetails(300, 100, 1, 20, 20);
-        _LaserScript = SplashKit.LoadAnimationScript("LaserScript", "Laser.txt");
+        
+        // if (SplashKit.HasBitmap("BigLaser")) _laserImg = SplashKit.BitmapNamed("BigLaser");
+        // else _laserImg = SplashKit.LoadBitmap("BigLaser", "BigLaser.png");
+        // if (SplashKit.HasBitmap("SmallLaser")) _laserImg = SplashKit.BitmapNamed("SmallLaser");
+        // else _laserImg = SplashKit.LoadBitmap("SmallLaser", "SmallLaser.png");
+        if (SplashKit.HasBitmap("ReallySmallLaser")) _laserImg = SplashKit.BitmapNamed("ReallySmallLaser");
+        else _laserImg = SplashKit.LoadBitmap("ReallySmallLaser", "ReallySmallLaser.png");
+        _laserImg.SetCellDetails(300, 50, 1, 40, 40);
+        _LaserScript = SplashKit.LoadAnimationScript("LaserScript", "Laser40.txt");
         _laserSprite = SplashKit.CreateSprite(_laserImg, _LaserScript);
         //_EnergyBallSprite.StartAnimation("Start");
         _laserSprite.Position = fromPT;

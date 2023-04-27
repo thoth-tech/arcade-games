@@ -39,14 +39,14 @@ public class Game
             _Players[1]._PlayerScore = _PlayerScores[1];
         }
 
-
-        _gameLevel = new Debuglvl(_GameWindow, this);
-        //_gameLevel = new Level1(_GameWindow, this);
-        //_gameLevel = new Level2(_GameWindow, this);
+        SplashKit.FreeAllSprites();
         if (!SplashKit.HasSpritePack("Ships")) SplashKit.CreateSpritePack("Ships");
         if (!SplashKit.HasSpritePack("Enemies")) SplashKit.CreateSpritePack("Enemies");
         if (!SplashKit.HasSpritePack("Shots")) SplashKit.CreateSpritePack("Shots");
 
+        //_gameLevel = new Debuglvl(_GameWindow, this);
+        _gameLevel = new Level1(_GameWindow, this);
+        //_gameLevel = new Level2(_GameWindow, this);
 
 
     }
@@ -100,8 +100,8 @@ public class Game
         }
         int X_GameText = _GameWindow.Width / 2 - 270;
         int Y_GameText = _GameWindow.Height / 3;
-        SplashKit.SelectSpritePack("Default");
-        Console.WriteLine(SplashKit.CurrentSpritePack());
+        //SplashKit.SelectSpritePack("Default");
+        //Console.WriteLine(SplashKit.CurrentSpritePack());
         //SplashKit.FreeAllBitmaps();
         //SplashKit.FreeAllSprites(); //There seems to be an issue with the FreeAllSprites Procedure
         //SplashKit.FreeAllAnimationScripts();

@@ -3,7 +3,7 @@
     "tasks": [
         {
             "label": "build",
-            "command": "/usr/local/share/dotnet/dotnet", // /usr/local/share/dotnet/dotnet
+            "command": "dotnet", // /usr/local/share/dotnet/dotnet
             "type": "process",
             "args": [
                 "build",

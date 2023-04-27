@@ -1153,6 +1153,7 @@ public class smallShip : Boss2
     public smallShip(Window gameWindow, Game game, int ShipNo) : base(gameWindow, game)
     {
 
+        SplashKit.SelectSpritePack("Enemies");
         _Ship = SplashKit.CreateSprite(_Boss, _BossScript);
         _Ship.AddValue("Health", 50);
         _Ship.StartAnimation("ShieldUp");
@@ -1226,18 +1227,21 @@ public class smallShip : Boss2
             // }
         }
 
+
         if (_Ship.Value("Health") <= 0)
         {
             _IsDying = true;
-            _Ship.StartAnimation("CriticalDamage");
+            if (!(_Ship.AnimationName() == "criticaldamage")) _Ship.StartAnimation("criticaldamage");
         }
-        if (_Ship.AnimationName() == "CriticalDamage")
+        if (_Ship.AnimationName() == "criticaldamage")
         {
             if (_Ship.AnimationHasEnded) IsDead = true;
         }
         PlayerUpdate();
         ShotUpdate();
         LaserUpdate();
+
+
     }
 
     private void PlayerUpdate()
@@ -1262,7 +1266,7 @@ public class smallShip : Boss2
         Console.WriteLine("Fire Laser Called");
         _LaserFiring = true;
         _firstShot = true;
-        _FrameCount = 19;
+        _FrameCount = 39;
     }
     private void LaserUpdate()
     {
@@ -1271,7 +1275,7 @@ public class smallShip : Boss2
             int ShotCount = _shots.Count();
 
 
-            Point2D fromPT = new Point2D { X = _Ship.X + 50, Y = _Ship.CenterPoint.Y - 50 };
+            Point2D fromPT = new Point2D { X = _Ship.X + 50, Y = _Ship.CenterPoint.Y - 40 };
 
             //Console.WriteLine("LaserFiring");
             if (_firstShot)
@@ -1289,7 +1293,7 @@ public class smallShip : Boss2
                 // Console.WriteLine("Target y " + target.Y);
                 // Console.WriteLine("Shot Count " + _shots.Count());
                 //Console.WriteLine("Remaining Shots");
-                if (target.Y > _Ship.CenterPoint.Y - 50 + 99)
+                if (target.Y > _Ship.CenterPoint.Y - 40 + 49)
                 {
                     // Console.WriteLine("Second All" +u);
                     Shooting ShotType = new Laser(fromPT, _FrameCount);
@@ -1371,9 +1375,8 @@ public class smallShip : Boss2
 
     public override Tuple<String, int> HitBy(Shooting wasHitBy)
     {
-        /*         if(_IsDying)
-                {return new Tuple<string, int>("False",0);} */
-        //_IsDying = true;
+        if (_IsDying) return new Tuple<string, int>("False", 0);
+
         _Ship.SetValue("Health", _Ship.Value("Health") - 1);
         Console.WriteLine(_Ship.Value("Health"));
         _Ship.StartAnimation("ShieldFlash");
