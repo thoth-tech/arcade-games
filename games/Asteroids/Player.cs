@@ -28,35 +28,6 @@ public class Player
         _Player = Player;
 
         Respawn(PlayersNo);
-        /*
-        _Angle = 0;
-        
-        _shots = new List<Shooting>();
-        IsDead = false;
-        _InvulnerableTime = new SplashKitSDK.Timer($"{Player} Invulnerable");
-        _InvulnerableTime.Start();
-        IsInvulnerable = true;
-        if (PlayersNo == 1)
-        {
-            Y = (_gameWindow.Height - _Ship.Height) / 2;
-            X = (_gameWindow.Width - _Ship.Width) / 2;
-        }
-        else
-        {
-            int gameWindow_8th = _gameWindow.Width / 3;
-            if (_Player == "Player 1")
-            {
-                Y = (_gameWindow.Height - _Ship.Height) / 2;
-                X = (gameWindow_8th - _Ship.Width / 2);
-            }
-            else if (_Player == "Player 2")
-            {
-                Y = (_gameWindow.Height - _Ship.Height) / 2;
-                X = (gameWindow_8th * 2 - _Ship.Width / 2);
-            }
-        }
-        */
-
     }
 
     public void Respawn(int PlayersNo)
@@ -121,7 +92,7 @@ public class Player
 
     private void Rotation(double change)
     {
-        _Angle = (_Angle + change) ; //% 360
+        _Angle = (_Angle + change) % 360;
     }
 
     private void Move(double Speed)
@@ -219,11 +190,9 @@ public class Player
             {
                 if (SplashKit.BitmapCircleCollision(_Ship, X, Y, e)) hit = true;
             }
-            if (enemy.HitSprite() != null)
-            {
-                if (SplashKit.SpriteBitmapCollision(enemy.HitSprite(), _Ship, X, Y)) hit = true;
-            }
-            if (hit) return enemy.HitBy(this);
+
+            if (hit)
+            { return enemy.HitBy(this); }
         }
 
         foreach (Shooting s in _shots)
