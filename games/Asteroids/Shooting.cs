@@ -12,6 +12,10 @@ public abstract class Shooting
 
     protected int Radius;
 
+    public Shooting()
+    {
+        SplashKit.SelectSpritePack("Shots");
+    }
 
     // public Shooting(Point2D fromPT, double Angle,Player player)
     // {   
@@ -219,6 +223,7 @@ public class Laser : Shooting
 
         // Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
         // _Velocity = SplashKit.VectorMultiply(direction, SPEED);
+        
 
         if (SplashKit.HasBitmap("BigLaser")) _laserImg = SplashKit.BitmapNamed("BigLaser");
         else _laserImg = SplashKit.LoadBitmap("BigLaser", "BigLaser.png");

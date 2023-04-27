@@ -40,6 +40,7 @@ public abstract class Enemy
         _IsDying = false;
         SpawnSmallRocks = false;
         SmallRocksSpawned = false;
+        SplashKit.SelectSpritePack("Enemies");
 
     }
 
@@ -903,6 +904,11 @@ public class Boss1 : Enemy
             s.freesprite();
             _shots.Remove(s);
         }
+        foreach (Shooting s in _shots)
+        {
+            s.freesprite();
+            _shots.Remove(s);
+        }
     }
 
 
@@ -1008,18 +1014,17 @@ public class Boss2 : Enemy
     protected string _Phase;
     private List<Shooting> _shots = new List<Shooting>();
     private List<Shooting> _KillShots = new List<Shooting>();
-    protected SplashKitSDK.Timer _shootingTime, _MoveTimer, _ShotTimer, _RedEnergyBallTimer;
-    private Window _gameWindow;
+    protected SplashKitSDK.Timer _MoveTimer, _ShotTimer;
+    protected Window _gameWindow;
     private int _shootingSmallShot, _shootingEnergyShot;
-    private Game _game;
+    protected Game _game;
     private List<Sprite> _ShipList = new List<Sprite>();
     private List<double> _time = new List<double>();
     private double _radius;
     private int _Y_point;
-    private int _playerKillThreshold;
-    private bool _LaserFiring = false;
-    private int[] _FrameCount;
-    private bool[] _firstShot;
+    protected int _playerKillThreshold;
+
+
 
 
     public Boss2(Window gameWindow, Game game) : base(gameWindow)
@@ -1030,7 +1035,7 @@ public class Boss2 : Enemy
 
         _Boss = new Bitmap("Boss2", "MotherShipAll.png");
         _Boss.SetCellDetails(400, 300, 3, 2, 6);
-        _BossScript = SplashKit.LoadAnimationScript("MotherShip", "MotherShip1.txt");
+        _BossScript = SplashKit.LoadAnimationScript("SmallBossShips", "SmallBossShips.txt");
         double window_3rd = _gameWindow.Width / 4;
         Height = _Boss.CellHeight;
         Width = _Boss.CellWidth;
@@ -1050,17 +1055,11 @@ public class Boss2 : Enemy
         else _MoveTimer = SplashKit.TimerNamed("Boss2MoveTimer");
         if (!_MoveTimer.IsStarted) _MoveTimer.Start();
 
-        if (!SplashKit.HasTimer("Boss2Shooting")) _shootingTime = SplashKit.CreateTimer("Boss2Shooting");
-        else _shootingTime = SplashKit.CreateTimer("Boss2Shooting");
-        if (!_shootingTime.IsStarted) _shootingTime.Start();
-
         if (!SplashKit.HasTimer("Boss2Shoot")) _ShotTimer = SplashKit.CreateTimer("Boss2Shoot");
         else _ShotTimer = SplashKit.CreateTimer("Boss2Shoot");
         _ShotTimer.Stop();
 
-        if (!SplashKit.HasTimer("Boss2RedEnergyBall")) _RedEnergyBallTimer = SplashKit.CreateTimer("Boss2RedEnergyBall");
-        else _RedEnergyBallTimer = SplashKit.CreateTimer("Boss2RedEnergyBall");
-        _RedEnergyBallTimer.Stop();
+
 
         //if player goes above this they will be killed
         _playerKillThreshold = 300;
@@ -1071,8 +1070,7 @@ public class Boss2 : Enemy
         _time.Add(+1000); //far right
 
         CanShoot = true;
-        _firstShot = new bool[_ShipList.Count];
-        _FrameCount = new int[_ShipList.Count];
+
 
         // _BossAnimation = _BossScript.CreateAnimation("ShieldUp");
         // _RotationSpeed = 0;
@@ -1101,23 +1099,113 @@ public class Boss2 : Enemy
     }
     public override void Update()
     {
-        int yChange = _Y_point > 60 ? 0 : 2;
-        _Y_point += yChange;
-        for (int i = 0; i < _ShipList.Count; i++)
-        {
-            Sprite s = _ShipList[i];
-            int b = 600;
-            int c = 200;
-            double t = (_MoveTimer.Ticks + _time[i]) * 2 * Math.PI / 5000;
-            //Console.WriteLine(_MoveTimer.Ticks / 1000);
-            // Calculate the new position based on the Lemniscate of Bernoulli curve
-            float x = (float)((_gameWindow.Width / 2 - Width / 2) + b * Math.Cos(t) / (1 + Math.Pow(Math.Sin(t), 2)));
-            float y = (float)(_Y_point + c * Math.Sin(t) * Math.Cos(t) / (1 + Math.Pow(Math.Sin(t), 2)));
 
-            // Set the sprite position
-            s.X = x;
-            s.Y = y;
+
+
+
+    }
+
+
+
+
+
+
+
+    public override Tuple<String, int> HitBy(Player wasHitBy)
+    {
+        /*             if(_IsDying)
+                {return new Tuple<string, int>("False",0);}
+                _IsDying = true;
+                return new Tuple<string, int>("Life",-1);  */
+        return new Tuple<string, int>("Life", -1);
+        // return new Tuple<string, int>("False", 0);
+    }
+
+
+
+
+    protected Shooting RedEnergyBall(Player p, Sprite s)
+    {
+        Point2D fromPT = new Point2D();
+        fromPT.X = s.X + _Boss.CellCenter.X;
+        fromPT.Y = s.Y + _Boss.CellCenter.Y;
+        Shooting ShotType = new RedEnergyBall(fromPT, p);
+        return ShotType;
+
+    }
+}
+
+
+public class smallShip : Boss2
+{
+    private Sprite _Ship;
+    private int _Ypoint;
+    private int _time;
+    private List<Shooting> _shots = new List<Shooting>();
+    private List<Shooting> _LaserShots = new List<Shooting>();
+    private List<Shooting> _KillShots = new List<Shooting>();
+    private List<Shooting> _KillLaserShots = new List<Shooting>();
+    protected SplashKitSDK.Timer _RedEnergyBallTimer, _shootingTime;
+    private int _FrameCount;
+    private bool _firstShot;
+    private bool _LaserFiring = false;
+
+    public smallShip(Window gameWindow, Game game, int ShipNo) : base(gameWindow, game)
+    {
+
+        _Ship = SplashKit.CreateSprite(_Boss, _BossScript);
+        _Ship.AddValue("Health", 50);
+        _Ship.StartAnimation("ShieldUp");
+        //_Ship.MoveTo(window_3rd * i - (Width / 2), -Height);
+        // Point2D toPoint = new Point2D { X = window_3rd * i - (Width / 2), Y = 200 };
+        _Ypoint = (int)(-Height);
+
+        if (!SplashKit.HasTimer("Boss2RedEnergyBall" + ShipNo)) _RedEnergyBallTimer = SplashKit.CreateTimer("Boss2RedEnergyBall" + ShipNo);
+        else _RedEnergyBallTimer = SplashKit.CreateTimer("Boss2RedEnergyBall" + ShipNo);
+        _RedEnergyBallTimer.Stop();
+
+        if (!SplashKit.HasTimer("Boss2Shooting" + ShipNo)) _shootingTime = SplashKit.CreateTimer("Boss2Shooting" + ShipNo);
+        else _shootingTime = SplashKit.CreateTimer("Boss2Shooting" + ShipNo);
+        _shootingTime.Reset();
+        if (!_shootingTime.IsStarted) _shootingTime.Start();
+
+        _MoveTimer.Resume();
+
+        switch (ShipNo) // Set up variables for the figure 8 pattern
+        {
+            case 0:
+                _time = -1000; //far left
+                break;
+            case 1:
+                _time = 0; //middle
+                break;
+            case 2:
+                _time = 1000; //far right
+                break;
+            default:
+                _time = 0;
+                break;
         }
+    }
+
+    public override void Update()
+    {
+        int yChange = _Ypoint > 60 ? 0 : 2;
+        _Ypoint += yChange;
+
+
+        int b = 600;
+        int c = 200;
+        double t = (_MoveTimer.Ticks + _time) * 2 * Math.PI / 5000;
+        //Console.WriteLine(_MoveTimer.Ticks / 1000);
+        // Calculate the new position based on the Lemniscate of Bernoulli curve
+        float x = (float)((_gameWindow.Width / 2 - Width / 2) + b * Math.Cos(t) / (1 + Math.Pow(Math.Sin(t), 2)));
+        float y = (float)(_Ypoint + c * Math.Sin(t) * Math.Cos(t) / (1 + Math.Pow(Math.Sin(t), 2)));
+
+        // Set the sprite position
+        _Ship.X = x;
+        _Ship.Y = y;
+
 
         if (_MoveTimer.Ticks / 1000 > 2)
         {
@@ -1138,79 +1226,20 @@ public class Boss2 : Enemy
             // }
         }
 
-        LaserUpdate();
+        if (_Ship.Value("Health") <= 0)
+        {
+            _IsDying = true;
+            _Ship.StartAnimation("CriticalDamage");
+        }
+        if (_Ship.AnimationName() == "CriticalDamage")
+        {
+            if (_Ship.AnimationHasEnded) IsDead = true;
+        }
         PlayerUpdate();
         ShotUpdate();
-
+        LaserUpdate();
     }
 
-    private void FireLaser()
-    {
-        _LaserFiring = true;
-        for (int i = 0; i < _firstShot.Count(); i++)
-        {
-            _firstShot[i] = true;
-        }
-
-        for (int i = 0; i < _FrameCount.Count(); i++)
-        {
-            _FrameCount[i] = 19;
-        }
-
-
-    }
-
-    private void LaserUpdate()
-    {
-        if (_LaserFiring)
-        {
-            int ShotCount = _shots.Count();
-            for (int u = 0; u < _ShipList.Count; u++)
-            {
-                Sprite s = _ShipList[u];
-                Point2D fromPT = new Point2D { X = s.X, Y = s.CenterPoint.Y };
-
-                // Console.WriteLine("First" +u);
-                if (_firstShot[u])
-                {
-                    // Console.WriteLine("Second First Shot" +u);
-                    Shooting ShotType = new Laser(fromPT, _FrameCount[u]);
-                    _shots.Add(ShotType);
-                    _FrameCount[u]--;
-                    _firstShot[u] = false;
-
-                }
-                else
-                {
-                    Shooting target = _shots[ShotCount - (3 - u)];
-                    // Console.WriteLine("Target y " + target.Y);
-                    // Console.WriteLine("Shot Count " + _shots.Count());
-                    // Console.WriteLine("Shot Index" + (_shots.Count - (3 - u)));
-                    if (target.Y > s.CenterPoint.Y + 95)
-                    {
-                        // Console.WriteLine("Second All" +u);
-                        Shooting ShotType = new Laser(fromPT, _FrameCount[u]);
-                        _shots.Add(ShotType);
-                        _FrameCount[u]--;
-                    }
-                }
-
-            }
-            Console.WriteLine("Ouside Loop");
-            if (Array.TrueForAll(_FrameCount, value =>
-            {
-                Console.WriteLine((value < 0));
-                return (value < 0);
-            }))
-            {
-                Console.WriteLine("LaserFiring = false");
-                _LaserFiring = false;
-                _ShotTimer.Stop();
-                _shootingTime.Start();
-                _MoveTimer.Resume();
-            }
-        }
-    }
     private void PlayerUpdate()
     {
         foreach (Player p in _game.Players)
@@ -1221,11 +1250,71 @@ public class Boss2 : Enemy
                 if (_RedEnergyBallTimer.Ticks / 500 > 1)
                 {
                     _RedEnergyBallTimer.Stop();
-                    RedEnergyBall(p);
+
+                    _shots.Add(RedEnergyBall(p, _Ship));
                 }
             }
         }
     }
+
+    private void FireLaser()
+    {
+        Console.WriteLine("Fire Laser Called");
+        _LaserFiring = true;
+        _firstShot = true;
+        _FrameCount = 19;
+    }
+    private void LaserUpdate()
+    {
+        if (_LaserFiring)
+        {
+            int ShotCount = _shots.Count();
+
+
+            Point2D fromPT = new Point2D { X = _Ship.X + 50, Y = _Ship.CenterPoint.Y - 50 };
+
+            //Console.WriteLine("LaserFiring");
+            if (_firstShot)
+            {
+                //Console.WriteLine("First Shot");
+                Shooting ShotType = new Laser(fromPT, _FrameCount);
+                _LaserShots.Add(ShotType);
+                _FrameCount--;
+                _firstShot = false;
+
+            }
+            else
+            {
+                Shooting target = _LaserShots.Last();
+                // Console.WriteLine("Target y " + target.Y);
+                // Console.WriteLine("Shot Count " + _shots.Count());
+                //Console.WriteLine("Remaining Shots");
+                if (target.Y > _Ship.CenterPoint.Y - 50 + 99)
+                {
+                    // Console.WriteLine("Second All" +u);
+                    Shooting ShotType = new Laser(fromPT, _FrameCount);
+                    _LaserShots.Add(ShotType);
+                    _FrameCount--;
+                }
+            }
+
+            // Console.WriteLine("Ouside Loop");
+            // if (Array.TrueForAll(_FrameCount, value =>
+            // {
+            //     Console.WriteLine((value < 0));
+            //     return (value < 0);
+            // }))
+            if (_FrameCount < 0)
+            {
+                //Console.WriteLine("LaserFiring = false");
+                _LaserFiring = false;
+                _ShotTimer.Stop();
+                _shootingTime.Start();
+                _MoveTimer.Resume();
+            }
+        }
+    }
+
     private void ShotUpdate()
     {
         foreach (Shooting s in _shots)
@@ -1240,6 +1329,19 @@ public class Boss2 : Enemy
             _shots.Remove(s);
         }
         _KillShots.Clear();
+
+        foreach (Shooting s in _LaserShots)
+        {
+            s.Update();
+            if (s.IsOffscreen(_gameWindow)) _KillLaserShots.Add(s);
+        }
+
+        foreach (Shooting s in _KillLaserShots)
+        {
+            s.freesprite();
+            _LaserShots.Remove(s);
+        }
+        _KillLaserShots.Clear();
     }
     public override void freesprite()
     {
@@ -1248,17 +1350,23 @@ public class Boss2 : Enemy
             s.freesprite();
             _shots.Remove(s);
         }
-    }
+        foreach (Shooting s in _shots)
+        {
+            s.freesprite();
+        }
+
+        foreach (Shooting s in _KillLaserShots)
+        {
+            s.freesprite();
+            _shots.Remove(s);
+        }
+        foreach (Shooting s in _LaserShots)
+        {
+            s.freesprite();
+        }
+        SplashKit.FreeSprite(_Ship);
 
 
-    public override Tuple<String, int> HitBy(Player wasHitBy)
-    {
-        /*             if(_IsDying)
-                {return new Tuple<string, int>("False",0);}
-                _IsDying = true;
-                return new Tuple<string, int>("Life",-1);  */
-        return new Tuple<string, int>("Life", -1);
-        // return new Tuple<string, int>("False", 0);
     }
 
     public override Tuple<String, int> HitBy(Shooting wasHitBy)
@@ -1266,21 +1374,20 @@ public class Boss2 : Enemy
         /*         if(_IsDying)
                 {return new Tuple<string, int>("False",0);} */
         //_IsDying = true;
-
+        _Ship.SetValue("Health", _Ship.Value("Health") - 1);
+        Console.WriteLine(_Ship.Value("Health"));
+        _Ship.StartAnimation("ShieldFlash");
 
         return new Tuple<string, int>("Score", 10);
     }
     public override Circle[] HitCircle()
     {
-        //Need to rework this wait untill you have proper model
-        Circle[] Cir = new Circle[_ShipList.Count * 3];
-        for (int i = 0; i < _ShipList.Count; i++)
+        Circle[] Cir =
         {
-            //Cir[i] = _ShipList[i].CollisionCircle();
-            Cir[i] = SplashKit.CircleAt(_ShipList[i].X + 198, _ShipList[i].Y + 116, 102);
-            Cir[i + 3] = SplashKit.CircleAt(_ShipList[i].X + 293, _ShipList[i].Y + 112, 78);
-            Cir[i + 6] = SplashKit.CircleAt(_ShipList[i].X + 102, _ShipList[i].Y + 112, 78);
-        }
+            SplashKit.CircleAt(_Ship.X + 198, _Ship.Y + 116, 102),
+            SplashKit.CircleAt(_Ship.X + 293, _Ship.Y + 112, 78),
+            SplashKit.CircleAt(_Ship.X + 102, _Ship.Y + 112, 78)
+        };
         return Cir;
     }
 
@@ -1297,35 +1404,17 @@ public class Boss2 : Enemy
                 }
             }
         }
-        return new Tuple<string, int>("False", 0);
-
-    }
-
-
-    private void RedEnergyBall(Player p)
-    {
-        foreach (Sprite s in _ShipList)
+        foreach (Shooting s in _LaserShots)
         {
-            Point2D fromPT = new Point2D();
-            fromPT.X = s.X + _Boss.CellCenter.X;
-            fromPT.Y = s.Y + _Boss.CellCenter.Y;
-            Shooting ShotType = new RedEnergyBall(fromPT, p);
-            _shots.Add(ShotType);
+            if (s.HitCheck(player))
+            {
+                if (!player.IsInvulnerable)
+                {
+                    return new Tuple<string, int>("Life", -1);
+                }
+            }
         }
-    }
-}
-
-
-public class smallShip : Boss2
-{
-    private Sprite _Ship;
-    public smallShip(Window gameWindow, Game game, int ShipNo) : base(gameWindow, game)
-    {
-            _Ship = SplashKit.CreateSprite(_Boss, _BossScript);
-            _Ship.AddValue("Health", 50);
-            _Ship.StartAnimation("ShieldUp");
-            //_Ship.MoveTo(window_3rd * i - (Width / 2), -Height);
-           // Point2D toPoint = new Point2D { X = window_3rd * i - (Width / 2), Y = 200 };
+        return new Tuple<string, int>("False", 0);
     }
 
 

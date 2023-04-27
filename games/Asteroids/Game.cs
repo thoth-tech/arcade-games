@@ -43,6 +43,11 @@ public class Game
         _gameLevel = new Debuglvl(_GameWindow, this);
         //_gameLevel = new Level1(_GameWindow, this);
         //_gameLevel = new Level2(_GameWindow, this);
+        if (!SplashKit.HasSpritePack("Ships")) SplashKit.CreateSpritePack("Ships");
+        if (!SplashKit.HasSpritePack("Enemies")) SplashKit.CreateSpritePack("Enemies");
+        if (!SplashKit.HasSpritePack("Shots")) SplashKit.CreateSpritePack("Shots");
+
+
 
     }
 
@@ -58,7 +63,19 @@ public class Game
     public void Draw()
     {
         _gameLevel.Draw();
+
+        SplashKit.SelectSpritePack("Shots");
         SplashKit.DrawAllSprites();
+
+        SplashKit.SelectSpritePack("Ships");
+        SplashKit.DrawAllSprites();
+
+        SplashKit.SelectSpritePack("Enemies");
+        SplashKit.DrawAllSprites();
+
+        // SplashKit.SelectSpritePack("Default");
+        // SplashKit.DrawAllSprites();
+
         foreach (Player p in _Players)
         {
             p.Draw();
@@ -83,6 +100,7 @@ public class Game
         }
         int X_GameText = _GameWindow.Width / 2 - 270;
         int Y_GameText = _GameWindow.Height / 3;
+        SplashKit.SelectSpritePack("Default");
         Console.WriteLine(SplashKit.CurrentSpritePack());
         //SplashKit.FreeAllBitmaps();
         //SplashKit.FreeAllSprites(); //There seems to be an issue with the FreeAllSprites Procedure
@@ -122,7 +140,17 @@ public class Game
         }
 
         _gameLevel.Update();
+        SplashKit.SelectSpritePack("Shots");
         SplashKit.UpdateAllSprites();
+
+        SplashKit.SelectSpritePack("Ships");
+        SplashKit.UpdateAllSprites();
+
+        SplashKit.SelectSpritePack("Enemies");
+        SplashKit.UpdateAllSprites();
+
+        // SplashKit.SelectSpritePack("Default");
+        // SplashKit.UpdateAllSprites();
 
         foreach (Enemy e in _gameLevel.Enemies)
         {
