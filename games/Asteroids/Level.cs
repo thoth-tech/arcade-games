@@ -363,7 +363,7 @@ public class Level2 : Level
 
         if (lvlTimer < 2) //1.5
         {
-            SplashKit.DrawTextOnWindow(_gameWindow, "Level 2 Place Hold", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
+            SplashKit.DrawTextOnWindow(_gameWindow, "Level 2", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
         }
 
         base.Draw();
@@ -442,10 +442,13 @@ public class Level2 : Level
                 }
                 break;
             case 45: //153
+
                 if (!_EnemySpawned.ContainsKey("Boss2"))
                 {
                     _EnemySpawned.Add("Boss2", true);
-                    Enemies.Add(new Boss2(_gameWindow, _game));
+                    Enemies.Add(new smallShip(_gameWindow, _game, 0));
+                    Enemies.Add(new smallShip(_gameWindow, _game, 1));
+                    Enemies.Add(new smallShip(_gameWindow, _game, 2));
                 }
                 break;
 
@@ -453,7 +456,10 @@ public class Level2 : Level
 
         if (_EnemySpawned.ContainsKey("Boss2") && Enemies.Count == 0)
         {
-            levelComplete(new Level2(_gameWindow, _game));
+            //levelComplete(new Level2(_gameWindow, _game));
+            levelComplete(null);
+            _game.GameOver();
+
         }
 
         base.Update();
@@ -535,10 +541,11 @@ public class Debuglvl : Level
                 }
                 break;
         }
-        if (_EnemySpawned.ContainsKey("Boss1") && Enemies.Count == 0)
+        if (_EnemySpawned.ContainsKey("Boss2") && Enemies.Count == 0)
         {
-            levelComplete(new Level2(_gameWindow, _game));
-
+            //levelComplete(new Level2(_gameWindow, _game));
+            levelComplete(null);
+            
         }
 
         base.Update();

@@ -5,11 +5,11 @@ SplashKit Animation
 //ID,CELL,DUR,NEXT
 f:0,0,1,
 
-f:[0-8],[143-151],3,
-f:[9-17],[117-125],3,
+//f:[0-8],[143-151],3,
+//f:[9-17],[117-125],3,
 
 // -- Animation Identifiers --
-i:WalkRight,0
+i:normal,0
 i:dying,1
 i:default,0
 
