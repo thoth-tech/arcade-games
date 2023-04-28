@@ -427,10 +427,14 @@ void load_resources()
     load_bitmap("block_multiplier_4", "multiplier_4_block.png");
     load_bitmap("block_multiplier_5", "multiplier_5_block.png");
 	
-	load_bitmap("block_multiplier_2_filled", "multiplier_2_block_filled.png");
-	load_bitmap("block_multiplier_3_filled", "multiplier_3_block_filled.png");
-	load_bitmap("block_multiplier_4_filled", "multiplier_4_block_filled.png");
-	load_bitmap("block_multiplier_5_filled", "multiplier_5_block_filled.png");
+	load_bitmap("gauge_empty_2", "gauge_empty_2.png");
+	load_bitmap("gauge_full_2", "gauge_full_2.png");
+	load_bitmap("gauge_empty_3", "gauge_empty_3.png");
+	load_bitmap("gauge_full_3", "gauge_full_3.png");
+	load_bitmap("gauge_empty_4", "gauge_empty_4.png");
+	load_bitmap("gauge_full_4", "gauge_full_4.png");
+	load_bitmap("gauge_empty_5", "gauge_empty_5.png");
+	load_bitmap("gauge_full_5", "gauge_full_5.png");
 	
 	load_bitmap("dropped_multi_ball", "dropped_multiball.png");
 	load_bitmap("dropped_multiplier_2", "dropped_multiplier.png");
@@ -629,11 +633,11 @@ void draw_game()
     draw_text("SCORE:" + to_string(game_data.score), COLOR_WHITE, font_named("default"), 35, 20, 20); // Draw score
 	if (game_data.score_multiplier > 1) //Draw multiplier guage
 	{
-		//Draw multiplier background
-		draw_bitmap("block_multiplier_" + to_string(game_data.score_multiplier), 170 + (20*floor(log10(game_data.score))), 24, option_scale_bmp(1,1));
+		//Draw multiplier background		
+		draw_bitmap("gauge_empty_" + to_string(game_data.score_multiplier), 170 + (20*floor(log10(game_data.score))), 24, option_scale_bmp(1,1));
 		
 		//Draw multiplier foreground
-		bitmap filled_bitmap = bitmap_named("block_multiplier_" + to_string(game_data.score_multiplier) + "_filled"); //Get bitmap with appropriate number
+		bitmap filled_bitmap = bitmap_named("gauge_full_" + to_string(game_data.score_multiplier)); //Get bitmap with appropriate number
 		rectangle bitmap_part = bitmap_bounding_rectangle(filled_bitmap); //Create bounding rectange for displaying part of the sprite's height
 		bitmap_part.height = bitmap_height(filled_bitmap) * game_data.timer/10.0; //Shrink foreground as the timer goes down
 		bitmap_part.y = bitmap_height(filled_bitmap) - bitmap_part.height; //Move foreground down to line up with background
@@ -704,14 +708,16 @@ int main()
             }
 
             // Shortcut button to change level for development purpose
-            if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
+            //if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
             
             // Shortcut button to increase multiplier for development purpose
+			/*
             if (key_typed(G_KEY))
             {
                 game_data.timer = MULTIPLIER_DURATION;
                 if(game_data.score_multiplier < 5) game_data.score_multiplier++;
             }
+			*/
         }
         
         refresh_screen(60);
