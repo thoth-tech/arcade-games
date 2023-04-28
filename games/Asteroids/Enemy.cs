@@ -91,6 +91,8 @@ public abstract class Enemy
         if (_IsDying)
         { return new Tuple<string, int>("False", 0); }
         _IsDying = true;
+
+        wasHitBy.freesprite();
         return new Tuple<string, int>("Score", 10);
     }
 
