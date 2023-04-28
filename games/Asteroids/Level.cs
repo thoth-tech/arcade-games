@@ -14,7 +14,14 @@ public abstract class Level
     protected Bitmap lvlComplete;
     private SplashKitSDK.Timer _completeTimer;
     private Level? _NextLevel;
-
+    public enum rockTypes
+    {
+        Small = 1,
+        Medium = 2,
+        Large = 4,
+        Blue = 8,
+        All = 16
+    }
     public Level(Window GameWindow, Game game)
     {
         _gameWindow = GameWindow;
@@ -60,23 +67,24 @@ public abstract class Level
 
     }
 
-    public Enemy createEnemy(string Type, int Speed = 4, int sX = -1, int sY = -1, int tX = -1, int tY = -1)
+    public Enemy createEnemy(rockTypes Type, int Speed = 4, int sX = -1, int sY = -1, int tX = -1, int tY = -1)
     {
         //Enemy rock = new Enemy(_gameWindow,4,0.3);
         Enemy rock;
 
         switch (Type)
         {
-            case "Large":
+            case rockTypes.Large:
                 rock = new RockLarge(_gameWindow, Speed, 0.3, sX, sY, tX, tY);
-
                 break;
-            case "Small":
-                rock = new RockSmall(_gameWindow, Speed, 0.3);
-
+            case rockTypes.Small:
+                rock = new RockSmall(_gameWindow, Speed, 0.3, sX, sY, tX, tY);
                 break;
-            case "Med":
-                rock = new RockMed(_gameWindow, Speed, 0.3);
+            case rockTypes.Medium:
+                rock = new RockMed(_gameWindow, Speed, 0.3, sX, sY, tX, tY);
+                break;
+            case rockTypes.Blue:
+                rock = new BlueRock(_gameWindow, Speed, 0.3, sX, sY, tX, tY);
                 break;
             default:
                 rock = new RockLarge(_gameWindow, Speed, 0.3);
@@ -93,8 +101,7 @@ public abstract class Level
     }
     */
 
-    // function reuses existing small rock enemy
-    // velocity vector is inherited from original, instead of moving towards a center point again
+    
     public void spawnTriple(Enemy e)
     {
         Point2D start = new Point2D() {X = e.X, Y = e.Y};
@@ -109,6 +116,94 @@ public abstract class Level
 
     }
 
+    protected void SpawnRockWall(rockTypes rockType, string Location, int speed = 4)
+    {
+        int X, Y, xChange, yChange, changeEnd, change, targetxy;
+        bool moveX = false; //If you are not moving X then we are moving Y
+        Enemy RockRef;
+        switch (Location)
+        {
+            case "Top":
+                X = 0;
+                Y = 0;
+                moveX = true;
+                RockRef = createEnemy(rockType, speed, X, Y, X, _wHeight);
+                Enemies.Add(RockRef);
+                xChange = Convert.ToInt32(RockRef.Width) + 10;
+                yChange = 0;
+                change = xChange;
+                changeEnd = _wWidth;
+                targetxy = _wHeight;
+                break;
+
+            case "Bottom":
+                X = 0;
+                Y = _wHeight;
+                moveX = false;
+                RockRef = createEnemy(rockType, speed, X, _wHeight, X, 0);
+                Enemies.Add(RockRef);
+                xChange = Convert.ToInt32(RockRef.Width) + 10;
+                yChange = 0;
+                change = xChange;
+                changeEnd = _wWidth;
+                targetxy = 0;
+
+                break;
+
+            case "Left":
+                X = 0;
+                Y = 0;
+                moveX = false;
+                RockRef = createEnemy(rockType, speed, X, Y, _wWidth, Y);
+                Enemies.Add(RockRef);
+                xChange = 0;
+                yChange = Convert.ToInt32(RockRef.Height) + 10;
+                change = yChange;
+                changeEnd = _wHeight;
+                targetxy = _wWidth;
+                break;
+
+            case "Right":
+                X = _wWidth;
+                Y = 0;
+                moveX = false;
+                RockRef = createEnemy(rockType, speed, X, Y, 0, Y);
+                Enemies.Add(RockRef);
+                xChange = 0;
+                yChange = Convert.ToInt32(RockRef.Height) + 10;
+                change = yChange;
+                changeEnd = _wHeight;
+                targetxy = 0;
+                break;
+            default:
+                Console.WriteLine("Direction value must be Top, Bottom, Right or Left");
+                X = 0;
+                Y = 0;
+                xChange = 0;
+                yChange = 0;
+                change = 10;
+                changeEnd = 0;
+                targetxy = 0;
+                break;
+
+        }
+
+        while (change < changeEnd)
+        {
+            X += xChange;
+            Y += yChange;
+            if (moveX)
+            {
+                Enemies.Add(createEnemy(rockType, speed, X, Y, X, targetxy));
+                change += xChange;
+            }
+            else
+            {
+                Enemies.Add(createEnemy(rockType, speed, X, Y, targetxy, Y));
+                change += yChange;
+            }
+        }
+    }
 
     public virtual void Update()
     {
@@ -136,35 +231,39 @@ public abstract class Level
 
         foreach (Enemy e in KillEnemy)
         {
+            e.freesprite();
             Enemies.Remove(e);
         }
 
 
     }
 
-    public void RockRandomSpawn(int Speed = 4, double SpawnRate = 0.01) //Deafult Random Spawn rate for rocks 
+    public void RockRandomSpawn(int Speed = 4, double SpawnRate = 0.01, rockTypes spawnTypes = rockTypes.Small | rockTypes.Medium | rockTypes.Large) //Deafult Random Spawn rate for rocks 
     {
         if (SplashKit.Rnd() < SpawnRate)
         {
-            int TempNo = SplashKit.Rnd(0, 90);
-            if (TempNo < 30)
+
+            List<rockTypes> allowedRocks = new List<rockTypes>();
+            if ((spawnTypes & rockTypes.Small) != 0) allowedRocks.Add(rockTypes.Small);
+            if ((spawnTypes & rockTypes.Medium) != 0) allowedRocks.Add(rockTypes.Medium);
+            if ((spawnTypes & rockTypes.Large) != 0) allowedRocks.Add(rockTypes.Large);
+            if ((spawnTypes & rockTypes.Blue) != 0) allowedRocks.Add(rockTypes.Blue);
+            if ((spawnTypes & rockTypes.All) != 0)
             {
-                Enemies.Add(createEnemy("Small", Speed));
+                allowedRocks.Add(rockTypes.Small);
+                allowedRocks.Add(rockTypes.Medium);
+                allowedRocks.Add(rockTypes.Large);
+                allowedRocks.Add(rockTypes.Blue);
             }
-            else if (TempNo < 60)
+
+            if (allowedRocks.Count > 0)
             {
-                Enemies.Add(createEnemy("Med", Speed));
-            }
-            else
-            {
-                Enemies.Add(createEnemy("Large", Speed));
+                rockTypes selectedRock = allowedRocks[SplashKit.Rnd(allowedRocks.Count)];
+                Enemies.Add(createEnemy(selectedRock, Speed));
             }
         }
     }
-
-
 }
-
 public class Level1 : Level
 {
     private SplashKitSDK.Timer _lvlTimer;
@@ -176,6 +275,7 @@ public class Level1 : Level
         _lvlTimer = new SplashKitSDK.Timer("lvl1Timer");
         _lvlTimer.Start();
         _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
+        _EnemySpawned.Clear();
 
     }
 
@@ -228,10 +328,10 @@ public class Level1 : Level
                 if (!_EnemySpawned.ContainsKey("55 Time"))
                 {
                     _EnemySpawned.Add("55 Time", true);
-                    Enemies.Add(createEnemy("Large", 4, _wWidth / 2 - 100, -200, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy("Large", 4, _wWidth / 2 - 100, _wHeight, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy("Large", 4, -200, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy("Large", 4, _wWidth, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2 - 100, -200, _wWidth / 2 - 100, _wHeight / 2 - 100));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2 - 100, _wHeight, _wWidth / 2 - 100, _wHeight / 2 - 100));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, -200, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
                 }
                 break;
             case 60: //153
@@ -265,6 +365,7 @@ public class Level2 : Level
         _lvlTimer.Start();
         _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
         _game = game;
+        _EnemySpawned.Clear();
 
     }
 
@@ -277,12 +378,13 @@ public class Level2 : Level
 
         if (lvlTimer < 2) //1.5
         {
-            SplashKit.DrawTextOnWindow(_gameWindow, "Level 2 Place Hold", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
+            SplashKit.DrawTextOnWindow(_gameWindow, "Level 2", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
         }
 
         base.Draw();
 
     }
+
 
     public override void Update()
     {
@@ -292,110 +394,91 @@ public class Level2 : Level
             case < 1.5:
                 //don't spawn until level starts
                 break;
-            case 2: //153
-                _game.GameOver();
+            case < 15:
+                RockRandomSpawn(4);
+                break;
+            case 15.1:
+                if (!_EnemySpawned.ContainsKey("BlueRock 15.1"))
+                {
+                    _EnemySpawned.Add("BlueRock 15.1", true);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Enemies.Add(createEnemy(rockTypes.Blue));
+                    }
+                }
+                break;
+            case < 30:
+                RockRandomSpawn(4, 0.02, rockTypes.All);
+                break;
+
+            case 35:
+                if (!_EnemySpawned.ContainsKey("RockwallSmall"))
+                {
+                    _EnemySpawned.Add("RockwallSmall", true);
+                    SpawnRockWall(rockTypes.Small, "Top");
+                }
+                break;
+
+            case 36:
+                if (!_EnemySpawned.ContainsKey("RockwallBlue"))
+                {
+                    _EnemySpawned.Add("RockwallBlue", true);
+                    SpawnRockWall(rockTypes.Blue, "Top");
+                }
+                break;
+
+            case 37:
+                if (!_EnemySpawned.ContainsKey("RockwallLarge"))
+                {
+                    _EnemySpawned.Add("RockwallLarge", true);
+                    SpawnRockWall(rockTypes.Large, "Top");
+                }
+                break;
+
+            case 39:
+                if (!_EnemySpawned.ContainsKey("RockwallSmall1"))
+                {
+                    _EnemySpawned.Add("RockwallSmall1", true);
+                    SpawnRockWall(rockTypes.Small, "Top");
+                }
+                break;
+            case 40:
+                if (!_EnemySpawned.ContainsKey("RockwallSmall2"))
+                {
+                    _EnemySpawned.Add("RockwallSmall2", true);
+                    SpawnRockWall(rockTypes.Small, "Top");
+                }
+                break;
+            case 41:
+                if (!_EnemySpawned.ContainsKey("RockwallSmall3"))
+                {
+                    _EnemySpawned.Add("RockwallSmall3", true);
+                    SpawnRockWall(rockTypes.Small, "Top");
+                }
+                break;
+            case 45: //153
+
+                if (!_EnemySpawned.ContainsKey("Boss2"))
+                {
+                    _EnemySpawned.Add("Boss2", true);
+                    Enemies.Add(new smallShip(_gameWindow, _game, 0));
+                    Enemies.Add(new smallShip(_gameWindow, _game, 1));
+                    Enemies.Add(new smallShip(_gameWindow, _game, 2));
+                }
                 break;
 
         }
 
+        if (_EnemySpawned.ContainsKey("Boss2") && Enemies.Count == 0)
+        {
+            //levelComplete(new Level2(_gameWindow, _game));
+            levelComplete(null);
+            _game.GameOver();
+
+        }
 
         base.Update();
     }
-}
-
-public class Jsonlvl : Level
-{
-    private SplashKitSDK.Timer _lvlTimer;       // this will reset every spawn time it reaches
-    private Font _GameFont;
-    
-    private Json _JsonLevel;
-    private List<Json> _JsonSpawns;
-    private int _JsonIndex;
-    private Json? _Wave;
-
-    public Jsonlvl(Window GameWindow, Game game, String lvlFP) : base(GameWindow, game)
-    {
-        _lvlTimer = new SplashKitSDK.Timer("lvl1Timer");
-        _lvlTimer.Start();
-        _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
-
-        _JsonLevel = SplashKit.JsonFromFile(lvlFP);
-        _JsonIndex = 0;
-        _JsonSpawns = new List<Json>();
-        _JsonLevel.ReadArray("waves", ref _JsonSpawns);
-
-
-    }
-
-
-    public override void Draw()
-    {
-        int framesOn = _JsonLevel.ReadInteger("title_frameson");
-        if (framesOn < _JsonLevel.ReadInteger("title_framesdur"))    // COUNTS BY FRAMES
-        {
-            DrawTitle();
-            _JsonLevel.AddNumber("title_frameson",framesOn + 1);
-        }   
-
-        base.Draw();
-    }
-    
-    public override void Update()
-    {
-        
-        if (_JsonIndex < _JsonSpawns.Count)     // while spawn waves exists
-        {
-            /*
-            if (_Wave != null)  // delayed sequential spawn section, wave has started but not ended yet, needs json keys to used
-            {
-
-            }
-            else */
-            if ( _lvlTimer.Ticks >= _JsonSpawns[_JsonIndex].ReadInteger("ticks"))    // when timer has reached tick count
-            {
-                
-                _Wave = _JsonSpawns[_JsonIndex];
-
-                WaveSpawnAll();
-                _JsonIndex++;
-                _lvlTimer.Reset();
-            }
-        }
-        else if (Enemies.Count == 0)
-        {
-            levelComplete(new Level1(_gameWindow, _game));
-        }
-        
-
-        base.Update();
-    }
-
-    private void DrawTitle()
-    {
-        const int FontSize = 80;
-        String text = _JsonLevel.ReadString("title");
-        int X_GameText = (_gameWindow.Width - SplashKit.TextWidth(text,_GameFont,FontSize))/ 2;
-        int Y_GameText = _gameWindow.Height / 6;
-
-        SplashKit.DrawTextOnWindow(_gameWindow, text, Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
-        
-    }
-
-    private void WaveSpawnAll()
-    {
-        int count = _Wave.ReadInteger("num");
-        String type = _Wave.ReadString("type");
-        int speed = _Wave.HasKey("speed") ? _Wave.ReadInteger("speed") : 4;
-
-        for (int i = 0; i < count; i++)
-        {
-            Enemies.Add(createEnemy(type,speed));
-        }
-
-        _Wave = null;
-    }
-
-
 }
 
 public class Debuglvl : Level
@@ -445,18 +528,39 @@ public class Debuglvl : Level
             case < 1.5:
                 //don't spawn until level starts
                 break;
-            case 5: //153
-                if (!_EnemySpawned.ContainsKey("Boss1"))
+            case > 1.5: //153
+                // if (!_EnemySpawned.ContainsKey("Boss1"))
+                // {
+                //     _EnemySpawned.Add("Boss1", true);
+                //     Enemies.Add(new Boss1(_gameWindow, _game));
+                // }
+                // break;
+                // if (SplashKit.Rnd() < 0.01)
+                // {
+                //     Enemies.Add(new BlueRock(_gameWindow, 4, 3));
+                // }
+                // break;
+                // if (!_EnemySpawned.ContainsKey("Rockwall"))
+                // {
+                //     _EnemySpawned.Add("Rockwall", true);
+                //     SpawnRockWall(rockTypes.Blue, "Top");
+                // }
+                // break;
+
+                if (!_EnemySpawned.ContainsKey("Boss2"))
                 {
-                    _EnemySpawned.Add("Boss1", true);
-                    Enemies.Add(new Boss1(_gameWindow, _game));
+                    _EnemySpawned.Add("Boss2", true);
+                    Enemies.Add(new smallShip(_gameWindow, _game, 0));
+                    Enemies.Add(new smallShip(_gameWindow, _game, 1));
+                    Enemies.Add(new smallShip(_gameWindow, _game, 2));
                 }
                 break;
         }
-        if (_EnemySpawned.ContainsKey("Boss1") && Enemies.Count == 0)
+        if (_EnemySpawned.ContainsKey("Boss2") && Enemies.Count == 0)
         {
-            levelComplete(new Level2(_gameWindow, _game));
-
+            //levelComplete(new Level2(_gameWindow, _game));
+            levelComplete(null);
+            
         }
 
         base.Update();

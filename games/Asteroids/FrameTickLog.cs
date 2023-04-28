@@ -12,7 +12,7 @@ public class FrameTickLog
 
     private SplashKitSDK.Timer frameTimer = SplashKit.CreateTimer("frameTimer");    // timer from splashkit
     private int frameTicksNum;                                                 // number of elements for frame ticks to retain
-    private List<uint> frameTicks;                  // list contains ticks needed to complete a frame after refresh
+    private uint[] frameTicks;                  // list contains ticks needed to complete a frame after refresh
     private int listElementToReplace;                                           // this value is for frameticks to replace the indexed value, rather than create new objects in a linked list, remove first, add last
     private long frameTicksSum;                                                 // Total frame ticks value in list
 
@@ -62,11 +62,8 @@ public class FrameTickLog
         frameTimer.Stop();          // stop timer
         frameTimer.Reset();         // reset timer
 
-        // create new list, if not existing, else clear values
-        if (frameTicks == null)
-            frameTicks = new List<uint>(new uint[frameTicksNum]);
-        else
-            frameTicks.Clear();
+
+        frameTicks = new uint[frameTicksNum];
 
         // reset index value and tick sum
         listElementToReplace = 0;
