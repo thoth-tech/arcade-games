@@ -1,0 +1,11 @@
+SplashKit Animation
+
+// ID, Cell Number, Frame Time, Next Frame
+
+// normal
+f: 0,0,1,
+// explode
+f: [1-4], [1-4], 5,
+
+i:normal,0
+i:explode,1
