@@ -12,7 +12,7 @@ public class Player
     private double _Angle;
     private string _Player;
     private List<Shooting> _shots = new List<Shooting>();
-    private List<Shooting> _KillShots = new List<Shooting>();
+    //private List<Shooting> _KillShots = new List<Shooting>();
     public bool IsDead { get; private set; }
     private SplashKitSDK.Timer _InvulnerableTime;
     //private bool _IsInvulnerable;
@@ -28,6 +28,7 @@ public class Player
         _Player = Player;
 
         Respawn(PlayersNo);
+
     }
 
     public void Respawn(int PlayersNo)
@@ -92,7 +93,7 @@ public class Player
 
     private void Rotation(double change)
     {
-        _Angle = (_Angle + change) % 360;
+        _Angle = (_Angle + change) ; //% 360
     }
 
     private void Move(double Speed)
@@ -152,16 +153,27 @@ public class Player
 
     public void Updates()
     {
-
+        for (int i = 0; i < _shots.Count; i++)
+        {
+            _shots[i].Update();
+            if (_shots[i].IsOffscreen(_gameWindow))
+            {
+                _shots[i].freesprite();
+                _shots.RemoveAt(i--);
+            } 
+        }
+        
+        /*
         foreach (Shooting s in _shots)
         {
             s.Update();
             if (s.IsOffscreen(_gameWindow)) _KillShots.Add(s);
         }
 
-        foreach (Shooting s in _KillShots)
+        foreach (Shooting s in _KillShots)      // avoiding this, to reduce comparisons for performance.
         { _shots.Remove(s); }
         _KillShots.Clear();
+        */
 
 
         if (_InvulnerableTime.Ticks > 1500) //1500
@@ -190,11 +202,23 @@ public class Player
             {
                 if (SplashKit.BitmapCircleCollision(_Ship, X, Y, e)) hit = true;
             }
-
-            if (hit)
-            { return enemy.HitBy(this); }
+            if (enemy.HitSprite() != null)
+            {
+                if (SplashKit.SpriteBitmapCollision(enemy.HitSprite(), _Ship, X, Y)) hit = true;
+            }
+            if (hit) return enemy.HitBy(this);
         }
 
+        for (int i = 0; i < _shots.Count; i++)
+        {
+            Shooting s = _shots[i];
+            if (s.HitCheck(enemy))
+            {
+                _shots.RemoveAt(i--);
+                return enemy.HitBy(s);  // free sprite is called inside hitby currently
+            } 
+        }
+        /*
         foreach (Shooting s in _shots)
         {
             if (s.HitCheck(enemy))
@@ -203,6 +227,7 @@ public class Player
                 return enemy.HitBy(s);
             }
         }
+        */
         return new Tuple<string, int>("False", 0);
 
     }
