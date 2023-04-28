@@ -26,7 +26,7 @@ public class AstGameObj
     "start_anim"    string name of animation to play on initialization
     "anchor_pos"    2 index array, XY position of anchor position
     "mass"      mass value of sprite
-    "pack"      sprite pack to be assigned          // NOT USED, should be assigned externally
+    "pack"      sprite pack to be assigned          // NOT USED CURRENTLY, "default" is the initial pack assigned at start
     */
 
     public AstGameObj(Json jsonInfo)
@@ -55,7 +55,7 @@ public class AstGameObj
         Sprite spr;
         Point2D tempPos = new Point2D();
         List<double> tempList = new List<double>();          // 5 index
-
+        //Console.WriteLine(SplashKit.HasBitmap(name));
         if (SplashKit.HasBitmap(name))              // exist already? load existing bitmap into sprite
         {
             bmp = SplashKit.BitmapNamed(name);
