@@ -9,4 +9,9 @@
     "terminal.integrated.shellArgs.windows": [
         "--login"
     ],
+    "files.associations": {
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
+    },
 }
