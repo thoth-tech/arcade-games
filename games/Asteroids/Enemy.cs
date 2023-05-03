@@ -18,7 +18,7 @@ public abstract class Enemy
 
 
     protected double _Angle;
-    protected Vector2D _Velocity;
+    public Vector2D _Velocity { get; protected set; }
     protected double _RotationSpeed;
 
     public double Height { get; protected set; }
@@ -91,6 +91,8 @@ public abstract class Enemy
         if (_IsDying)
         { return new Tuple<string, int>("False", 0); }
         _IsDying = true;
+
+        wasHitBy.freesprite();
         return new Tuple<string, int>("Score", 10);
     }
 
@@ -128,327 +130,283 @@ public abstract class Enemy
         return new Point2D()
         { X = X, Y = Y };
     }
+
+    protected void SetCourse(int fX = -1, int fY = -1, int tX = -1, int tY = -1)
+    {
+        Point2D fromPt;
+        Point2D tmpPT = RndfromPt();
+        if (fX == -1)
+        {
+            fromPt.X = tmpPT.X;
+        }
+        else
+        {
+            X = fX;
+            fromPt.X = fX;
+        }
+
+        if (fY == -1)
+        {
+            fromPt.Y = tmpPT.Y;
+        }
+        else
+        {
+            Y = fY;
+            fromPt.Y = fY;
+        }
+
+        Point2D toPt;
+        if (tX == -1)
+        {
+            toPt.X = _gameWindow.Width / 2 + SplashKit.Rnd(-100, 100);
+        }
+        else
+        {
+            toPt.X = tX;
+        }
+
+        if (tY == -1)
+        {
+            toPt.Y = _gameWindow.Height / 2 + SplashKit.Rnd(-100, 100);
+        }
+        else
+        {
+            toPt.Y = tY;
+        }
+
+        X = fromPt.X;
+        Y = fromPt.Y;
+
+        Vector2D dir;
+        dir = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPt, toPt));
+        _Velocity = SplashKit.VectorMultiply(dir, GetSpeed);
+    }
 }
 
 public class RockLarge : Enemy
 {
-    private Bitmap _Rock;
+    protected AstGameObj _AGO;
+
     public RockLarge(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
     {
-        _RotationSpeed = RotationSpeed;
-        _Angle = 0;
-        _Rock = new Bitmap("Rock1", "RockLarge.png");
-        _Rock.SetCellDetails(200, 200, 3, 3, 9);
-        Height = _Rock.CellHeight;
-        Width = _Rock.CellWidth;
-        GetSpeed = Speed;
-        Point2D fromPt;
-        Point2D tmpPT = base.RndfromPt();
-        if (fX == -1)
-        {
-            fromPt.X = tmpPT.X;
-        }
-        else
-        {
-            X = fX;
-            fromPt.X = fX;
-        }
+        _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Large.json"));     // load sprite with cell details and script
+        _AGO.rotSpeed = (float)RotationSpeed;       // set rotation speed
+        GetSpeed = Speed;           // set velocity magnitude
 
-        if (fY == -1)
-        {
-            fromPt.Y = tmpPT.Y;
-        }
-        else
-        {
-            Y = fY;
-            fromPt.Y = fY;
-        }
+        SetCourse(fX, fY, tX, tY);     // randomized start and direction
 
-        Point2D toPt;
-        if (tX == -1)
-        {
-            toPt.X = gameWindow.Width / 2 + SplashKit.Rnd(-100, 100);
-        }
-        else
-        {
-            toPt.X = tX;
-        }
+        X -= _AGO._sprite.Width / 2;        // starting completely offscreen breaks the enemy list, original XY is based on top left corner of image
+        Y -= _AGO._sprite.Height / 2;
+        _AGO._sprite.X = (float)X;          // set sprite coords
+        _AGO._sprite.Y = (float)Y;
+        _AGO.setVelocity(_Velocity);        // set sprite velocity
 
-        if (tY == -1)
-        {
-            toPt.Y = gameWindow.Height / 2 + SplashKit.Rnd(-100, 100);
-        }
-        else
-        {
-            toPt.Y = tY;
-        }
-
-        Vector2D dir;
-        dir = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPt, toPt));
-
-        _Velocity = SplashKit.VectorMultiply(dir, Speed);
+        Height = _AGO._sprite.Height;
+        Width = _AGO._sprite.Width;
     }
 
+    public override Circle[] HitCircle()    // returns sprite circle that fits within rectangle
+    {
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
+    }
+
+    public override Tuple<String, int> HitBy(Player wasHitBy)   // if called, start animation
+    {
+        if (!_IsDying)
+        {
+            _AGO._sprite.StartAnimation("explode");
+        }
+        return base.HitBy(wasHitBy);
+    }
+
+    public override Tuple<String, int> HitBy(Shooting wasHitBy)
+    {
+        if (!_IsDying)
+        {
+            _AGO._sprite.StartAnimation("explode");
+        }
+        return base.HitBy(wasHitBy);
+    }
+
+    public override void Update()       // update rotation value, check if animations finished
+    {
+        X = _AGO._sprite.CenterPoint.X;
+        Y = _AGO._sprite.CenterPoint.Y;
+        _AGO.updateAngle();
+
+        if (_AGO._sprite.AnimationName() == "explode" && _AGO._sprite.AnimationHasEnded)    // first stage, end will set spawn flag
+        {
+            SpawnSmallRocks = true;
+            _AGO._sprite.StartAnimation("explode2");
+        }
+        else if (_AGO._sprite.AnimationName() == "explode2" && _AGO._sprite.AnimationHasEnded)  // second stage, end should destroy object, freesprite is not called in level due to currently set for bitmap
+        {
+            IsDead = true;
+            SplashKit.FreeSprite(_AGO._sprite);
+        }
+
+        //base.Update();      // not used
+    }
 
     public override void Draw()
     {
-        DrawingOptions opt;
-
-
-        if (_IsDying == false)
-        {
-            opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-            _Rock.Draw(X, Y, opt);
-        }
-        else
-        {
-            switch (_IsDyingCount)
-            {
-                case < 12:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(1));
-                    break;
-                case < 23:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(2));
-                    break;
-                case < 34:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(3));
-                    break;
-                case < 45:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(4));
-                    SpawnSmallRocks = true;
-                    break;
-                case < 56:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(5));
-                    break;
-                case < 68:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(6));
-                    break;
-                case < 79:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(7));
-                    break;
-                case < 90:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(8));
-                    IsDead = true;
-
-                    break;
-                default:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-
-                    break;
-            }
-            _Rock.Draw(X, Y, opt);
-        }
+        //Circle c = _AGO._sprite.CollisionCircle();    // used for debugging
+        //c.Draw(Color.White);
+        //_AGO._sprite.Draw();
     }
-
 
 }
 public class RockMed : Enemy
 {
-    private Bitmap _Rock;
+    protected AstGameObj _AGO;
 
     public RockMed(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
     {
-        _RotationSpeed = RotationSpeed;
-        _Angle = 0;
-        _Rock = new Bitmap("Rock2", "MedRockAll.png");
-        _Rock.SetCellDetails(100, 100, 3, 2, 6);
-        Height = _Rock.CellHeight;
-        Width = _Rock.CellWidth;
+        _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Medium.json"));
 
-        Point2D fromPt;
-        Point2D tmpPT = base.RndfromPt();
-        if (fX == -1)
-        {
-            fromPt.X = tmpPT.X;
-        }
-        else
-        {
-            X = fX;
-            fromPt.X = fX;
-        }
+        _AGO.rotSpeed = (float)RotationSpeed;
+        GetSpeed = Speed;
 
-        if (fY == -1)
-        {
-            fromPt.Y = tmpPT.Y;
-        }
-        else
-        {
-            Y = fY;
-            fromPt.Y = fY;
-        }
+        SetCourse(fX, fY, tX, tY);
 
-        Point2D toPt;
-        if (tX == -1)
-        {
-            toPt.X = gameWindow.Width / 2 + SplashKit.Rnd(-100, 100);
-        }
-        else
-        {
-            toPt.X = tX;
-        }
+        X -= _AGO._sprite.Width / 2;
+        Y -= _AGO._sprite.Height / 2;
+        _AGO._sprite.X = (float)X;
+        _AGO._sprite.Y = (float)Y;
+        _AGO.setVelocity(_Velocity);
 
-        if (tY == -1)
-        {
-            toPt.Y = gameWindow.Height / 2 + SplashKit.Rnd(-100, 100);
-        }
-        else
-        {
-            toPt.Y = tY;
-        }
-
-
-        Vector2D dir;
-        dir = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPt, toPt));
-
-        _Velocity = SplashKit.VectorMultiply(dir, Speed);
+        Height = _AGO._sprite.Height;
+        Width = _AGO._sprite.Width;
     }
 
+    public override Circle[] HitCircle()
+    {
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
+    }
+
+    public override Tuple<String, int> HitBy(Player wasHitBy)
+    {
+        if (!_IsDying)
+        {
+            _AGO._sprite.StartAnimation("explode");
+        }
+        return base.HitBy(wasHitBy);
+    }
+
+    public override Tuple<String, int> HitBy(Shooting wasHitBy)
+    {
+        if (!_IsDying)
+        {
+            _AGO._sprite.StartAnimation("explode");
+        }
+        return base.HitBy(wasHitBy);
+    }
+
+    public override void Update()
+    {
+        X = _AGO._sprite.CenterPoint.X;
+        Y = _AGO._sprite.CenterPoint.Y;
+        _AGO.updateAngle();
+
+        if (_AGO._sprite.AnimationName() == "explode" && _AGO._sprite.AnimationHasEnded)
+        {
+            IsDead = true;
+            SplashKit.FreeSprite(_AGO._sprite);
+        }
+
+        base.Update();
+    }
 
     public override void Draw()
     {
-        DrawingOptions opt;
-
-
-        if (_IsDying == false)
-        {
-            opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-            _Rock.Draw(X, Y, opt);
-        }
-        else
-        {
-            switch (_IsDyingCount)
-            {
-                case < 12:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(1));
-                    break;
-                case < 23:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(2));
-                    break;
-                case < 34:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(3));
-                    break;
-                case < 45:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(4));
-                    break;
-                case < 56:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(5));
-                    IsDead = true;
-                    break;
-                default:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-
-                    break;
-            }
-            _Rock.Draw(X, Y, opt);
-        }
+        //Circle c = _AGO._sprite.CollisionCircle();
+        //c.Draw(Color.White);
+        //_AGO._sprite.Draw();
     }
 }
 public class RockSmall : Enemy
 {
-    private Bitmap _Rock;
+    protected AstGameObj _AGO;
     public RockSmall(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
-
-
-
     {
-        _RotationSpeed = RotationSpeed;
-        _Angle = 0;
-        _Rock = new Bitmap("Rock3", "SmallRockAll.png");
-        _Rock.SetCellDetails(75, 75, 3, 2, 5);
-        Height = _Rock.CellHeight;
-        Width = _Rock.CellWidth;
+        _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Small.json"));
+
+        _AGO.rotSpeed = (float)RotationSpeed;
+        GetSpeed = Speed;
+
+        SetCourse(fX, fY, tX, tY);
+
+        X -= _AGO._sprite.Width / 2;
+        Y -= _AGO._sprite.Height / 2;
+        _AGO._sprite.X = (float)X;
+        _AGO._sprite.Y = (float)Y;
+        _AGO.setVelocity(_Velocity);
+        Height = _AGO._sprite.Height;
+        Width = _AGO._sprite.Width;
+    }
+
+    public RockSmall(Window gameWindow, Vector2D Vel, double Rot, Point2D Start) : base(gameWindow)
+    {
+        _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Small.json"));
+        _AGO.rotSpeed = (float)Rot;
+        GetSpeed = (int)SplashKit.VectorMagnitude(Vel);
+
+        _AGO._sprite.X = (float)Start.X;
+        _AGO._sprite.Y = (float)Start.Y;
+        _AGO.setVelocity(Vel);
+    }
+
+    public override Circle[] HitCircle()
+    {
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
+    }
+
+    public override Tuple<String, int> HitBy(Player wasHitBy)
+    {
+        if (!_IsDying)
+        {
+            _AGO._sprite.StartAnimation("explode");
+        }
+        return base.HitBy(wasHitBy);
+    }
+
+    public override Tuple<String, int> HitBy(Shooting wasHitBy)
+    {
+        if (!_IsDying)
+        {
+            _AGO._sprite.StartAnimation("explode");
+        }
+        return base.HitBy(wasHitBy);
+    }
 
 
+    public override void Update()
+    {
+        X = _AGO._sprite.CenterPoint.X;
+        Y = _AGO._sprite.CenterPoint.Y;
+        _AGO.updateAngle();
 
-        Point2D fromPt;
-        Point2D tmpPT = base.RndfromPt();
-        if (fX == -1)
+        if (_AGO._sprite.AnimationName() == "explode" && _AGO._sprite.AnimationHasEnded)
         {
-            fromPt.X = tmpPT.X;
-        }
-        else
-        {
-            X = fX;
-            fromPt.X = fX;
-        }
-
-        if (fY == -1)
-        {
-            fromPt.Y = tmpPT.Y;
-        }
-        else
-        {
-            Y = fY;
-            fromPt.Y = fY;
+            IsDead = true;
+            SplashKit.FreeSprite(_AGO._sprite);
         }
 
-        Point2D toPt;
-        if (tX == -1)
-        {
-            toPt.X = gameWindow.Width / 2 + SplashKit.Rnd(-100, 100);
-        }
-        else
-        {
-            toPt.X = tX;
-        }
-
-        if (tY == -1)
-        {
-            toPt.Y = gameWindow.Height / 2 + SplashKit.Rnd(-100, 100);
-        }
-        else
-        {
-            toPt.Y = tY;
-        }
-
-        Vector2D dir;
-        dir = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPt, toPt));
-
-        _Velocity = SplashKit.VectorMultiply(dir, Speed);
+        base.Update();
     }
 
 
     public override void Draw()
     {
-        DrawingOptions opt;
-
-
-        if (_IsDying == false)
-        {
-            opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-            _Rock.Draw(X, Y, opt);
-        }
-        else
-        {
-            switch (_IsDyingCount)
-            {
-                case < 12:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(1));
-                    break;
-                case < 23:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(2));
-                    break;
-                case < 34:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(3));
-                    break;
-                case < 45:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(4));
-                    IsDead = true;
-                    break;
-                default:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-
-                    break;
-            }
-            _Rock.Draw(X, Y, opt);
-        }
+        //Circle c = _AGO._sprite.CollisionCircle();
+        //c.Draw(Color.White);
+        //_AGO._sprite.Draw();
     }
 
 }
 
 
-
-
+/*
 public class RockSmallTriple : Enemy
 {
     private Bitmap _Rock;
@@ -534,6 +492,7 @@ public class RockSmallTriple : Enemy
     }
 
 }
+*/
 
 public class BlueRock : Enemy
 {
@@ -565,51 +524,7 @@ public class BlueRock : Enemy
         Height = _Rock.CellHeight;
         Width = _Rock.CellWidth;
         GetSpeed = Speed;
-        Point2D fromPt;
-        Point2D tmpPT = base.RndfromPt();
-        if (fX == -1)
-        {
-            fromPt.X = tmpPT.X;
-        }
-        else
-        {
-            X = fX;
-            fromPt.X = fX;
-        }
-
-        if (fY == -1)
-        {
-            fromPt.Y = tmpPT.Y;
-        }
-        else
-        {
-            Y = fY;
-            fromPt.Y = fY;
-        }
-
-        Point2D toPt;
-        if (tX == -1)
-        {
-            toPt.X = gameWindow.Width / 2 + SplashKit.Rnd(-100, 100);
-        }
-        else
-        {
-            toPt.X = tX;
-        }
-
-        if (tY == -1)
-        {
-            toPt.Y = gameWindow.Height / 2 + SplashKit.Rnd(-100, 100);
-        }
-        else
-        {
-            toPt.Y = tY;
-        }
-
-        Vector2D dir;
-        dir = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPt, toPt));
-
-        _Velocity = SplashKit.VectorMultiply(dir, Speed);
+        SetCourse(fX, fY, tX, tY);
     }
 
     public override void Update()

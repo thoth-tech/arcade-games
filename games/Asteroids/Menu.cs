@@ -48,6 +48,8 @@ public class Menu
         X_GameText = _gameWindow.Width / 2 - 125;               // given the window should be fixed, this should be only done once.
         Y_GameText = _gameWindow.Height / 6;
 
+        SplashKit.CreateSpritePack("Menu");
+        
         ReSetup();
 
         _tri = new Triangle();                              // main menu selection triangle
@@ -173,19 +175,21 @@ public class Menu
 
         _ShipsBMP = retrieveShipsJSON();
 
-            if (SplashKit.HasBitmap("Player 1"))
-            {
-                SplashKit.FreeBitmap(SplashKit.BitmapNamed("Player 1"));
-            }
+        if (SplashKit.HasBitmap("Player 1"))
+        {
+            SplashKit.FreeBitmap(SplashKit.BitmapNamed("Player 1"));
+        }
 
-            if (SplashKit.HasBitmap("Player 2"))
-            {
-                SplashKit.FreeBitmap(SplashKit.BitmapNamed("Player 2"));
-            }
+        if (SplashKit.HasBitmap("Player 2"))
+        {
+            SplashKit.FreeBitmap(SplashKit.BitmapNamed("Player 2"));
+        }
 
-            _titleColor = Color.White;
+        _titleColor = Color.White;
 
-            initRocks();
+        SplashKit.SelectSpritePack("Menu");
+
+        initRocks();
 
     }
 

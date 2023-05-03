@@ -93,10 +93,27 @@ public abstract class Level
         return rock;
     }
 
+    /*
     public void createEnemy(double sX, double sY, int rNum, int Speed = 4)
     {
         Enemy rock = new RockSmallTriple(_gameWindow, Speed, 0.3, sX, sY, rNum);
         _tmpEnemySpawn.Add(rock);
+    }
+    */
+
+    
+    public void spawnTriple(Enemy e)
+    {
+        Point2D start = new Point2D() {X = e.X, Y = e.Y};
+        Vector2D vel = e._Velocity;
+        double velMag = SplashKit.VectorMagnitude(vel);
+        double velAngle = SplashKit.VectorAngle(vel);
+
+
+        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, vel,0.3,start));
+        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, SplashKit.VectorFromAngle(velAngle - 30,velMag),0.3,start));
+        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, SplashKit.VectorFromAngle(velAngle + 30,velMag),0.3,start));
+
     }
 
     protected void SpawnRockWall(rockTypes rockType, string Location, int speed = 4)
@@ -200,9 +217,7 @@ public abstract class Level
             if (e.IsOffscreen(_gameWindow)) KillEnemy.Add(e);
             if (e.SpawnSmallRocks && !e.SmallRocksSpawned)
             {
-                createEnemy(e.X + e.Width / 2, e.Y + e.Height / 2, 1, e.GetSpeed);
-                createEnemy(e.X + e.Width / 2, e.Y + e.Height / 2, 2, e.GetSpeed);
-                createEnemy(e.X + e.Width / 2, e.Y + e.Height / 2, 3, e.GetSpeed);
+                spawnTriple(e);
                 e.SmallRocksSpawned = true;
             }
             if (e.IsDead) KillEnemy.Add(e);

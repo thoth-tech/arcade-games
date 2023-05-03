@@ -1,21 +1,13 @@
 SplashKit Animation
 
-//Frames are declared with an f: and contain
-//the following comma separated values
-//ID,CELL,DUR,NEXT
-f:0,0,1,
+// ID, Cell Number, Frame Time, Next Frame
 
-//f:[0-8],[143-151],3,
-//f:[9-17],[117-125],3,
+// normal
+f: 0,0,1,
+// explode
+f: [1-4], [1-4], 5,
+f: [5-8], [5-8], 5,
 
-// -- Animation Identifiers --
 i:normal,0
-i:dying,1
-i:default,0
-
-//v: identifier, change in x velocity, change in y velocity 
-v:[0-8],4,0
-v:[9-17],-4,0
-v:99,0,0
-
-//s: Identifier, SoundName, Filename 
+i:explode,1
+i:explode2,5
