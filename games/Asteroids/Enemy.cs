@@ -18,7 +18,7 @@ public abstract class Enemy
 
 
     protected double _Angle;
-    public Vector2D _Velocity {get; protected set;}
+    public Vector2D _Velocity { get; protected set; }
     protected double _RotationSpeed;
 
     public double Height { get; protected set; }
@@ -193,18 +193,21 @@ public class RockLarge : Enemy
         _AGO.rotSpeed = (float)RotationSpeed;       // set rotation speed
         GetSpeed = Speed;           // set velocity magnitude
 
-        SetCourse(fX,fY,tX,tY);     // randomized start and direction
+        SetCourse(fX, fY, tX, tY);     // randomized start and direction
 
         X -= _AGO._sprite.Width / 2;        // starting completely offscreen breaks the enemy list, original XY is based on top left corner of image
         Y -= _AGO._sprite.Height / 2;
         _AGO._sprite.X = (float)X;          // set sprite coords
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);        // set sprite velocity
+
+        Height = _AGO._sprite.Height;
+        Width = _AGO._sprite.Width;
     }
 
     public override Circle[] HitCircle()    // returns sprite circle that fits within rectangle
     {
-        return new Circle[] {_AGO._sprite.CollisionCircle()};
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
     }
 
     public override Tuple<String, int> HitBy(Player wasHitBy)   // if called, start animation
@@ -216,7 +219,7 @@ public class RockLarge : Enemy
         return base.HitBy(wasHitBy);
     }
 
-    public override Tuple<String, int> HitBy(Shooting wasHitBy) 
+    public override Tuple<String, int> HitBy(Shooting wasHitBy)
     {
         if (!_IsDying)
         {
@@ -245,7 +248,7 @@ public class RockLarge : Enemy
         //base.Update();      // not used
     }
 
-    public override void Draw()     
+    public override void Draw()
     {
         //Circle c = _AGO._sprite.CollisionCircle();    // used for debugging
         //c.Draw(Color.White);
@@ -264,18 +267,21 @@ public class RockMed : Enemy
         _AGO.rotSpeed = (float)RotationSpeed;
         GetSpeed = Speed;
 
-        SetCourse(fX,fY,tX,tY);
+        SetCourse(fX, fY, tX, tY);
 
         X -= _AGO._sprite.Width / 2;
         Y -= _AGO._sprite.Height / 2;
         _AGO._sprite.X = (float)X;
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);
+
+        Height = _AGO._sprite.Height;
+        Width = _AGO._sprite.Width;
     }
 
     public override Circle[] HitCircle()
     {
-        return new Circle[] {_AGO._sprite.CollisionCircle()};
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
     }
 
     public override Tuple<String, int> HitBy(Player wasHitBy)
@@ -321,20 +327,22 @@ public class RockMed : Enemy
 public class RockSmall : Enemy
 {
     protected AstGameObj _AGO;
-        public RockSmall(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
+    public RockSmall(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
     {
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Small.json"));
 
         _AGO.rotSpeed = (float)RotationSpeed;
         GetSpeed = Speed;
 
-        SetCourse(fX,fY,tX,tY);
+        SetCourse(fX, fY, tX, tY);
 
         X -= _AGO._sprite.Width / 2;
         Y -= _AGO._sprite.Height / 2;
         _AGO._sprite.X = (float)X;
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);
+        Height = _AGO._sprite.Height;
+        Width = _AGO._sprite.Width;
     }
 
     public RockSmall(Window gameWindow, Vector2D Vel, double Rot, Point2D Start) : base(gameWindow)
@@ -350,7 +358,7 @@ public class RockSmall : Enemy
 
     public override Circle[] HitCircle()
     {
-        return new Circle[] {_AGO._sprite.CollisionCircle()};
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
     }
 
     public override Tuple<String, int> HitBy(Player wasHitBy)
@@ -516,7 +524,7 @@ public class BlueRock : Enemy
         Height = _Rock.CellHeight;
         Width = _Rock.CellWidth;
         GetSpeed = Speed;
-        SetCourse(fX,fY,tX,tY);
+        SetCourse(fX, fY, tX, tY);
     }
 
     public override void Update()
