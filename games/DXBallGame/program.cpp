@@ -217,34 +217,34 @@ block_data * spawn_blocks_level1()
 
     for (int i = 0; i < 8; i++)
     {
-        block = create_block(160 + i * BLOCK_WIDTH, 300, SINGLE_HIT, NO_POWERUP);
+        block = create_block(160 + i * BLOCK_WIDTH, 240, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
     for (int i = 0; i < 6; i++)
     {
-        block = create_block(220 + i * BLOCK_WIDTH, 320, SINGLE_HIT, NO_POWERUP);
+        block = create_block(220 + i * BLOCK_WIDTH, 260, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
-        block = create_block(220 + i * BLOCK_WIDTH, 280, SINGLE_HIT, NO_POWERUP);
+        block = create_block(220 + i * BLOCK_WIDTH, 220, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
     for (int i = 0; i < 4; i++)
     {
-        block = create_block(280 + i * BLOCK_WIDTH, 340, SINGLE_HIT, NO_POWERUP);
+        block = create_block(280 + i * BLOCK_WIDTH, 280, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
-        block = create_block(280 + i * BLOCK_WIDTH, 260, SINGLE_HIT, NO_POWERUP);
+        block = create_block(280 + i * BLOCK_WIDTH, 200, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
     for (int i = 0; i < 2; i++)
     {
-        block = create_block(340 + i * BLOCK_WIDTH, 360, SINGLE_HIT, NO_POWERUP);
+        block = create_block(340 + i * BLOCK_WIDTH, 300, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
-        block = create_block(340 + i * BLOCK_WIDTH, 240, SINGLE_HIT, NO_POWERUP);
+        block = create_block(340 + i * BLOCK_WIDTH, 180, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
@@ -336,14 +336,14 @@ block_data * spawn_blocks_level3()
     {
         for (int j = 0; j < 8; j++)
         {
-            block = create_block(160 + j * BLOCK_WIDTH, 300 - i * BLOCK_HEIGHT, SINGLE_HIT, NO_POWERUP);
+            block = create_block(160 + j * BLOCK_WIDTH, 260 - i * BLOCK_HEIGHT, SINGLE_HIT, NO_POWERUP);
             blocks[index] = block;
             index++;
         }
     }
     for (int i = 0; i < 12; i++)
     {
-        block = create_block(40 + i * BLOCK_WIDTH, 360, HIDDEN, NO_POWERUP);
+        block = create_block(40 + i * BLOCK_WIDTH, 320, HIDDEN, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
@@ -708,7 +708,7 @@ int main()
             }
 
             // Shortcut button to change level for development purpose
-            //if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
+            if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
             
             // Shortcut button to increase multiplier for development purpose
 			/*
