@@ -14,5 +14,10 @@ Runner Dash is a game built by the SplashKit team in T1 2023, with the members S
 The purpose of this game is to demonstrate the use of splashkit to convert a terminal game into a game with graphics that can be run on the arcade machines. This game will show that splashkit can be integrated into the backend of a pre-existing game to turn a simple game made to learn about the processes behind a game into one that looks like a real arcade game.
 
 ## _Steps involved in making the game_
+### Base Code
+The development of this game began with the base code created by Himanshu. This code is written in C# and runs on the terminal.
+<img width="470" alt="runnerdash_screenshot" src="https://github.com/swanos/arcade-games/assets/72289464/0d5bb34d-56aa-4759-ac08-398763b31074">
+The team then started developing the code for this game based on the source code provided, with some modifications to include the SplashKit library so it can be run on the arcade machine.
 
 ## _Details of the game_
+
