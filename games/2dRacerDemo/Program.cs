@@ -7,17 +7,18 @@ namespace _2dRacerDemo
     {
         public static void Main()
         {
-            Window gameWindow = new Window("2D Racing", 1600, 900);
+            Window gameWindow = new Window("2D Racing", 800, 600);
             DrawDemo DrawDemo = new DrawDemo(gameWindow);
             bool GameExit = false;
 
             while (!GameExit)
             {
                 gameWindow.Clear(Color.Black);
-                SplashKit.ProcessEvents();
-                SplashKit.DrawAllSprites();
-                SplashKit.UpdateAllSprites();
-                if (SplashKit.KeyTyped(KeyCode.EscapeKey)) GameExit = true;
+                SplashKit.ProcessEvents(); //process splashkit events this is needed for splashkit to read things like key presses
+                SplashKit.UpdateAllSprites(); // This has Splashkit update all the sprites in the current sprite pack, this will trigger animations, move position etc. 
+                SplashKit.DrawAllSprites(); //This has Splashkit draw all the sprites in the current sprite pack to the screen
+                
+                if (SplashKit.KeyTyped(KeyCode.EscapeKey)) GameExit = true; //exits the main game loop if esc is pressed.
                 if (gameWindow.CloseRequested) GameExit = true;
                 // reset screen
 
@@ -38,13 +39,9 @@ namespace _2dRacerDemo
         private Sprite _leftEdge, _rightEdge, _greenCar;
         public DrawDemo(Window gameWindow)
         {
-
-
-
             _GameWindow = gameWindow;
             int laneSpacing = 100;
             int leftEdgePosition = _GameWindow.Width / 2 - laneSpacing * 5 / 2;
-
 
             Bitmap roadEdge = SplashKit.CreateBitmap("roadEdge", 10, _GameWindow.Height);
             roadEdge.DrawLine(Color.White, 0, 0, 0, _GameWindow.Height, SplashKit.OptionLineWidth(10));
@@ -97,7 +94,5 @@ namespace _2dRacerDemo
             if (SplashKit.KeyDown(KeyCode.RightKey) & _greenCar.AnimationHasEnded) _greenCar.StartAnimation("right");
             if (SplashKit.KeyReleased(KeyCode.RightKey) || SplashKit.KeyReleased(KeyCode.LeftKey)) _greenCar.StartAnimation("straight");
         }
-
-
     }
 }
