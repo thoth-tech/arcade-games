@@ -4,7 +4,7 @@ SplashKit Animation
 //the following comma separated values
 //ID,CELL,DUR,NEXT
 f:0,0,3,
-f:[1-5],[0-4],15,1
+f:[1-5],[0-4],3,1
 
 // -- Animation Identifiers --
 i:line,0
