@@ -33,4 +33,7 @@ The team has chosen to use C++ as the programming language to build the game on 
 **MSYS2** is a terminal used to install and run SplashKit. The team uses this terminal to install the library, create SplashKit projects, and running the program.
 
 ## _Details of the game_
-
+The terminal version of the game involves the player moving through a grid using the arrow keys to gain score by collecting gems while avoiding an enemy that moves towards the player when the player moves.
+There is one gem on the screen at a time that gets replaced by a new gem at a random position when collected.
+The game is endless, with no win condition, only the enemy colliding with the player as a loss condition.
+The splashkit version of the game will use an arcade machine's joystick for player movement and splashkit graphics instead of a text grid.
