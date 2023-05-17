@@ -328,10 +328,10 @@ public class Level1 : Level
                 if (!_EnemySpawned.ContainsKey("55 Time"))
                 {
                     _EnemySpawned.Add("55 Time", true);
-                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2 - 100, -200, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2 - 100, _wHeight, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy(rockTypes.Large, 4, -200, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2, 0, _wWidth / 2, _wHeight / 2));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2, _wHeight, _wWidth / 2, _wHeight / 2));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, 0, _wHeight / 2, _wWidth / 2, _wHeight / 2));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth, _wHeight / 2, _wWidth / 2, _wHeight / 2));
                 }
                 break;
             case 60: //153
