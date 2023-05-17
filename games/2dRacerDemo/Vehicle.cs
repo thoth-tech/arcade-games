@@ -17,7 +17,7 @@ public class VehicleObstacle : GameObj
         int dx_c = jsonVal.ReadInteger("Dx_count");
         if (dx_c > 0)                           // remaining steps
         {
-            jsonVal.AddNumber("Dx_count", dx_c);
+            jsonVal.AddNumber("Dx_count", dx_c - 1);
         }
         else if (dx_c == 0)             // stop when zero
         {
