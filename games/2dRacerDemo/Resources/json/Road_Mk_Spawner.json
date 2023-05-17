@@ -1,0 +1,13 @@
+{
+    "name" : "Road_Mk_Indiv",
+    "bmp_fp" : "road_mk_indiv.png",
+    "values" : 
+    {
+        "speed" : 0,
+        "spacing" : 44,
+        "X" : 0,
+        "Dx" : 0,
+        "Dx_count" : 0,
+        "offset" : 0
+    }
+}
