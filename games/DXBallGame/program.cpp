@@ -189,7 +189,6 @@ void break_block(block_data blocks[], int block_index, int &score, int &remainin
     if(blocks[block_index].hitpoint == 0)
     {
         remaining_blocks--;
-        play_sound_effect("sfx_break_block");
         if (game_data.blocks[block_index].powerup != NO_POWERUP) // if the ball collided with any side of a powerup block
         {
             //create powerup drop
@@ -203,12 +202,10 @@ void break_block(block_data blocks[], int block_index, int &score, int &remainin
     }
     else if (blocks[block_index].kind == DOUBLE_HIT)
     {
-        play_sound_effect("sfx_bounce_ball", (float) 0.25);
         blocks[block_index].block_bitmap = "block_double_hit_2"; // Change color of bricks hit but not destroyed yet
     }
     else if (blocks[block_index].kind == HIDDEN)
     {
-        play_sound_effect("sfx_bounce_ball", (float) 0.25);
         blocks[block_index].block_bitmap = "block_hidden_2";
     }	
 }
@@ -222,39 +219,39 @@ block_data * spawn_blocks_level1()
 
     for (int i = 0; i < 8; i++)
     {
-        block = create_block(160 + i * BLOCK_WIDTH, 240, SINGLE_HIT, NO_POWERUP);
+        block = create_block(160 + i * BLOCK_WIDTH, 300, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
     for (int i = 0; i < 6; i++)
     {
-        block = create_block(220 + i * BLOCK_WIDTH, 260, SINGLE_HIT, NO_POWERUP);
+        block = create_block(220 + i * BLOCK_WIDTH, 320, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
-        block = create_block(220 + i * BLOCK_WIDTH, 220, SINGLE_HIT, NO_POWERUP);
+        block = create_block(220 + i * BLOCK_WIDTH, 280, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
     for (int i = 0; i < 4; i++)
     {
-        block = create_block(280 + i * BLOCK_WIDTH, 280, SINGLE_HIT, NO_POWERUP);
+        block = create_block(280 + i * BLOCK_WIDTH, 340, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
-        block = create_block(280 + i * BLOCK_WIDTH, 200, SINGLE_HIT, NO_POWERUP);
+        block = create_block(280 + i * BLOCK_WIDTH, 260, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
     for (int i = 0; i < 2; i++)
     {
-        block = create_block(340 + i * BLOCK_WIDTH, 300, SINGLE_HIT, NO_POWERUP);
+        block = create_block(340 + i * BLOCK_WIDTH, 360, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
-        block = create_block(340 + i * BLOCK_WIDTH, 180, SINGLE_HIT, NO_POWERUP);
+        block = create_block(340 + i * BLOCK_WIDTH, 240, SINGLE_HIT, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
 
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < 6; i++)
     {
         do
         {
@@ -309,7 +306,7 @@ block_data * spawn_blocks_level2()
     block = create_block(700, 240, SINGLE_HIT, NO_POWERUP);
     blocks[index] = block;
 
-    for (int i = 0; i < 18; i++)
+    for (int i = 0; i < 5; i++)
     {
         do
         {
@@ -318,7 +315,7 @@ block_data * spawn_blocks_level2()
         blocks[index].powerup = MULTI_BALL;
         blocks[index].powerup_bitmap = "block_multi_ball";
     }
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 10; i++)
     {
         do
         {
@@ -341,19 +338,19 @@ block_data * spawn_blocks_level3()
     {
         for (int j = 0; j < 8; j++)
         {
-            block = create_block(160 + j * BLOCK_WIDTH, 260 - i * BLOCK_HEIGHT, SINGLE_HIT, NO_POWERUP);
+            block = create_block(160 + j * BLOCK_WIDTH, 300 - i * BLOCK_HEIGHT, SINGLE_HIT, NO_POWERUP);
             blocks[index] = block;
             index++;
         }
     }
     for (int i = 0; i < 12; i++)
     {
-        block = create_block(40 + i * BLOCK_WIDTH, 320, HIDDEN, NO_POWERUP);
+        block = create_block(40 + i * BLOCK_WIDTH, 360, HIDDEN, NO_POWERUP);
         blocks[index] = block;
         index++;
     }
 
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 8; i++)
     {
         do
         {
@@ -362,7 +359,7 @@ block_data * spawn_blocks_level3()
         blocks[index].powerup = MULTI_BALL;
         blocks[index].powerup_bitmap = "block_multi_ball";
     }
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 10; i++)
     {
         do
         {
@@ -390,7 +387,7 @@ block_data * spawn_blocks_level4()
         }
     }
 
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < 30; i++)
     {
         do
         {
@@ -399,7 +396,7 @@ block_data * spawn_blocks_level4()
         blocks[index].powerup = MULTI_BALL;
         blocks[index].powerup_bitmap = "block_multi_ball";
     }
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 20; i++)
     {
         do
         {
@@ -447,22 +444,13 @@ void load_resources()
 	load_bitmap("dropped_multiplier_4", "dropped_multiplier_4.png");
 	load_bitmap("dropped_multiplier_5", "dropped_multiplier_5.png");
 	
-    load_sound_effect("sfx_break_block", "hurt_c_08-102842.wav");
-    load_sound_effect("sfx_powerup", "video-game-powerup-38065.wav");
-    load_sound_effect("sfx_bounce_ball", "stop-13692.wav");
-    load_sound_effect("sfx_start_game", "message-incoming-132126.wav");
-    load_sound_effect("sfx_win", "winsquare-6993.wav");
 }
 void show_title_screen()
 {
     clear_screen(COLOR_BLACK);
     draw_bitmap("title", 0, 0);
     draw_text("Press r to start", COLOR_WHITE, font_named("default"), 25, 250, 430);
-    if (key_typed(R_KEY)) 
-    {
-        game_data.game_start = true;
-        play_sound_effect("sfx_start_game");
-    }
+    if (key_typed(R_KEY)) game_data.game_start = true;
 }
 void start_level()
 {
@@ -485,7 +473,6 @@ void start_level()
             game_data.blocks_in_level = BLOCKS_IN_LEVEL4;                    
             break;
         default:
-            play_sound_effect("sfx_win");
             game_data.game_won = true;
             game_data.game_over = true;
             break;
@@ -510,7 +497,6 @@ void start_level()
 }
 void reset_game()
 {
-    play_sound_effect("sfx_start_game");
 	game_data.score = 0;
 	game_data.game_over = false;
 	game_data.game_won = false;
@@ -538,21 +524,9 @@ void reset_game()
 void check_ball_collision(int i)
 {
     // Bounce off walls
-    if (game_data.current_balls[i].x - BALL_RADIUS <= 0) 
-    {
-        play_sound_effect("sfx_bounce_ball", (float) 0.25);
-        game_data.current_balls[i].right = true; // Bounce off left wall
-    }
-    if (game_data.current_balls[i].x + BALL_RADIUS >= screen_width()) 
-    {
-        play_sound_effect("sfx_bounce_ball", (float) 0.25);
-        game_data.current_balls[i].right = false; // Bounce off right wall
-    }
-    if (game_data.current_balls[i].y - BALL_RADIUS <= 0) 
-    {
-        play_sound_effect("sfx_bounce_ball", (float) 0.25);
-        game_data.current_balls[i].up = false; // Bounce off upper wall
-    }
+    if (game_data.current_balls[i].x - BALL_RADIUS <= 0) game_data.current_balls[i].right = true; // Bounce off left wall
+    if (game_data.current_balls[i].x + BALL_RADIUS >= screen_width()) game_data.current_balls[i].right = false; // Bounce off right wall
+    if (game_data.current_balls[i].y - BALL_RADIUS <= 0) game_data.current_balls[i].up = false; // Bounce off upper wall
     if (game_data.current_balls[i].y + BALL_RADIUS >= screen_height() and !game_data.game_over) // Hit bottom of the screen
     {
         //remove ball
@@ -571,7 +545,6 @@ void check_ball_collision(int i)
     // Bounce off paddle
     if ((PADDLE_Y <= game_data.current_balls[i].y + BALL_RADIUS and game_data.current_balls[i].y + BALL_RADIUS <= PADDLE_Y + BALL_SPEED) and (game_data.current_balls[i].x + BALL_RADIUS >= game_data.paddle_x and game_data.current_balls[i].x - BALL_RADIUS <= game_data.paddle_x + PADDLE_LENGTH))
     {
-        play_sound_effect("sfx_bounce_ball", (float) 0.25);
         game_data.current_balls[i].up = true;
     }
     // Bounce off blocks
@@ -634,7 +607,6 @@ void update_powerup_drops(int i)
 	if ((PADDLE_Y <= game_data.current_powerups[i].y + BALL_RADIUS and game_data.current_powerups[i].y + BALL_RADIUS <= PADDLE_Y + (BALL_SPEED/2)) and (game_data.current_powerups[i].x + BALL_RADIUS >= game_data.paddle_x and game_data.current_powerups[i].x - BALL_RADIUS <= game_data.paddle_x + PADDLE_LENGTH))
 	{
 		bool direction = (bool)rnd(0,2); //generate random 0 or 1 for horizontal direction
-        play_sound_effect("sfx_powerup",(float) 0.5);
 
 		//apply multi ball powerup
 		if (game_data.current_powerups[i].kind == MULTI_BALL) game_data.current_balls.push_back(create_ball(game_data.current_powerups[i].x, PADDLE_Y + 10, true, direction)); //create ball above the paddle with a random horizontal direction
@@ -702,7 +674,7 @@ int main()
             else game_data.score_multiplier = 1;
 			
 			if (game_data.extraBallTimer > 0) game_data.extraBallTimer -= (1.0 / 60.0); //count down extra ball timer
-			else if (!game_data.game_over)
+			else
 			{
 				int randomX = rnd(0 + BALL_RADIUS, 800 - BALL_RADIUS); //determine random x coordinate
 				bool direction = (bool)rnd(0,2); //determine random direction
@@ -737,7 +709,7 @@ int main()
             draw_game();
 
             // Win level if all blocks are destroyed
-            if (game_data.remaining_blocks == 0 && game_data.current_level <= 4)
+            if (game_data.remaining_blocks == 0)
             {
                 game_data.next_level = true;
                 game_data.current_level++;
