@@ -11,7 +11,7 @@ class Letter
         point_2d pos;
         bool selected = false;
         font font_type;
-        int font_size = 25;
+        int font_size = 15;
         color font_color;
         color select_color;
         int letter_width;
@@ -171,7 +171,7 @@ class Password
                 point_2d pos = screen_center();
                 pos.x = pos.x*0.8;
                 pos.x += (i * letter_width);
-                pos.y -= 200;
+                pos.y -= 100;
 
                 std::shared_ptr<Letter> alpha(new Letter(str, pos));
                 if(retest)
