@@ -19,7 +19,6 @@ const double PADDLE_Y = 550;           // Location of paddle on the y axis
 const double PADDLE_HEIGHT = 5;        // Height of the paddle
 const double PADDLE_LENGTH = 100;      // Length of the paddle
 const double MULTIPLIER_DURATION = 10; // Duration in seconds of the score multiplier powerup
-const double NEW_BALL_DELAY = 5;	   // Delay between free new balls
 
 
 enum block_kind
@@ -71,8 +70,7 @@ struct
     bool game_won = false;      // True if all levels complete
     int current_level = 1;      // Current level (default starting level = 1)
     bool next_level = true;     // True to proceed to the next level in the next frame
-    double multiplierTimer = 0; // Timer for multiplier powerup
-	double extraBallTimer = 0;  // Timer for free new balls
+    double timer = 0;           // Timer for multiplier powerup
     int score_multiplier = 1;   // Multiplier for score (default starting multiplier = 1)
     double paddle_x;            // Location of the paddle in the x axis
 } game_data;
@@ -492,7 +490,7 @@ void start_level()
     }
     // Reset score multiplier
     game_data.score_multiplier = 1;
-    game_data.multiplierTimer = 0;
+    game_data.timer = 0;
         
     // Spawn ball at starting location
     game_data.current_balls.clear();
@@ -504,9 +502,6 @@ void start_level()
     // Paddle starting location at the x axis
     game_data.paddle_x = (screen_width() - PADDLE_LENGTH) / 2;
     game_data.next_level = false;
-	
-	// Initialise new ball timer
-	game_data.extraBallTimer = NEW_BALL_DELAY;
 }
 void reset_game()
 {
@@ -516,9 +511,8 @@ void reset_game()
 	game_data.game_won = false;
 	game_data.current_level = 1;
 	game_data.next_level = false;
-	game_data.multiplierTimer = 0;
+	game_data.timer = 0;
 	game_data.score_multiplier = 1;
-	game_data.extraBallTimer = NEW_BALL_DELAY;
 
 	// Spawn blocks
 	game_data.blocks = spawn_blocks_level1();
@@ -640,7 +634,7 @@ void update_powerup_drops(int i)
 		//apply score multiplier powerup
 		else if (game_data.current_powerups[i].kind == SCORE_MULTIPLY)
 		{
-			game_data.multiplierTimer = MULTIPLIER_DURATION; // set timer for MULTIPLIER_DURATION seconds
+			game_data.timer = MULTIPLIER_DURATION; // set timer for MULTIPLIER_DURATION seconds
 			if(game_data.score_multiplier < 5) game_data.score_multiplier++;
 		}
 		//remove powerup drop
@@ -672,7 +666,7 @@ void draw_game()
 		//Draw multiplier foreground
 		bitmap filled_bitmap = bitmap_named("gauge_full_" + to_string(game_data.score_multiplier)); //Get bitmap with appropriate number
 		rectangle bitmap_part = bitmap_bounding_rectangle(filled_bitmap); //Create bounding rectange for displaying part of the sprite's height
-		bitmap_part.height = bitmap_height(filled_bitmap) * game_data.multiplierTimer/10.0; //Shrink foreground as the timer goes down
+		bitmap_part.height = bitmap_height(filled_bitmap) * game_data.timer/10.0; //Shrink foreground as the timer goes down
 		bitmap_part.y = bitmap_height(filled_bitmap) - bitmap_part.height; //Move foreground down to line up with background
 		draw_bitmap(filled_bitmap, 171 + (20*floor(log10(game_data.score))), 25 + (bitmap_height(filled_bitmap) - bitmap_part.height), option_scale_bmp(1,1,option_part_bmp(bitmap_part))); //draw foreground
 	}
@@ -696,8 +690,8 @@ int main()
         }
         else
         {
-            if (game_data.multiplierTimer > 0) game_data.multiplierTimer -= (1.0 / 60.0); //count down 1/60 seconds every frame if the multiplierTimer is in use
-            else if (game_data.multiplierTimer < 0) game_data.multiplierTimer = 0;
+            if (game_data.timer > 0) game_data.timer -= (1.0 / 60.0); //count down 1/60 seconds every frame if the timer is in use
+            else if (game_data.timer < 0) game_data.timer = 0;
             else game_data.score_multiplier = 1;
 			
 			if (game_data.extraBallTimer > 0) game_data.extraBallTimer -= (1.0 / 60.0); //count down extra ball timer
@@ -708,6 +702,7 @@ int main()
 				game_data.current_balls.push_back(create_ball(randomX, 0 + BALL_RADIUS, false, direction)); //create new ball
 				game_data.extraBallTimer = NEW_BALL_DELAY; //reset timer
 			}
+
             
             // Start level
             if (game_data.next_level)
@@ -756,7 +751,7 @@ int main()
 			/*
             if (key_typed(G_KEY))
             {
-                game_data.multiplierTimer = MULTIPLIER_DURATION;
+                game_data.timer = MULTIPLIER_DURATION;
                 if(game_data.score_multiplier < 5) game_data.score_multiplier++;
             }
 			*/
