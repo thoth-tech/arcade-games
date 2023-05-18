@@ -406,15 +406,15 @@ void CompanyIntroScreen::update()
     bitmap title = bitmap_named("Company1");
     bitmap title2 = bitmap_named("Company2");
     font screen_font = font_named("DefaultFont");
-    int font_size = 80;
+    int font_size = 40;
     color font_color = COLOR_WHITE;
     string text = "Thoth Tech presents";
 
-    draw_bitmap(title2, pt.x - bitmap_width(title2)/2 + 5, pt.y - bitmap_height(title2)/2 - 5, option_to_screen());
+    draw_bitmap(title2, pt.x - bitmap_width(title2)/2 + 2, pt.y - bitmap_height(title2)/2 - 2, option_to_screen());
     draw_bitmap(title, pt.x - bitmap_width(title)/2, pt.y - bitmap_height(title)/2, option_to_screen());
 
-    draw_text(text, COLOR_BROWN, screen_font, font_size, pt.x- text_width(text, screen_font, font_size)/2 + 5, (pt.y - text_height(text, screen_font, font_size)/2) + 200 - 5, option_to_screen());
-    draw_text(text, font_color, screen_font, font_size, pt.x- text_width(text, screen_font, font_size)/2, (pt.y - text_height(text, screen_font, font_size)/2) + 200, option_to_screen());
+    draw_text(text, COLOR_BROWN, screen_font, font_size, pt.x- text_width(text, screen_font, font_size)/2 + 5, (pt.y - text_height(text, screen_font, font_size)/2) + 100 - 5, option_to_screen());
+    draw_text(text, font_color, screen_font, font_size, pt.x- text_width(text, screen_font, font_size)/2, (pt.y - text_height(text, screen_font, font_size)/2) + 100, option_to_screen());
 
     bool time_up = screen_timer(screen_time, "ScreenTimer");
 
@@ -438,7 +438,7 @@ void TeamIntroScreen::update()
 
     bitmap logo = bitmap_named("TeamLogo");
     font screen_font = font_named("DefaultFont");
-    int font_size = 30;
+    int font_size = 18;
     color font_color = COLOR_WHITE;
     string text = "Morgaine Barter";
     string text2 = "Daniel Agbay, Lily Lan, Robert Osborne";
@@ -447,14 +447,14 @@ void TeamIntroScreen::update()
     string text5 = "Lachlan Morgan";
     string text6 = "Present";
 
-    draw_bitmap(logo, pt.x - bitmap_width(logo)/2, pt.y - bitmap_height(logo)/2 - 150, option_to_screen());
+    draw_bitmap(logo, pt.x - bitmap_width(logo)/2, pt.y - bitmap_height(logo)/2 - 50, option_to_screen());
 
-    draw_text(text, font_color, screen_font, font_size, pt.x- text_width(text, screen_font, font_size)/2, (pt.y - text_height(text, screen_font, font_size)/2) + 150, option_to_screen());
-    draw_text(text2, font_color, screen_font, font_size, pt.x- text_width(text2, screen_font, font_size)/2, (pt.y - text_height(text2, screen_font, font_size)/2) + 150 + text_height(text2, screen_font, font_size) * 1, option_to_screen());
-    draw_text(text3, font_color, screen_font, font_size, pt.x- text_width(text3, screen_font, font_size)/2, (pt.y - text_height(text3, screen_font, font_size)/2) + 150 + text_height(text3, screen_font, font_size) * 2, option_to_screen());
-    draw_text(text4, font_color, screen_font, font_size, pt.x- text_width(text4, screen_font, font_size)/2, (pt.y - text_height(text4, screen_font, font_size)/2) + 150 + text_height(text4, screen_font, font_size) * 3, option_to_screen());
-    draw_text(text5, font_color, screen_font, font_size, pt.x- text_width(text5, screen_font, font_size)/2, (pt.y - text_height(text5, screen_font, font_size)/2) + 150 + text_height(text5, screen_font, font_size) * 4, option_to_screen());
-    draw_text(text6, font_color, screen_font, font_size, pt.x- text_width(text6, screen_font, font_size)/2, (pt.y - text_height(text6, screen_font, font_size)/2) + 150 + text_height(text6, screen_font, font_size) * 6, option_to_screen());
+    draw_text(text, font_color, screen_font, font_size, pt.x- text_width(text, screen_font, font_size)/2, (pt.y - text_height(text, screen_font, font_size)/2) + 100, option_to_screen());
+    draw_text(text2, font_color, screen_font, font_size, pt.x- text_width(text2, screen_font, font_size)/2, (pt.y - text_height(text2, screen_font, font_size)/2) + 100 + text_height(text2, screen_font, font_size) * 1, option_to_screen());
+    draw_text(text3, font_color, screen_font, font_size, pt.x- text_width(text3, screen_font, font_size)/2, (pt.y - text_height(text3, screen_font, font_size)/2) + 100 + text_height(text3, screen_font, font_size) * 2, option_to_screen());
+    draw_text(text4, font_color, screen_font, font_size, pt.x- text_width(text4, screen_font, font_size)/2, (pt.y - text_height(text4, screen_font, font_size)/2) + 100 + text_height(text4, screen_font, font_size) * 3, option_to_screen());
+    draw_text(text5, font_color, screen_font, font_size, pt.x- text_width(text5, screen_font, font_size)/2, (pt.y - text_height(text5, screen_font, font_size)/2) + 100 + text_height(text5, screen_font, font_size) * 4, option_to_screen());
+    draw_text(text6, font_color, screen_font, font_size, pt.x- text_width(text6, screen_font, font_size)/2, (pt.y - text_height(text6, screen_font, font_size)/2) + 100 + text_height(text6, screen_font, font_size) * 6, option_to_screen());
 
     bool time_up = screen_timer(screen_time, "ScreenTimer");
 
@@ -532,8 +532,8 @@ void MenuScreen::update()
         for(int i = 0; i < num_buttons; i++)
         {
             string text = get_button_text(i + 1);
-            shared_ptr<Button> test(new Button(bitmap_named("Button"), offset, i, text));
-            offset += 100;
+            shared_ptr<Button> test(new Button(bitmap_named("Button"), offset + 40, i, text));
+            offset += 50;
             menu_buttons.push_back(test);
         }
         run_once = true;
@@ -551,7 +551,7 @@ void MenuScreen::update()
 
     bitmap title = bitmap_named("Title");
     drawing_options scale = option_scale_bmp(2, 2);
-    draw_bitmap(title, pt.x - bitmap_width(title)/2, 100, scale);
+    draw_bitmap(title, pt.x - bitmap_width(title)/2, 50, scale);
 
     draw_buttons(menu_buttons, selection);
     selection = button_selection(selection, num_buttons);
@@ -609,7 +609,7 @@ void ExtraScreen::update()
         for(int i = 0; i < num_buttons; i++)
         {
             string text = get_extras_button_text(i + 1);
-            shared_ptr<Button> test(new Button(bitmap_named("Button"), offset, i, text));
+            shared_ptr<Button> test(new Button(bitmap_named("Button"), offset + 50, i, text));
             offset += 100;
             menu_buttons.push_back(test);
         }
@@ -708,7 +708,7 @@ void PreLevelScreen::update()
     draw_text(level_text, COLOR_WHITE, screen_font, font_size, pt.x - text_width(level_text, screen_font, font_size)/2, 100);
     draw_text(password, COLOR_WHITE, screen_font, font_size_password, pt.x - text_width(password, screen_font, font_size_password)/2, screen_height() - 30);
 
-    draw_bitmap(image, pt.x - bitmap_width(image)/2, pt.y - bitmap_height(image)/2 + 10, option_to_screen());
+    draw_bitmap(image, pt.x - bitmap_width(image)/2, pt.y - bitmap_height(image)/2 + 60, option_to_screen());
 
     text_effect->update();
 
@@ -751,7 +751,7 @@ void LevelScreen::update()
         for(int i = 0; i < num_buttons; i++)
         {
             string text = get_pause_text(i + 1);
-            shared_ptr<Button> test(new SmallButton(bitmap_named("ButtonSmall"), offset, i, text, 20, COLOR_BLACK, COLOR_RED));
+            shared_ptr<Button> test(new SmallButton(bitmap_named("ButtonSmall"), offset + 50, i, text, 10, COLOR_BLACK, COLOR_RED));
             offset += 80;
             menu_buttons.push_back(test);
         }
@@ -813,7 +813,7 @@ void LevelScreen::update()
             fill_rectangle(rgba_color(0,0,0,50), 0, 0, screen_width(), screen_height(), option_to_screen());
             pause_run_once = true;
         }
-        draw_text(text, font_color, screen_font, font_size, pt.x- text_width(text, screen_font, font_size)/2, 300, option_to_screen());
+        draw_text(text, font_color, screen_font, font_size, pt.x- text_width(text, screen_font, font_size)/2, 150, option_to_screen());
         draw_buttons(menu_buttons, selection);
         selection = button_selection(selection, num_buttons);
         
@@ -1139,8 +1139,8 @@ void PasswordScreen::update()
         for(int i = 0; i < num_buttons; i++)
         {
             string text = get_password_text(i + 1);
-            shared_ptr<Button> test(new SmallButton(bitmap_named("ButtonDark"), offset, i, text, 20, COLOR_BLACK, COLOR_RED));
-            offset += 80;
+            shared_ptr<Button> test(new SmallButton(bitmap_named("ButtonDark"), offset, i, text, 10, COLOR_WHITE, COLOR_RED));
+            offset += 50;
             menu_buttons.push_back(test);
         }
         run_once = true;

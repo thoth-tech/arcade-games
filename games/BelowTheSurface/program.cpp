@@ -8,8 +8,8 @@
 
 using namespace std;
 
-#define SCREEN_WIDTH 1600
-#define SCREEN_HEIGHT 896
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 446
 #define TILE_SIZE 64
 
 vector<CellSheet> make_cell_sheets(vector<string> cell_sheet_names)
@@ -120,6 +120,12 @@ int main(int argc, char *argv[])
     if(!window_border)
         window_toggle_border("Below The Surface");
 
+    if (!window_is_fullscreen("Below The Surface"))
+    {
+        window_toggle_fullscreen("Below The Surface");
+    }
+    
+
     shared_ptr<Screen> screen;
     if (test_screen)
     {
@@ -138,6 +144,7 @@ int main(int argc, char *argv[])
         screen->update();
         process_events();
         refresh_screen(refresh_rate);
+        
     }
 
     free_resource_bundle("player");
