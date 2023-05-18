@@ -35,3 +35,9 @@
 | --- | ----------- |   
 | Enter / H Key | Pause |          
 | Enter / F Key | Selection |
+
+#### Edited:
+
+- Enter command `skm g++ -O3 program.cpp -o game` for optimisations
+- Reduced resolution on game and assets.
+- Changed button placement and asset placement to better fit new resolution

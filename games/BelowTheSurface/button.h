@@ -8,7 +8,7 @@ class Button
         int id;
         string text;
         font button_font;
-        int font_size = 25;
+        int font_size = 15;
         bool selected = false;
         color font_color = COLOR_BLACK;
         color selected_color = COLOR_RED;
