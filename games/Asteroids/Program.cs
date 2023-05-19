@@ -4,11 +4,14 @@ using SplashKitSDK;
 public class Program
 {
     private static bool _GameStarted, _GameExit;
+    public static double gameScale;
 
     public static void Main()
     {
-        Window gameWindow = new Window("Asteroids", 1600, 900);
-        gameWindow.ToggleBorder();
+         game_setup setup = new game_setup();
+        Window gameWindow = setup.gameWindow;
+        //Window gameWindow = new Window("Asteroids", 1600, 900);
+        //gameWindow.ToggleBorder();
         Game Game = null;
         Menu Menu = new Menu(gameWindow);
 
@@ -54,4 +57,71 @@ public class Program
         }
         gameWindow.Close();
     }
+    public class game_setup
+        {
+            public Window gameWindow;
+
+            public game_setup()
+            {
+                //default config options
+                const int screen_width = 1600;
+                const int screen_height = 900;
+                const bool fullscreen = false;
+                const bool no_boarder = false;
+                const double gameScaleDefault = 1;
+
+
+                Json config_json = SplashKit.JsonFromFile("Game_Config.json");
+
+                if (!config_json.HasKey("Asteroids_game_config"))
+                {
+                    Json temp_config_json = SplashKit.CreateJson();
+                    temp_config_json.AddString("Asteroids_game_config", "");
+                    temp_config_json.AddNumber("screen_width", screen_width);
+                    temp_config_json.AddNumber("screen_height", screen_height);
+                    temp_config_json.AddBool("fullscreen", fullscreen);
+                    temp_config_json.AddBool("no_boarder", no_boarder);
+                    temp_config_json.AddNumber("gameScale", gameScaleDefault);
+                    config_json = temp_config_json;
+
+                    SplashKit.JsonToFile(config_json, "Game_Config.json");
+                }
+
+                if (config_json.HasKey("screen_width") & config_json.HasKey("screen_height"))
+                {
+                    gameWindow = new Window("Asteroids", config_json.ReadInteger("screen_width"), config_json.ReadInteger("screen_height"));
+                }
+                else
+                {
+                    gameWindow = new Window("Asteroids", screen_width, screen_height);
+                }
+
+
+                if (config_json.HasKey("fullscreen"))
+                {
+                    if (config_json.ReadBool("fullscreen"))
+                    {
+                        gameWindow.ToggleFullscreen();
+                    }
+                }
+
+                if (config_json.HasKey("no_boarder"))
+                {
+                    if (config_json.ReadBool("no_boarder"))
+                    {
+                        gameWindow.ToggleBorder();
+                    }
+                }
+
+                if (config_json.HasKey("gameScale"))
+                {
+                    gameScale = config_json.ReadNumber("gameScale");
+                }
+                else
+                {
+                    gameScale = gameScaleDefault;
+                }
+            }
+
+        }
 }
