@@ -153,9 +153,24 @@ public class RedEnergyBall : Shooting
         Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
         _Velocity = SplashKit.VectorMultiply(direction, SPEED);
 
-        _EnergyBall = new Bitmap("RedEnergyBall", "RedEnergyBall_9_frames_updated.png");
-        _EnergyBall.SetCellDetails(150, 150, 3, 3, 9);
-        _EnergyBallScript = SplashKit.LoadAnimationScript("RedEnergyBall", "RedEnergyBall.txt");
+        if (SplashKit.HasBitmap("RedEnergyBall"))
+        {
+            _EnergyBall = SplashKit.BitmapNamed("RedEnergyBall");
+        }
+        else
+        {
+            _EnergyBall = SplashKit.LoadBitmap("RedEnergyBall", "RedEnergyBall.png");
+            _EnergyBall.SetCellDetails(150, 150, 3, 3, 9);
+        }
+        if(SplashKit.HasAnimationScript("RedEnergyBall"))
+        {
+            _EnergyBallScript = SplashKit.AnimationScriptNamed("RedEnergyBall");
+        }
+        else
+        {
+            _EnergyBallScript = SplashKit.LoadAnimationScript("RedEnergyBall", "RedEnergyBall.txt");
+        }
+        
         _EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall, _EnergyBallScript);
         _EnergyBallSprite.StartAnimation("Start");
         _EnergyBallSprite.Position = fromPT;
@@ -224,15 +239,30 @@ public class Laser : Shooting
         // Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
         // _Velocity = SplashKit.VectorMultiply(direction, SPEED);
 
-        
+
         // if (SplashKit.HasBitmap("BigLaser")) _laserImg = SplashKit.BitmapNamed("BigLaser");
         // else _laserImg = SplashKit.LoadBitmap("BigLaser", "BigLaser.png");
         // if (SplashKit.HasBitmap("SmallLaser")) _laserImg = SplashKit.BitmapNamed("SmallLaser");
         // else _laserImg = SplashKit.LoadBitmap("SmallLaser", "SmallLaser.png");
-        if (SplashKit.HasBitmap("ReallySmallLaser")) _laserImg = SplashKit.BitmapNamed("ReallySmallLaser");
-        else _laserImg = SplashKit.LoadBitmap("ReallySmallLaser", "ReallySmallLaser.png");
-        _laserImg.SetCellDetails(300, 50, 1, 40, 40);
-        _LaserScript = SplashKit.LoadAnimationScript("LaserScript", "Laser40.txt");
+        if (SplashKit.HasBitmap("ReallySmallLaser"))
+        {
+            _laserImg = SplashKit.BitmapNamed("ReallySmallLaser");
+        }
+        else
+        {
+            _laserImg = SplashKit.LoadBitmap("ReallySmallLaser", "ReallySmallLaser.png");
+            _laserImg.SetCellDetails(300, 50, 1, 40, 40);
+        }
+
+        if(SplashKit.HasAnimationScript("LaserScript"))
+        {
+            _LaserScript = SplashKit.AnimationScriptNamed("LaserScript");
+        }
+        else
+        {
+            _LaserScript = SplashKit.LoadAnimationScript("LaserScript", "Laser40.txt");
+        }
+        
         _laserSprite = SplashKit.CreateSprite(_laserImg, _LaserScript);
         //_EnergyBallSprite.StartAnimation("Start");
         _laserSprite.Position = fromPT;

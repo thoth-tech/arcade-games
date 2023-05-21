@@ -69,6 +69,7 @@ public class Program
                 const bool fullscreen = false;
                 const bool no_boarder = false;
                 const double gameScaleDefault = 1;
+                const string game_bundles = "gamebundle_large.txt";
 
 
                 Json config_json = SplashKit.JsonFromFile("Game_Config.json");
@@ -82,6 +83,7 @@ public class Program
                     temp_config_json.AddBool("fullscreen", fullscreen);
                     temp_config_json.AddBool("no_boarder", no_boarder);
                     temp_config_json.AddNumber("gameScale", gameScaleDefault);
+                    temp_config_json.AddString("game_bundles", game_bundles);
                     config_json = temp_config_json;
 
                     SplashKit.JsonToFile(config_json, "Game_Config.json");
@@ -111,6 +113,15 @@ public class Program
                     {
                         gameWindow.ToggleBorder();
                     }
+                }
+                
+                if(config_json.HasKey("game_bundles"))
+                {
+                    SplashKit.LoadResourceBundle("MainGameBundle",config_json.ReadString("game_bundles"));
+                }
+                else
+                {
+                    SplashKit.LoadResourceBundle("MainGameBundle",game_bundles);
                 }
 
                 if (config_json.HasKey("gameScale"))

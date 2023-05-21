@@ -18,7 +18,7 @@ public abstract class Enemy
 
 
     protected double _Angle;
-    public Vector2D _Velocity {get; protected set;}
+    public Vector2D _Velocity { get; protected set; }
     protected double _RotationSpeed;
 
     public double Height { get; protected set; }
@@ -190,11 +190,11 @@ public class RockLarge : Enemy
     public RockLarge(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
     {
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Large.json"));     // load sprite with cell details and script
-        _AGO._sprite.Scale = 0.5F;
+        //_AGO._sprite.Scale = 0.5F;
         _AGO.rotSpeed = (float)RotationSpeed;       // set rotation speed
         GetSpeed = Speed;           // set velocity magnitude
 
-        SetCourse(fX,fY,tX,tY);     // randomized start and direction
+        SetCourse(fX, fY, tX, tY);     // randomized start and direction
 
         X -= _AGO._sprite.Width / 2;        // starting completely offscreen breaks the enemy list, original XY is based on top left corner of image
         Y -= _AGO._sprite.Height / 2;
@@ -205,7 +205,7 @@ public class RockLarge : Enemy
 
     public override Circle[] HitCircle()    // returns sprite circle that fits within rectangle
     {
-        return new Circle[] {_AGO._sprite.CollisionCircle()};
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
     }
 
     public override Tuple<String, int> HitBy(Player wasHitBy)   // if called, start animation
@@ -217,7 +217,7 @@ public class RockLarge : Enemy
         return base.HitBy(wasHitBy);
     }
 
-    public override Tuple<String, int> HitBy(Shooting wasHitBy) 
+    public override Tuple<String, int> HitBy(Shooting wasHitBy)
     {
         if (!_IsDying)
         {
@@ -251,7 +251,7 @@ public class RockLarge : Enemy
         //base.Update();      // not used
     }
 
-    public override void Draw()     
+    public override void Draw()
     {
         //Circle c = _AGO._sprite.CollisionCircle();    // used for debugging
         //c.Draw(Color.White);
@@ -270,7 +270,7 @@ public class RockMed : Enemy
         _AGO.rotSpeed = (float)RotationSpeed;
         GetSpeed = Speed;
 
-        SetCourse(fX,fY,tX,tY);
+        SetCourse(fX, fY, tX, tY);
 
         X -= _AGO._sprite.Width / 2;
         Y -= _AGO._sprite.Height / 2;
@@ -281,7 +281,7 @@ public class RockMed : Enemy
 
     public override Circle[] HitCircle()
     {
-        return new Circle[] {_AGO._sprite.CollisionCircle()};
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
     }
 
     public override Tuple<String, int> HitBy(Player wasHitBy)
@@ -332,14 +332,14 @@ public class RockMed : Enemy
 public class RockSmall : Enemy
 {
     protected AstGameObj _AGO;
-        public RockSmall(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
+    public RockSmall(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
     {
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Small.json"));
 
         _AGO.rotSpeed = (float)RotationSpeed;
         GetSpeed = Speed;
 
-        SetCourse(fX,fY,tX,tY);
+        SetCourse(fX, fY, tX, tY);
 
         X -= _AGO._sprite.Width / 2;
         Y -= _AGO._sprite.Height / 2;
@@ -361,7 +361,7 @@ public class RockSmall : Enemy
 
     public override Circle[] HitCircle()
     {
-        return new Circle[] {_AGO._sprite.CollisionCircle()};
+        return new Circle[] { _AGO._sprite.CollisionCircle() };
     }
 
     public override Tuple<String, int> HitBy(Player wasHitBy)
@@ -421,28 +421,34 @@ public class BlueRock : Enemy
     {
         _RotationSpeed = RotationSpeed;
         _Angle = 0;
-        // _Rock = new Bitmap("Rock4", "BlueRockSpriteSheet.png");
-        if (SplashKit.HasBitmap("Rock4"))
+        if (SplashKit.HasBitmap("RockBlue"))
         {
-            _Rock = SplashKit.BitmapNamed("Rock4");
+            _Rock = SplashKit.BitmapNamed("RockBlue");
         }
         else
         {
             _Rock = SplashKit.LoadBitmap("Rock4", "BlueRockSpriteSheet.png");
+            _Rock.SetCellDetails(150, 150, 3, 3, 9);
         }
-        _Rock.SetCellDetails(150, 150, 3, 3, 9);
-        _RockAnimation = SplashKit.LoadAnimationScript("Rock4Ani", "BlueRock.txt");
+
+        if (SplashKit.HasAnimationScript("RockBlueAnimation"))
+        {
+            _RockAnimation = SplashKit.AnimationScriptNamed("RockBlueAnimation");
+        }
+        else
+        {
+            _RockAnimation = SplashKit.LoadAnimationScript("RockBlueAnimation", "BlueRock.txt");
+        }
+
         _RockSprite = SplashKit.CreateSprite(_Rock, _RockAnimation);
         _RockSprite.AnchorPoint = new Point2D() { X = 75, Y = 75 };
         _RockSprite.StartAnimation("normal");
-
-        //_RockSprite.MoveTo(150,150);
 
         _RockSprite.AddValue("Health", 5);
         Height = _Rock.CellHeight;
         Width = _Rock.CellWidth;
         GetSpeed = Speed;
-        SetCourse(fX,fY,tX,tY);
+        SetCourse(fX, fY, tX, tY);
     }
 
     public override void Update()
@@ -531,9 +537,25 @@ public class Boss1 : Enemy
 
     public Boss1(Window gameWindow, Game game) : base(gameWindow)
     {
-        _Boss = new Bitmap("Boss1", "MotherShipAll.png");
-        _Boss.SetCellDetails(400, 300, 3, 2, 6);
-        _BossScript = SplashKit.LoadAnimationScript("MotherShip", "MotherShip1.txt");
+        if (SplashKit.HasBitmap("Boss1"))
+        {
+            _Boss = SplashKit.BitmapNamed("Boss1");
+        }
+        else
+        {
+            _Boss = SplashKit.LoadBitmap("Boss1", "MotherShipAll.png");
+            _Boss.SetCellDetails(400, 300, 3, 2, 6);
+        }
+
+        if (SplashKit.HasAnimationScript("MotherShip"))
+        {
+            _BossScript = SplashKit.AnimationScriptNamed("MotherShip");
+        }
+        else
+        {
+            _BossScript = SplashKit.LoadAnimationScript("MotherShip", "MotherShip1.txt");
+        }
+
         _BossAnimation = _BossScript.CreateAnimation("ShieldUp");
         _RotationSpeed = 0;
         _Angle = 0;
@@ -866,9 +888,23 @@ public class Boss2 : Enemy
         _gameWindow = gameWindow;
         _game = game;
 
-        _Boss = new Bitmap("Boss2", "MotherShipAll.png");
-        _Boss.SetCellDetails(400, 300, 3, 2, 6);
-        _BossScript = SplashKit.LoadAnimationScript("SmallBossShips", "SmallBossShips.txt");
+        if(SplashKit.HasBitmap("Boss2"))
+        {
+            _Boss = SplashKit.BitmapNamed("Boss2");
+        }
+        else
+        {
+            _Boss = SplashKit.LoadBitmap("Boss2", "MotherShipAll.png");
+            _Boss.SetCellDetails(400, 300, 3, 2, 6);
+        }
+        if(SplashKit.HasAnimationScript("SmallBossShips"))
+        {
+            _BossScript = SplashKit.AnimationScriptNamed("SmallBossShips");
+        }
+        else
+        {
+            _BossScript = SplashKit.LoadAnimationScript("SmallBossShips", "SmallBossShips.txt");
+        }
         double window_3rd = _gameWindow.Width / 4;
         Height = _Boss.CellHeight;
         Width = _Boss.CellWidth;
@@ -933,17 +969,7 @@ public class Boss2 : Enemy
     public override void Update()
     {
 
-
-
-
     }
-
-
-
-
-
-
-
     public override Tuple<String, int> HitBy(Player wasHitBy)
     {
         /*             if(_IsDying)
@@ -953,9 +979,6 @@ public class Boss2 : Enemy
         return new Tuple<string, int>("Life", -1);
         // return new Tuple<string, int>("False", 0);
     }
-
-
-
 
     protected Shooting RedEnergyBall(Player p, Sprite s)
     {
