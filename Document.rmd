@@ -39,6 +39,9 @@ Table of Content(up to date)
     - [10.3.1 Manuevering the ship](#1031-manuevering-the-ship)
     - [10.3.2 Deafeating boss ships](#1032-deafeating-boss-ships)
   - [10.4 Game Rules](#104-game-rules)
+    - [10.4.1 Operational Rules](#1041-operational-rules)
+    - [10.4.2 Constitutive Rules](#1041-constitutive-rules)
+    - [10.4.3 Implicit Rules](#1041-implicit-rules)
   - [10.5 Internal Economy](#105-internal-economy)
   - [10.6 Player Psychology](#106-player-psychology)
 
@@ -175,6 +178,31 @@ Destroying enemies: The player can use their shooters to destroy asteroids and b
 Getting high scores: As the player plays through the game they will gain points, these points have no affect on the gameplay but the high scores will be recorded in the game. players can earn points through surviving over time and destroying enemies. this rule impacts on the all games of asteroids as the high score is recorded and set as a goal for all players to beat.
 
 ### 10.5 Internal Economy
+
+#### 10.5.1 Tangible Resources
+
+##### 10.5.1.1 Powerups
+What value Does It Have: Powerups help the player progress through the game and the rate they drop may vary depending on the game state the player is in.
+How Is It Exchanged In The Game: As asteroids and boss ships are destroyed they may drop powerups for the player, if the player has previously lost health then these powerups are more likely to restore the players lost health, where if the player has almost full to full health then these drops are more likely to power up the players ship with upgrades.
+Negative Feedback Mechanism: Powerups will only drop if the player is actively destroying asteroids, as the game can be played by just dodging instead of destroying the asteroids, the player must actively destroy asteroids for the chance to get any powerups.
+Positive Feedback Mechanism: Better powerups are more likely to drop if the player is successfully not taking any damage and playing the game better, while if the player takes damage the powerups will try and get them back into a healthier state in the game.
+Random Elements: Some powerups amy end up not being entirely usefull to the player, such as their still being a chance for health to drop while the player is at full health.
+
+#### 10.5.2 Intangible Resources
+
+##### 10.5.2.1 Player Health
+What value Does It Have: PLayer health shows how many times the player can still be hit before a game over, the health value of a player also has an effect on the drop rates of different powerups.
+How Is It Exchanged In The Game: 1 health is lost whenever the player takes damage form an asteroid or enemy ship, if the player health reduces to zero it results in a game over. Health points can be regained by picking up health drops from enemies.
+Negative Feedback Mechanism: More powerups will be replaced with health drops if the player is not at full health.
+Positive Feedback Mechanism: Health drops will despawn after a little while if not collected.
+Random Elements: the health drops to refill lost health are dopped randomly form enemy kills so there is never a guarantee that you will recieve a drop when you need one.
+
+##### 10.5.2.2 Score
+What value Does It Have: Score is a display letting the player know if they have been doing well over the course of the game.
+How Is It Exchanged In The Game: Score is gained overtime, so the longer a player survives the more score they will acheive. score can also be gained from destroying asteroids and enemy ships.
+Negative Feedback Mechanism: score can only be gained as fast as enemies spawn in, so score will rise quicker in later game stages when more enmies spawn at a time.
+Positive Feedback Mechanism: score naturally goes up as time progresses in the game so as talemate is never a possibility with score.
+Random Elements: the rate and way enemies spawn is random so the amount of score that can be gained form defeating enemies each game will vary slightly.
 
 ### 10.6 Player Psychology
 
