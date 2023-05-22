@@ -870,7 +870,7 @@ public class Boss1 : Enemy
         fromPT.Y = Y + _Boss.CellCenter.Y;
         foreach (Player p in _game.Players)
         {
-            if (!p.IsDead)
+            if (!p.PlayerScore.IsDead)
             {
                 Shooting ShotType = new RedEnergyBall(fromPT, p);
                 _shots.Add(ShotType);
@@ -1128,7 +1128,7 @@ public class smallShip : Boss2
     {
         foreach (Player p in _game.Players)
         {
-            if (p.Y < _playerKillThreshold && !p.IsDead)
+            if (p.Y < _playerKillThreshold && !p.PlayerScore.IsDead)
             {
                 if (!_RedEnergyBallTimer.IsStarted) _RedEnergyBallTimer.Start();
                 if (_RedEnergyBallTimer.Ticks / 500 > 1)

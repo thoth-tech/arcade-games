@@ -118,7 +118,10 @@ public class BossSmallShot : Shooting
     public override bool HitCheck(Player player)
     {
         bool hit = false;
-        if (SplashKit.BitmapCircleCollision(player.HitBMP(), player.X, player.Y, _shotCircle)) hit = true;
+        if (SplashKit.BitmapCircleCollision(player.HitBMP(), player.X, player.Y, _shotCircle) && player.PlayerScore.IsDead == false)
+        {
+            hit = true;
+        }
 
         return hit;
     }
@@ -183,10 +186,9 @@ public class RedEnergyBall : Shooting
     public override bool HitCheck(Player player)
     {
         bool hit = false;
-        if (SplashKit.SpriteBitmapCollision(_EnergyBallSprite, player.HitBMP(), player.X, player.Y) && player.IsDead == false)
+        if (SplashKit.SpriteBitmapCollision(_EnergyBallSprite, player.HitBMP(), player.X, player.Y) && player.PlayerScore.IsDead == false)
         {
             hit = true;
-            //SplashKit.FreeSprite(_EnergyBallSprite);
         }
 
         return hit;
@@ -207,7 +209,6 @@ public class RedEnergyBall : Shooting
         if (_EnergyBallSprite.Offscreen())
         {
             Offscreen = true;
-            //SplashKit.FreeSprite(_EnergyBallSprite);
         }
         return Offscreen;
 
@@ -257,7 +258,7 @@ public class Laser : Shooting
         }
 
         _laserSprite = SplashKit.CreateSprite(_laserImg, _LaserScript);
-        //_EnergyBallSprite.StartAnimation("Start");
+
         _laserSprite.Position = fromPT;
 
         _laserSprite.MoveTo(fromPT.X, fromPT.Y);
@@ -265,17 +266,14 @@ public class Laser : Shooting
         _laserSprite.StartAnimation(Frame);
 
     }
-    // public double Y()
-    // {
-    //     return (double)_laserSprite.Y;
-    // }
+
     public override bool HitCheck(Player player)
     {
         bool hit = false;
         if (SplashKit.SpriteBitmapCollision(_laserSprite, player.HitBMP(), player.X, player.Y))
         {
             hit = true;
-            //SplashKit.FreeSprite(_EnergyBallSprite);
+
         }
 
         return hit;
@@ -285,7 +283,7 @@ public class Laser : Shooting
     {
         _laserSprite.X += Convert.ToSingle(_Velocity.X);
         _laserSprite.Y += Convert.ToSingle(_Velocity.Y);
-        //_EnergyBallSprite.AddToVelocity(_Velocity);
+
         Y = _laserSprite.Y;
 
     }
@@ -297,7 +295,7 @@ public class Laser : Shooting
         if (_laserSprite.Offscreen())
         {
             Offscreen = true;
-            //SplashKit.FreeSprite(_EnergyBallSprite);
+
         }
         return Offscreen;
 

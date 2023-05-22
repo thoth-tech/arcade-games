@@ -505,7 +505,7 @@ public class EndGame : Level
         _EnemySpawned.Clear();
         foreach (Player p in _game.Players)
         {
-            p._PlayerScore.PauseTimer();
+            p.PlayerScore.PauseTimer();
         }
 
     }

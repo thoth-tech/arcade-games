@@ -18,7 +18,7 @@ public class Player
     public bool IsDead { get; private set; }
     private SplashKitSDK.Timer _InvulnerableTime;
     //private bool _IsInvulnerable;
-    public Score _PlayerScore { get; set; }
+    public Score PlayerScore { get; set; }
     public bool IsInvulnerable { get; private set; }
 
     public string Name { get { return _Player; } }
@@ -120,23 +120,20 @@ public class Player
     {
         double MoveSpeed = 5 * gameScale;
         double RotateSpeed = 5;
-        if (SplashKit.KeyDown(KeyCode.LeftKey)) Rotation(-RotateSpeed);
-        if (SplashKit.KeyDown(KeyCode.RightKey)) Rotation(RotateSpeed);
-        if (SplashKit.KeyDown(KeyCode.UpKey)) Move(MoveSpeed);
-        if (SplashKit.KeyDown(KeyCode.DownKey)) { }
-        if (SplashKit.KeyTyped(KeyCode.RightCtrlKey)) { Shoot(); }
-        if (SplashKit.KeyTyped(KeyCode.LeftCtrlKey)) { Shoot(); }
-
+        if (SplashKit.KeyDown(game_controls["P1_left"])) Rotation(-RotateSpeed);
+        if (SplashKit.KeyDown(game_controls["P1_right"])) Rotation(RotateSpeed);
+        if (SplashKit.KeyDown(game_controls["P1_up"])) Move(MoveSpeed);
+        if (SplashKit.KeyTyped(game_controls["P1_button1"])) { Shoot(); }
     }
 
     private void Player2Controls()
     {
         double MoveSpeed = 5 * gameScale;
         double RotateSpeed = 5;
-        if (SplashKit.KeyDown(KeyCode.AKey)) Rotation(-RotateSpeed);
-        if (SplashKit.KeyDown(KeyCode.DKey)) Rotation(RotateSpeed);
-        if (SplashKit.KeyDown(KeyCode.WKey)) Move(MoveSpeed);
-        if (SplashKit.KeyTyped(KeyCode.SpaceKey)) { Shoot(); }
+        if (SplashKit.KeyDown(game_controls["P2_left"])) Rotation(-RotateSpeed);
+        if (SplashKit.KeyDown(game_controls["P2_right"])) Rotation(RotateSpeed);
+        if (SplashKit.KeyDown(game_controls["P2_up"])) Move(MoveSpeed);
+        if (SplashKit.KeyTyped(game_controls["P2_button1"])) { Shoot(); }
 
     }
 
@@ -201,7 +198,7 @@ public class Player
         if (!IsInvulnerable && !IsDead)
         {
             bool hit = false;
-
+            
             foreach (Circle e in enemy.HitCircle())
             {
                 if (SplashKit.BitmapCircleCollision(_Ship, X, Y, e)) hit = true;
