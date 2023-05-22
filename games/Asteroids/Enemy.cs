@@ -2,6 +2,7 @@ using System;
 using SplashKitSDK;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using static AsteroidsGame.Program;
 
 public abstract class Enemy
 {
@@ -192,7 +193,9 @@ public class RockLarge : Enemy
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Large.json"));     // load sprite with cell details and script
         //_AGO._sprite.Scale = 0.5F;
         _AGO.rotSpeed = (float)RotationSpeed;       // set rotation speed
-        GetSpeed = Speed;           // set velocity magnitude
+
+        GetSpeed = (int)(Speed * gameScale);           // set velocity magnitude
+        if (GetSpeed == 0) { GetSpeed = 1; }            // prevent zero velocity
 
         SetCourse(fX, fY, tX, tY);     // randomized start and direction
 
@@ -201,6 +204,8 @@ public class RockLarge : Enemy
         _AGO._sprite.X = (float)X;          // set sprite coords
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);        // set sprite velocity
+        Height = _AGO._sprite.Height;       // set height and width
+        Width = _AGO._sprite.Width;
     }
 
     public override Circle[] HitCircle()    // returns sprite circle that fits within rectangle
@@ -268,7 +273,8 @@ public class RockMed : Enemy
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Medium.json"));
 
         _AGO.rotSpeed = (float)RotationSpeed;
-        GetSpeed = Speed;
+        GetSpeed = (int)(Speed * gameScale);           // set velocity magnitude
+        if (GetSpeed == 0) { GetSpeed = 1; }            // prevent zero velocity
 
         SetCourse(fX, fY, tX, tY);
 
@@ -277,6 +283,8 @@ public class RockMed : Enemy
         _AGO._sprite.X = (float)X;
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);
+        Height = _AGO._sprite.Height;       // set height and width
+        Width = _AGO._sprite.Width;
     }
 
     public override Circle[] HitCircle()
@@ -337,7 +345,8 @@ public class RockSmall : Enemy
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Small.json"));
 
         _AGO.rotSpeed = (float)RotationSpeed;
-        GetSpeed = Speed;
+        GetSpeed = (int)(Speed * gameScale);           // set velocity magnitude
+        if (GetSpeed == 0) { GetSpeed = 1; }            // prevent zero velocity
 
         SetCourse(fX, fY, tX, tY);
 
@@ -346,6 +355,8 @@ public class RockSmall : Enemy
         _AGO._sprite.X = (float)X;
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);
+        Height = _AGO._sprite.Height;       // set height and width
+        Width = _AGO._sprite.Width;
     }
 
     public RockSmall(Window gameWindow, Vector2D Vel, double Rot, Point2D Start) : base(gameWindow)
@@ -441,16 +452,22 @@ public class BlueRock : Enemy
         }
 
         _RockSprite = SplashKit.CreateSprite(_Rock, _RockAnimation);
-        _RockSprite.AnchorPoint = new Point2D() { X = 75, Y = 75 };
+        //_RockSprite.AnchorPoint = new Point2D() { X = 75, Y = 75 };
+        _RockSprite.AnchorPoint = _RockSprite.CenterPoint;
         _RockSprite.StartAnimation("normal");
 
         _RockSprite.AddValue("Health", 5);
         Height = _Rock.CellHeight;
         Width = _Rock.CellWidth;
-        GetSpeed = Speed;
+        GetSpeed = (int)(Speed * gameScale);           // set velocity magnitude
+        if (GetSpeed == 0) { GetSpeed = 1; }            // prevent zero velocity
         SetCourse(fX, fY, tX, tY);
     }
-
+    public override Circle[] HitCircle()
+    {
+        if (!_IsDying) return new Circle[] { _RockSprite.CollisionCircle() };
+        return new Circle[] { SplashKit.CircleAt(-5, -5, 1) };
+    }
     public override void Update()
     {
 
@@ -566,8 +583,8 @@ public class Boss1 : Enemy
         _ShieldFlash = false;
         _ShipHealth = 50;
         _Phase = "Start";
-        X = gameWindow.Width / 2 - _Boss.CellWidth / 2;
-        Y = -299;
+        X = (gameWindow.Width / 2 - _Boss.CellWidth / 2);
+        Y = -299 * gameScale;
         _XRight = true;
         _YDown = true;
         CanShoot = true;
@@ -637,7 +654,7 @@ public class Boss1 : Enemy
         switch (_Phase)
         {
             case "Start":
-                if (Y <= 50)
+                if (Y <= 50 * gameScale)
                 {
                     Y++;
 
@@ -648,27 +665,29 @@ public class Boss1 : Enemy
                 }
                 break;
             case "Mid":
-                if (X < 200) _XRight = true;
-                if (X + Width > _gameWindow.Width - 200) _XRight = false;
-                if (Y < 50) _YDown = true;
-                if (Y > 70) _YDown = false;
+                if (X < 200 * gameScale) _XRight = true;
+                if (X + Width > _gameWindow.Width - (200 * gameScale)) _XRight = false;
+                if (Y < 50 * gameScale) _YDown = true;
+                if (Y > 70 * gameScale) _YDown = false;
 
                 if (_XRight == true)
                 {
-                    X += 2;
+                    X += 2 * gameScale;
                 }
                 else
                 {
-                    X -= 2;
+                    X -= 2 * gameScale;
                 }
 
                 if (_YDown == true)
                 {
-                    Y++;
+                    // Y++;
+                    Y += 1 * gameScale;
                 }
                 else
                 {
-                    Y--;
+                    // Y--;
+                    Y -= 1 * gameScale;
                 }
 
                 if (!_shootingTime.IsStarted) _shootingTime.Start();
@@ -686,27 +705,27 @@ public class Boss1 : Enemy
                 }
                 break;
             case "End":
-                if (X < 200) _XRight = true;
-                if (X + Width > _gameWindow.Width - 200) _XRight = false;
-                if (Y < 50) _YDown = true;
-                if (Y > 70) _YDown = false;
+                if (X < 200 * gameScale) _XRight = true;
+                if (X + Width > _gameWindow.Width - (200 * gameScale)) _XRight = false;
+                if (Y < 50 * gameScale) _YDown = true;
+                if (Y > 70 * gameScale) _YDown = false;
 
                 if (_XRight == true)
                 {
-                    X += 2;
+                    X += 2 * gameScale;
                 }
                 else
                 {
-                    X -= 2;
+                    X -= 2 * gameScale;
                 }
 
                 if (_YDown == true)
                 {
-                    Y++;
+                    Y += 1 * gameScale;
                 }
                 else
                 {
-                    Y--;
+                    Y -= 1 * gameScale;
                 }
                 if (_shootingTime.Ticks / 2000 == _shootingEnergyShot)
                 {
@@ -798,9 +817,9 @@ public class Boss1 : Enemy
     {
         Circle[] Cir =
         {
-            SplashKit.CircleAt(X + 198, Y + 116, 102),
-            SplashKit.CircleAt(X + 293, Y + 112, 78),
-            SplashKit.CircleAt(X + 102, Y + 112, 78)
+            SplashKit.CircleAt(X + (198 * gameScale), Y + (116 * gameScale), 102 * gameScale),
+            SplashKit.CircleAt(X + (293 * gameScale), Y + (112 * gameScale), 78 * gameScale),
+            SplashKit.CircleAt(X + (102 * gameScale), Y + (112 * gameScale), 78 * gameScale)
         };
         return Cir;
     }
@@ -830,9 +849,9 @@ public class Boss1 : Enemy
         Point2D pt3 = new Point2D();
         pt1.X = X + _Boss.CellCenter.X;
         pt1.Y = Y + _Boss.CellCenter.Y;
-        pt2.X = X + _Boss.CellCenter.X - 20;
+        pt2.X = X + _Boss.CellCenter.X - (20 * gameScale);
         pt2.Y = Y + _Boss.CellCenter.Y;
-        pt3.X = X + _Boss.CellCenter.X + 20;
+        pt3.X = X + _Boss.CellCenter.X + (20 * gameScale);
         pt3.Y = Y + _Boss.CellCenter.Y;
 
         ShotType = new BossSmallShot(pt1, 90);
@@ -851,8 +870,11 @@ public class Boss1 : Enemy
         fromPT.Y = Y + _Boss.CellCenter.Y;
         foreach (Player p in _game.Players)
         {
-            Shooting ShotType = new RedEnergyBall(fromPT, p);
-            _shots.Add(ShotType);
+            if (!p.IsDead)
+            {
+                Shooting ShotType = new RedEnergyBall(fromPT, p);
+                _shots.Add(ShotType);
+            }
         }
 
     }
@@ -888,7 +910,7 @@ public class Boss2 : Enemy
         _gameWindow = gameWindow;
         _game = game;
 
-        if(SplashKit.HasBitmap("Boss2"))
+        if (SplashKit.HasBitmap("Boss2"))
         {
             _Boss = SplashKit.BitmapNamed("Boss2");
         }
@@ -897,7 +919,7 @@ public class Boss2 : Enemy
             _Boss = SplashKit.LoadBitmap("Boss2", "MotherShipAll.png");
             _Boss.SetCellDetails(400, 300, 3, 2, 6);
         }
-        if(SplashKit.HasAnimationScript("SmallBossShips"))
+        if (SplashKit.HasAnimationScript("SmallBossShips"))
         {
             _BossScript = SplashKit.AnimationScriptNamed("SmallBossShips");
         }
@@ -931,7 +953,7 @@ public class Boss2 : Enemy
 
 
         //if player goes above this they will be killed
-        _playerKillThreshold = 300;
+        _playerKillThreshold = (int)(300 * gameScale);
 
         // Set up variables for the figure 8 pattern
         _time.Add((-1000)); //far left
@@ -1031,12 +1053,14 @@ public class smallShip : Boss2
         switch (ShipNo) // Set up variables for the figure 8 pattern
         {
             case 0:
+                //_time = (int)(-1000 * gameScale); //far left
                 _time = -1000; //far left
                 break;
             case 1:
                 _time = 0; //middle
                 break;
             case 2:
+                //_time = (int)(1000 * gameScale); //far right
                 _time = 1000; //far right
                 break;
             default:
@@ -1051,8 +1075,8 @@ public class smallShip : Boss2
         _Ypoint += yChange;
 
 
-        int b = 600;
-        int c = 200;
+        int b = (int)(600 * gameScale);
+        int c = (int)(200 * gameScale);
         double t = (_MoveTimer.Ticks + _time) * 2 * Math.PI / 5000;
         //Console.WriteLine(_MoveTimer.Ticks / 1000);
         // Calculate the new position based on the Lemniscate of Bernoulli curve
@@ -1104,7 +1128,7 @@ public class smallShip : Boss2
     {
         foreach (Player p in _game.Players)
         {
-            if (p.Y < _playerKillThreshold)
+            if (p.Y < _playerKillThreshold && !p.IsDead)
             {
                 if (!_RedEnergyBallTimer.IsStarted) _RedEnergyBallTimer.Start();
                 if (_RedEnergyBallTimer.Ticks / 500 > 1)
@@ -1131,7 +1155,7 @@ public class smallShip : Boss2
             int ShotCount = _shots.Count();
 
 
-            Point2D fromPT = new Point2D { X = _Ship.X + 50, Y = _Ship.CenterPoint.Y - 40 };
+            Point2D fromPT = new Point2D { X = _Ship.X + (int)(50 * gameScale), Y = _Ship.CenterPoint.Y - (int)(40 * gameScale) };
 
             //Console.WriteLine("LaserFiring");
             if (_firstShot)
@@ -1149,7 +1173,7 @@ public class smallShip : Boss2
                 // Console.WriteLine("Target y " + target.Y);
                 // Console.WriteLine("Shot Count " + _shots.Count());
                 //Console.WriteLine("Remaining Shots");
-                if (target.Y > _Ship.CenterPoint.Y - 40 + 49)
+                if (target.Y > _Ship.CenterPoint.Y - (int)(40 * gameScale) + SplashKit.BitmapNamed("ReallySmallLaser").CellHeight - 1)
                 {
                     // Console.WriteLine("Second All" +u);
                     Shooting ShotType = new Laser(fromPT, _FrameCount);
@@ -1243,9 +1267,9 @@ public class smallShip : Boss2
     {
         Circle[] Cir =
         {
-            SplashKit.CircleAt(_Ship.X + 198, _Ship.Y + 116, 102),
-            SplashKit.CircleAt(_Ship.X + 293, _Ship.Y + 112, 78),
-            SplashKit.CircleAt(_Ship.X + 102, _Ship.Y + 112, 78)
+            SplashKit.CircleAt(_Ship.X  + (198 * gameScale), _Ship.Y  + (116 * gameScale), 102 * gameScale),
+            SplashKit.CircleAt(_Ship.X  + (293 * gameScale), _Ship.Y  + (112 * gameScale), 78 * gameScale),
+            SplashKit.CircleAt(_Ship.X  + (102 * gameScale), _Ship.Y  + (112 * gameScale), 78 * gameScale)
         };
         return Cir;
     }

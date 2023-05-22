@@ -1,6 +1,8 @@
 using System;
 using SplashKitSDK;
 using System.Collections.Generic;
+using static AsteroidsGame.Program;
+
 
 public class Player
 {
@@ -24,7 +26,7 @@ public class Player
     public Player(Window gameWindow, string Player, string PlayerShip, int PlayersNo)
     {
         _gameWindow = gameWindow;
-        _Ship = SplashKit.LoadBitmap(Player,PlayerShip);
+        _Ship = SplashKit.LoadBitmap(Player, PlayerShip);
         _Player = Player;
 
         Respawn(PlayersNo);
@@ -93,7 +95,7 @@ public class Player
 
     private void Rotation(double change)
     {
-        _Angle = (_Angle + change) ; //% 360
+        _Angle = (_Angle + change); //% 360
     }
 
     private void Move(double Speed)
@@ -116,10 +118,11 @@ public class Player
 
     private void Player1Controls()
     {
-        const double Speed = 5;
-        if (SplashKit.KeyDown(KeyCode.LeftKey)) Rotation(-Speed);
-        if (SplashKit.KeyDown(KeyCode.RightKey)) Rotation(Speed);
-        if (SplashKit.KeyDown(KeyCode.UpKey)) Move(Speed);
+        double MoveSpeed = 5 * gameScale;
+        double RotateSpeed = 5;
+        if (SplashKit.KeyDown(KeyCode.LeftKey)) Rotation(-RotateSpeed);
+        if (SplashKit.KeyDown(KeyCode.RightKey)) Rotation(RotateSpeed);
+        if (SplashKit.KeyDown(KeyCode.UpKey)) Move(MoveSpeed);
         if (SplashKit.KeyDown(KeyCode.DownKey)) { }
         if (SplashKit.KeyTyped(KeyCode.RightCtrlKey)) { Shoot(); }
         if (SplashKit.KeyTyped(KeyCode.LeftCtrlKey)) { Shoot(); }
@@ -128,10 +131,11 @@ public class Player
 
     private void Player2Controls()
     {
-        const double Speed = 5;
-        if (SplashKit.KeyDown(KeyCode.AKey)) Rotation(-Speed);
-        if (SplashKit.KeyDown(KeyCode.DKey)) Rotation(Speed);
-        if (SplashKit.KeyDown(KeyCode.WKey)) Move(Speed);
+        double MoveSpeed = 5 * gameScale;
+        double RotateSpeed = 5;
+        if (SplashKit.KeyDown(KeyCode.AKey)) Rotation(-RotateSpeed);
+        if (SplashKit.KeyDown(KeyCode.DKey)) Rotation(RotateSpeed);
+        if (SplashKit.KeyDown(KeyCode.WKey)) Move(MoveSpeed);
         if (SplashKit.KeyTyped(KeyCode.SpaceKey)) { Shoot(); }
 
     }
@@ -160,9 +164,9 @@ public class Player
             {
                 _shots[i].freesprite();
                 _shots.RemoveAt(i--);
-            } 
+            }
         }
-        
+
         /*
         foreach (Shooting s in _shots)
         {
@@ -209,6 +213,7 @@ public class Player
             if (hit) return enemy.HitBy(this);
         }
 
+
         for (int i = 0; i < _shots.Count; i++)
         {
             Shooting s = _shots[i];
@@ -216,7 +221,7 @@ public class Player
             {
                 _shots.RemoveAt(i--);
                 return enemy.HitBy(s);  // free sprite is called inside hitby currently
-            } 
+            }
         }
         /*
         foreach (Shooting s in _shots)

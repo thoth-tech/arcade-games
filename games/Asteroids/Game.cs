@@ -1,6 +1,7 @@
 using System;
 using SplashKitSDK;
 using System.Collections.Generic;
+using static AsteroidsGame.Program;
 
 public class Game
 {
@@ -11,7 +12,7 @@ public class Game
     private int _playersNo;
     public bool GameStarted { get; private set; }
     private int _GameOverCount;
-    private String[] _SpritePacks = {"Shots","Ships","Enemies"};
+    private String[] _SpritePacks = { "Shots", "Ships", "Enemies" };
 
 
 
@@ -45,6 +46,7 @@ public class Game
         _gameLevel = new Level1(_GameWindow, this);
         //_gameLevel = new Level2(_GameWindow, this);
         //_gameLevel = new Jsonlvl(_GameWindow, this, "Level_Test.json");
+        //_gameLevel = new EndGame(_GameWindow, this);
 
     }
 
@@ -87,18 +89,18 @@ public class Game
         }
 
     }
-    
+
     public void GameOver()
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
-        const int FontSize = 120;
+        int FontSize = (int)(120 * gameScale);
 
         _GameWindow.Clear(Color.Black);
         foreach (Player p in _Players)
         {
             p._PlayerScore.Draw();
         }
-        int X_GameText = _GameWindow.Width / 2 - 270;
+        int X_GameText = _GameWindow.Width / 2 - (int)(270 * gameScale);
         int Y_GameText = _GameWindow.Height / 3;
 
         foreach (Enemy e in _gameLevel.Enemies)
@@ -112,12 +114,19 @@ public class Game
         GameStarted = false;
     }
 
+    public void GameEndCleanup()
+    {
+        GameStarted = false;
+        SplashKit.FreeSpritePack("Shots");
+        SplashKit.FreeSpritePack("Ships");
+        SplashKit.FreeSpritePack("Enemies");
+    }
     public void DrawGameOver()
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
-        const int FontSize = 120;  
+        int FontSize = (int)(120 * gameScale);
 
-        int X_GameText = _GameWindow.Width / 2 - 270;
+        int X_GameText = _GameWindow.Width / 2 - (int)(270 * gameScale);
         int Y_GameText = _GameWindow.Height / 3;
         SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
     }
@@ -171,12 +180,9 @@ public class Game
         else if (_GameOverCount > -1)
         {
             _GameOverCount++;
-            if  (_GameOverCount > 120)
+            if (_GameOverCount > 120)
             {
-                GameStarted = false;
-                SplashKit.FreeSpritePack("Shots");
-                SplashKit.FreeSpritePack("Ships");
-                SplashKit.FreeSpritePack("Enemies");
+                GameEndCleanup();
             }
         }
 
