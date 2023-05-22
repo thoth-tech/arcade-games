@@ -49,6 +49,11 @@ Table of Content(up to date)
       - [10.5.2.1 Player Health](#10521-player-health)
       - [10.5.2.2 Score](#10522-score)
   - [10.6 Player Psychology](#106-player-psychology)
+    - [10.6.1 Goal And Strategies](#1061-goals-and-strategies)
+      - [10.6.1.1 PLayers Must Deafeat the Boss Of The Level](#10611-players-must-defeat-the-boss-of-the-level)
+      - [10.6.1.2 Players Can Play For High Scores](#10612-players-can-play-for-high-scores)
+      - [10.6.1.3 Players Can Collect Powerups](#10613-players-can-collect-powerups)
+      - [10.6.1.4 Duo Players Must Work Together](#10614-duo-players-must-work-together)
 
 
 
