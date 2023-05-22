@@ -230,5 +230,5 @@ How this mechanism acheives the goal: players will associate the boosts that the
 
 ##### 10.6.1.4 Duo Players Must Work Together
 Psychological Strategy: Bartle's Character Theory
-How the game design employs this mechanism: When played in duo mode, Players will be able to work together to increase the efficiency at which they deal with obstacles present in the game, allowing for relationship growth and cooperation
+How the game design employs this mechanism: When played in duo mode, Players will be able to work together to increase the efficiency at which they deal with obstacles present in the game, allowing for relationship growth and cooperation.
 How this mechanism acheives the goal: Players will associate needing each other to play as well as they can, if both players can stay alive they will be able to more effectively progress through the game.
