@@ -10,6 +10,8 @@ BITMAP, Boss2, MotherShipAll.png,400, 300, 3, 2, 6
 BITMAP, Boss1, MotherShipAll.png,400, 300, 3, 2, 6
 BITMAP, RedEnergyBall, RedEnergyBall.png,150, 150, 3, 3, 9
 BITMAP, ReallySmallLaser, ReallySmallLaser.png,300, 50, 1, 40, 40
+BITMAP, Lives, heart.png
+BITMAP, levelComplete, Lvlcomplete.png 
 
 ANIM, RockBlueAnimation, BlueRock.txt
 ANIM, RockBlueAnimation, BlueRock.txt

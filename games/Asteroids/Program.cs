@@ -1,63 +1,65 @@
 using System;
 using SplashKitSDK;
 
-public class Program
+namespace AsteroidsGame
 {
-    private static bool _GameStarted, _GameExit;
-    public static double gameScale;
-
-    public static void Main()
+    public class Program
     {
-         game_setup setup = new game_setup();
-        Window gameWindow = setup.gameWindow;
-        //Window gameWindow = new Window("Asteroids", 1600, 900);
-        //gameWindow.ToggleBorder();
-        Game Game = null;
-        Menu Menu = new Menu(gameWindow);
+        private static bool _GameStarted, _GameExit;
+        public static double gameScale;
 
-        FrameTickLog ftl = new FrameTickLog(gameWindow,"pricedown_bl",50);
-        ftl.Start();
-
-        _GameStarted = false;
-        while (!_GameExit)
+        public static void Main()
         {
-            ftl.Reset();
-            SplashKit.ProcessEvents();
-            gameWindow.Clear(Color.Black);      // reset screen 
+            game_setup setup = new game_setup();
+            Window gameWindow = setup.gameWindow;
+            //Window gameWindow = new Window("Asteroids", 1600, 900);
+            //gameWindow.ToggleBorder();
+            Game Game = null;
+            Menu Menu = new Menu(gameWindow);
 
-            if (SplashKit.KeyTyped(KeyCode.EscapeKey)) _GameExit = true;
-            if (gameWindow.CloseRequested) _GameExit = true;
-            
-            if (!Menu.GameStarted)
+            FrameTickLog ftl = new FrameTickLog(gameWindow, "pricedown_bl", 50);
+            ftl.Start();
+
+            _GameStarted = false;
+            while (!_GameExit)
             {
-                
-                Menu.DrawMenu();
-                Menu.Selection();
+                ftl.Reset();
+                SplashKit.ProcessEvents();
+                gameWindow.Clear(Color.Black);      // reset screen 
 
-                //if (Menu.quit == true)  
-                //    System.Environment.Exit(1); //if player selects quite close window
-                if (Menu.quit == true) _GameExit = true;  //if player selects quite close window
+                if (SplashKit.KeyTyped(KeyCode.EscapeKey)) _GameExit = true;
+                if (gameWindow.CloseRequested) _GameExit = true;
 
-                if (Menu.GameStarted)
-                    Game = new Game(gameWindow, Menu.players, Menu.p1Ship, Menu.p2Ship);   // create new game instance
+                if (!Menu.GameStarted)
+                {
+
+                    Menu.DrawMenu();
+                    Menu.Selection();
+
+                    //if (Menu.quit == true)  
+                    //    System.Environment.Exit(1); //if player selects quite close window
+                    if (Menu.quit == true) _GameExit = true;  //if player selects quite close window
+
+                    if (Menu.GameStarted)
+                        Game = new Game(gameWindow, Menu.players, Menu.p1Ship, Menu.p2Ship);   // create new game instance
+
+                }
+                else
+                {
+                    Game.Draw();
+                    Game.HandleInput();
+                    Game.Updates();
+                    if (!Game.GameStarted) Menu.ReSetup();      // re initialize menu
+                }
+
+                //ftl.draw();
+                gameWindow.Refresh(90);         // draw frame to window
+                ftl.update();
 
             }
-            else
-            {
-                Game.Draw();
-                Game.HandleInput();
-                Game.Updates();
-                if (!Game.GameStarted) Menu.ReSetup();      // re initialize menu
-            }
-
-            ftl.draw();
-            gameWindow.Refresh(60);         // draw frame to window
-            ftl.update();
-            
+            gameWindow.Close();
         }
-        gameWindow.Close();
-    }
-    public class game_setup
+        public class game_setup
         {
             public Window gameWindow;
 
@@ -69,7 +71,7 @@ public class Program
                 const bool fullscreen = false;
                 const bool no_boarder = false;
                 const double gameScaleDefault = 1;
-                const string game_bundles = "gamebundle_large.txt";
+                const string game_bundles = "gamebundle_full_size.txt";
 
 
                 Json config_json = SplashKit.JsonFromFile("Game_Config.json");
@@ -114,14 +116,14 @@ public class Program
                         gameWindow.ToggleBorder();
                     }
                 }
-                
-                if(config_json.HasKey("game_bundles"))
+
+                if (config_json.HasKey("game_bundles"))
                 {
-                    SplashKit.LoadResourceBundle("MainGameBundle",config_json.ReadString("game_bundles"));
+                    SplashKit.LoadResourceBundle("MainGameBundle", config_json.ReadString("game_bundles"));
                 }
                 else
                 {
-                    SplashKit.LoadResourceBundle("MainGameBundle",game_bundles);
+                    SplashKit.LoadResourceBundle("MainGameBundle", game_bundles);
                 }
 
                 if (config_json.HasKey("gameScale"))
@@ -132,7 +134,9 @@ public class Program
                 {
                     gameScale = gameScaleDefault;
                 }
+
             }
 
         }
+    }
 }
