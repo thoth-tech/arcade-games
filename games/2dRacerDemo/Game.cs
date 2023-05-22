@@ -77,7 +77,7 @@ public class Game{
                     sndEffect = SplashKit.SoundEffectNamed("engineSpeed");
                     sndEffect.Play();
                 }
-                if(! SplashKit.SoundEffectPlaying("ngineSpeed")){sndEffect.Play();}
+                if(! SplashKit.SoundEffectPlaying("engineSpeed")){sndEffect.Play();}
                 controlCars();
                 index -=5;idx -=5;dx -=5;ex -=5;ix -=5;xx -=5;
                 SplashKit.UpdateAllSprites();
