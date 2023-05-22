@@ -7,6 +7,7 @@ namespace AsteroidsGame
     {
         private static bool _GameStarted, _GameExit;
         public static double gameScale;
+        public static Dictionary<string, KeyCode> game_controls = new Dictionary<string, KeyCode>();
 
         public static void Main()
         {
@@ -27,7 +28,7 @@ namespace AsteroidsGame
                 SplashKit.ProcessEvents();
                 gameWindow.Clear(Color.Black);      // reset screen 
 
-                if (SplashKit.KeyTyped(KeyCode.EscapeKey)) _GameExit = true;
+                if (SplashKit.KeyTyped(game_controls["Esc"])) _GameExit = true;
                 if (gameWindow.CloseRequested) _GameExit = true;
 
                 if (!Menu.GameStarted)
@@ -36,8 +37,6 @@ namespace AsteroidsGame
                     Menu.DrawMenu();
                     Menu.Selection();
 
-                    //if (Menu.quit == true)  
-                    //    System.Environment.Exit(1); //if player selects quite close window
                     if (Menu.quit == true) _GameExit = true;  //if player selects quite close window
 
                     if (Menu.GameStarted)
@@ -76,6 +75,8 @@ namespace AsteroidsGame
 
                 Json config_json = SplashKit.JsonFromFile("Game_Config.json");
 
+                ControlSetup();
+                
                 if (!config_json.HasKey("Asteroids_game_config"))
                 {
                     Json temp_config_json = SplashKit.CreateJson();
@@ -136,7 +137,258 @@ namespace AsteroidsGame
                 }
 
             }
+            private void ControlSetup()
+            {
+                Json controls_json = SplashKit.JsonFromFile("Controls.json");
+                string key;
 
+                key = "P1_right";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_left";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_up";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_down";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_button1";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_button2";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_button3";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_button4";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_button5";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_button6";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_button7";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P1_button8";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Start_1";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Start_2";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_right";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_left";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_up";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_down";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_button1";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_button2";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_button3";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_button4";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_button5";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_button6";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "P2_button7";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+
+                key = "P2_button8";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Coin_1";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Coin_2";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Service";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Test";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Tilt";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Esc";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Pause";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Enter";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+                key = "Tilde";
+                if (Enum.IsDefined(typeof(KeyCode), controls_json.ReadString(key)))
+                {
+                    KeyCode test = Enum.Parse<KeyCode>(controls_json.ReadString(key));
+                    game_controls.Add(key, test);
+                }
+
+            }
         }
     }
 }

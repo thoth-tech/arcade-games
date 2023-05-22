@@ -202,12 +202,12 @@ public class Menu
                 DrawMainMenu();
                 break;
             case MenuOption.Player1ShipSelection:
-                DrawShipSelection("1", "Left Arrow", "Right Arrow", "Enter to Select");
+                DrawShipSelection("1", "Move left", "Move Right", "P1 Button 1 to Select");
 
                 break;
             case MenuOption.Player2ShipSelection:
                 //if (_Lockout == _ShipSelection) _ShipSelection++;
-                DrawShipSelection("2", "A to Move Left", "D to Move Right", "Space to Select");
+                DrawShipSelection("2", "Move left", "Move Right", "P2 Button 1 to Select");
                 break;
         }
     }
@@ -320,15 +320,15 @@ public class Menu
 
     private void HandleInputMainMenu()
     {
-        if (SplashKit.KeyTyped(KeyCode.UpKey))
+        if (SplashKit.KeyTyped(game_controls["P1_up"]) || SplashKit.KeyTyped(game_controls["P2_up"]))
         {
             _MainMenuOption = _MainMenuOption <= 0 ? 2 : _MainMenuOption - 1;
         }
-        else if (SplashKit.KeyTyped(KeyCode.DownKey))
+        else if (SplashKit.KeyTyped(game_controls["P1_down"]) || SplashKit.KeyTyped(game_controls["P2_down"]))
         {
             _MainMenuOption = _MainMenuOption >= 2 ? 0 : _MainMenuOption + 1;
         }
-        else if (SplashKit.KeyTyped(KeyCode.ReturnKey))
+        else if (SplashKit.KeyTyped(game_controls["P1_button1"]) || SplashKit.KeyTyped(game_controls["P2_button1"]))
         {
             switch (_MainMenuOption)
             {
@@ -346,6 +346,17 @@ public class Menu
                     break;
             }
         }
+        else if (SplashKit.KeyTyped(game_controls["Start_1"]))
+        {
+            _Menu = MenuOption.Player1ShipSelection;
+            players = 1;
+        }
+        else if (SplashKit.KeyTyped(game_controls["Start_2"]))
+        {
+            _Menu = MenuOption.Player1ShipSelection;
+            players = 2;
+        }
+
     }
 
 
@@ -385,15 +396,15 @@ public class Menu
 
     private void HandleInputPlayer1Selection()
     {
-        if (SplashKit.KeyTyped(KeyCode.LeftKey))
+        if (SplashKit.KeyTyped(game_controls["P1_left"]))
         {
             _ShipSelection = indexCheck(_ShipSelection, -1);
         }
-        else if (SplashKit.KeyTyped(KeyCode.RightKey))
+        else if (SplashKit.KeyTyped(game_controls["P1_right"]))
         {
             _ShipSelection = indexCheck(_ShipSelection, 1);
         }
-        else if (SplashKit.KeyTyped(KeyCode.ReturnKey))
+        else if (SplashKit.KeyTyped(game_controls["P1_button1"]))
         {
             p1Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             //_Lockout = _ShipSelection;
@@ -411,7 +422,7 @@ public class Menu
             }
 
         }
-        else if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) // New key needed to back out of ship selection
+        else if (SplashKit.KeyTyped(game_controls["Start_1"]) || SplashKit.KeyTyped(game_controls["Start_2"])) // New key needed to back out of ship selection
         {
             ReSetup();
         }
@@ -420,20 +431,20 @@ public class Menu
 
     private void HandleInputPlayer2Selection()
     {
-        if (SplashKit.KeyTyped(KeyCode.AKey))
+        if (SplashKit.KeyTyped(game_controls["P2_left"]))
         {
             _ShipSelection = indexCheck(_ShipSelection, -1);
         }
-        else if (SplashKit.KeyTyped(KeyCode.DKey))
+        else if (SplashKit.KeyTyped(game_controls["P2_right"]))
         {
             _ShipSelection = indexCheck(_ShipSelection, 1);
         }
-        else if (SplashKit.KeyTyped(KeyCode.SpaceKey))
+        else if (SplashKit.KeyTyped(game_controls["P2_button1"]))
         {
             p2Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             GameStarted = true;
         }
-        else if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) // New key needed to back out of ship selection
+        else if (SplashKit.KeyTyped(game_controls["Start_1"]) || SplashKit.KeyTyped(game_controls["Start_2"])) // New key needed to back out of ship selection
         {
             ReSetup();
         }
