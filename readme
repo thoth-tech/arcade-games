@@ -1,0 +1,8 @@
+The wxWidget has have been removed from the repo due to the 100 MB limit. Install wxWidget Linux build and put content to run application.
+
+Login feature using wxWidgets in LinuxBuild.
+Application can befound in cd wxWidgets-3.2.2.1/linuxbuild/
+Username: admin2023
+Password: meetthenewsoftwareteam
+
+Run application command: g++ main.cpp main.h login.cpp login.h  `./wx-config --cppflags --libs` -o login

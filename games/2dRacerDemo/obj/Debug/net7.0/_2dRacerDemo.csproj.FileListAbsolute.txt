@@ -1,0 +1,15 @@
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/bin/Debug/net7.0/_2dRacerDemo
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/bin/Debug/net7.0/_2dRacerDemo.deps.json
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/bin/Debug/net7.0/_2dRacerDemo.runtimeconfig.json
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/bin/Debug/net7.0/_2dRacerDemo.dll
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/bin/Debug/net7.0/_2dRacerDemo.pdb
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/_2dRacerDemo.csproj.AssemblyReference.cache
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/_2dRacerDemo.GeneratedMSBuildEditorConfig.editorconfig
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/_2dRacerDemo.AssemblyInfoInputs.cache
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/_2dRacerDemo.AssemblyInfo.cs
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/_2dRacerDemo.csproj.CoreCompileInputs.cache
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/_2dRacerDemo.dll
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/refint/_2dRacerDemo.dll
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/_2dRacerDemo.pdb
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/_2dRacerDemo.genruntimeconfig.cache
+/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/Debug/net7.0/ref/_2dRacerDemo.dll

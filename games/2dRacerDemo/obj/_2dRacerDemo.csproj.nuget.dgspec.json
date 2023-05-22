@@ -1,0 +1,61 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/_2dRacerDemo.csproj": {}
+  },
+  "projects": {
+    "/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/_2dRacerDemo.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/_2dRacerDemo.csproj",
+        "projectName": "_2dRacerDemo",
+        "projectPath": "/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/_2dRacerDemo.csproj",
+        "packagesPath": "/home/lamkie/.nuget/packages/",
+        "outputPath": "/home/lamkie/Desktop/arcade-games-2D-Racer-Demo/games/2dRacerDemo/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/lamkie/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/lamkie/.dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

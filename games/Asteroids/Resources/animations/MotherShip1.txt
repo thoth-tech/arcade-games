@@ -1,0 +1,28 @@
+SplashKit Animation
+
+//Frames are declared with an f: and contain
+//the following comma separated values
+//ID,CELL,DUR,NEXT
+f:0,0,1,
+F:1,1,4,0
+f:2,2,1,
+//f:3,3,3,4
+//f:4,4,3,5
+//f:5,5,3,3
+
+
+f:[3-5],[3-5],15,
+
+// -- Animation Identifiers --
+i:ShieldUp,0
+i:ShieldFlash,1
+i:ShieldDown,2
+i:CriticalDamage,3
+
+
+//v: identifier, change in x velocity, change in y velocity 
+v:[0-8],4,0
+v:[9-17],-4,0
+v:99,0,0
+
+//s: Identifier, SoundName, Filename 
