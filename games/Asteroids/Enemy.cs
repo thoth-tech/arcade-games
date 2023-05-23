@@ -2,6 +2,7 @@ using System;
 using SplashKitSDK;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using static AsteroidsGame.Program;
 
 public abstract class Enemy
 {
@@ -96,7 +97,7 @@ public abstract class Enemy
         return new Tuple<string, int>("Score", 10);
     }
 
-    public bool IsOffscreen(Window screen)
+    public virtual bool IsOffscreen(Window screen)
     {
         bool Offscreen = false;
 
@@ -190,8 +191,11 @@ public class RockLarge : Enemy
     public RockLarge(Window gameWindow, int Speed, double RotationSpeed, int fX = -1, int fY = -1, int tX = -1, int tY = -1) : base(gameWindow)
     {
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Large.json"));     // load sprite with cell details and script
+        //_AGO._sprite.Scale = 0.5F;
         _AGO.rotSpeed = (float)RotationSpeed;       // set rotation speed
-        GetSpeed = Speed;           // set velocity magnitude
+
+        GetSpeed = (int)(Speed * gameScale);           // set velocity magnitude
+        if (GetSpeed == 0) { GetSpeed = 1; }            // prevent zero velocity
 
         SetCourse(fX, fY, tX, tY);     // randomized start and direction
 
@@ -200,8 +204,7 @@ public class RockLarge : Enemy
         _AGO._sprite.X = (float)X;          // set sprite coords
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);        // set sprite velocity
-
-        Height = _AGO._sprite.Height;
+        Height = _AGO._sprite.Height;       // set height and width
         Width = _AGO._sprite.Width;
     }
 
@@ -226,6 +229,11 @@ public class RockLarge : Enemy
             _AGO._sprite.StartAnimation("explode");
         }
         return base.HitBy(wasHitBy);
+    }
+
+    public override bool IsOffscreen(Window screen)
+    {
+        return _AGO._sprite.Offscreen();
     }
 
     public override void Update()       // update rotation value, check if animations finished
@@ -265,7 +273,8 @@ public class RockMed : Enemy
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Medium.json"));
 
         _AGO.rotSpeed = (float)RotationSpeed;
-        GetSpeed = Speed;
+        GetSpeed = (int)(Speed * gameScale);           // set velocity magnitude
+        if (GetSpeed == 0) { GetSpeed = 1; }            // prevent zero velocity
 
         SetCourse(fX, fY, tX, tY);
 
@@ -274,8 +283,7 @@ public class RockMed : Enemy
         _AGO._sprite.X = (float)X;
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);
-
-        Height = _AGO._sprite.Height;
+        Height = _AGO._sprite.Height;       // set height and width
         Width = _AGO._sprite.Width;
     }
 
@@ -300,6 +308,11 @@ public class RockMed : Enemy
             _AGO._sprite.StartAnimation("explode");
         }
         return base.HitBy(wasHitBy);
+    }
+
+    public override bool IsOffscreen(Window screen)
+    {
+        return _AGO._sprite.Offscreen();
     }
 
     public override void Update()
@@ -332,7 +345,8 @@ public class RockSmall : Enemy
         _AGO = new AstGameObj(SplashKit.JsonFromFile("Enemy_Rock_Small.json"));
 
         _AGO.rotSpeed = (float)RotationSpeed;
-        GetSpeed = Speed;
+        GetSpeed = (int)(Speed * gameScale);           // set velocity magnitude
+        if (GetSpeed == 0) { GetSpeed = 1; }            // prevent zero velocity
 
         SetCourse(fX, fY, tX, tY);
 
@@ -341,7 +355,7 @@ public class RockSmall : Enemy
         _AGO._sprite.X = (float)X;
         _AGO._sprite.Y = (float)Y;
         _AGO.setVelocity(_Velocity);
-        Height = _AGO._sprite.Height;
+        Height = _AGO._sprite.Height;       // set height and width
         Width = _AGO._sprite.Width;
     }
 
@@ -351,8 +365,8 @@ public class RockSmall : Enemy
         _AGO.rotSpeed = (float)Rot;
         GetSpeed = (int)SplashKit.VectorMagnitude(Vel);
 
-        _AGO._sprite.X = (float)Start.X;
-        _AGO._sprite.Y = (float)Start.Y;
+        _AGO._sprite.X = (float)(Start.X - _AGO._sprite.CenterPoint.X);
+        _AGO._sprite.Y = (float)(Start.Y - _AGO._sprite.CenterPoint.Y);
         _AGO.setVelocity(Vel);
     }
 
@@ -379,6 +393,10 @@ public class RockSmall : Enemy
         return base.HitBy(wasHitBy);
     }
 
+    public override bool IsOffscreen(Window screen)
+    {
+        return _AGO._sprite.Offscreen();
+    }
 
     public override void Update()
     {
@@ -405,95 +423,6 @@ public class RockSmall : Enemy
 
 }
 
-
-/*
-public class RockSmallTriple : Enemy
-{
-    private Bitmap _Rock;
-    public RockSmallTriple(Window gameWindow, int Speed, double RotationSpeed, double sX, double sY, int rNum) : base(gameWindow)
-    //You Are here trying to make this work for creating a tripple rocks 
-
-
-    {
-        _RotationSpeed = RotationSpeed;
-        _Angle = 0;
-        _Rock = new Bitmap("Rock3", "SmallRockAll.png");
-        _Rock.SetCellDetails(75, 75, 3, 2, 6);
-        Height = _Rock.CellHeight;
-        Width = _Rock.CellWidth;
-
-        X = sX; Y = sY;
-
-        Point2D fromPt = new Point2D()
-        { X = sX, Y = sY };
-        Point2D toPt = new Point2D();
-        switch (rNum)
-        {
-            case 1:
-                toPt.X = gameWindow.Width / 2;
-                toPt.Y = gameWindow.Height / 2;
-                break;
-            case 2:
-                toPt.X = gameWindow.Width / 2;
-                toPt.Y = gameWindow.Height / 2 - 100;
-                break;
-            case 3:
-                toPt.X = gameWindow.Width / 2;
-                toPt.Y = gameWindow.Height / 2 + 100;
-                break;
-            default:
-                toPt.X = gameWindow.Width / 2 + SplashKit.Rnd(-100, 100);
-                toPt.Y = gameWindow.Height / 2 + SplashKit.Rnd(-100, 100);
-                break;
-        }
-
-        Vector2D dir;
-        dir = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPt, toPt));
-
-        _Velocity = SplashKit.VectorMultiply(dir, Speed);
-    }
-
-
-    public override void Draw()
-    {
-        DrawingOptions opt;
-
-
-        if (_IsDying == false)
-        {
-            opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-            _Rock.Draw(X, Y, opt);
-        }
-        else
-        {
-            switch (_IsDyingCount)
-            {
-                case < 12:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(1));
-                    break;
-                case < 23:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(2));
-                    break;
-                case < 34:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(3));
-
-                    break;
-                case < 45:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(4));
-                    IsDead = true;
-                    break;
-                default:
-                    opt = SplashKit.OptionRotateBmp(_Angle, SplashKit.OptionWithBitmapCell(0));
-
-                    break;
-            }
-            _Rock.Draw(X, Y, opt);
-        }
-    }
-
-}
-*/
-
 public class BlueRock : Enemy
 {
     private Bitmap _Rock;
@@ -503,30 +432,42 @@ public class BlueRock : Enemy
     {
         _RotationSpeed = RotationSpeed;
         _Angle = 0;
-        // _Rock = new Bitmap("Rock4", "BlueRockSpriteSheet.png");
-        if (SplashKit.HasBitmap("Rock4"))
+        if (SplashKit.HasBitmap("RockBlue"))
         {
-            _Rock = SplashKit.BitmapNamed("Rock4");
+            _Rock = SplashKit.BitmapNamed("RockBlue");
         }
         else
         {
             _Rock = SplashKit.LoadBitmap("Rock4", "BlueRockSpriteSheet.png");
+            _Rock.SetCellDetails(150, 150, 3, 3, 9);
         }
-        _Rock.SetCellDetails(150, 150, 3, 3, 9);
-        _RockAnimation = SplashKit.LoadAnimationScript("Rock4Ani", "BlueRock.txt");
-        _RockSprite = SplashKit.CreateSprite(_Rock, _RockAnimation);
-        _RockSprite.AnchorPoint = new Point2D() { X = 75, Y = 75 };
-        _RockSprite.StartAnimation("normal");
 
-        //_RockSprite.MoveTo(150,150);
+        if (SplashKit.HasAnimationScript("RockBlueAnimation"))
+        {
+            _RockAnimation = SplashKit.AnimationScriptNamed("RockBlueAnimation");
+        }
+        else
+        {
+            _RockAnimation = SplashKit.LoadAnimationScript("RockBlueAnimation", "BlueRock.txt");
+        }
+
+        _RockSprite = SplashKit.CreateSprite(_Rock, _RockAnimation);
+        //_RockSprite.AnchorPoint = new Point2D() { X = 75, Y = 75 };
+        _RockSprite.AnchorPoint = _RockSprite.CenterPoint;
+        _RockSprite.StartAnimation("normal");
 
         _RockSprite.AddValue("Health", 5);
         Height = _Rock.CellHeight;
         Width = _Rock.CellWidth;
-        GetSpeed = Speed;
+        GetSpeed = (int)(Speed * gameScale);           // set velocity magnitude
+        if (GetSpeed == 0) { GetSpeed = 1; }            // prevent zero velocity
         SetCourse(fX, fY, tX, tY);
     }
-
+    public override Circle[] HitCircle()
+    {
+        if (!_IsDying) return new Circle[] { _RockSprite.CollisionCircle() };
+        return new Circle[] { SplashKit.CircleAt(-5, -5, 1) };
+    }
     public override void Update()
     {
 
@@ -613,9 +554,25 @@ public class Boss1 : Enemy
 
     public Boss1(Window gameWindow, Game game) : base(gameWindow)
     {
-        _Boss = new Bitmap("Boss1", "MotherShipAll.png");
-        _Boss.SetCellDetails(400, 300, 3, 2, 6);
-        _BossScript = SplashKit.LoadAnimationScript("MotherShip", "MotherShip1.txt");
+        if (SplashKit.HasBitmap("Boss1"))
+        {
+            _Boss = SplashKit.BitmapNamed("Boss1");
+        }
+        else
+        {
+            _Boss = SplashKit.LoadBitmap("Boss1", "MotherShipAll.png");
+            _Boss.SetCellDetails(400, 300, 3, 2, 6);
+        }
+
+        if (SplashKit.HasAnimationScript("MotherShip"))
+        {
+            _BossScript = SplashKit.AnimationScriptNamed("MotherShip");
+        }
+        else
+        {
+            _BossScript = SplashKit.LoadAnimationScript("MotherShip", "MotherShip1.txt");
+        }
+
         _BossAnimation = _BossScript.CreateAnimation("ShieldUp");
         _RotationSpeed = 0;
         _Angle = 0;
@@ -626,8 +583,8 @@ public class Boss1 : Enemy
         _ShieldFlash = false;
         _ShipHealth = 50;
         _Phase = "Start";
-        X = gameWindow.Width / 2 - _Boss.CellWidth / 2;
-        Y = -299;
+        X = (gameWindow.Width / 2 - _Boss.CellWidth / 2);
+        Y = -299 * gameScale;
         _XRight = true;
         _YDown = true;
         CanShoot = true;
@@ -697,7 +654,7 @@ public class Boss1 : Enemy
         switch (_Phase)
         {
             case "Start":
-                if (Y <= 50)
+                if (Y <= 50 * gameScale)
                 {
                     Y++;
 
@@ -708,27 +665,29 @@ public class Boss1 : Enemy
                 }
                 break;
             case "Mid":
-                if (X < 200) _XRight = true;
-                if (X + Width > _gameWindow.Width - 200) _XRight = false;
-                if (Y < 50) _YDown = true;
-                if (Y > 70) _YDown = false;
+                if (X < 200 * gameScale) _XRight = true;
+                if (X + Width > _gameWindow.Width - (200 * gameScale)) _XRight = false;
+                if (Y < 50 * gameScale) _YDown = true;
+                if (Y > 70 * gameScale) _YDown = false;
 
                 if (_XRight == true)
                 {
-                    X += 2;
+                    X += 2 * gameScale;
                 }
                 else
                 {
-                    X -= 2;
+                    X -= 2 * gameScale;
                 }
 
                 if (_YDown == true)
                 {
-                    Y++;
+                    // Y++;
+                    Y += 1 * gameScale;
                 }
                 else
                 {
-                    Y--;
+                    // Y--;
+                    Y -= 1 * gameScale;
                 }
 
                 if (!_shootingTime.IsStarted) _shootingTime.Start();
@@ -746,27 +705,27 @@ public class Boss1 : Enemy
                 }
                 break;
             case "End":
-                if (X < 200) _XRight = true;
-                if (X + Width > _gameWindow.Width - 200) _XRight = false;
-                if (Y < 50) _YDown = true;
-                if (Y > 70) _YDown = false;
+                if (X < 200 * gameScale) _XRight = true;
+                if (X + Width > _gameWindow.Width - (200 * gameScale)) _XRight = false;
+                if (Y < 50 * gameScale) _YDown = true;
+                if (Y > 70 * gameScale) _YDown = false;
 
                 if (_XRight == true)
                 {
-                    X += 2;
+                    X += 2 * gameScale;
                 }
                 else
                 {
-                    X -= 2;
+                    X -= 2 * gameScale;
                 }
 
                 if (_YDown == true)
                 {
-                    Y++;
+                    Y += 1 * gameScale;
                 }
                 else
                 {
-                    Y--;
+                    Y -= 1 * gameScale;
                 }
                 if (_shootingTime.Ticks / 2000 == _shootingEnergyShot)
                 {
@@ -858,9 +817,9 @@ public class Boss1 : Enemy
     {
         Circle[] Cir =
         {
-            SplashKit.CircleAt(X + 198, Y + 116, 102),
-            SplashKit.CircleAt(X + 293, Y + 112, 78),
-            SplashKit.CircleAt(X + 102, Y + 112, 78)
+            SplashKit.CircleAt(X + (198 * gameScale), Y + (116 * gameScale), 102 * gameScale),
+            SplashKit.CircleAt(X + (293 * gameScale), Y + (112 * gameScale), 78 * gameScale),
+            SplashKit.CircleAt(X + (102 * gameScale), Y + (112 * gameScale), 78 * gameScale)
         };
         return Cir;
     }
@@ -890,9 +849,9 @@ public class Boss1 : Enemy
         Point2D pt3 = new Point2D();
         pt1.X = X + _Boss.CellCenter.X;
         pt1.Y = Y + _Boss.CellCenter.Y;
-        pt2.X = X + _Boss.CellCenter.X - 20;
+        pt2.X = X + _Boss.CellCenter.X - (20 * gameScale);
         pt2.Y = Y + _Boss.CellCenter.Y;
-        pt3.X = X + _Boss.CellCenter.X + 20;
+        pt3.X = X + _Boss.CellCenter.X + (20 * gameScale);
         pt3.Y = Y + _Boss.CellCenter.Y;
 
         ShotType = new BossSmallShot(pt1, 90);
@@ -911,8 +870,11 @@ public class Boss1 : Enemy
         fromPT.Y = Y + _Boss.CellCenter.Y;
         foreach (Player p in _game.Players)
         {
-            Shooting ShotType = new RedEnergyBall(fromPT, p);
-            _shots.Add(ShotType);
+            if (!p.PlayerScore.IsDead)
+            {
+                Shooting ShotType = new RedEnergyBall(fromPT, p);
+                _shots.Add(ShotType);
+            }
         }
 
     }
@@ -948,9 +910,23 @@ public class Boss2 : Enemy
         _gameWindow = gameWindow;
         _game = game;
 
-        _Boss = new Bitmap("Boss2", "MotherShipAll.png");
-        _Boss.SetCellDetails(400, 300, 3, 2, 6);
-        _BossScript = SplashKit.LoadAnimationScript("SmallBossShips", "SmallBossShips.txt");
+        if (SplashKit.HasBitmap("Boss2"))
+        {
+            _Boss = SplashKit.BitmapNamed("Boss2");
+        }
+        else
+        {
+            _Boss = SplashKit.LoadBitmap("Boss2", "MotherShipAll.png");
+            _Boss.SetCellDetails(400, 300, 3, 2, 6);
+        }
+        if (SplashKit.HasAnimationScript("SmallBossShips"))
+        {
+            _BossScript = SplashKit.AnimationScriptNamed("SmallBossShips");
+        }
+        else
+        {
+            _BossScript = SplashKit.LoadAnimationScript("SmallBossShips", "SmallBossShips.txt");
+        }
         double window_3rd = _gameWindow.Width / 4;
         Height = _Boss.CellHeight;
         Width = _Boss.CellWidth;
@@ -977,7 +953,7 @@ public class Boss2 : Enemy
 
 
         //if player goes above this they will be killed
-        _playerKillThreshold = 300;
+        _playerKillThreshold = (int)(300 * gameScale);
 
         // Set up variables for the figure 8 pattern
         _time.Add((-1000)); //far left
@@ -1015,17 +991,7 @@ public class Boss2 : Enemy
     public override void Update()
     {
 
-
-
-
     }
-
-
-
-
-
-
-
     public override Tuple<String, int> HitBy(Player wasHitBy)
     {
         /*             if(_IsDying)
@@ -1035,9 +1001,6 @@ public class Boss2 : Enemy
         return new Tuple<string, int>("Life", -1);
         // return new Tuple<string, int>("False", 0);
     }
-
-
-
 
     protected Shooting RedEnergyBall(Player p, Sprite s)
     {
@@ -1090,12 +1053,14 @@ public class smallShip : Boss2
         switch (ShipNo) // Set up variables for the figure 8 pattern
         {
             case 0:
+                //_time = (int)(-1000 * gameScale); //far left
                 _time = -1000; //far left
                 break;
             case 1:
                 _time = 0; //middle
                 break;
             case 2:
+                //_time = (int)(1000 * gameScale); //far right
                 _time = 1000; //far right
                 break;
             default:
@@ -1110,8 +1075,8 @@ public class smallShip : Boss2
         _Ypoint += yChange;
 
 
-        int b = 600;
-        int c = 200;
+        int b = (int)(600 * gameScale);
+        int c = (int)(200 * gameScale);
         double t = (_MoveTimer.Ticks + _time) * 2 * Math.PI / 5000;
         //Console.WriteLine(_MoveTimer.Ticks / 1000);
         // Calculate the new position based on the Lemniscate of Bernoulli curve
@@ -1163,7 +1128,7 @@ public class smallShip : Boss2
     {
         foreach (Player p in _game.Players)
         {
-            if (p.Y < _playerKillThreshold)
+            if (p.Y < _playerKillThreshold && !p.PlayerScore.IsDead)
             {
                 if (!_RedEnergyBallTimer.IsStarted) _RedEnergyBallTimer.Start();
                 if (_RedEnergyBallTimer.Ticks / 500 > 1)
@@ -1190,7 +1155,7 @@ public class smallShip : Boss2
             int ShotCount = _shots.Count();
 
 
-            Point2D fromPT = new Point2D { X = _Ship.X + 50, Y = _Ship.CenterPoint.Y - 40 };
+            Point2D fromPT = new Point2D { X = _Ship.X + (int)(50 * gameScale), Y = _Ship.CenterPoint.Y - (int)(40 * gameScale) };
 
             //Console.WriteLine("LaserFiring");
             if (_firstShot)
@@ -1208,7 +1173,7 @@ public class smallShip : Boss2
                 // Console.WriteLine("Target y " + target.Y);
                 // Console.WriteLine("Shot Count " + _shots.Count());
                 //Console.WriteLine("Remaining Shots");
-                if (target.Y > _Ship.CenterPoint.Y - 40 + 49)
+                if (target.Y > _Ship.CenterPoint.Y - (int)(40 * gameScale) + SplashKit.BitmapNamed("ReallySmallLaser").CellHeight - 1)
                 {
                     // Console.WriteLine("Second All" +u);
                     Shooting ShotType = new Laser(fromPT, _FrameCount);
@@ -1302,9 +1267,9 @@ public class smallShip : Boss2
     {
         Circle[] Cir =
         {
-            SplashKit.CircleAt(_Ship.X + 198, _Ship.Y + 116, 102),
-            SplashKit.CircleAt(_Ship.X + 293, _Ship.Y + 112, 78),
-            SplashKit.CircleAt(_Ship.X + 102, _Ship.Y + 112, 78)
+            SplashKit.CircleAt(_Ship.X  + (198 * gameScale), _Ship.Y  + (116 * gameScale), 102 * gameScale),
+            SplashKit.CircleAt(_Ship.X  + (293 * gameScale), _Ship.Y  + (112 * gameScale), 78 * gameScale),
+            SplashKit.CircleAt(_Ship.X  + (102 * gameScale), _Ship.Y  + (112 * gameScale), 78 * gameScale)
         };
         return Cir;
     }

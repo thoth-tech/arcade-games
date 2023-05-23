@@ -1,6 +1,7 @@
 using System;
 using SplashKitSDK;
 using System.Collections.Generic;
+using static AsteroidsGame.Program;
 
 // 
 // 
@@ -45,15 +46,15 @@ public class Menu
         _gameWindow = gameWindow;
         _GameFont = new Font("pricedown_bl", "pricedown_bl.otf");
 
-        X_GameText = _gameWindow.Width / 2 - 125;               // given the window should be fixed, this should be only done once.
+        X_GameText = _gameWindow.Width / 2 - (int)(125 * gameScale);               // given the window should be fixed, this should be only done once.
         Y_GameText = _gameWindow.Height / 6;
 
         SplashKit.CreateSpritePack("Menu");
-        
+
         ReSetup();
 
         _tri = new Triangle();                              // main menu selection triangle
-        
+
     }
 
     private void initRocks()
@@ -76,7 +77,7 @@ public class Menu
             initMove(aso);
 
             aso._sprite.CollisionKind = CollisionTestKind.PixelCollisions;
-            
+
             _GameObjs.Add(aso);
         }
 
@@ -84,24 +85,24 @@ public class Menu
 
     private void initMove(AstGameObj aso)
     {
-        const double VELRANGE = 10, VELMIN = 5;
-        const float ROTRANGE = 10, ROTMIN = 5;    
-        int randStart = SplashKit.Rnd(0,4);         // 1 - 3 range
+        double VELRANGE = 10 * gameScale, VELMIN = 5 * gameScale;
+        float ROTRANGE = (float)(10 * gameScale), ROTMIN = (float)(5 * gameScale);
+        int randStart = SplashKit.Rnd(0, 4);         // 1 - 3 range
         float randPercS = SplashKit.Rnd();
         Point2D start = new Point2D(), end = SplashKit.RandomWindowPoint(_gameWindow);
 
         int sprWidth = aso._sprite.Width, sprHeight = aso._sprite.Height;
 
-       
+
         if (randStart < 2) // of four values, initialize a side to start on.
         {
             start.X = randStart == 0 ? -sprWidth : _gameWindow.Width + sprWidth;        // left or right to start
-            start.Y = randPercS * (_gameWindow.Height + sprHeight*2) - sprHeight;         // randomize height
+            start.Y = randPercS * (_gameWindow.Height + sprHeight * 2) - sprHeight;         // randomize height
         }
         else
         {
             start.Y = randStart == 2 ? -sprHeight : _gameWindow.Height + sprHeight;       // top or bottom to start
-            start.X = randPercS * (_gameWindow.Width + sprWidth*2) - sprWidth;          // randomize width
+            start.X = randPercS * (_gameWindow.Width + sprWidth * 2) - sprWidth;          // randomize width
         }
 
         //Console.Out.WriteLine(String.Format("R:{0}  ({1},{2})",randInt,start.X,start.Y));
@@ -109,15 +110,15 @@ public class Menu
         aso.rotSpeed = ROTRANGE * SplashKit.Rnd() - ROTMIN;     // value can be negative
 
         aso._sprite.Position = start;           // set start point
-        Vector2D vect = SplashKit.UnitVector(SplashKit.VectorPointToPoint(start,end));      // get unit vector of path
-        vect = SplashKit.VectorMultiply(vect,VELRANGE * SplashKit.Rnd() + VELMIN);      //  randomize speed
+        Vector2D vect = SplashKit.UnitVector(SplashKit.VectorPointToPoint(start, end));      // get unit vector of path
+        vect = SplashKit.VectorMultiply(vect, VELRANGE * SplashKit.Rnd() + VELMIN);      //  randomize speed
         aso.setVelocity(vect);                    // set velocity
 
     }
 
     private void runSprite()
     {
-        
+
         //SplashKit.SelectSpritePack("Enemy");
         SplashKit.DrawAllSprites();
         SplashKit.UpdateAllSprites();
@@ -127,24 +128,24 @@ public class Menu
         {
             AstGameObj tempASO = _GameObjs[i];
             tempASO.updateAngle();
-            
+
             if (tempASO._sprite.Offscreen())
             {
                 int framesOff = tempASO._values.ReadInteger("frames_offscreen") + 1;
-                
+
                 if (framesOff > FRAMESBEFORERESET)
-                {   
+                {
                     initMove(tempASO);
                     framesOff = 0;
                 }
 
-                tempASO._values.AddNumber("frames_offscreen",framesOff);      // ADD METHOD IS ACTUALLY SET, OVERWRITES VALUE
+                tempASO._values.AddNumber("frames_offscreen", framesOff);      // ADD METHOD IS ACTUALLY SET, OVERWRITES VALUE
             }
             else
-                tempASO._values.AddNumber("frames_offscreen",0);
+                tempASO._values.AddNumber("frames_offscreen", 0);
 
         }
-    
+
         //Console.Out.WriteLine(String.Format("{0},{1} : {2},{3}",temp._sprite.X,temp._sprite.Y,temp._sprite.Dx,temp._sprite.Dy));
 
     }
@@ -201,12 +202,12 @@ public class Menu
                 DrawMainMenu();
                 break;
             case MenuOption.Player1ShipSelection:
-                DrawShipSelection("1", "Left Arrow", "Right Arrow", "Enter to Select");
+                DrawShipSelection("1", "Move left", "Move Right", "P1 Button 1 to Select");
 
                 break;
             case MenuOption.Player2ShipSelection:
                 //if (_Lockout == _ShipSelection) _ShipSelection++;
-                DrawShipSelection("2", "A to Move Left", "D to Move Right", "Space to Select");
+                DrawShipSelection("2", "Move left", "Move Right", "P2 Button 1 to Select");
                 break;
         }
     }
@@ -214,9 +215,9 @@ public class Menu
     private void DrawMainMenu()
     {
 
-        const int Offset_AddY = 300;
-        const int Offset_GameText = 80;
-        const int FontSize = 80;
+        int Offset_AddY = (int)(300 * gameScale);
+        int Offset_GameText = (int)(80 * gameScale);
+        int FontSize = (int)(80 * gameScale);
 
         runSprite();
 
@@ -228,9 +229,9 @@ public class Menu
 
 
         double Y_triangle = Y_GameText + Offset_GameText * _MainMenuOption + Offset_AddY;
-        SplashKit.FillTriangle(Color.White, X_GameText - 40, Y_triangle + 35, X_GameText - 20, Y_triangle + 55, X_GameText - 40, Y_triangle + 75);
+        SplashKit.FillTriangle(Color.White, X_GameText - (int)(40 * gameScale), Y_triangle + (int)(35 * gameScale), X_GameText - (int)20 * gameScale, Y_triangle + (int)(55 * gameScale), X_GameText - (int)(40 * gameScale), Y_triangle + (int)(75 * gameScale));
 
-        
+
     }
 
 
@@ -240,9 +241,9 @@ public class Menu
     private void DrawMainMenuTitle()
     {
 
-        const int FontSize = 200;
+        int FontSize = (int)(200 * gameScale);
         int titleX = (int)(_gameWindow.Width / 2 - (SplashKit.TextWidth("Asteroids", _GameFont, FontSize) / 2));
-        const int titleY = 40;
+        int titleY = (int)(40 * gameScale);
 
         if (_titleColor.R >= 1)
         {
@@ -266,10 +267,10 @@ public class Menu
 
     private void DrawShipSelection(string Player, string MoveLeft, string MoveRight, string Select)
     {
-        
+
         int Y_Ships = (_gameWindow.Height - _ShipsBMP.First().Height) / 2;
         int X_Ships = (_gameWindow.Width - _ShipsBMP.First().Width) / (_ShipsBMP.Count + 1);
-        const int FontSize = 60;
+        int FontSize = (int)(60 * gameScale);
 
         for (int i = 0; i < _ShipsBMP.Count(); i++)
         {
@@ -292,11 +293,11 @@ public class Menu
             // }
         }
 
-        SplashKit.DrawTextOnWindow(_gameWindow, $"Player {Player} Select Your Ship", Color.White, _GameFont, FontSize, 75, 200);
-        SplashKit.DrawTextOnWindow(_gameWindow, "Controls", Color.White, _GameFont, 40, 75, 550);
-        SplashKit.DrawTextOnWindow(_gameWindow, MoveLeft, Color.White, _GameFont, 30, 75, 600);
-        SplashKit.DrawTextOnWindow(_gameWindow, MoveRight, Color.White, _GameFont, 30, 75, 640);
-        SplashKit.DrawTextOnWindow(_gameWindow, Select, Color.White, _GameFont, 30, 75, 680);
+        SplashKit.DrawTextOnWindow(_gameWindow, $"Player {Player} Select Your Ship", Color.White, _GameFont, FontSize, 75 * gameScale, 200 * gameScale);
+        SplashKit.DrawTextOnWindow(_gameWindow, "Controls", Color.White, _GameFont, (int)(40 * gameScale), 75 * gameScale, 550 * gameScale);
+        SplashKit.DrawTextOnWindow(_gameWindow, MoveLeft, Color.White, _GameFont, (int)(30 * gameScale), 75 * gameScale, 600 * gameScale);
+        SplashKit.DrawTextOnWindow(_gameWindow, MoveRight, Color.White, _GameFont, (int)(30 * gameScale), 75 * gameScale, 640 * gameScale);
+        SplashKit.DrawTextOnWindow(_gameWindow, Select, Color.White, _GameFont, (int)(30 * gameScale), 75 * gameScale, 680 * gameScale);
 
     }
 
@@ -319,15 +320,15 @@ public class Menu
 
     private void HandleInputMainMenu()
     {
-        if (SplashKit.KeyTyped(KeyCode.UpKey))
+        if (SplashKit.KeyTyped(game_controls["P1_up"]) || SplashKit.KeyTyped(game_controls["P2_up"]))
         {
             _MainMenuOption = _MainMenuOption <= 0 ? 2 : _MainMenuOption - 1;
         }
-        else if (SplashKit.KeyTyped(KeyCode.DownKey))
+        else if (SplashKit.KeyTyped(game_controls["P1_down"]) || SplashKit.KeyTyped(game_controls["P2_down"]))
         {
             _MainMenuOption = _MainMenuOption >= 2 ? 0 : _MainMenuOption + 1;
         }
-        else if (SplashKit.KeyTyped(KeyCode.ReturnKey))
+        else if (SplashKit.KeyTyped(game_controls["P1_button1"]) || SplashKit.KeyTyped(game_controls["P2_button1"]))
         {
             switch (_MainMenuOption)
             {
@@ -345,6 +346,17 @@ public class Menu
                     break;
             }
         }
+        else if (SplashKit.KeyTyped(game_controls["Start_1"]))
+        {
+            _Menu = MenuOption.Player1ShipSelection;
+            players = 1;
+        }
+        else if (SplashKit.KeyTyped(game_controls["Start_2"]))
+        {
+            _Menu = MenuOption.Player1ShipSelection;
+            players = 2;
+        }
+
     }
 
 
@@ -384,20 +396,20 @@ public class Menu
 
     private void HandleInputPlayer1Selection()
     {
-        if (SplashKit.KeyTyped(KeyCode.LeftKey))
+        if (SplashKit.KeyTyped(game_controls["P1_left"]))
         {
             _ShipSelection = indexCheck(_ShipSelection, -1);
         }
-        else if (SplashKit.KeyTyped(KeyCode.RightKey))
+        else if (SplashKit.KeyTyped(game_controls["P1_right"]))
         {
             _ShipSelection = indexCheck(_ShipSelection, 1);
         }
-        else if (SplashKit.KeyTyped(KeyCode.ReturnKey))
+        else if (SplashKit.KeyTyped(game_controls["P1_button1"]))
         {
             p1Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             //_Lockout = _ShipSelection;
 
-            _ShipsBMP.Remove(_ShipsBMP.ElementAt(_ShipSelection));          
+            _ShipsBMP.Remove(_ShipsBMP.ElementAt(_ShipSelection));
 
             if (players == 1)
             {
@@ -410,7 +422,7 @@ public class Menu
             }
 
         }
-        else if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) // New key needed to back out of ship selection
+        else if (SplashKit.KeyTyped(game_controls["Start_1"]) || SplashKit.KeyTyped(game_controls["Start_2"])) // New key needed to back out of ship selection
         {
             ReSetup();
         }
@@ -419,20 +431,20 @@ public class Menu
 
     private void HandleInputPlayer2Selection()
     {
-        if (SplashKit.KeyTyped(KeyCode.AKey))
+        if (SplashKit.KeyTyped(game_controls["P2_left"]))
         {
             _ShipSelection = indexCheck(_ShipSelection, -1);
         }
-        else if (SplashKit.KeyTyped(KeyCode.DKey))
+        else if (SplashKit.KeyTyped(game_controls["P2_right"]))
         {
             _ShipSelection = indexCheck(_ShipSelection, 1);
         }
-        else if (SplashKit.KeyTyped(KeyCode.SpaceKey))
+        else if (SplashKit.KeyTyped(game_controls["P2_button1"]))
         {
             p2Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             GameStarted = true;
         }
-        else if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) // New key needed to back out of ship selection
+        else if (SplashKit.KeyTyped(game_controls["Start_1"]) || SplashKit.KeyTyped(game_controls["Start_2"])) // New key needed to back out of ship selection
         {
             ReSetup();
         }
