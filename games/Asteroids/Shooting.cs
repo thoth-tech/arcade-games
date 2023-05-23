@@ -1,6 +1,7 @@
 using System;
 using SplashKitSDK;
 using System.Collections.Generic;
+using static AsteroidsGame.Program;
 
 public abstract class Shooting
 {
@@ -72,8 +73,8 @@ public class PlayerShot : Shooting
     public PlayerShot(Point2D fromPT, double Angle, Player player)
     {
         Angle += 270;
-        const int SPEED = 10;
-        Radius = 4;
+        int SPEED = (int)(10 * gameScale);
+        Radius = (int)(4 * gameScale);
         ShotByPlayer = player;
         X = ShotByPlayer.X + fromPT.X;
         Y = ShotByPlayer.Y + fromPT.Y;
@@ -90,10 +91,10 @@ public class PlayerShot : Shooting
         {
             if (SplashKit.CirclesIntersect(tmpShot, e)) hit = true;
         }
-        if (enemy.HitSprite() != null)
-        {
-            if (SplashKit.CirclesIntersect(enemy.HitSprite().CollisionCircle(), tmpShot)) hit = true; //change this over to sprites if everything is a sprite
-        }
+        // if (enemy.HitSprite() != null)
+        // {
+        //     if (SplashKit.CirclesIntersect(enemy.HitSprite().CollisionCircle(), tmpShot)&&enemy) hit = true; //change this over to sprites if everything is a sprite
+        // }
 
         return hit;
     }
@@ -110,14 +111,17 @@ public class BossSmallShot : Shooting
         Y = fromPT.Y;
         Vector2D direction = SplashKit.UnitVector(SplashKit.VectorFromAngle(Angle, 10));
         _Velocity = SplashKit.VectorMultiply(direction, SPEED);
-        Radius = 10;
+        Radius = (int)(10 * gameScale);
         _shotCircle = SplashKit.CircleAt(X, Y, Radius);
     }
 
     public override bool HitCheck(Player player)
     {
         bool hit = false;
-        if (SplashKit.BitmapCircleCollision(player.HitBMP(), player.X, player.Y, _shotCircle)) hit = true;
+        if (SplashKit.BitmapCircleCollision(player.HitBMP(), player.X, player.Y, _shotCircle) && player.PlayerScore.IsDead == false)
+        {
+            hit = true;
+        }
 
         return hit;
     }
@@ -144,7 +148,7 @@ public class RedEnergyBall : Shooting
     private Sprite _EnergyBallSprite;
     public RedEnergyBall(Point2D fromPT, Player player)
     {
-        const int SPEED = 5;
+        int SPEED = (int)(5 * gameScale);
         X = fromPT.X;
         Y = fromPT.Y;
         Point2D toPT = new Point2D();
@@ -153,21 +157,38 @@ public class RedEnergyBall : Shooting
         Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
         _Velocity = SplashKit.VectorMultiply(direction, SPEED);
 
-        _EnergyBall = new Bitmap("RedEnergyBall", "RedEnergyBall_9_frames_updated.png");
-        _EnergyBall.SetCellDetails(150, 150, 3, 3, 9);
-        _EnergyBallScript = SplashKit.LoadAnimationScript("RedEnergyBall", "RedEnergyBall.txt");
+        if (SplashKit.HasBitmap("RedEnergyBall"))
+        {
+            _EnergyBall = SplashKit.BitmapNamed("RedEnergyBall");
+        }
+        else
+        {
+            _EnergyBall = SplashKit.LoadBitmap("RedEnergyBall", "RedEnergyBall.png");
+            _EnergyBall.SetCellDetails(150, 150, 3, 3, 9);
+        }
+        if (SplashKit.HasAnimationScript("RedEnergyBall"))
+        {
+            _EnergyBallScript = SplashKit.AnimationScriptNamed("RedEnergyBall");
+        }
+        else
+        {
+            _EnergyBallScript = SplashKit.LoadAnimationScript("RedEnergyBall", "RedEnergyBall.txt");
+        }
+
         _EnergyBallSprite = SplashKit.CreateSprite(_EnergyBall, _EnergyBallScript);
         _EnergyBallSprite.StartAnimation("Start");
+        _EnergyBallSprite.AnchorPoint = new Point2D() { X = _EnergyBallSprite.Width / 2, Y = _EnergyBallSprite.Height / 2 };
         _EnergyBallSprite.Position = fromPT;
+
+
 
     }
     public override bool HitCheck(Player player)
     {
         bool hit = false;
-        if (SplashKit.SpriteBitmapCollision(_EnergyBallSprite, player.HitBMP(), player.X, player.Y))
+        if (SplashKit.SpriteBitmapCollision(_EnergyBallSprite, player.HitBMP(), player.X, player.Y) && player.PlayerScore.IsDead == false)
         {
             hit = true;
-            //SplashKit.FreeSprite(_EnergyBallSprite);
         }
 
         return hit;
@@ -188,7 +209,6 @@ public class RedEnergyBall : Shooting
         if (_EnergyBallSprite.Offscreen())
         {
             Offscreen = true;
-            //SplashKit.FreeSprite(_EnergyBallSprite);
         }
         return Offscreen;
 
@@ -216,25 +236,29 @@ public class Laser : Shooting
     private Sprite _laserSprite;
     public Laser(Point2D fromPT, int Frame)
     {
-        const int SPEED = 5;
-        // X = fromPT.X;
-        // Y = fromPT.Y;
-        //Point2D toPT = new Point2D();
+        int SPEED = (int)(5 * gameScale);
 
-        // Vector2D direction = SplashKit.UnitVector(SplashKit.VectorPointToPoint(fromPT, toPT));
-        // _Velocity = SplashKit.VectorMultiply(direction, SPEED);
+        if (SplashKit.HasBitmap("ReallySmallLaser"))
+        {
+            _laserImg = SplashKit.BitmapNamed("ReallySmallLaser");
+        }
+        else
+        {
+            _laserImg = SplashKit.LoadBitmap("ReallySmallLaser", "ReallySmallLaser.png");
+            _laserImg.SetCellDetails(300, 50, 1, 40, 40);
+        }
 
-        
-        // if (SplashKit.HasBitmap("BigLaser")) _laserImg = SplashKit.BitmapNamed("BigLaser");
-        // else _laserImg = SplashKit.LoadBitmap("BigLaser", "BigLaser.png");
-        // if (SplashKit.HasBitmap("SmallLaser")) _laserImg = SplashKit.BitmapNamed("SmallLaser");
-        // else _laserImg = SplashKit.LoadBitmap("SmallLaser", "SmallLaser.png");
-        if (SplashKit.HasBitmap("ReallySmallLaser")) _laserImg = SplashKit.BitmapNamed("ReallySmallLaser");
-        else _laserImg = SplashKit.LoadBitmap("ReallySmallLaser", "ReallySmallLaser.png");
-        _laserImg.SetCellDetails(300, 50, 1, 40, 40);
-        _LaserScript = SplashKit.LoadAnimationScript("LaserScript", "Laser40.txt");
+        if (SplashKit.HasAnimationScript("LaserScript"))
+        {
+            _LaserScript = SplashKit.AnimationScriptNamed("LaserScript");
+        }
+        else
+        {
+            _LaserScript = SplashKit.LoadAnimationScript("LaserScript", "Laser40.txt");
+        }
+
         _laserSprite = SplashKit.CreateSprite(_laserImg, _LaserScript);
-        //_EnergyBallSprite.StartAnimation("Start");
+
         _laserSprite.Position = fromPT;
 
         _laserSprite.MoveTo(fromPT.X, fromPT.Y);
@@ -242,17 +266,14 @@ public class Laser : Shooting
         _laserSprite.StartAnimation(Frame);
 
     }
-    // public double Y()
-    // {
-    //     return (double)_laserSprite.Y;
-    // }
+
     public override bool HitCheck(Player player)
     {
         bool hit = false;
         if (SplashKit.SpriteBitmapCollision(_laserSprite, player.HitBMP(), player.X, player.Y))
         {
             hit = true;
-            //SplashKit.FreeSprite(_EnergyBallSprite);
+
         }
 
         return hit;
@@ -262,7 +283,7 @@ public class Laser : Shooting
     {
         _laserSprite.X += Convert.ToSingle(_Velocity.X);
         _laserSprite.Y += Convert.ToSingle(_Velocity.Y);
-        //_EnergyBallSprite.AddToVelocity(_Velocity);
+
         Y = _laserSprite.Y;
 
     }
@@ -274,7 +295,7 @@ public class Laser : Shooting
         if (_laserSprite.Offscreen())
         {
             Offscreen = true;
-            //SplashKit.FreeSprite(_EnergyBallSprite);
+
         }
         return Offscreen;
 

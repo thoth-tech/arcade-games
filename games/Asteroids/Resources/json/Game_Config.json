@@ -1,0 +1,9 @@
+{
+    "Asteroids_game_config": "",
+    "fullscreen": true,
+    "gameScale": 0.6,
+    "game_bundles": "gamebundle_0.6.txt",
+    "no_boarder": false,
+    "screen_height": 540,
+    "screen_width": 960
+}
