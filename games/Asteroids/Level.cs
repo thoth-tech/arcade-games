@@ -1,6 +1,7 @@
 using System;
 using SplashKitSDK;
 using System.Collections.Generic;
+using static AsteroidsGame.Program;
 
 public abstract class Level
 {
@@ -28,7 +29,15 @@ public abstract class Level
         _game = game;
         _wHeight = _gameWindow.Height;
         _wWidth = _gameWindow.Width;
-        lvlComplete = new Bitmap("levelComplete", "Lvlcomplete.png");
+        if (SplashKit.HasBitmap("levelComplete"))
+        {
+            lvlComplete = SplashKit.BitmapNamed("levelComplete");
+        }
+        else
+        {
+            lvlComplete = SplashKit.LoadBitmap("levelComplete", "Lvlcomplete.png");
+        }
+
         _completeTimer = new SplashKitSDK.Timer("completeTimer");
 
     }
@@ -101,18 +110,17 @@ public abstract class Level
     }
     */
 
-    
+
     public void spawnTriple(Enemy e)
     {
-        Point2D start = new Point2D() {X = e.X, Y = e.Y};
+        Point2D start = new Point2D() { X = e.X, Y = e.Y };
         Vector2D vel = e._Velocity;
         double velMag = SplashKit.VectorMagnitude(vel);
         double velAngle = SplashKit.VectorAngle(vel);
 
-
-        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, vel,0.3,start));
-        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, SplashKit.VectorFromAngle(velAngle - 30,velMag),0.3,start));
-        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, SplashKit.VectorFromAngle(velAngle + 30,velMag),0.3,start));
+        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, vel, 0.3, start));
+        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, SplashKit.VectorFromAngle(velAngle - (int)(30 * gameScale), velMag), 0.3, start));
+        _tmpEnemySpawn.Add(new RockSmall(_gameWindow, SplashKit.VectorFromAngle(velAngle + (int)(30 * gameScale), velMag), 0.3, start));
 
     }
 
@@ -282,13 +290,14 @@ public class Level1 : Level
     public override void Draw()
     {
         double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
-        const int FontSize = 80;
-        int X_GameText = _gameWindow.Width / 2 - 115;
+        int FontSize = (int)(80 * gameScale);
         int Y_GameText = _gameWindow.Height / 6;
+        string gameHeading = "Level 1";
+        double gameHeading_X = _gameWindow.Width / 2 - SplashKit.TextWidth(gameHeading, _GameFont, FontSize) / 2;
 
         if (lvlTimer < 1.5) //1.5
         {
-            SplashKit.DrawTextOnWindow(_gameWindow, "Level 1", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
+            SplashKit.DrawTextOnWindow(_gameWindow, gameHeading, Color.White, _GameFont, FontSize, gameHeading_X, Y_GameText);
         }
         /*         else if (lvlTimer > 151 && lvlTimer < 160) //151
                 {
@@ -328,10 +337,10 @@ public class Level1 : Level
                 if (!_EnemySpawned.ContainsKey("55 Time"))
                 {
                     _EnemySpawned.Add("55 Time", true);
-                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2 - 100, -200, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2 - 100, _wHeight, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy(rockTypes.Large, 4, -200, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
-                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth, _wHeight / 2 - 100, _wWidth / 2 - 100, _wHeight / 2 - 100));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2, 0, _wWidth / 2, _wHeight / 2));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth / 2, _wHeight, _wWidth / 2, _wHeight / 2));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, 0, _wHeight / 2, _wWidth / 2, _wHeight / 2));
+                    Enemies.Add(createEnemy(rockTypes.Large, 4, _wWidth, _wHeight / 2, _wWidth / 2, _wHeight / 2));
                 }
                 break;
             case 60: //153
@@ -372,13 +381,13 @@ public class Level2 : Level
     public override void Draw()
     {
         double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
-        const int FontSize = 80;
-        X_GameText = _gameWindow.Width / 2 - 115;
+        int FontSize = (int)(80 * gameScale);
         Y_GameText = _gameWindow.Height / 6;
-
+        string gameHeading = "Level 2";
+        double gameHeading_X = _gameWindow.Width / 2 - SplashKit.TextWidth(gameHeading, _GameFont, FontSize) / 2;
         if (lvlTimer < 2) //1.5
         {
-            SplashKit.DrawTextOnWindow(_gameWindow, "Level 2", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
+            SplashKit.DrawTextOnWindow(_gameWindow, gameHeading, Color.White, _GameFont, FontSize, gameHeading_X, Y_GameText);
         }
 
         base.Draw();
@@ -471,9 +480,9 @@ public class Level2 : Level
 
         if (_EnemySpawned.ContainsKey("Boss2") && Enemies.Count == 0)
         {
-            //levelComplete(new Level2(_gameWindow, _game));
-            levelComplete(null);
-            _game.GameOver();
+
+            levelComplete(new EndGame(_gameWindow, _game));
+
 
         }
 
@@ -481,6 +490,59 @@ public class Level2 : Level
     }
 }
 
+public class EndGame : Level
+{
+    private SplashKitSDK.Timer _lvlTimer;
+    private Font _GameFont;
+    private int X_GameText, Y_GameText;
+
+    public EndGame(Window GameWindow, Game game) : base(GameWindow, game)
+    {
+        _lvlTimer = new SplashKitSDK.Timer("EndGameTimer");
+        _lvlTimer.Start();
+        _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
+        _game = game;
+        _EnemySpawned.Clear();
+        foreach (Player p in _game.Players)
+        {
+            p.PlayerScore.PauseTimer();
+        }
+
+    }
+
+    public override void Draw()
+    {
+        double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
+        int FontSize = (int)(80 * gameScale);
+        int FontSize2 = (int)(60 * gameScale);
+        X_GameText = _gameWindow.Width / 2 - (int)(115 * gameScale);
+        Y_GameText = _gameWindow.Height / 6;
+        string gameHeading = "Game Complete";
+        string gameText = "Congratulations, You have reached the end of the game,";
+        string gameText2 = "we hope you enjoyed it as much as we did making it.";
+
+        double gameHeading_X = _gameWindow.Width / 2 - SplashKit.TextWidth(gameHeading, _GameFont, FontSize) / 2;
+        double gameText_X = _gameWindow.Width / 2 - SplashKit.TextWidth(gameText, _GameFont, FontSize2) / 2;
+        double gameText2_X = _gameWindow.Width / 2 - SplashKit.TextWidth(gameText2, _GameFont, FontSize2) / 2;
+        double gameHeading_Y_Offset = SplashKit.TextHeight(gameHeading, _GameFont, FontSize);
+        double gameText_Y_Offset = SplashKit.TextHeight(gameText, _GameFont, FontSize2);
+
+        if (lvlTimer < 10) //1.5
+        {
+            SplashKit.DrawTextOnWindow(_gameWindow, gameHeading, Color.White, _GameFont, FontSize, gameHeading_X, Y_GameText);
+            SplashKit.DrawTextOnWindow(_gameWindow, gameText, Color.White, _GameFont, FontSize2, gameText_X, Y_GameText + gameHeading_Y_Offset);
+            SplashKit.DrawTextOnWindow(_gameWindow, gameText2, Color.White, _GameFont, FontSize2, gameText2_X, Y_GameText + gameHeading_Y_Offset + gameText_Y_Offset);
+        }
+        else
+        {
+            _game.GameEndCleanup();
+        }
+
+
+        base.Draw();
+
+    }
+}
 public class Debuglvl : Level
 {
     private SplashKitSDK.Timer _lvlTimer;
@@ -499,9 +561,10 @@ public class Debuglvl : Level
     public override void Draw()
     {
         double lvlTimer = Math.Round((_lvlTimer.Ticks / 1000.0), 1);
-        const int FontSize = 80;
-        X_GameText = _gameWindow.Width / 2 - 115;
+        int FontSize = (int)(80 * gameScale);
         Y_GameText = _gameWindow.Height / 6;
+        string gameHeading = "Testing";
+        double gameHeading_X = _gameWindow.Width / 2 - SplashKit.TextWidth(gameHeading, _GameFont, FontSize) / 2;
 
         if (lvlTimer == 0)
         {
@@ -512,7 +575,7 @@ public class Debuglvl : Level
 
         if (lvlTimer < 1.5) //1.5
         {
-            SplashKit.DrawTextOnWindow(_gameWindow, "Testing", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
+            SplashKit.DrawTextOnWindow(_gameWindow, gameHeading, Color.White, _GameFont, FontSize, gameHeading_X, Y_GameText);
         }
 
         base.Draw();
@@ -529,16 +592,18 @@ public class Debuglvl : Level
                 //don't spawn until level starts
                 break;
             case > 1.5: //153
-                // if (!_EnemySpawned.ContainsKey("Boss1"))
-                // {
-                //     _EnemySpawned.Add("Boss1", true);
-                //     Enemies.Add(new Boss1(_gameWindow, _game));
-                // }
-                // break;
+                if (!_EnemySpawned.ContainsKey("Boss1"))
+                {
+                    _EnemySpawned.Add("Boss1", true);
+                    Enemies.Add(new Boss1(_gameWindow, _game));
+                }
+                break;
                 // if (SplashKit.Rnd() < 0.01)
                 // {
                 //     Enemies.Add(new BlueRock(_gameWindow, 4, 3));
                 // }
+                // break;
+                // RockRandomSpawn(4, 0.01, rockTypes.Large);
                 // break;
                 // if (!_EnemySpawned.ContainsKey("Rockwall"))
                 // {
@@ -547,20 +612,20 @@ public class Debuglvl : Level
                 // }
                 // break;
 
-                if (!_EnemySpawned.ContainsKey("Boss2"))
-                {
-                    _EnemySpawned.Add("Boss2", true);
-                    Enemies.Add(new smallShip(_gameWindow, _game, 0));
-                    Enemies.Add(new smallShip(_gameWindow, _game, 1));
-                    Enemies.Add(new smallShip(_gameWindow, _game, 2));
-                }
-                break;
+                // if (!_EnemySpawned.ContainsKey("Boss2"))
+                // {
+                //     _EnemySpawned.Add("Boss2", true);
+                //     Enemies.Add(new smallShip(_gameWindow, _game, 0));
+                //     Enemies.Add(new smallShip(_gameWindow, _game, 1));
+                //     Enemies.Add(new smallShip(_gameWindow, _game, 2));
+                // }
+                // break;
         }
-        if (_EnemySpawned.ContainsKey("Boss2") && Enemies.Count == 0)
+        if (_EnemySpawned.ContainsKey("Boss1") && Enemies.Count == 0)
         {
             //levelComplete(new Level2(_gameWindow, _game));
             levelComplete(null);
-            
+
         }
 
         base.Update();

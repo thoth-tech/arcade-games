@@ -1,6 +1,8 @@
 using System;
 using SplashKitSDK;
 using System.Collections.Generic;
+using static AsteroidsGame.Program;
+
 
 public class Player
 {
@@ -16,7 +18,7 @@ public class Player
     public bool IsDead { get; private set; }
     private SplashKitSDK.Timer _InvulnerableTime;
     //private bool _IsInvulnerable;
-    public Score _PlayerScore { get; set; }
+    public Score PlayerScore { get; set; }
     public bool IsInvulnerable { get; private set; }
 
     public string Name { get { return _Player; } }
@@ -24,7 +26,7 @@ public class Player
     public Player(Window gameWindow, string Player, string PlayerShip, int PlayersNo)
     {
         _gameWindow = gameWindow;
-        _Ship = SplashKit.LoadBitmap(Player,PlayerShip);
+        _Ship = SplashKit.LoadBitmap(Player, PlayerShip);
         _Player = Player;
 
         Respawn(PlayersNo);
@@ -93,7 +95,7 @@ public class Player
 
     private void Rotation(double change)
     {
-        _Angle = (_Angle + change) ; //% 360
+        _Angle = (_Angle + change); //% 360
     }
 
     private void Move(double Speed)
@@ -116,23 +118,22 @@ public class Player
 
     private void Player1Controls()
     {
-        const double Speed = 5;
-        if (SplashKit.KeyDown(KeyCode.LeftKey)) Rotation(-Speed);
-        if (SplashKit.KeyDown(KeyCode.RightKey)) Rotation(Speed);
-        if (SplashKit.KeyDown(KeyCode.UpKey)) Move(Speed);
-        if (SplashKit.KeyDown(KeyCode.DownKey)) { }
-        if (SplashKit.KeyTyped(KeyCode.RightCtrlKey)) { Shoot(); }
-        if (SplashKit.KeyTyped(KeyCode.LeftCtrlKey)) { Shoot(); }
-
+        double MoveSpeed = 5 * gameScale;
+        double RotateSpeed = 5;
+        if (SplashKit.KeyDown(game_controls["P1_left"])) Rotation(-RotateSpeed);
+        if (SplashKit.KeyDown(game_controls["P1_right"])) Rotation(RotateSpeed);
+        if (SplashKit.KeyDown(game_controls["P1_up"])) Move(MoveSpeed);
+        if (SplashKit.KeyTyped(game_controls["P1_button1"])) { Shoot(); }
     }
 
     private void Player2Controls()
     {
-        const double Speed = 5;
-        if (SplashKit.KeyDown(KeyCode.AKey)) Rotation(-Speed);
-        if (SplashKit.KeyDown(KeyCode.DKey)) Rotation(Speed);
-        if (SplashKit.KeyDown(KeyCode.WKey)) Move(Speed);
-        if (SplashKit.KeyTyped(KeyCode.SpaceKey)) { Shoot(); }
+        double MoveSpeed = 5 * gameScale;
+        double RotateSpeed = 5;
+        if (SplashKit.KeyDown(game_controls["P2_left"])) Rotation(-RotateSpeed);
+        if (SplashKit.KeyDown(game_controls["P2_right"])) Rotation(RotateSpeed);
+        if (SplashKit.KeyDown(game_controls["P2_up"])) Move(MoveSpeed);
+        if (SplashKit.KeyTyped(game_controls["P2_button1"])) { Shoot(); }
 
     }
 
@@ -160,9 +161,9 @@ public class Player
             {
                 _shots[i].freesprite();
                 _shots.RemoveAt(i--);
-            } 
+            }
         }
-        
+
         /*
         foreach (Shooting s in _shots)
         {
@@ -197,7 +198,7 @@ public class Player
         if (!IsInvulnerable && !IsDead)
         {
             bool hit = false;
-
+            
             foreach (Circle e in enemy.HitCircle())
             {
                 if (SplashKit.BitmapCircleCollision(_Ship, X, Y, e)) hit = true;
@@ -209,6 +210,7 @@ public class Player
             if (hit) return enemy.HitBy(this);
         }
 
+
         for (int i = 0; i < _shots.Count; i++)
         {
             Shooting s = _shots[i];
@@ -216,7 +218,7 @@ public class Player
             {
                 _shots.RemoveAt(i--);
                 return enemy.HitBy(s);  // free sprite is called inside hitby currently
-            } 
+            }
         }
         /*
         foreach (Shooting s in _shots)

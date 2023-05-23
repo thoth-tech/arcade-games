@@ -1,6 +1,7 @@
 using System;
 using SplashKitSDK;
 using System.Collections.Generic;
+using static AsteroidsGame.Program;
 
 public class Game
 {
@@ -11,7 +12,7 @@ public class Game
     private int _playersNo;
     public bool GameStarted { get; private set; }
     private int _GameOverCount;
-    private String[] _SpritePacks = {"Shots","Ships","Enemies"};
+    private String[] _SpritePacks = { "Shots", "Ships", "Enemies" };
 
 
 
@@ -29,11 +30,11 @@ public class Game
         _TempPlayers = new Player[playersNo];
 
         _Players.Add(new Player(gameWindow, "Player 1", p1Ship, playersNo));
-        _Players[0]._PlayerScore = new Player1Score(gameWindow, "Player 1");
+        _Players[0].PlayerScore = new Player1Score(gameWindow, "Player 1");
         if (playersNo == 2)
         {
             _Players.Add(new Player(gameWindow, "Player 2", p2Ship, playersNo));
-            _Players[1]._PlayerScore = new Player2Score(gameWindow, "Player 2");
+            _Players[1].PlayerScore = new Player2Score(gameWindow, "Player 2");
         }
 
         SplashKit.FreeAllSprites();
@@ -45,6 +46,7 @@ public class Game
         _gameLevel = new Level1(_GameWindow, this);
         //_gameLevel = new Level2(_GameWindow, this);
         //_gameLevel = new Jsonlvl(_GameWindow, this, "Level_Test.json");
+        //_gameLevel = new EndGame(_GameWindow, this);
 
     }
 
@@ -75,10 +77,10 @@ public class Game
 
         foreach (Player p in _Players)
         {
-            if (!p._PlayerScore.IsDead)
+            if (!p.PlayerScore.IsDead)
                 p.Draw();
 
-            p._PlayerScore.Draw();
+            p.PlayerScore.Draw();
         }
 
         if (_GameOverCount > -1)
@@ -87,18 +89,18 @@ public class Game
         }
 
     }
-    
+
     public void GameOver()
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
-        const int FontSize = 120;
+        int FontSize = (int)(120 * gameScale);
 
         _GameWindow.Clear(Color.Black);
         foreach (Player p in _Players)
         {
-            p._PlayerScore.Draw();
+            p.PlayerScore.Draw();
         }
-        int X_GameText = _GameWindow.Width / 2 - 270;
+        int X_GameText = _GameWindow.Width / 2 - (int)(270 * gameScale);
         int Y_GameText = _GameWindow.Height / 3;
 
         foreach (Enemy e in _gameLevel.Enemies)
@@ -112,12 +114,19 @@ public class Game
         GameStarted = false;
     }
 
+    public void GameEndCleanup()
+    {
+        GameStarted = false;
+        SplashKit.FreeSpritePack("Shots");
+        SplashKit.FreeSpritePack("Ships");
+        SplashKit.FreeSpritePack("Enemies");
+    }
     public void DrawGameOver()
     {
         Font _GameFont = new Font("pricedown_bl", "fonts/pricedown_bl.otf");
-        const int FontSize = 120;  
+        int FontSize = (int)(120 * gameScale);
 
-        int X_GameText = _GameWindow.Width / 2 - 270;
+        int X_GameText = _GameWindow.Width / 2 - (int)(270 * gameScale);
         int Y_GameText = _GameWindow.Height / 3;
         SplashKit.DrawTextOnWindow(_GameWindow, "Game Over", Color.White, _GameFont, FontSize, X_GameText, Y_GameText);
     }
@@ -126,7 +135,7 @@ public class Game
     {
         foreach (Player p in _Players)
         { p.HandleInput(); }
-        if (SplashKit.KeyTyped(KeyCode.BackspaceKey)) GameOver();
+
     }
 
     public void Updates()
@@ -134,13 +143,13 @@ public class Game
         bool _GameOver = true;
         for (int i = 0; i < _Players.Count(); i++)
         {
-            if (!_Players[i]._PlayerScore.IsDead)
+            if (!_Players[i].PlayerScore.IsDead)
             {
                 _Players[i].Updates();
                 HitCheck(_Players[i]);
                 if (_Players[i].IsDead) _Players[i].Respawn(_playersNo);
             }
-            _GameOver = _Players[i]._PlayerScore.IsDead ? _GameOver : false;
+            _GameOver = _Players[i].PlayerScore.IsDead ? _GameOver : false;
         }
 
 
@@ -171,12 +180,9 @@ public class Game
         else if (_GameOverCount > -1)
         {
             _GameOverCount++;
-            if  (_GameOverCount > 120)
+            if (_GameOverCount > 120)
             {
-                GameStarted = false;
-                SplashKit.FreeSpritePack("Shots");
-                SplashKit.FreeSpritePack("Ships");
-                SplashKit.FreeSpritePack("Enemies");
+                GameEndCleanup();
             }
         }
 
@@ -190,12 +196,12 @@ public class Game
 
             if (HitCheckResult.Item1 == "Life") // Look at re-spwarning Player in centre
             {
-                player._PlayerScore.DownLife();
+                player.PlayerScore.DownLife();
                 player.Killed();
             }
             else if (HitCheckResult.Item1 == "Score")
             {
-                player._PlayerScore.ScoreUp(HitCheckResult.Item2);
+                player.PlayerScore.ScoreUp(HitCheckResult.Item2);
             }
             // if (e.CanShoot)
             // {
@@ -212,8 +218,8 @@ public class Game
 
             if (HitCheckResult.Item1 == "Life") // Look at re-spwarning Player in centre
             {
+                p.PlayerScore.DownLife();
                 p.Killed();
-                p._PlayerScore.DownLife();
             }
         }
     }
