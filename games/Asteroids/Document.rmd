@@ -1,0 +1,180 @@
+---
+title: "Game Documentation (Arcade 2.0)"
+author: "Thoth Tech"
+date: "2023-03-26"
+output: 
+  word_document:
+  toc: yes
+  toc_title: Table of Content
+---
+
+
+
+Table of Content(up to date)
+
+- [1. Name of the Game](#1-name-of-the-game)
+- [2. Genre](#2-genre)
+- [3. Art style](#3-art-style)
+- [4. What is the Game](#4-what-is-the-game)
+- [5. How the Game works](#5-how-the-game-works)
+  - [5.1. How the Game is Played Solo](#51-how-the-game-is-played-solo)
+  - [5.2. How the Game is PLayed Cooperatively](#52-how-the-game-is-played-cooperatively)
+  - [5.3. How the Game is Won](#53-how-the-game-is-won)
+  - [5.4. How the Game is Lost](#54-how-the-game-is-lost)
+- [6. Levels](#6-levels)
+- [7. Tools](#7-tools)
+- [8 Reference Game](#8-reference-game)
+- [9. Lore](#9-lore)
+  - [9.1 Mission](#91-mission)
+  - [9.2 Enemies](#92-enemies)
+    - [9.2.1  Meteors](#921--meteors)
+    - [9.2.2 Soldier ship](#922-soldier-ship)
+    - [9.2.3 Army general ship](#923-army-general-ship)
+    - [9.2.4 Boss ship](#924-boss-ship)
+  - [9.3 Main Reason](#93-main-reason)
+- [10. Appendices](#10-appendices)
+  - [10.1 Minor, Major, and final Victory conditions](#101-minor-major-and-final-victory-conditions)
+  - [10.2 Minor and Major loss Conditions](#102-minor-and-major-loss-conditions)
+  - [10.3 Active Challenges](#103-active-challenges)
+    - [10.3.1 Manuevering the ship](#1031-manuevering-the-ship)
+    - [10.3.2 Deafeating boss ships](#1032-deafeating-boss-ships)
+  - [10.4 Game Rules](#104-game-rules)
+  - [10.5 Internal Economy](#105-internal-economy)
+  - [10.6 Player Psychology](#106-player-psychology)
+
+
+
+
+```{r}
+```
+
+## 1. Name of the Game
+Asteroid 2.0
+
+
+## 2. Genre
+Shooter
+
+
+## 3. Art style
+Flat
+
+
+## 4. What is the Game
+Asteroid 2.0 is a 2D Shooter game in which a ship controlled through A controller capable of moving in all directions. The ship will move in space and will be obstructed by Meteors and a final alien ship. The player's ship will be loaded with shooters and will help to shoot the hurdles.  
+
+
+## 5. How the Game works
+Asteroid 2.0 game starts with a cool attractive intro with animation and music, leading to a main menu which will contain different options such as selecting game mode, then selecting the sprites. The player will use controller to control the ship sprite and move it in all directions. Besides that the ship will be attacked by Meteors, other objects(to be decided) and a boss ship which it will tackle through shooters. Each time the ship is hit its life will decrease and overall a player will get 3 lives. 
+
+Further, there would be 5 levels, with each level to be around 1 min excluding the boss level. Also, there will be power ups for the player which will help ship to add lives, add more shooter power. Similar to other arcade game it will contain score for hitting the targets and Top score will be recorded. 
+
+
+### 5.1. How the Game is Played Solo
+When selecting the game mode, you will be able to choose Single Player, when the game is then loaded in only a single ship will appear, and the game will continue as normal with the solo player destroying asteroids to survive until the final alien ship.
+
+
+### 5.2. How the Game is PLayed Cooperatively
+When selecting the game mode, will be be able to select Two player mode, when the game loads in two different ships will appear that can each be controlled by a separate player. the game will then proceed with both players being able to destroy asteroids and the final alien ship.
+
+
+### 5.3. How the Game is Won
+The game is won when the player has tackled all the obstruction and hurdles, and then finishes the boss spaceship. The player will have shooters for shooting and different power ups to assit. 
+
+
+### 5.4. How the Game is Lost
+The game is lost after the player has lost all of their lives. Players will start the game with 3 Lives and can lose them by getting hit by asteroids and the alien ship. players will be able to gain back lost lives by picking up power ups throughout the game. 
+
+## 6. Levels 
+Each level will last for 1 minute. 
+
+Level 1 : Player will get attacked by Meteors and will tackle them using shooters. At the end of the minute the Soldier ship will arrive.
+
+Level 2 : Player will get attacked by Meteors and will tackle them using shooter but will get power ups like extra lives or more powerful shooters. At the end of the minute the Army general ship will arrive.
+
+Level 3 : Player will get attacked by Meteors and will tackle them using shooter but will get power ups like extra lives or more powerful shooters. More obstructions and At the end of the minute the Boss ship will arrive.
+
+
+## 7. Tools 
+Tools used for developing the game is SplashKit with C#. 
+
+## 8 Reference Game
+
+![Menu Part](/doco/images/img1.png){width="45%"}
+
+
+![Player Selection](/doco/images/img2.png){width="45%"}
+
+
+![Multi-PLayer PLay](/doco/images/img3.png){width="45%"}
+
+
+![Visual of Game 1](/doco/images/img4.png){width="45%"}
+
+
+![Visual of Game 2](/doco/images/img5.png){width="45%"}
+
+
+![Visual of Game 3](/doco/images/img6.png){width="45%"}
+
+
+![Visual of Game 4](/doco/images/img7.png){width="45%"}
+
+## 9. Lore
+
+### 9.1 Mission
+A planet named SplashKit was attacked by Aliens 👾 and they captured a few people from the planet. To rescue them from the aliens a highly trained astronaut is sent into space. But while travlling to the Main Boss Spaceship, he encounters different enemies on his journey. Your mission is to help astronaut reach his destination and defeat all enemies. You have to kill all the enemies in way, tackle all hurdles and finally after defeating the boss ship you will finally save all the people. 
+
+### 9.2 Enemies
+In the journey to save people, you will encounter three enemies.
+
+#### 9.2.1  Meteors
+In he journey, you will be hit by random floating meteors in the space. you have to hit them with your shooters before they hit your ship.  
+
+#### 9.2.2 Soldier ship
+This ship will arrive at end of level 1 and it will be the weakest among the three ships you encounter. In the beginning of the journey you will first encounter soldier ship which will be fairly weak and easy to destroy. It will shoot at you and you have to shoot at it to win the level. 
+
+#### 9.2.3 Army general ship 
+This ship will arrive at end of level 2 and it will be stronger than the Soldier ship. In the middle of the journey you will encounter the army general ship which will be stronger and may be bit more difficult to destroy than the soldier ship. It will shoot at you and you have to shoot at it to win level. 
+
+#### 9.2.4 Boss ship 
+This ship will arrive at end of level 3 and it will be the strongest amongst the three ships you encounter. at the end of the journey you will encounter the Boss ship which will be the strongest and will be difficult to destroy. It will shoot at you and you have to shoot at it to win and after defeating the boss ship you will have successfully rescued the captured people..
+
+### 9.3 Main Reason
+The Scientist of SplashKit planet have invented a potion of immortallity and to gain the potion Alien attacked the planet and captured them. 
+
+## 10. Appendices
+
+### 10.1 Minor, Major, and final Victory conditions
+Minor: Minor victories include players surviving the waves of asteroids thrown at them so their overall score will increase, And destroying said asteroids is also a minor victory.
+Major: Major victories are deafeating the boss at the end of each level so the player gets to continue onto more difficult challenges
+Final: the Final victory condition is defeating the Final boss and completing the game, potentially with a new high score.
+
+### 10.2 Minor and Major loss Conditions
+Minor: the minor loss condition is taking any damage as this pushes you closer towards running out of lives and increases the pressure of the game.
+Major: the major loss condition is running out of lives, as this causes a game over and the player will have to try again from the beginning.
+
+### 10.3 Active Challenges
+
+#### 10.3.1 Manuevering the ship
+What the PLayer does: the player controls the ship by rotating left and right, moving forwards and backwards, and shooting. using these controls the player must shoot at and avoid enemies. What is shown to the player: the player is first shown the ship they control, they get to see it moving and see the projectiles as they shoot. they will then be shown the asteroids and alien ships they must avoid and destroy. What validates the players actions: over time as the player survives longer they will gain more points, also for destroying asteroids and alien ships they will collect even more points totalling up to a potential high score.
+
+#### 10.3.2 Deafeating boss ships
+what the player does: the player must shoot at the boss ships until they have taken enough damage to be destroyed. what is shown to the player: whenver the player hits the boss ship a small animation is played to let the player know they are acheiving something, an animation will also be shown when the ship is finally destroyed. What validates the players actions: when boss ships are defeated the player will recieve a lot of points and will move onto the next level of the game, when the final boss ship is destroyed the player will have beaten the game.
+
+### 10.4 Game Rules
+
+#### 10.4.1 Operational Rules
+Dodging Enemies: The player must manuever the ship so that they are not hit by any asteroids or attacks from the boss ships, failing to do so will cause the player to lose a life and eventually a game over. this is a global rule which impacts the current game that is being played, meaning this rule has no effect on the game after a game over.
+Collecting Power-ups: the player can collect power-ups that spawn, these power-ups may restore lost lives or make their shooters more powerful. this is a global rule that affects the current game being played.
+
+#### 10.4.2 Constitutive Rules
+Destroying enemies: The player can use their shooters to destroy asteroids and boss ships that appear, the asteroids can be dodged but the boss ships must be destroyed to progress to the next level, this will challenge the player into balancing controlling the ship so they dont lose lives, while also giving them oppurtunities to do damage so tehy can progress in the game. this is a global rule.
+
+#### 10.4.3 Inplicit Rules
+Getting high scores: As the player plays through the game they will gain points, these points have no affect on the gameplay but the high scores will be recorded in the game. players can earn points through surviving over time and destroying enemies. this rule impacts on the all games of asteroids as the high score is recorded and set as a goal for all players to beat.
+
+### 10.5 Internal Economy
+
+### 10.6 Player Psychology
+
