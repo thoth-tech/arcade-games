@@ -100,25 +100,25 @@ Tools used for developing the game is SplashKit with C#.
 
 ## 8 Reference Game
 
-![Menu Part](/images/img1.png){width="45%"}
+![Menu Part](/doco/images/img1.png){width="45%"}
 
 
-![Player Selection](/images/img2.png){width="45%"}
+![Player Selection](/doco/images/img2.png){width="45%"}
 
 
-![Multi-PLayer PLay](/images/img3.png){width="45%"}
+![Multi-PLayer PLay](/doco/images/img3.png){width="45%"}
 
 
-![Visual of Game 1](/images/img4.png){width="45%"}
+![Visual of Game 1](/doco/images/img4.png){width="45%"}
 
 
-![Visual of Game 2](/images/img5.png){width="45%"}
+![Visual of Game 2](/doco/images/img5.png){width="45%"}
 
 
-![Visual of Game 3](/images/img6.png){width="45%"}
+![Visual of Game 3](/doco/images/img6.png){width="45%"}
 
 
-![Visual of Game 4](/images/img7.png){width="45%"}
+![Visual of Game 4](/doco/images/img7.png){width="45%"}
 
 ## 9. Lore
 
