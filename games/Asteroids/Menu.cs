@@ -320,15 +320,15 @@ public class Menu
 
     private void HandleInputMainMenu()
     {
-        if (SplashKit.KeyTyped(game_controls["P1_up"]) || SplashKit.KeyTyped(game_controls["P2_up"]))
+        if (SplashKit.KeyTyped(Controls.Keylookup("P1_up")) || SplashKit.KeyTyped(Controls.Keylookup("P2_up")))
         {
             _MainMenuOption = _MainMenuOption <= 0 ? 2 : _MainMenuOption - 1;
         }
-        else if (SplashKit.KeyTyped(game_controls["P1_down"]) || SplashKit.KeyTyped(game_controls["P2_down"]))
+        else if (SplashKit.KeyTyped(Controls.Keylookup("P1_down")) || SplashKit.KeyTyped(Controls.Keylookup("P2_down")))
         {
             _MainMenuOption = _MainMenuOption >= 2 ? 0 : _MainMenuOption + 1;
         }
-        else if (SplashKit.KeyTyped(game_controls["P1_button1"]) || SplashKit.KeyTyped(game_controls["P2_button1"]))
+        else if (SplashKit.KeyTyped(Controls.Keylookup("P1_button1")) || SplashKit.KeyTyped(Controls.Keylookup("P2_button1")))
         {
             switch (_MainMenuOption)
             {
@@ -346,12 +346,12 @@ public class Menu
                     break;
             }
         }
-        else if (SplashKit.KeyTyped(game_controls["Start_1"]))
+        else if (SplashKit.KeyTyped(Controls.Keylookup("Start_1")))
         {
             _Menu = MenuOption.Player1ShipSelection;
             players = 1;
         }
-        else if (SplashKit.KeyTyped(game_controls["Start_2"]))
+        else if (SplashKit.KeyTyped(Controls.Keylookup("Start_2")))
         {
             _Menu = MenuOption.Player1ShipSelection;
             players = 2;
@@ -396,15 +396,15 @@ public class Menu
 
     private void HandleInputPlayer1Selection()
     {
-        if (SplashKit.KeyTyped(game_controls["P1_left"]))
+        if (SplashKit.KeyTyped(Controls.Keylookup("P1_left")))
         {
             _ShipSelection = indexCheck(_ShipSelection, -1);
         }
-        else if (SplashKit.KeyTyped(game_controls["P1_right"]))
+        else if (SplashKit.KeyTyped(Controls.Keylookup("P1_right")))
         {
             _ShipSelection = indexCheck(_ShipSelection, 1);
         }
-        else if (SplashKit.KeyTyped(game_controls["P1_button1"]))
+        else if (SplashKit.KeyTyped(Controls.Keylookup("P1_button1")))
         {
             p1Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             //_Lockout = _ShipSelection;
@@ -422,7 +422,7 @@ public class Menu
             }
 
         }
-        else if (SplashKit.KeyTyped(game_controls["Start_1"]) || SplashKit.KeyTyped(game_controls["Start_2"])) // New key needed to back out of ship selection
+        else if (SplashKit.KeyTyped(Controls.Keylookup("Start_1")) || SplashKit.KeyTyped(Controls.Keylookup("Start_2"))) // New key needed to back out of ship selection
         {
             ReSetup();
         }
@@ -431,20 +431,20 @@ public class Menu
 
     private void HandleInputPlayer2Selection()
     {
-        if (SplashKit.KeyTyped(game_controls["P2_left"]))
+        if (SplashKit.KeyTyped(Controls.Keylookup("P2_left")))
         {
             _ShipSelection = indexCheck(_ShipSelection, -1);
         }
-        else if (SplashKit.KeyTyped(game_controls["P2_right"]))
+        else if (SplashKit.KeyTyped(Controls.Keylookup("P2_right")))
         {
             _ShipSelection = indexCheck(_ShipSelection, 1);
         }
-        else if (SplashKit.KeyTyped(game_controls["P2_button1"]))
+        else if (SplashKit.KeyTyped(Controls.Keylookup("P2_button1")))
         {
             p2Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             GameStarted = true;
         }
-        else if (SplashKit.KeyTyped(game_controls["Start_1"]) || SplashKit.KeyTyped(game_controls["Start_2"])) // New key needed to back out of ship selection
+        else if (SplashKit.KeyTyped(Controls.Keylookup("Start_1")) || SplashKit.KeyTyped(Controls.Keylookup("Start_2"))) // New key needed to back out of ship selection
         {
             ReSetup();
         }

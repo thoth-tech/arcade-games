@@ -501,7 +501,7 @@ public class BlueRock : Enemy
         {
             _IsDying = true;
             _RockSprite.StartAnimation("dying");
-            tmpscore = +50;
+            tmpscore = +50; // may need to check this, can't remember if it's meant to be trying to add 50 or just set it to 50 
 
         }
         return new Tuple<string, int>("Score", tmpscore);
