@@ -43,7 +43,7 @@ namespace _2dRacerDemo
             _GameWindow = gameWindow;
             int laneSpacing = 100;
             int leftEdgePosition = _GameWindow.Width / 2 - laneSpacing * 5 / 2;
-            
+
 
             Bitmap roadEdge = SplashKit.CreateBitmap("roadEdge", 10, _GameWindow.Height);
             roadEdge.DrawLine(Color.White, 0, 0, 0, _GameWindow.Height, SplashKit.OptionLineWidth(10));
@@ -77,7 +77,7 @@ namespace _2dRacerDemo
                 roadMarkings[i].StartAnimation("moving");
                 roadMarkings[i].MoveTo(leftEdgePosition + (laneSpacing * (i + 1)), 0);
             }
-
+_players = new Player(_GameWindow, 2);
 
             // Bitmap carBitmap = SplashKit.LoadBitmap("greenCar", "greenCar.png");
             // carBitmap.SetCellDetails(75, 120, 3, 1, 3);

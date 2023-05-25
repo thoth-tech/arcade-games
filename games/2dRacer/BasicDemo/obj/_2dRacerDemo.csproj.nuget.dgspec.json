@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacerDemo\\_2dRacerDemo.csproj": {}
+    "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacer\\BasicDemo\\_2dRacerDemo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacerDemo\\_2dRacerDemo.csproj": {
+    "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacer\\BasicDemo\\_2dRacerDemo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacerDemo\\_2dRacerDemo.csproj",
+        "projectUniqueName": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacer\\BasicDemo\\_2dRacerDemo.csproj",
         "projectName": "_2dRacerDemo",
-        "projectPath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacerDemo\\_2dRacerDemo.csproj",
+        "projectPath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacer\\BasicDemo\\_2dRacerDemo.csproj",
         "packagesPath": "C:\\Users\\phili\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacerDemo\\obj\\",
+        "outputPath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-1\\SIT764 - Project A\\Projects\\arcade-games-desktop\\games\\2dRacer\\BasicDemo\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\phili\\AppData\\Roaming\\NuGet\\NuGet.Config"
