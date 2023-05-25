@@ -1,0 +1,13 @@
+{
+    "name" : "RockSmall",
+    "bmp_fp" : "SmallRockAll.png",
+    "cell_details" : [75,75,3,2,5],
+    "anchor_pos" : [37.5,37.5],
+    "anim_fp" : "RockSmall.txt",
+    "start_anim" : "normal",
+    "mass" : 2.5,
+    "values" : 
+    {
+        "frames_offscreen" : 0
+    }
+}

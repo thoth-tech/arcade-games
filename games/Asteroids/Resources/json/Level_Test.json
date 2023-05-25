@@ -1,0 +1,17 @@
+{
+    "title" : "TEST LEVEL",
+    "title_framesdur" : 40,
+    "title_frameson" : 0,
+    "waves" :
+    [
+        { "ticks" : 1000, "type" : "Small", "num" : 1 },
+        { "ticks" : 1000, "type" : "Large", "num" : 2 },
+        { "ticks" : 1000, "type" : "Large", "num" : 3 },
+        { "ticks" : 1000, "type" : "Small", "num" : 3, "speed" : 20 },
+        { "ticks" : 400, "type" : "Small", "num" : 3, "speed" : 20 },
+        { "ticks" : 300, "type" : "Small", "num" : 3, "speed" : 20 },
+        { "ticks" : 1000, "type" : "Med", "num" : 3 },
+        { "ticks" : 300, "type" : "Large", "num" : 2 },
+        { "ticks" : 5000, "type" : "Large", "num" : 10 }
+    ] 
+}
