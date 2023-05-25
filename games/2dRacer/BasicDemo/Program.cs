@@ -17,7 +17,7 @@ namespace _2dRacerDemo
                 SplashKit.ProcessEvents(); //process splashkit events this is needed for splashkit to read things like key presses
                 SplashKit.UpdateAllSprites(); // This has Splashkit update all the sprites in the current sprite pack, this will trigger animations, move position etc. 
                 SplashKit.DrawAllSprites(); //This has Splashkit draw all the sprites in the current sprite pack to the screen
-                
+
                 if (SplashKit.KeyTyped(KeyCode.EscapeKey)) GameExit = true; //exits the main game loop if esc is pressed.
                 if (gameWindow.CloseRequested) GameExit = true;
                 // reset screen
@@ -37,11 +37,13 @@ namespace _2dRacerDemo
     {
         private Window _GameWindow;
         private Sprite _leftEdge, _rightEdge, _greenCar;
+        private Player _players;
         public DrawDemo(Window gameWindow)
         {
             _GameWindow = gameWindow;
             int laneSpacing = 100;
             int leftEdgePosition = _GameWindow.Width / 2 - laneSpacing * 5 / 2;
+
 
             Bitmap roadEdge = SplashKit.CreateBitmap("roadEdge", 10, _GameWindow.Height);
             roadEdge.DrawLine(Color.White, 0, 0, 0, _GameWindow.Height, SplashKit.OptionLineWidth(10));
@@ -75,24 +77,27 @@ namespace _2dRacerDemo
                 roadMarkings[i].StartAnimation("moving");
                 roadMarkings[i].MoveTo(leftEdgePosition + (laneSpacing * (i + 1)), 0);
             }
+_players = new Player(_GameWindow, 2);
 
+            // Bitmap carBitmap = SplashKit.LoadBitmap("greenCar", "greenCar.png");
+            // carBitmap.SetCellDetails(75, 120, 3, 1, 3);
+            // AnimationScript carAnimation = SplashKit.LoadAnimationScript("carAnimation", "carAnimation.txt");
 
-            Bitmap carBitmap = SplashKit.LoadBitmap("greenCar", "greenCar.png");
-            carBitmap.SetCellDetails(75, 120, 3, 1, 3);
-            AnimationScript carAnimation = SplashKit.LoadAnimationScript("carAnimation", "carAnimation.txt");
-
-            _greenCar = SplashKit.CreateSprite("greenCar", carBitmap, carAnimation);
-            _greenCar.MoveTo(_GameWindow.Width / 2, _GameWindow.Height - 200);
-            _greenCar.StartAnimation("straight");
+            // _greenCar = SplashKit.CreateSprite("greenCar", carBitmap, carAnimation);
+            // _greenCar.MoveTo(_GameWindow.Width / 2, _GameWindow.Height - 200);
+            // _greenCar.StartAnimation("straight");
 
 
         }
 
         public void HandleInput()
         {
-            if (SplashKit.KeyDown(KeyCode.LeftKey) & _greenCar.AnimationHasEnded) _greenCar.StartAnimation("left");
-            if (SplashKit.KeyDown(KeyCode.RightKey) & _greenCar.AnimationHasEnded) _greenCar.StartAnimation("right");
-            if (SplashKit.KeyReleased(KeyCode.RightKey) || SplashKit.KeyReleased(KeyCode.LeftKey)) _greenCar.StartAnimation("straight");
+
+            _players.HandleInputs(false);
+            // if (SplashKit.KeyDown(KeyCode.LeftKey) & _greenCar.AnimationHasEnded) _greenCar.StartAnimation("left");
+            // if (SplashKit.KeyDown(KeyCode.RightKey) & _greenCar.AnimationHasEnded) _greenCar.StartAnimation("right");
+            // if (SplashKit.KeyReleased(KeyCode.RightKey) || SplashKit.KeyReleased(KeyCode.LeftKey)) _greenCar.StartAnimation("straight");
         }
     }
+
 }
