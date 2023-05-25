@@ -1,0 +1,13 @@
+{
+    "name" : "RockMedium",
+    "bmp_fp" : "MedRockAll.png",
+    "cell_details" : [100,100,3,2,6],
+    "anchor_pos" : [50,50],
+    "anim_fp" : "RockMedium.txt",
+    "start_anim" : "normal",
+    "mass" : 2.5,
+    "values" : 
+    {
+        "frames_offscreen" : 0
+    }
+}
