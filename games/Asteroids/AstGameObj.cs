@@ -1,12 +1,12 @@
 using System;
 using SplashKitSDK;
-
+using static AsteroidsGame.Program;
 // Sprite handler object
 public class AstGameObj
 {
     public Sprite _sprite { get; }
-    
-    public float rotSpeed {get; set;}
+
+    public float rotSpeed { get; set; }
 
     // use these in json values object
     //private int _health { get; set; }        // integer health, could be decimal if needed
@@ -15,7 +15,7 @@ public class AstGameObj
     // json object, to hold dynamic values
     // instead of coding specific variables for things, use json to hold them
     // i.e health, is dying,
-    public Json _values { get; private set;}
+    public Json _values { get; private set; }
 
     /*
     JSON LOAD VALUES
@@ -30,7 +30,7 @@ public class AstGameObj
     */
 
     public AstGameObj(Json jsonInfo)
-    {   
+    {
         // make sprite
         _sprite = constructSprite(jsonInfo);
 
@@ -48,7 +48,7 @@ public class AstGameObj
     // if name is loaded, just use it
     // ideally you just give the name, the path should be pre-loaded by handler, or game instance, not this
     private Sprite constructSprite(Json jsonInfo)
-    {   
+    {
         String name = jsonInfo.ReadString("name");          // get name
         String bmpFP = jsonInfo.ReadString("bmp_fp");       // get filepath
         Bitmap bmp;
@@ -62,13 +62,13 @@ public class AstGameObj
         }
         else
         {
-            bmp = SplashKit.LoadBitmap(name,bmpFP);          // initialise bitmap
+            bmp = SplashKit.LoadBitmap(name, bmpFP);          // initialise bitmap
 
             if (jsonInfo.HasKey("cell_details"))            // has cell frames, does not validate if animations are used
             {
                 jsonInfo.ReadArray("cell_details", ref tempList);                 // put array into cd
                 //List<int> cdINT = cd.Select(x => (int)x).ToList();          // turn cd into ints
-                bmp.SetCellDetails((int)tempList[0],(int)tempList[1],(int)tempList[2],(int)tempList[3],(int)tempList[4]);       // pass ints 
+                bmp.SetCellDetails((int)tempList[0], (int)tempList[1], (int)tempList[2], (int)tempList[3], (int)tempList[4]);       // pass ints 
             }
         }
 
@@ -76,22 +76,22 @@ public class AstGameObj
         if (jsonInfo.HasKey("anchor_pos"))
         {
             //tempList = new List<double>();
-            jsonInfo.ReadArray("anchor_pos",ref tempList);
-            tempPos.X = tempList[0];
-            tempPos.Y = tempList[1];
+            jsonInfo.ReadArray("anchor_pos", ref tempList);
+            tempPos.X = tempList[0] * gameScale;
+            tempPos.Y = tempList[1] * gameScale;
         }
 
 
         if (jsonInfo.HasKey("anim_fp"))             // json has animation script file path
         {
-            AnimationScript scr = SplashKit.LoadAnimationScript(name,jsonInfo.ReadString("anim_fp"));
+            AnimationScript scr = SplashKit.LoadAnimationScript(name, jsonInfo.ReadString("anim_fp"));
 
-            spr = SplashKit.CreateSprite(name,bmp,scr);
+            spr = SplashKit.CreateSprite(name, bmp, scr);
             spr.StartAnimation(jsonInfo.ReadString("start_anim"));
         }
         else                                        // no animation script file path
         {
-            spr = SplashKit.CreateSprite(name,bmp);
+            spr = SplashKit.CreateSprite(name, bmp);
         }
 
         if (jsonInfo.HasKey("mass"))
@@ -117,11 +117,11 @@ public class AstGameObj
     {
         // get angle prior to change
         double currVectAngle = SplashKit.VectorAngle(_sprite.Velocity) + _sprite.Rotation;
-        
+
         _sprite.Rotation += angle;           // ADD ROTATION CHANGE
 
         // translate velocity to new angle
-        _sprite.Velocity = SplashKit.VectorFromAngle(currVectAngle - _sprite.Rotation,_sprite.Speed);
+        _sprite.Velocity = SplashKit.VectorFromAngle(currVectAngle - _sprite.Rotation, _sprite.Speed);
     }
 
     // function to handle rotation agnostic vector addition
@@ -131,8 +131,8 @@ public class AstGameObj
         // translate out of rotation angle
         double currVectAngle = SplashKit.VectorAngle(_sprite.Velocity) + _sprite.Rotation;
         // window relative vector
-        Vector2D currVect = SplashKit.VectorFromAngle(currVectAngle,_sprite.Speed);
-        Vector2D newVect = SplashKit.VectorAdd(currVect,vector);
+        Vector2D currVect = SplashKit.VectorFromAngle(currVectAngle, _sprite.Speed);
+        Vector2D newVect = SplashKit.VectorAdd(currVect, vector);
 
         setVelocity(newVect);
     }
