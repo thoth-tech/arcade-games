@@ -1,0 +1,21 @@
+BITMAP, Ship1, BlueShip.png
+BITMAP, Ship2, SpaceShip.png
+BITMAP, Ship3, RedShip.png
+BITMAP, Ship4, FighterShip.png
+BITMAP, RockLarge, RockLarge.png,200,200,3,3,9
+BITMAP, RockMedium, MedRockAll.png,100,100,3,2,6
+BITMAP, RockSmall, SmallRockAll.png, 75,75,3,2,5
+BITMAP, RockBlue, BlueRockSpriteSheet.png,150, 150, 3, 3, 9
+BITMAP, Boss2, MotherShipAll.png,400, 300, 3, 2, 6
+BITMAP, Boss1, MotherShipAll.png,400, 300, 3, 2, 6
+BITMAP, RedEnergyBall, RedEnergyBall.png,150, 150, 3, 3, 9
+BITMAP, ReallySmallLaser, ReallySmallLaser.png,300, 50, 1, 40, 40
+BITMAP, Lives, heart.png
+BITMAP, levelComplete, Lvlcomplete.png 
+
+ANIM, RockBlueAnimation, BlueRock.txt
+ANIM, RockBlueAnimation, BlueRock.txt
+ANIM, MotherShip, MotherShip1.txt
+ANIM, SmallBossShips, SmallBossShips.txt
+ANIM, RedEnergyBall, RedEnergyBall.txt
+ANIM, LaserScript, Laser40.txt
