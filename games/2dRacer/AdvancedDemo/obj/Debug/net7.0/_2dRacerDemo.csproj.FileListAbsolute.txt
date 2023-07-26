@@ -1,0 +1,15 @@
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\_2dRacerDemo.csproj.AssemblyReference.cache
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\_2dRacerDemo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\_2dRacerDemo.AssemblyInfoInputs.cache
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\_2dRacerDemo.AssemblyInfo.cs
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\_2dRacerDemo.csproj.CoreCompileInputs.cache
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\bin\Debug\net7.0\_2dRacerDemo.exe
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\bin\Debug\net7.0\_2dRacerDemo.deps.json
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\bin\Debug\net7.0\_2dRacerDemo.runtimeconfig.json
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\bin\Debug\net7.0\_2dRacerDemo.dll
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\bin\Debug\net7.0\_2dRacerDemo.pdb
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\_2dRacerDemo.dll
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\refint\_2dRacerDemo.dll
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\_2dRacerDemo.pdb
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\_2dRacerDemo.genruntimeconfig.cache
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-1\SIT764 - Project A\Projects\arcade-games-desktop\games\2dRacer\AdvancedDemo\obj\Debug\net7.0\ref\_2dRacerDemo.dll
