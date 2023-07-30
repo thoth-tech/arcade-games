@@ -19,6 +19,12 @@ const double PADDLE_Y = 550;           // Location of paddle on the y axis
 const double PADDLE_HEIGHT = 5;        // Height of the paddle
 const double PADDLE_LENGTH = 100;      // Length of the paddle
 const double MULTIPLIER_DURATION = 10; // Duration in seconds of the score multiplier powerup
+const double NEW_BALL_DELAY = 5;	   // Delay between free new balls
+
+// Input keys for player control
+const key_code RIGHT = RIGHT_KEY;
+const key_code LEFT = LEFT_KEY;
+const key_code START = NUM_1_KEY;
 
 
 enum block_kind
@@ -71,6 +77,7 @@ struct
     int current_level = 1;      // Current level (default starting level = 1)
     bool next_level = true;     // True to proceed to the next level in the next frame
     double timer = 0;           // Timer for multiplier powerup
+	double extraBallTimer = 0;  // Timer for free new balls
     int score_multiplier = 1;   // Multiplier for score (default starting multiplier = 1)
     double paddle_x;            // Location of the paddle in the x axis
 } game_data;
@@ -94,11 +101,11 @@ void end_level(bool successful)
 {
 	if (successful)
 	{
-		draw_text("You win! Press r to play again", COLOR_WHITE, font_named("default"), 30, 100, 300);
+		draw_text("You win! Press START to play again", COLOR_WHITE, font_named("default"), 30, 100, 300);
 	}
 	else
 	{
-		draw_text("You lose, press r to try again", COLOR_WHITE, font_named("default"), 30, 100, 300);
+		draw_text("You lose, press START to try again", COLOR_WHITE, font_named("default"), 30, 100, 300);
 	}
 }
 
@@ -455,8 +462,7 @@ void show_title_screen()
 {
     clear_screen(COLOR_BLACK);
     draw_bitmap("title", 0, 0);
-    draw_text("Press r to start", COLOR_WHITE, font_named("default"), 25, 250, 430);
-    if (key_typed(R_KEY)) 
+    if (key_typed(START)) 
     {
         play_sound_effect("sfx_start_game");
         game_data.game_start = true;
@@ -711,8 +717,8 @@ int main()
             }
 
             // Player controls
-            if (key_down(A_KEY) and game_data.paddle_x > 10) game_data.paddle_x -= PADDLE_SPEED; //moving left
-            if (key_down(D_KEY) and game_data.paddle_x < screen_width() - PADDLE_LENGTH - 10) game_data.paddle_x += PADDLE_SPEED; //moving right
+            if (key_down(LEFT) and game_data.paddle_x > 10) game_data.paddle_x -= PADDLE_SPEED; //moving left
+            if (key_down(RIGHT) and game_data.paddle_x < screen_width() - PADDLE_LENGTH - 10) game_data.paddle_x += PADDLE_SPEED; //moving right
             
             //update balls
             for(int i = 0; i < game_data.current_balls.size(); i++)
@@ -741,11 +747,11 @@ int main()
             {
                 end_level(game_data.game_won);
                 
-                if (key_typed(R_KEY)) reset_game();
+                if (key_typed(START)) reset_game();
             }
 
             // Shortcut button to change level for development purpose
-            if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
+            //if (key_typed(F_KEY)) { game_data.next_level = true; game_data.current_level++; }
             
             // Shortcut button to increase multiplier for development purpose
 			/*
