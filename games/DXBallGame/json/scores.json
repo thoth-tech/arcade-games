@@ -1,0 +1,46 @@
+{
+    "default_values": {
+        "initials": "--",
+        "score": 0
+    },
+    "row0": {
+        "initials": "--",
+        "score": 0
+    },
+    "row1": {
+        "initials": "--",
+        "score": 0
+    },
+    "row2": {
+        "initials": "--",
+        "score": 0
+    },
+    "row3": {
+        "initials": "--",
+        "score": 0
+    },
+    "row4": {
+        "initials": "--",
+        "score": 0
+    },
+    "row5": {
+        "initials": "--",
+        "score": 0
+    },
+    "row6": {
+        "initials": "--",
+        "score": 0
+    },
+    "row7": {
+        "initials": "--",
+        "score": 0
+    },
+    "row8": {
+        "initials": "--",
+        "score": 0
+    },
+    "row9": {
+        "initials": "--",
+        "score": 0
+    }
+}
