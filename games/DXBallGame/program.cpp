@@ -24,7 +24,10 @@ const double NEW_BALL_DELAY = 5;	   // Delay between free new balls
 // Input keys for player control
 const key_code RIGHT = RIGHT_KEY;
 const key_code LEFT = LEFT_KEY;
+const key_code UP = UP_KEY;
+const key_code DOWN = DOWN_KEY;
 const key_code START = NUM_1_KEY;
+const key_code ENTER = NUM_2_KEY;
 
 
 enum block_kind
@@ -65,6 +68,14 @@ struct powerup_drop_data
 
 struct
 {
+    string characters[27] = {"-", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+    int character1 = 0; // index of left initial
+    int character2 = 0; // index of right initial
+    int* current_character = &character1; // pointer to initial currently being edited
+} initials_entry;
+
+struct
+{
     block_data *blocks;         // Array of blocks that exist in the current level
     vector<powerup_drop_data> current_powerups; // Vector of powerups currently dropping
 	vector<ball_data> current_balls;            // Vector of balls currently active
@@ -80,6 +91,9 @@ struct
 	double extraBallTimer = 0;  // Timer for free new balls
     int score_multiplier = 1;   // Multiplier for score (default starting multiplier = 1)
     double paddle_x;            // Location of the paddle in the x axis
+	json scores;				// JSON file storing data for the scoreboard
+    json score_rows[10];        // Scoreboard rows from JSON file
+    bool initials_entered = false; // Used to display scoreboard only after initials have been entered
 } game_data;
 
 bitmap get_powerup_bitmap(powerups kind)
@@ -97,16 +111,114 @@ bitmap get_powerup_bitmap(powerups kind)
 	}
 }
 
-void end_level(bool successful)
+int high_score_position() // check if score is high enough to be on the scoreboard
 {
-	if (successful)
-	{
-		draw_text("You win! Press START to play again", COLOR_WHITE, font_named("default"), 30, 100, 300);
-	}
-	else
-	{
-		draw_text("You lose, press START to try again", COLOR_WHITE, font_named("default"), 30, 100, 300);
-	}
+    for (int i = 0; i < 10; i++)
+    {
+        if (json_read_number_as_int(game_data.score_rows[i], "score") < game_data.score)
+        {
+            return i; // return the row the score should be on
+        }
+    }
+    return 10; // if score is lower than the score on row 9
+}
+
+void update_scores()
+{
+    int position = high_score_position();
+    for (int i = 9; i > position; i--) // loops from the bottom of the scoreboard to the place of the new score
+    {
+        // replace each row up to the place of the new score with the row above, moving the rows down one place and removing the entry in last place
+        json_set_number(game_data.score_rows[i], "score", json_read_number_as_int(game_data.score_rows[i - 1], "score"));
+        json_set_string(game_data.score_rows[i], "initials", json_read_string(game_data.score_rows[i - 1], "initials"));
+    }
+
+    json_set_number(game_data.score_rows[position], "score", game_data.score); // set new score
+    string initials = initials_entry.characters[initials_entry.character1] + initials_entry.characters[initials_entry.character2];
+    json_set_string(game_data.score_rows[position], "initials", initials); // set new initials
+
+    // update all rows and write new scoreboard to file
+    for (int i = 0; i < 10; i++)
+    {
+        json_set_object(game_data.scores, "row" + to_string(i), game_data.score_rows[i]);
+    }
+    json_to_file(game_data.scores, "scores.json");
+}
+
+void end_game(bool successful)
+{
+    fill_rectangle(COLOR_LIGHT_GRAY, 200, 20, 400, 560); //draw the scoreboard background
+
+    if (!game_data.initials_entered && high_score_position() != 10) // draw initial entry screen if current score is a new high score, until initials are submitted
+    {
+        draw_text("Enter initials", COLOR_BLACK, font_named("default"), 30, 280, 100);
+
+        // draw initials
+        draw_text(initials_entry.characters[initials_entry.character1], COLOR_BLACK, font_named("default"), 50, 360, 180);
+        draw_text(initials_entry.characters[initials_entry.character2], COLOR_BLACK, font_named("default"), 50, 400, 180);
+
+        // draw up and down arrows on initial being edited
+        if (initials_entry.current_character == &initials_entry.character1)
+        {
+            fill_triangle(COLOR_BLACK, 374, 165, 364, 175, 384, 175);
+            fill_triangle(COLOR_BLACK, 374, 240, 364, 230, 384, 230);
+        }
+        else
+        {
+            fill_triangle(COLOR_BLACK, 414, 165, 404, 175, 424, 175);
+            fill_triangle(COLOR_BLACK, 414, 240, 404, 230, 424, 230);
+        }
+
+        draw_text("Press 2 to submit", COLOR_BLACK, font_named("default"), 30, 260, 280);
+
+        //change initial
+        if (key_typed(UP))
+        {
+            if (*initials_entry.current_character == 26) *initials_entry.current_character = 0; // loop back to '-' if going over maximum
+            else *initials_entry.current_character = *initials_entry.current_character + 1;
+        }
+        else if (key_typed(DOWN))
+        {
+            if (*initials_entry.current_character == 0) *initials_entry.current_character = 26; // loop back to 'z' if going under minimum
+            else *initials_entry.current_character = *initials_entry.current_character - 1;
+        }
+        //switch which initial is being edited
+        else if (key_typed(LEFT) || key_typed(RIGHT))
+        {
+            if (initials_entry.current_character == &initials_entry.character1)
+            {
+                initials_entry.current_character = &initials_entry.character2;
+            }
+            else
+            {
+                initials_entry.current_character = &initials_entry.character1;
+            }
+        }
+        if (key_typed(ENTER))
+        {
+            // submit initials
+            game_data.initials_entered = true;
+            update_scores();
+        }
+    }
+    else // draw scoreboard
+    {
+        if (successful)
+        {
+            draw_text("You Win!", COLOR_RED, font_named("default"), 20, 340, 30);
+        }
+        else
+        {
+            draw_text("Game Over", COLOR_RED, font_named("default"), 20, 340, 30);
+        }
+        for (int i = 0; i <= 9; i++) { // draw scoreboard rows
+            fill_rectangle(COLOR_GRAY, 220, 70 + 45 * i, 360, 40);
+            draw_text(to_string(i + 1) + ".", COLOR_WHITE, font_named("default"), 18, 230, 80 + 45 * i); // draw row number
+            draw_text(json_read_string(game_data.score_rows[i], "initials"), COLOR_WHITE, font_named("default"), 18, 260, 80 + 45 * i); // draw initials
+            draw_text("score: " + to_string(json_read_number_as_int(game_data.score_rows[i], "score")), COLOR_WHITE, font_named("default"), 18, 370, 80 + 45 * i); // draw score
+        }
+        draw_text("Press 1 to play again", COLOR_BLACK, font_named("default"), 18, 275, 540);
+    }
 }
 
 block_data create_block(double x, double y, block_kind kind, powerups powerup)
@@ -519,6 +631,12 @@ void reset_game()
 	game_data.next_level = false;
 	game_data.timer = 0;
 	game_data.score_multiplier = 1;
+    game_data.extraBallTimer = NEW_BALL_DELAY;
+
+	//enable submission of another score
+    game_data.initials_entered = false;
+    initials_entry.character1 = 0;
+    initials_entry.character2 = 0;
 
 	// Spawn blocks
 	game_data.blocks = spawn_blocks_level1();
@@ -686,6 +804,13 @@ int main()
     // Load resources
     load_resources();
 
+    // Load scores from JSON
+    game_data.scores = json_from_file("scores.json");
+    for (int i = 0; i < 10; i++)
+    {
+        game_data.score_rows[i] = json_read_object(game_data.scores, "row" + to_string(i));
+    }
+
     while(!key_down(ESCAPE_KEY))
     {
 		process_events(); //check keyboard state
@@ -745,7 +870,7 @@ int main()
             // Draw win/lose messages when level ends
             if (game_data.game_over)
             {
-                end_level(game_data.game_won);
+                end_game(game_data.game_won);
                 
                 if (key_typed(START)) reset_game();
             }
