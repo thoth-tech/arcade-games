@@ -1,0 +1,66 @@
+---
+title: "Game Documentation (2D Racer)"
+author: "Thoth Tech"
+date: "`r Sys.Date()`"
+output: 
+  word_document:
+  toc: yes
+  toc_title: Table of Content
+---
+
+Table of Content(up to date)
+
+- [1. Name of the Game](#name-of-the-game)
+- [2. Genre](#genre)
+- [3. Art style](#art-style)
+- [4. What is the Game](#what-is-the-game)
+- [5. How the Game works](#how-the-game-works)
+  - [5.1. How the Game is Played Solo](#how-the-game-is-played-solo)
+  - [5.2. How the Game is Played Cooperatively](#how-the-game-is-played-cooperatively)
+  - [5.3. How the Game is Lost](#how-the-game-is-lost)
+  - [5.4. How the Game is Won](#how-the-game-is-won)
+- [6. Tools](#tools)
+- [7 Reference Game](#reference-game)
+
+
+```{r}
+```
+
+## 1. Name of the Game
+2D Racer
+
+
+## 2. Genre
+Racing
+
+
+## 3. Art style
+Flat
+
+
+## 4. What is the Game
+2D Racer is a 2D Shooter game in which a car is controlled by a controller capable of moving in left-right directions. The car will move on the road and will be obstructed by vehicles that players must overtake.
+
+## 5. How the Game works
+The 2D-Racer game starts with a cool attractive intro with animation and music, leading to a main menu that will contain different options such as starting the game, then select the car, and also a few additional options can be there like mute music. The player will use the joystick to control the car and move it in left-right directions. Besides, the car will be obstructed by other vehicles on the road which will go slower than the player and the player have to overtake all vehicles to prevent an accident. There will be a gap for layers to move between the obstacles. Each time the car is hit one life of the player will reduce and it will respawn at the bottom edge. The player will also have the option to accelerate the player’s car. If a player is not accelerating the car will drift down to the bottom edge of the screen. if the player boosts to max speed player won’t be able to cross any of the edges.
+
+### 5.1. How the Game is Played Solo
+The player can select the mode from the menu if the user wants to play solo. The game will be the same for a single player, the car will go left right and will get obstructed. When striking life reduces.
+
+### 5.2. How the Game is Played Cooperatively
+Players can select the mode from the menu if the user wants to play Duo. The game will be the same for both players, the car will go left right and will get obstructed. When striking life reduces. This will happen for both players, if any player strikes their life reduces.
+
+### 5.3. How the Game is Lost
+If any player either in Solo or duo mode strikes the obstructing vehicles, then their lives are reduced one by one. And when all lives finish then the game is over.
+
+### 5.4 How the Game is Won
+If the player can tackle all the obstacles for target minutes, then the player will finally win the game.
+
+## 6. Tools 
+The tool used for developing the game is SplashKit with C#.
+
+## 7. Reference Game
+
+![Game refer 1](game.png){width="45%"}
+
+![Game refer 2](game1.png){width="45%"}
