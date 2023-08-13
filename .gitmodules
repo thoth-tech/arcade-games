@@ -1,3 +1,6 @@
 [submodule "games/Asteroids"]
 	path = games/Asteroids
 	url = https://github.com/thoth-tech/Asteroids.git
+[submodule "games/DXBallGame"]
+	path = games/DXBallGame
+	url = https://github.com/thoth-tech/DXBallGame
