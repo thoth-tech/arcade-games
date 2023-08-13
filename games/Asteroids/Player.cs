@@ -120,20 +120,20 @@ public class Player
     {
         double MoveSpeed = 5 * gameScale;
         double RotateSpeed = 5;
-        if (SplashKit.KeyDown(game_controls["P1_left"])) Rotation(-RotateSpeed);
-        if (SplashKit.KeyDown(game_controls["P1_right"])) Rotation(RotateSpeed);
-        if (SplashKit.KeyDown(game_controls["P1_up"])) Move(MoveSpeed);
-        if (SplashKit.KeyTyped(game_controls["P1_button1"])) { Shoot(); }
+        if (SplashKit.KeyDown(Controls.Keylookup("P1_left"))) Rotation(-RotateSpeed);
+        if (SplashKit.KeyDown(Controls.Keylookup("P1_right"))) Rotation(RotateSpeed);
+        if (SplashKit.KeyDown(Controls.Keylookup("P1_up"))) Move(MoveSpeed);
+        if (SplashKit.KeyTyped(Controls.Keylookup("P1_button1"))) { Shoot(); }
     }
 
     private void Player2Controls()
     {
         double MoveSpeed = 5 * gameScale;
         double RotateSpeed = 5;
-        if (SplashKit.KeyDown(game_controls["P2_left"])) Rotation(-RotateSpeed);
-        if (SplashKit.KeyDown(game_controls["P2_right"])) Rotation(RotateSpeed);
-        if (SplashKit.KeyDown(game_controls["P2_up"])) Move(MoveSpeed);
-        if (SplashKit.KeyTyped(game_controls["P2_button1"])) { Shoot(); }
+        if (SplashKit.KeyDown(Controls.Keylookup("P2_left"))) Rotation(-RotateSpeed);
+        if (SplashKit.KeyDown(Controls.Keylookup("P2_right"))) Rotation(RotateSpeed);
+        if (SplashKit.KeyDown(Controls.Keylookup("P2_up"))) Move(MoveSpeed);
+        if (SplashKit.KeyTyped(Controls.Keylookup("P2_button1"))) { Shoot(); }
 
     }
 

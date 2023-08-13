@@ -1,0 +1,13 @@
+{
+    "name" : "Player_Car_Green",
+    "bmp_fp" : "greenCar.png",
+    "cell_details" : [75,120,3,1,3],
+    "anchor_pos" : [37.5,60],
+    "anim_fp" : "carAnimation.txt",
+    "start_anim" : "straight",
+    "mass" : 10,
+    "values" : 
+    {
+
+    }
+}
