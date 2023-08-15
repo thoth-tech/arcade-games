@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
         window_toggle_fullscreen("Below The Surface");
     }
 
-    void hide_mouse(); // Hide mouse for Arcade machine
+    hide_mouse(); // Hide mouse for Arcade machine
 
     shared_ptr<Screen> screen;
     if (test_screen)

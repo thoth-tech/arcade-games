@@ -817,7 +817,7 @@ void LevelScreen::update()
         draw_buttons(menu_buttons, selection);
         selection = button_selection(selection, num_buttons);
         
-        if(key_typed(RETURN_KEY) || key_typed(screen->pause_key))
+        if(key_typed(RETURN_KEY) || key_typed(screen->pause_key)||key_typed(screen->input_key)) //Added inputkey to select menu Items
         {
             switch(selection)
             {
