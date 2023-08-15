@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     load_resource_bundle("tentacle", "tentaclebundle.txt");
 
     open_window("Below The Surface", SCREEN_WIDTH, SCREEN_HEIGHT);
-    
+
     bool test_screen = false;
     bool window_border = false;
     int refresh_rate = 60;
@@ -51,25 +51,25 @@ int main(int argc, char *argv[])
     vector<string> cell_sheet_names;
 
     // Push the cell sheets used in the same order as the level editor
-    cell_sheet_names.push_back("Solid"); //0
-    cell_sheet_names.push_back("HalfBlocksTop"); //100
-    cell_sheet_names.push_back("HalfBlocksBottom"); //200
-    cell_sheet_names.push_back("Ladder"); //300
-    cell_sheet_names.push_back("Pipe"); //400
-    cell_sheet_names.push_back("Water"); //500
-    cell_sheet_names.push_back("Toxic"); //600
-    cell_sheet_names.push_back("HoldPipes"); //700
-    cell_sheet_names.push_back("EmptyHold"); //800
-    cell_sheet_names.push_back("TurnPipes"); //900
-    cell_sheet_names.push_back("EmptyTurn"); //1000
-    cell_sheet_names.push_back("Decorative"); //1100
-    cell_sheet_names.push_back("Player"); //1200
-    cell_sheet_names.push_back("Door"); //1300
-    cell_sheet_names.push_back("Enemy"); //1400
-    cell_sheet_names.push_back("MultiPipes"); //1500
-    cell_sheet_names.push_back("EmptyMulti"); //1600
-    cell_sheet_names.push_back("Collect"); //1700
-    cell_sheet_names.push_back("Edge"); //1800
+    cell_sheet_names.push_back("Solid");            // 0
+    cell_sheet_names.push_back("HalfBlocksTop");    // 100
+    cell_sheet_names.push_back("HalfBlocksBottom"); // 200
+    cell_sheet_names.push_back("Ladder");           // 300
+    cell_sheet_names.push_back("Pipe");             // 400
+    cell_sheet_names.push_back("Water");            // 500
+    cell_sheet_names.push_back("Toxic");            // 600
+    cell_sheet_names.push_back("HoldPipes");        // 700
+    cell_sheet_names.push_back("EmptyHold");        // 800
+    cell_sheet_names.push_back("TurnPipes");        // 900
+    cell_sheet_names.push_back("EmptyTurn");        // 1000
+    cell_sheet_names.push_back("Decorative");       // 1100
+    cell_sheet_names.push_back("Player");           // 1200
+    cell_sheet_names.push_back("Door");             // 1300
+    cell_sheet_names.push_back("Enemy");            // 1400
+    cell_sheet_names.push_back("MultiPipes");       // 1500
+    cell_sheet_names.push_back("EmptyMulti");       // 1600
+    cell_sheet_names.push_back("Collect");          // 1700
+    cell_sheet_names.push_back("Edge");             // 1800
 
     // Timers
     create_timer("Dying");
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
             {
                 window_border = true;
             }
-            if(args[i] == "-r")
+            if (args[i] == "-r")
             {
                 refresh_rate = std::stoi(args[i + i]);
             }
@@ -116,15 +116,16 @@ int main(int argc, char *argv[])
         write_line("Closing program");
         exit(1);
     }
-    
-    if(!window_border)
+
+    if (!window_border)
         window_toggle_border("Below The Surface");
 
     if (!window_is_fullscreen("Below The Surface"))
     {
         window_toggle_fullscreen("Below The Surface");
     }
-    
+
+    hide_mouse(); // Hide mouse for Arcade machine
 
     shared_ptr<Screen> screen;
     if (test_screen)
@@ -144,7 +145,6 @@ int main(int argc, char *argv[])
         screen->update();
         process_events();
         refresh_screen(refresh_rate);
-        
     }
 
     free_resource_bundle("player");
