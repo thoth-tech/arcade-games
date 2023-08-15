@@ -44,8 +44,8 @@ class Screen
         vector<string> files;
 
     public:
-        key_code input_key = F_KEY;
-        key_code pause_key = H_KEY;
+        key_code input_key = LEFT_CTRL_KEY; //Changed Input key from F_Key to Left Controle for Arcade Player 1 Button 1
+        key_code pause_key = P_KEY; //Changed Pause key from H_Key to P_Key for Arcade Pause
         int level_number = 1;
         int max_levels = 10;
         shared_ptr<Level> current_level;
@@ -380,14 +380,14 @@ void draw_buttons(vector<shared_ptr<Button>> menu_buttons, int selection)
 
 int button_selection(int selection, int num_buttons)
 {
-    if(key_typed(UP_KEY) || key_typed(W_KEY))
+    if(key_typed(UP_KEY) || key_typed(R_KEY)) //Changed W_Key to R_Key
     {
         selection -= 1;
 
         if(selection < 0)
             selection = 0;
     }
-    if(key_typed(DOWN_KEY) || key_typed(S_KEY))
+    if(key_typed(DOWN_KEY) || key_typed(F_KEY)) //Changed S_Key to F_Key
     {
         selection += 1;
 
