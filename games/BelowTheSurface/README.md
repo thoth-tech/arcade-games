@@ -9,7 +9,9 @@
 - Enter command `skm g++ program.cpp -o game`
 - Enter command `./game` to play
 
-### **Player 1**   
+<!--
+Orginal Controles for game updated to suit Arcade Machine
+ ### **Player 1**   
 
 | Input | Description |     
 | --- | ----------- |   
@@ -34,7 +36,36 @@
 | Input | Description |     
 | --- | ----------- |   
 | Enter / H Key | Pause |          
-| Enter / F Key | Selection |
+| Enter / F Key | Selection | -->
+
+> controls for arcade machine
+### **Player 1**   
+
+| Input | Description |     
+| --- | ----------- |   
+| Up Key or Left Alt| Jump |          
+| Left Key | Move Left |
+| Right Key | Move Right |          
+| Down Key | Crouch |
+| Left Crtl Key | Attack/Interact |
+
+### **Player 2**  
+
+| Input | Description |     
+| --- | ----------- |   
+| R Key or S Key| Jump |          
+| D Key | Move Left |
+| G Key | Move Right |          
+| F Key | Crouch |
+| A Key | Attack/Interact |
+
+### **Other Buttons**
+
+| Input | Description |     
+| --- | ----------- |   
+| Enter / P Key | Pause |          
+| Enter / Left Ctrl Key | Selection |
+
 
 #### Edited:
 
