@@ -235,9 +235,6 @@ class Level
                         this->level_players[i]->change_state(new DyingState, "Dying");
                 }
 
-                //get player 2's position then - 35px to the left for comparison
-                player2_pos = { player2_pos.x = player2_pos.x - 35, player2_pos.y = player2_pos.y};
-
                 //if player 2 is off screen, move player 1 to the left
                 if (!point_on_screen(to_screen((player2_pos))) && level_players[i]->get_state_type() != "Dying") {
                     this->level_players[0]->set_player_dx(-0.1);
