@@ -235,9 +235,9 @@ class Level
                         this->level_players[i]->change_state(new DyingState, "Dying");
                 }
 
-                //if player 2 is off screen, move player 1 to the left
+                //if player 2 is off screen, prevent both player from moving
                 if (!point_on_screen(to_screen((player2_pos))) && level_players[i]->get_state_type() != "Dying") {
-                    this->level_players[0]->set_player_dx(-0.1);
+                    this->level_players[i]->set_player_dx(0);
                 }
 
                 //Player loses a life if they run out of health
