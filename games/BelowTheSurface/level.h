@@ -218,6 +218,7 @@ class Level
             for (int i = 0; i < level_players.size(); i++)
             {
                 point_2d player_pos = sprite_position(level_players[i]->get_player_sprite());
+                point_2d player2_pos = sprite_position(level_players[1]->get_player_sprite());
 
                 if(level_players[i]->get_player_id() == 2 && level_players[i]->get_state_type() == "Spawn")
                 {
@@ -228,10 +229,18 @@ class Level
                     }
                 }
 
-                if(!point_on_screen(to_screen(player_pos)) && level_players[i]->get_state_type() != "Dying")
-                {
+                //if player 1 fall out of the camera, kill them
+                if (player_pos.y > screen_height() && level_players[i]->get_state_type() != "Dying") {
                     if(level_players[i]->get_state_type() != "Spawn")
                         this->level_players[i]->change_state(new DyingState, "Dying");
+                }
+
+                //get player 2's position then - 35px to the left for comparison
+                player2_pos = { player2_pos.x = player2_pos.x - 35, player2_pos.y = player2_pos.y};
+
+                //if player 2 is off screen, move player 1 to the left
+                if (!point_on_screen(to_screen((player2_pos))) && level_players[i]->get_state_type() != "Dying") {
+                    this->level_players[0]->set_player_dx(-0.1);
                 }
 
                 //Player loses a life if they run out of health

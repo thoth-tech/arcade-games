@@ -39,6 +39,7 @@ public:
         return this->player_state;
     };
 
+    bool disable_input = false;
     virtual void update() = 0;
     virtual void get_input() = 0;
 };
@@ -97,10 +98,16 @@ class Player
             this->state->update();
         };
 
+
         void get_input()
-        {
+        {   
             this->state->get_input();
         };
+
+        void set_disable_input(bool var){
+             this->state->disable_input = var;
+        };
+
 
         // Create the hitbox of the player_sprite.
         void make_hitbox()
@@ -185,6 +192,7 @@ class Player
         void set_player_dx(float value)
         {
             sprite_set_dx(this->player_sprite, value);
+            // sprite_set_dx(this->player_sprite, value);
         };
 
         // Returns true or false if the player is dead or not.
@@ -551,41 +559,45 @@ void IdleState::get_input()
 void RunState::update()
 {
     sprite player_sprite = this->player->get_player_sprite();
-    if (!run_once)
-    {
-        if (dx == 0)
+
+    if(disable_input == false){
+        if (!run_once)
         {
-            if (player->is_facing_left())
-                sprite_set_dx(player_sprite, -1);
-            else
-                sprite_set_dx(player_sprite, 1);
+            if (dx == 0)
+            {
+                if (player->is_facing_left())
+                    sprite_set_dx(player_sprite, -1);
+                else
+                    sprite_set_dx(player_sprite, 1);
+            }
+
+            animation_routine(player, "LeftRun", "RightRun");
+            run_once = true;
         }
 
-        animation_routine(player, "LeftRun", "RightRun");
-        run_once = true;
-    }
+        if (player->is_facing_left())
+        {
+            if (sprite_dx(player->get_player_sprite()) > -MAX_RUN_SPEED)
+                sprite_set_dx(player->get_player_sprite(), sprite_dx(player->get_player_sprite()) - RUN_ACCEL);
+        }
+        else
+        {
+            if (sprite_dx(player->get_player_sprite()) < MAX_RUN_SPEED)
+                sprite_set_dx(player->get_player_sprite(), sprite_dx(player->get_player_sprite()) + RUN_ACCEL);
+        }
 
-    if (player->is_facing_left())
-    {
-        if (sprite_dx(player->get_player_sprite()) > -MAX_RUN_SPEED)
-            sprite_set_dx(player->get_player_sprite(), sprite_dx(player->get_player_sprite()) - RUN_ACCEL);
     }
-    else
-    {
-        if (sprite_dx(player->get_player_sprite()) < MAX_RUN_SPEED)
-            sprite_set_dx(player->get_player_sprite(), sprite_dx(player->get_player_sprite()) + RUN_ACCEL);
-    }
+        if (player->is_on_floor())
+        {
+            sprite_set_dy(player->get_player_sprite(), 0);
+        }
+        else
+            sprite_fall(player->get_player_sprite());
 
-    if (player->is_on_floor())
-    {
-        sprite_set_dy(player->get_player_sprite(), 0);
-    }
-    else
-        sprite_fall(player->get_player_sprite());
+        player_draw_pipe(player);
 
-    player_draw_pipe(player);
-
-    sprite_update_routine_continuous(this->player->get_player_sprite());
+        sprite_update_routine_continuous(this->player->get_player_sprite());
+    
 }
 
 void RunState::get_input()
