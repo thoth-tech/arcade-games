@@ -151,11 +151,12 @@ class Level
             shared_ptr<HUD> hud(new HUD(level_players));
             this->level_hud = hud;
 
-            this->camera = make_level_camera(level_players[0], files[0], tile_size);
+            this->camera = make_level_camera(level_players[0]->get_player_position().x, files[0], tile_size);
         }
 
         void update()
         {
+
             clear_screen(COLOR_BLACK);
             background->draw();
 
@@ -212,14 +213,14 @@ class Level
 
             draw_layers(level_layers, 1);
 
-            this->camera->update();
+            this->camera->update(level_players[0]->get_player_sprite(),level_players[1]->get_player_sprite());
             check_collisions();
 
             for (int i = 0; i < level_players.size(); i++)
             {
-                point_2d player_pos = sprite_position(level_players[i]->get_player_sprite());
-                point_2d player2_pos = sprite_position(level_players[1]->get_player_sprite());
 
+                point_2d player_pos = sprite_position(level_players[i]->get_player_sprite());
+                
                 if(level_players[i]->get_player_id() == 2 && level_players[i]->get_state_type() == "Spawn")
                 {
                     if(!point_on_screen(to_screen(player_pos)))
@@ -235,12 +236,15 @@ class Level
                         this->level_players[i]->change_state(new DyingState, "Dying");
                 }
 
-                //get player 2's position then - 35px to the left for comparison
-                player2_pos = { player2_pos.x = player2_pos.x - 35, player2_pos.y = player2_pos.y};
+                //if player 2 hit the end of the camera, both player can't move
+                if (level_players[i]->get_state_type() != "Dying") {
+                    double speed_1  = (this->level_players[0]->is_facing_left()) ? 0.2 : -0.2;
+                    double speed_2  = (this->level_players[1]->is_facing_left()) ? 0.2 : -0.2;
 
-                //if player 2 is off screen, move player 1 to the left
-                if (!point_on_screen(to_screen((player2_pos))) && level_players[i]->get_state_type() != "Dying") {
-                    this->level_players[0]->set_player_dx(-0.1);
+                    if(to_screen_x(player_pos.x) <= 35 || to_screen_x(player_pos.x) >= screen_width() - 35){
+                        this->level_players[0]->set_player_dx(speed_1);
+                        this->level_players[1]->set_player_dx(speed_2);
+                    }
                 }
 
                 //Player loses a life if they run out of health

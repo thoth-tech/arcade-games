@@ -210,13 +210,14 @@ shared_ptr<DoorBlock> make_level_door(string file, int tile_size, bitmap cell_sh
     return door;
 }
 
-shared_ptr<Camera> make_level_camera(shared_ptr<Player> player, string file, int tile_size)
+// shared_ptr<Camera> make_level_camera(shared_ptr<Player> player, string file, int tile_size)
+shared_ptr<Camera> make_level_camera(double x, string file, int tile_size)
 {
     LevelOjectsMap map(file, tile_size);
     int map_width = map.get_map_width();
     int map_height = map.get_map_height();
 
-    shared_ptr<Camera> camera(new Camera(player, tile_size, map_height, map_width));
+    shared_ptr<Camera> camera(new Camera(tile_size, map_height, map_width));
 
     return camera;
 }

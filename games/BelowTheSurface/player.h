@@ -589,7 +589,7 @@ void RunState::update()
     player_draw_pipe(player);
 
     sprite_update_routine_continuous(this->player->get_player_sprite());
-
+    
 }
 
 void RunState::get_input()
