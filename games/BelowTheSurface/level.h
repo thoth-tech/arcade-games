@@ -218,6 +218,11 @@ class Level
 
             for (int i = 0; i < level_players.size(); i++)
             {
+<<<<<<< HEAD
+=======
+                point_2d player_pos = sprite_position(level_players[i]->get_player_sprite());
+                // point_2d player2_pos = sprite_position(level_players[1]->get_player_sprite());
+>>>>>>> 4ca6f8b6274d723b1a33ef9792a56194fc332a80
 
                 point_2d player_pos = sprite_position(level_players[i]->get_player_sprite());
                 
