@@ -1,7 +1,12 @@
 #include "splashkit.h"
 #include "player.h"
 #include <memory>
+#include <vector>
+#include <iostream>
+
 #pragma once
+
+using namespace std;
 
 class Camera
 {
@@ -10,11 +15,13 @@ class Camera
         double y_border_top = 0;
         double x_border_right;
         double y_border_bottom;
+        vector<shared_ptr<Player>> players;
 
     public:
         // Camera(std::shared_ptr<Player> player, int tile_size, int map_height, int map_width)
-        Camera(int tile_size, int map_height, int map_width)
+        Camera(vector<shared_ptr<Player>> players, int tile_size, int map_height, int map_width)
         {
+            this->players = players;
             this->x_border_right = tile_size * map_width;
             this->y_border_bottom = -(tile_size * map_height);
         };
@@ -22,13 +29,22 @@ class Camera
         ~Camera(){};
 
 
-        void update(sprite s1, sprite s2)
+        void update()
         {
-            point_2d s1_pos = sprite_position(s1);
-            point_2d s2_pos = sprite_position(s2);
-            
-            double mid_player_x = (s1_pos.x + s2_pos.x) / 2;
-            double mid_player_y = (s1_pos.y + s2_pos.y) / 2;
+            double mid_player_x = 0;
+            double mid_player_y = 0;
+
+            for(int i = 0; i < players.size(); i++)
+            {
+                if(players[i]->get_player_sprite())
+                {
+                    mid_player_x += (sprite_position(players[i]->get_player_sprite()).x);
+                    mid_player_y += (sprite_position(players[i]->get_player_sprite()).y);
+                }
+            }
+
+            mid_player_x = mid_player_x / players.size();
+            mid_player_y = mid_player_y / players.size();
 
             point_2d mid_player = {mid_player_x, mid_player_y};
 

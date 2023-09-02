@@ -151,7 +151,7 @@ class Level
             shared_ptr<HUD> hud(new HUD(level_players));
             this->level_hud = hud;
 
-            this->camera = make_level_camera(level_players[0]->get_player_position().x, files[0], tile_size);
+            this->camera = make_level_camera(level_players, files[0], tile_size);
         }
 
         void update()
@@ -213,16 +213,11 @@ class Level
 
             draw_layers(level_layers, 1);
 
-            this->camera->update(level_players[0]->get_player_sprite(),level_players[1]->get_player_sprite());
+            this->camera->update();
             check_collisions();
 
             for (int i = 0; i < level_players.size(); i++)
             {
-<<<<<<< HEAD
-=======
-                point_2d player_pos = sprite_position(level_players[i]->get_player_sprite());
-                // point_2d player2_pos = sprite_position(level_players[1]->get_player_sprite());
->>>>>>> 4ca6f8b6274d723b1a33ef9792a56194fc332a80
 
                 point_2d player_pos = sprite_position(level_players[i]->get_player_sprite());
                 
@@ -241,14 +236,18 @@ class Level
                         this->level_players[i]->change_state(new DyingState, "Dying");
                 }
 
-                //if player 2 hit the end of the camera, both player can't move
+                // if player 2 hit the end of the camera, both player can't move
                 if (level_players[i]->get_state_type() != "Dying") {
-                    double speed_1  = (this->level_players[0]->is_facing_left()) ? 0.2 : -0.2;
-                    double speed_2  = (this->level_players[1]->is_facing_left()) ? 0.2 : -0.2;
+                    double speed_1  = 0;
+                    double speed_2  = 0;
+                    if(level_players.size() > 1){
+                        speed_1  = (this->level_players[0]->is_facing_left()) ? 0.2 : -0.2;
+                        speed_2  = (this->level_players[1]->is_facing_left()) ? 0.2 : -0.2;
+                        if(to_screen_x(player_pos.x) <= 35 || to_screen_x(player_pos.x) >= screen_width() - 35){
+                            this->level_players[0]->set_player_dx(speed_1);
+                            this->level_players[1]->set_player_dx(speed_2);
+                        }
 
-                    if(to_screen_x(player_pos.x) <= 35 || to_screen_x(player_pos.x) >= screen_width() - 35){
-                        this->level_players[0]->set_player_dx(speed_1);
-                        this->level_players[1]->set_player_dx(speed_2);
                     }
                 }
 
