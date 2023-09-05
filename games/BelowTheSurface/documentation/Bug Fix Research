@@ -23,4 +23,4 @@ I tried to implement a check so that the directional collision would check first
 
 ### Fixes To Look Into
 
-- Trying to rebuild the collision
+- Trying to rebuild the collision so that it can check if the player is touching multiple blocks
