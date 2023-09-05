@@ -97,8 +97,9 @@ class Player
             this->state->update();
         };
 
+
         void get_input()
-        {
+        {   
             this->state->get_input();
         };
 
@@ -185,6 +186,7 @@ class Player
         void set_player_dx(float value)
         {
             sprite_set_dx(this->player_sprite, value);
+            // sprite_set_dx(this->player_sprite, value);
         };
 
         // Returns true or false if the player is dead or not.
@@ -221,6 +223,11 @@ class Player
         point_2d get_player_position()
         {
             return this->position;
+        };
+
+        void set_player_position(point_2d new_position)
+        {
+            this->position = new_position;
         };
 
         // Returns true or false if the player is holding a pipe or not.
@@ -551,6 +558,7 @@ void IdleState::get_input()
 void RunState::update()
 {
     sprite player_sprite = this->player->get_player_sprite();
+
     if (!run_once)
     {
         if (dx == 0)
@@ -586,6 +594,7 @@ void RunState::update()
     player_draw_pipe(player);
 
     sprite_update_routine_continuous(this->player->get_player_sprite());
+    
 }
 
 void RunState::get_input()
