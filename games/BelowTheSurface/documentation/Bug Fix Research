@@ -1,1 +1,26 @@
+# Below the Surface Bug Fixing Documentation
 
+This is a ongoing list to be updated with any information to bugs that have been found or worked on.
+
+
+## Ladder Behaviour
+
+As of the finalized build version of Below the Surface, Players cannot stand on the top of ladders and if you try to you will fall straight to the bottom. this makes some sections of the game much more frustrating and harder than they should be.
+
+so far a temporary fix we have implemented for this is to raise the collision detection by 15 units (found in Block.h, line 275), this allows the player a biut more height in dismounting the ladders, but also causes a slight visual bug with the player being able to climb a little higher than the ladder block.
+
+### Main Issues
+
+through my research and attempts on correcting the issue, my main problem was the collision detection in the game is a boolean value, the player is either colliding or they are not, and the ladders work originally by checkign if the player is colliding with a ladder block, and then if they input up or down they will enter a climbing state until they are no longer colliding with a ladder block.
+this is where i got stuck as i could never figure out a way to properly detect when the player was standing on the top of the ladder without causing that same detection method to activate on every block of the ladder.
+
+### Fixes i Tried
+
+I was able to get the player to stand on top of the ladder by implementing the directional collision detection found in the SolidBlock class in Block.h into the ladder class in block.h. using this i could detect the players collision. (within collision.h) using this when the player would collide with the top of the ladder i used set_on_floor and the player would now stand on top of the ladder.
+the issue i then found was that once this happened, the normal ladder collision would activate meaning that the player is now stuck to the top of the ladder as pressing up would attempt to jump and put the player into a climbing state, meanign the player is now stuck to the top of the ladder and cant move.
+
+I tried to implement a check so that the directional collision would check first and if the player was on top of a ladder block it would enter the floor state and wouldnt check for entering the climbing state from the regular collision, this just caused the player to get stuck the smae way as before but to the top of every ladder block.
+
+### Fixes To Look Into
+
+- Trying to rebuild the collision
