@@ -1,6 +1,0 @@
-ANIM,SnakeAnim,snake.txt
-//BITMAP,Snake,snake.png, 64, 32, 4, 4, 16
-//BITMAP,Snake,snake10.png, 71, 36, 4, 4, 16
-//BITMAP,Snake,snake20.png, 77, 39, 4, 4, 16
-//BITMAP,Snake,snake30.png, 84, 42, 4, 4, 16
-BITMAP,Snake,snake50.png, 96, 48, 4, 4, 16
