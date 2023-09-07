@@ -71,12 +71,10 @@ namespace TD
                     if (i == game.player.x && j == game.player.y)
                     {
                         Console.Write("|X|");
-                        
                     }
                     else if (i == game.gem.x && j == game.gem.y)
                     {
                         Console.Write("|$|");
-                        
                     }
                     else if (i == game.enemy.x && j == game.enemy.y)
                     {
@@ -88,7 +86,6 @@ namespace TD
                     }
                 }
                 Console.WriteLine("");
-                
             }
         }
     }
@@ -217,17 +214,14 @@ namespace TD
         public bool Menu()
         {
             bool selection = false;
-
             int i = 0;
             
             Console.WriteLine("Start a new game or quit?");
             Console.WriteLine("Press UP for new game");
             Console.WriteLine("Press DOWN to quit");
-
             do
             {
                 var choice = Console.ReadKey(true).Key;
-
                 if (choice == ConsoleKey.UpArrow)
                 {
                     selection = false;
@@ -238,9 +232,7 @@ namespace TD
                     selection = true;
                     return selection;
                 }
-                
                 Console.WriteLine("Invalid option, Please try again");
-
             }while(i == 0);
 
             return selection;
@@ -255,16 +247,10 @@ namespace TD
 
     class Program
     {
-        
-        
-
         static void Main(string[] args)
         {
-            
             Game game = new Game();
-
             {
-                
                 bool quitChoice = false;
 
                 while(quitChoice == false)
@@ -279,10 +265,6 @@ namespace TD
                         Console.WriteLine("your score -- " + game.player.score);
                     }
                 }
-                
-                
-                
-            
             }
         }
     }
