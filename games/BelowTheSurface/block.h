@@ -272,7 +272,7 @@ class Ladder : public Block
         string test_collision(rectangle one) override
         {
             bool x_overlaps = (rectangle_left(one) < rectangle_right(this->hitbox)) && (rectangle_right(one) > rectangle_left(this->hitbox));
-            bool y_overlaps = (rectangle_top(one) < rectangle_bottom(this->hitbox)) && (rectangle_bottom(one) > rectangle_top(this->hitbox));
+            bool y_overlaps = (rectangle_top(one) < rectangle_bottom(this->hitbox)) && (rectangle_bottom(one) > rectangle_top(this->hitbox) - 15);
             bool collision = x_overlaps && y_overlaps;
 
             if (collision)
