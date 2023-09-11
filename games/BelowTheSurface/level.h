@@ -12,7 +12,6 @@
 #include "levelparts.h"
 #include <memory>
 #include <vector>
-#include <unordered_map>
 
 #pragma once
 
@@ -48,7 +47,6 @@ class Level
         string level_name = "";
         music level_music;
         bitmap pre_level_image;
-        unordered_map<double, vector<double>> lad_pos_top; 
 
     public:
         bool is_player1_out_of_lives = false;
@@ -56,7 +54,6 @@ class Level
 
         bool is_player2_out_of_lives = false;
         bool player2_complete = true;
-        
 
         Level(vector<CellSheet> cell_sheets, int tile_size, int players)
         {
@@ -74,40 +71,10 @@ class Level
 
         ~Level(){};
 
-        void scan_ladder(){
-            double left_side, top_side;
-            int size;
-            unordered_map<double, vector<double>> copy_lad;
-            // create a copy to save the y position of the ladders
-
-            // Find the lad_pos_top x values of the ladders array
-            for(int i{0}; i < this->ladders.size(); i++){
-                for(int j{0}; j < this->ladders[i].size(); j++){
-
-                    left_side = this->ladders[i][j]->get_left();
-                    top_side = this->ladders[i][j]->get_top();
-                    size = this->lad_pos_top[left_side].size();
-
-                    // if the left side of the ladder is not in the copy_lad
-                    if(copy_lad[left_side].size() == 0){
-                        this->lad_pos_top[left_side].push_back(top_side);
-                        copy_lad[left_side].push_back(top_side);
-                    // Check if there's ladder block below
-                    }else if(top_side - copy_lad[left_side][size - 1] == 64){
-                        copy_lad[left_side][size - 1] = top_side;
-                    }else{
-                    // if there's no ladder block below, add it to the lad_pos_top
-                        this->lad_pos_top[left_side].push_back(top_side);
-                        copy_lad[left_side].push_back(top_side);
-                    }
-                }
-            }
-        }
-
         void make_level()
         {
             this->door = make_level_door(files[0], this->tile_size, cell_sheets[5].cells);
-            
+
             if (players == 2)
             {
                 for (int i = 1; i < players + 1; i++)
@@ -180,8 +147,6 @@ class Level
 
                 this->level_enemies = make_layer_enemies(this->level_enemies, file, this->tile_size, this->level_players);
             }
-
-            scan_ladder();
 
             shared_ptr<HUD> hud(new HUD(level_players));
             this->level_hud = hud;
@@ -379,7 +344,7 @@ class Level
 
         void check_collisions()
         {
-            check_ladder_collisions(ladders, lad_pos_top, level_players);
+            check_ladder_collisions(ladders, level_players);
             check_solid_block_collisions(solid_blocks, level_players);
 
             // check for player to pick up a holdable pipe
