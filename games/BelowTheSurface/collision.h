@@ -163,10 +163,11 @@ void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, unorder
 
                 x_condi = (sprite_x(level_players[k]->get_player_sprite()) > left_side - 32 && sprite_x(level_players[k]->get_player_sprite()) < left_side + 32);
                 for(int m = 0; m < lad_pos_top[left_side].size(); m++){
-                    if(sprite_y(level_players[k]->get_player_sprite()) < (lad_pos_top[left_side][m] + 1)){
+                    if(sprite_y(level_players[k]->get_player_sprite()) <= (lad_pos_top[left_side][m] + 2) && sprite_y(level_players[k]->get_player_sprite()) >= (lad_pos_top[left_side][m] - 1)){
                         y_condi = true;
+                        break;
                     }else{
-                        y_condi = false;
+                        continue;
                     }
                 }
 
@@ -174,6 +175,9 @@ void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, unorder
 
                 // If player touch the top of the ladder in the exact x position
                 if(collision == "Top" && (x_condi && y_condi)){
+                    if(key_typed(level_players[k]->input.attack_key))
+                        level_players[k]->set_player_won(true);
+
                     if(key_down(level_players[k]->input.crouch_key)){ //Drop the player down when crouch key is pressed
                         level_players[k]->set_on_floor(false);
                     }else{
