@@ -4,6 +4,7 @@
 #include "block.h"
 #include <memory>
 #include <vector>
+#include <unordered_map>
 
 #pragma once
 
@@ -62,7 +63,7 @@ void check_solid_block_collisions(vector<vector<shared_ptr<Block>>> solid_blocks
                 }
                 else if (collision == "Bottom")
                 {
-                    if (level_players[k]->is_on_floor())
+                    if (level_players[k]->is_on_floor() &&!(level_players[k]->is_on_ladder()))
                         break;
 
                     if (!sound_effect_playing("HeadHit"))
@@ -120,8 +121,12 @@ void check_solid_block_collisions(vector<vector<shared_ptr<Block>>> solid_blocks
                 break;
         }
 
-        if (collision == "None")
+        if (collision == "None" && level_players[k]->is_on_ladder()==false){
             level_players[k]->set_on_floor(false);
+        }
+            
+        // if (collision == "None")
+        //     level_players[k]->set_on_floor(false);
     }
 }
 
@@ -142,38 +147,65 @@ void check_door_block_collisions(shared_ptr<DoorBlock> door, vector<shared_ptr<P
     }
 }
 
-void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, vector<shared_ptr<Player>> level_players)
+void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, unordered_map<double, vector<double>> lad_pos_top, vector<shared_ptr<Player>> level_players)
 {
+    double left_side, top_side;
     for (int k = 0; k < level_players.size(); k++)
     {
         string collision = "None";
+        bool y_condi = false,x_condi;
         for (int j = 0; j < ladders.size(); j++)
         {
             for (int i = 0; i < ladders[j].size(); i++)
             {
-                if (!rect_on_screen(ladders[j][i]->get_block_hitbox()))
-                    continue;
+                left_side = ladders[j][i]->get_left();
+                top_side = ladders[j][i]->get_top();
 
-                if(level_players[k]->get_state_type() == "Dying")
-                    continue;
+                x_condi = (sprite_x(level_players[k]->get_player_sprite()) > left_side - 32 && sprite_x(level_players[k]->get_player_sprite()) < left_side + 32);
+                for(int m = 0; m < lad_pos_top[left_side].size(); m++){
+                    if(sprite_y(level_players[k]->get_player_sprite()) < (lad_pos_top[left_side][m] + 1)){
+                        y_condi = true;
+                    }else{
+                        y_condi = false;
+                    }
+                }
 
                 collision = ladders[j][i]->test_collision(level_players[k]->get_player_hitbox());
 
-                if (collision != "None" && (key_typed(level_players[k]->input.jump_key) || key_typed(level_players[k]->input.crouch_key)))
+                // If player touch the top of the ladder in the exact x position
+                if(collision == "Top" && (x_condi && y_condi)){
+                    if(key_down(level_players[k]->input.crouch_key)){ //Drop the player down when crouch key is pressed
+                        level_players[k]->set_on_floor(false);
+                    }else{
+                        level_players[k]->set_on_floor(true);
+                        level_players[k]->set_on_ladder(true);
+
+                        //this prevent the player stepping on random ladder block that's not the top of the ladder
+                        if(level_players[k]->get_state_type() != "JumpFall" || level_players[k]->get_state_type() != "JumpRise"){
+                            sprite_set_y(level_players[k]->get_player_sprite(), top_side - 1);
+                        }
+                    }
+                    break;
+                }else if (!(collision == "None" || collision == "Top") && (key_typed(level_players[k]->input.jump_key) || key_typed(level_players[k]->input.crouch_key)))
                 {
                     level_players[k]->set_on_ladder(true);
-                    sprite_set_y(level_players[k]->get_player_sprite(), sprite_y(level_players[k]->get_player_sprite()) - 1);
+                    sprite_set_y(level_players[k]->get_player_sprite(), sprite_y(level_players[k]->get_player_sprite()) - 10);
+                    level_players[k]->set_player_dx(0);
                     level_players[k]->change_state(new ClimbState, "Climb");
+                    level_players[k]->set_on_floor(false);
                     break;
                 }
                 else if (collision != "None" && level_players[k]->get_state_type() == "Climb")
+                {
                     break;
+                }
             }
+        };
 
-            if (collision == "None")
-            {
-                level_players[k]->set_on_ladder(false);
-            }
+        if (collision == "None")
+        {
+            level_players[k]->set_on_ladder(false);
+            // level_players[k]->set_on_floor(false);
         }
     }
 }
