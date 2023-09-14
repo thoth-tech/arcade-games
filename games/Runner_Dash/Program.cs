@@ -1,7 +1,13 @@
 using System;
+using SplashKitSDK;
+
+
 
 namespace TD
 {
+
+    
+
     class Player
     {
         public int x;
@@ -51,10 +57,11 @@ namespace TD
     class Field
     {
         public int size = 10;
-        int[,] array;
+        int[,]? array;
 
         public void draw(Game game)
         {
+            Console.Clear();
             array = new int[size, size];
             for (int i = 0; i < array.GetLength(0); i++)
             {
@@ -82,6 +89,9 @@ namespace TD
             }
         }
     }
+
+    
+
     class Game
     {
         public Player player;
@@ -141,6 +151,7 @@ namespace TD
         }
         public void move()
         {
+            
             field.draw(this);
             do
             {
@@ -149,6 +160,7 @@ namespace TD
                     Console.WriteLine("\nuse arrow keys to move\n");
 
                     var choice = Console.ReadKey(true).Key;
+                    
                     switch (choice)
                     {
                         case ConsoleKey.UpArrow:
@@ -198,7 +210,39 @@ namespace TD
                 }
             } while (player.win);
         }
+
+        public bool Menu()
+        {
+            bool selection = false;
+            int i = 0;
+            
+            Console.WriteLine("Start a new game or quit?");
+            Console.WriteLine("Press UP for new game");
+            Console.WriteLine("Press DOWN to quit");
+            do
+            {
+                var choice = Console.ReadKey(true).Key;
+                if (choice == ConsoleKey.UpArrow)
+                {
+                    selection = false;
+                    return selection;
+                }
+                else if (choice == ConsoleKey.DownArrow)
+                {
+                    selection = true;
+                    return selection;
+                }
+                Console.WriteLine("Invalid option, Please try again");
+            }while(i == 0);
+
+            return selection;
+
+        }
     }
+
+    
+
+    
 
 
     class Program
@@ -207,8 +251,20 @@ namespace TD
         {
             Game game = new Game();
             {
-                game.move();
-                Console.WriteLine("your score -- " + game.player.score);
+                bool quitChoice = false;
+
+                while(quitChoice == false)
+                {
+                    quitChoice = game.Menu();
+
+                    if (quitChoice == false)
+                    {
+                        Console.Clear();
+                        game.player.win = true;
+                        game.move();
+                        Console.WriteLine("your score -- " + game.player.score);
+                    }
+                }
             }
         }
     }
