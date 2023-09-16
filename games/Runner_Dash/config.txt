@@ -1,0 +1,49 @@
+#-- ARCADE MACHINE GAME CONFIG FILE --#
+#-- For THOTH TECH - Splashkit Crew - Applications Team
+#--------------------------------------------------------------------
+#-- File: config.txt
+#-- Description: Configuration data for Arcade Machine games
+#--------------------------------------------------------------------
+#-- Maintenance Log --
+#--------------------------------------------------------------------
+#   Task    |  Who    | Date     | Comments
+#-----------+---------+----------+-----------------------------------
+#  Sprint 1 | AGEORGE | 20220326 | Created
+#-----------+---------+----------+-----------------------------------
+#  Sprint 2 | AGEORGE | 20220511 | Added Description
+#-----------+---------+----------+-----------------------------------
+#  Sprint 3 | AGEORGE | 20220828 | Added win, linux and macos params
+#-----------+---------+----------+-----------------------------------
+
+#--------------------------------------------------------------------
+# PLEASE ONLY EDIT CONTENT AFTER THE "=" SIGN FOR EACH CONFIGURATION SETTING  
+#--------------------------------------------------------------------
+
+# The title of your game (eg. Super Mario)
+title=DXBall
+
+# The name of the author (eg. Jane Doe)
+author= Team
+# The genre of your game (eg. Platformer)
+genre=Terminal
+
+# A Description of your game
+description=The greatest game you have ever seen!
+
+# A classification rating to advise the nature of the content (eg. MA 15+)
+rating=PG
+
+# Programming language the game is written in (eg. C++) 
+language=C#
+
+# Path to your game thumbnail image (eg. images/icon.png)
+image=images/icon.png
+
+# Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
+repository=https://github.com/yourname/yourgame
+
+# [Optional] Uncomment to include path to the game executable (game.exe)
+#executable=game.exe
+
+# [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
+compile-command=skm dotnet publish
