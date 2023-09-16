@@ -31,13 +31,13 @@ struct game_data
     vector<point_2d> solid;
 };
 
-game_data new_game();
+game_data new_game(string map);
 
 vector<vector<int> > new_level(string file);
 
 void get_objects(game_data &game);
 
-void update_game(game_data &game);
+bool update_game(game_data &game, string levelnum);
 
 void draw_game(const game_data &game);
 
@@ -65,7 +65,7 @@ void box_gem_collision(game_data &game);
 
 void gem_collision(game_data &game);
 
-void level_clear(game_data &game);
+bool level_clear(game_data &game);
 
 void attack(game_data &game);
 
@@ -73,7 +73,7 @@ void start_screen();
 
 void credits();
 
-void hud(game_data &game);
+void hud(game_data &game, string levelnum);
 
 void start_debug(const game_data &game);
 
