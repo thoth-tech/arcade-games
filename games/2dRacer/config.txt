@@ -20,13 +20,13 @@
 #--------------------------------------------------------------------
 
 # The title of your game (eg. Super Mario)
-title=My New Game
+title=2D-RacerPlaceHold
 
 # The name of the author (eg. Jane Doe)
-author=Mickey Jordalicki
+author=Tri-1 Team
 
 # The genre of your game (eg. Platformer)
-genre=Tile Based
+genre=Racing Game
 
 # A Description of your game
 description=The greatest game you have ever seen!
@@ -35,10 +35,10 @@ description=The greatest game you have ever seen!
 rating=PG
 
 # Programming language the game is written in (eg. C++) 
-language=C++
+language=C#
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=images/icon.png
+image=2D-Title.jpg
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
 repository=https://github.com/yourname/yourgame
