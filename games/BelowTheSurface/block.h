@@ -10,6 +10,7 @@ class Block
         point_2d position;
         drawing_options opts;
         double top;
+        double left;
         string type;
         rectangle hitbox;
         rectangle special_hitbox;
@@ -26,6 +27,7 @@ class Block
             this->position = position;
             this->opts = option_defaults();
             this->top = position.y - bitmap_cell_height(image);
+            this->left = position.x;
             make_hitbox();
         };
 
@@ -42,6 +44,11 @@ class Block
         float get_top()
         {
             return this->top;
+        };
+
+        float get_left()
+        {
+            return this->left;
         };
 
         point_2d get_pos()
@@ -142,7 +149,7 @@ class SolidBlock : public Block
         {
             string collision = "None";
             double dx = (one.x + one.width / 2) - (this->hitbox.x + this->hitbox.width / 2);
-            double dy = (one.y + one.height / 2) - (this->hitbox.y + this->hitbox.height / 2);
+            double dy = (one.y + one.height / 2) - (this->hitbox.y + this->hitbox.height/ 2);
             double width = (one.width + this->hitbox.width) / 2;
             double height = (one.height + this->hitbox.height) / 2;
             double crossWidth = width * dy;
@@ -271,14 +278,35 @@ class Ladder : public Block
 
         string test_collision(rectangle one) override
         {
-            bool x_overlaps = (rectangle_left(one) < rectangle_right(this->hitbox)) && (rectangle_right(one) > rectangle_left(this->hitbox));
-            bool y_overlaps = (rectangle_top(one) < rectangle_bottom(this->hitbox)) && (rectangle_bottom(one) > rectangle_top(this->hitbox));
-            bool collision = x_overlaps && y_overlaps;
+            //A straight copy and paste from the StoneBlock class
+            string collision = "None";
+            double dx = (one.x + one.width / 2) - (this->hitbox.x + this->hitbox.width / 2);
+            double dy = (one.y + one.height / 2) - (this->hitbox.y + this->hitbox.height/ 2);
+            double width = (one.width + this->hitbox.width) / 2;
+            double height = (one.height + this->hitbox.height + 6) / 2;
+            double crossWidth = width * dy;
+            double crossHeight = height * dx;
+            if (abs(dx) <= width && abs(dy) <= height)
+            {
+                if (crossWidth >= crossHeight)
+                {
+                    if (crossWidth + 100 > (-crossHeight))
+                        collision = "Bottom";
+                    else
+                        collision = "Left";
+                }
+                else
+                {
+                    // Gave a bias to top collision to avoid right edge stopping player during movement
+                    if (crossWidth - 200 > -(crossHeight))
+                        collision = "Right";
+                    else
+                        collision = "Top";
+                }
+            }
 
-            if (collision)
-                return "Collision";
-            else
-                return "None";
+            return collision;
+            
         };
 };
 
@@ -499,9 +527,11 @@ class DoorBlock : public Block
         string test_collision(rectangle one) override
         {
             bool x_overlaps = (rectangle_left(one) < rectangle_right(this->hitbox)) && (rectangle_right(one) > rectangle_left(this->hitbox));
-            bool y_overlaps = (rectangle_top(one) < rectangle_bottom(this->hitbox)) && (rectangle_bottom(one) > rectangle_top(this->hitbox));
+            bool y_overlaps = (rectangle_top(one) < rectangle_bottom(this->hitbox)) && (rectangle_bottom(one) > rectangle_top(this->hitbox)-200);
             bool collision = x_overlaps && y_overlaps;
 
+            // if((rectangle_top(one) < rectangle_bottom(this->hitbox)) && (rectangle_bottom(one) > rectangle_top(this->hitbox))){
+            //     return "TopLadder";
             if (collision)
                 return "Collision";
             else

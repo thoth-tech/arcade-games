@@ -11,12 +11,12 @@
 
 using namespace std;
 
-game_data new_game()
+game_data new_game(string map)
 {
     game_data new_game;
 
     // use new_level function to load the map to new_game.map_array
-    new_game.map_array = new_level("level1.txt");
+    new_game.map_array = new_level(map);
 
     // load the tiles to be used for the map design
     new_game.map = load_bitmap("tiles", "forest_tiles.png");
@@ -137,7 +137,7 @@ void draw_game(const game_data &game)
 }
 
 // updates all objects
-void update_game(game_data &game)
+bool update_game(game_data &game, string levelnum)
 {
     update_player(game.player);
 
@@ -157,13 +157,15 @@ void update_game(game_data &game)
 
     box_gem_collision(game);
 
-    level_clear(game);
+    bool win = level_clear(game);
 
     moving(game);
 
     attack(game);
 
-    hud(game);
+    hud(game, levelnum);
+
+    return win;
 }
 
 void add_box(game_data &game, int x, int y)
@@ -626,7 +628,7 @@ void box_gem_collision(game_data &game)
         }
 }
 
-void level_clear(game_data &game)
+bool level_clear(game_data &game)
 {   
     bitmap stairs = load_bitmap("stairs", "stairs.png");
 
@@ -641,8 +643,10 @@ void level_clear(game_data &game)
             sprite_start_animation(game.player.player_sprite, "stand_d");
             stop_music();
             play_sound_effect("win");
+            return true;
         }
     }
+    return false;
 }
 
 void start_screen()
@@ -689,9 +693,9 @@ void credits()
     }
 }
 
-void hud(game_data &game)
+void hud(game_data &game, string levelnum)
 {
-    draw_text("Level 1" , COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
+    draw_text(levelnum , COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
     draw_text("Collect all the Gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
     draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
     draw_text(" x 3" , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
