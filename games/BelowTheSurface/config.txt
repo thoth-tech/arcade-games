@@ -29,7 +29,7 @@ author=Morgaine Barter, Lily Lan, Lachlan Morgan, Daniel Agbay, Roy Chen, Jiahao
 genre=Platformer
 
 # A Description of your game
-description=This is a collaborative effort to create an **exceptional game** to be implemented within the **Arcade Machine**.
+description=Two Plumbers must navigate the sewers fixing pipes and dodging critters
 
 # A classification rating to advise the nature of the content (eg. MA 15+)
 rating=PG
