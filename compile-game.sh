@@ -122,3 +122,4 @@ done
 #compress the assets tar
 gzip "$AssetsTar"
 echo "Archive '$AssetsTar' created with specified directories."
+echo $GITHUB_WORKSPACE
