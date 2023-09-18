@@ -128,7 +128,7 @@ jobs:
               with:
                   name: windows-programs
                   path: |
-                      **/games/*/published/ .
+                      **/games/*/published/
 
     # compile-games-arm:
     #     runs-on: ubuntu-latest
