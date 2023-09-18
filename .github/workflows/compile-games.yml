@@ -50,6 +50,9 @@ jobs:
               with:
                   fetch-depth: 0
 
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
+
             - name: Update Packages
               run: sudo apt-get update
 
