@@ -50,9 +50,6 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
-
             - name: Update Packages
               run: sudo apt-get update
 
@@ -85,6 +82,9 @@ jobs:
                   name: linux-programs
                   path: |
                       **/games/*/published/
+
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
 
     compile-games-windows:
         runs-on: windows-latest
