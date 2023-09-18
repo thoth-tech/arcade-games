@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\temp\\arcade-games\\games\\Runner_Dash\\Runner_Dash.csproj": {}
+    "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\Runner_Dash.csproj": {}
   },
   "projects": {
-    "C:\\temp\\arcade-games\\games\\Runner_Dash\\Runner_Dash.csproj": {
+    "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\Runner_Dash.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\temp\\arcade-games\\games\\Runner_Dash\\Runner_Dash.csproj",
+        "projectUniqueName": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\Runner_Dash.csproj",
         "projectName": "Runner_Dash",
-        "projectPath": "C:\\temp\\arcade-games\\games\\Runner_Dash\\Runner_Dash.csproj",
+        "projectPath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\Runner_Dash.csproj",
         "packagesPath": "C:\\Users\\phili\\.nuget\\packages\\",
-        "outputPath": "C:\\temp\\arcade-games\\games\\Runner_Dash\\obj\\",
+        "outputPath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\phili\\AppData\\Roaming\\NuGet\\NuGet.Config"
