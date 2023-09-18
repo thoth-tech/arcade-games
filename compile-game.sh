@@ -1,3 +1,5 @@
+#!/bin/bash
+
 GAME_DIR=$1
 BINARY_NAME=$2             
 
