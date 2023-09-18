@@ -32,7 +32,8 @@ jobs:
                       fi
                   done
 
-                  echo "::set-output name=game-directory::${GAME_DIR[@]}"
+                  # echo "::set-output name=game-directory::${GAME_DIR[@]}"
+                  echo game-directory=${GAME_DIR[@]} >> $GITHUB_OUTPUT
 
                   echo Games:
                   for dir in "${GAME_DIR[@]}"
@@ -82,9 +83,11 @@ jobs:
                   name: linux-programs
                   path: |
                       **/games/*/published/
+            # This can be used to debug the build, see https://github.com/lhotari/action-upterm
+            # Open the comile log for Linux, and copy the ssh connection. Note you need to have setup a public key for your SSh connection try ssh-keygen -t ed25519 if you get Permission denied (publickey)
 
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
+            # - name: Setup upterm session
+            #   uses: lhotari/action-upterm@v1
 
     compile-games-windows:
         runs-on: windows-latest
@@ -127,56 +130,51 @@ jobs:
                   path: |
                       **/games/*/published/
 
-    compile-games-arm:
-        runs-on: ubuntu-latest
-        needs: get-game-directory
-        steps:
-            - uses: actions/checkout@v3
-              with:
-                  fetch-depth: 0
+    # compile-games-arm:
+    #     runs-on: ubuntu-latest
+    #     needs: get-game-directory
+    #     steps:
+    #         - uses: actions/checkout@v3
+    #           with:
+    #               fetch-depth: 0
+    #         - name: Install Splashkit & Compile Game
+    #           uses: pguyot/arm-runner-action@v2
+    #           with:
+    #               base_image: raspios_lite:latest
+    #               image_additional_mb: 4096
+    #               shell: bash
+    #               import_github_env: true
+    #               export_github_env: true
+    #               bind_mount_repository: true
+    #               commands: |
+    #                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+    #                   sudo apt-get update
+    #                   sudo apt install --assume-yes git cmake
+    #                   bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
+    #                   export PATH=$PATH:$HOME/.splashkit
+    #                   sudo apt install --assume-yes libsdl2-dev libsdl2-gfx-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-image-dev libncurses-dev libpng-dev libcurl4-openssl-dev libbz2-dev libflac-dev libvorbis-dev libmikmod-dev libwebp-dev libfreetype6-dev
+    #                   skm linux install
+    #                   curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel STS
+    #                   export PATH=$PATH:$HOME/.dotnet
+    #                   export DOTNET_ROOT=$HOME/.dotnet
+    #                   for dir in ${GAME_DIR[@]}
+    #                   do
+    #                     ./compile-game.sh $dir linux-arm
+    #                   done
 
-            - name: Setup dotnet
-              uses: actions/setup-dotnet@v3
-              with:
-                  dotnet-version: |
-                      6.0.x
-                      7.0.x
-            - name: Install Splashkit & Compile Game
-              uses: pguyot/arm-runner-action@v2
-              with:
-                  base_image: raspios_lite:latest
-                  image_additional_mb: 4096
-                  shell: bash
-                  import_github_env: true
-                  export_github_env: true
-                  bind_mount_repository: true
-                  commands: |
-                      read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
-                      sudo apt-get update 
-                      sudo apt install --assume-yes git cmake
-                      bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)            
-                      export PATH=$PATH:$HOME/.splashkit
-                      sudo apt install --assume-yes libsdl2-dev libsdl2-gfx-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-image-dev libncurses-dev libpng-dev libcurl4-openssl-dev libbz2-dev libflac-dev libvorbis-dev libmikmod-dev libwebp-dev libfreetype6-dev
-                      skm linux install                                 
-                      for dir in ${GAME_DIR[@]}
-                      do           
-                        ./compile-game.sh $dir linux-arm   
-                      done
-
-            - uses: actions/upload-artifact@v3
-              with:
-                  name: arm-programs
-                  path: |
-                      **/games/*/published/
+    #         - uses: actions/upload-artifact@v3
+    #           with:
+    #               name: arm-programs
+    #               path: |
+    #                   **/games/*/published/
 
     push-games:
         runs-on: ubuntu-latest
-        needs:
-            [
+        needs: [
                 get-game-directory,
                 compile-games-linux,
                 compile-games-windows,
-                compile-games-arm,
+                # compile-games-arm,
             ]
         steps:
             - name: Checkout feature branch
@@ -194,31 +192,50 @@ jobs:
                   name: linux-programs
                   path: ./linux-downloads
 
-            - uses: actions/download-artifact@v3
-              with:
-                  name: arm-programs
-                  path: ./arm-downloads
+            # - uses: actions/download-artifact@v3
+            #   with:
+            #       name: arm-programs
+            #       path: ./arm-downloads
 
             - name: Files downloaded
               run: |
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
 
-                  FOLDERS=("windows-downloads" "linux-downloads" "arm-downloads")
-                  for dir in ${GAME_DIR[@]}
-                  do    
-                    cd $GITHUB_WORKSPACE/$dir
-                    if [ ! -d "builds" ]; then
-                      mkdir builds
-                    else
-                      rm -rf builds/*
-                    fi     
-                    cd builds
+                  # FOLDERS=("windows-downloads" "linux-downloads")  #"arm-downloads"
+                  # for dir in ${GAME_DIR[@]}
+                  # do    
+                  #   cd $GITHUB_WORKSPACE/$dir
+                  #   if [ ! -d "builds" ]; then
+                  #     mkdir builds
+                  #   else
+                  #     rm -rf builds/*
+                  #   fi     
+                  #   cd builds
 
-                    game_name=$(basename $dir)
+                  #   game_name=$(basename $dir)
+                  #   for folder in "${FOLDERS[@]}"
+                  #   do
+                  #     chmod 777 $GITHUB_WORKSPACE/$folder/games/${game_name}/*
+                  #     cp $GITHUB_WORKSPACE/$folder/games/${game_name}/* .
+                  #   done
+                  # done
+
+                  FOLDERS=("windows-downloads" "linux-downloads")
+                  for dir in ${GAME_DIR[@]}
+                  do
+                    game_name=$(basename $dir)    
+                    cd $GITHUB_WORKSPACE/compiled-games
+                    if [ ! -d "${game_name}" ]; then
+                      mkdir ${game_name}
+                    else
+                      rm -rf ${game_name}/*
+                    fi     
+                    cd ${game_name}
+                    
                     for folder in "${FOLDERS[@]}"
                     do
                       chmod 777 $GITHUB_WORKSPACE/$folder/games/${game_name}/*
-                      cp $GITHUB_WORKSPACE/$folder/games/${game_name}/* .
+                      cp $GITHUB_WORKSPACE/$folder/games/${game_name}/published/* .
                     done
                   done
 
@@ -229,8 +246,9 @@ jobs:
                   git config user.email github-actions@github.com
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
-                  do      
-                    git add $dir/builds
+                  do
+                    game_name=$(basename $dir)          
+                    git add compiled-games/$game_name
                   done
                   git commit -m "Compiled Games"
                   git push origin HEAD:${GITHUB_HEAD_REF}
