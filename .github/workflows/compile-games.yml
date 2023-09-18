@@ -221,7 +221,7 @@ jobs:
                     for folder in "${FOLDERS[@]}"
                     do
                       chmod 777 $GITHUB_WORKSPACE/$folder/games/${game_name}/*
-                      cp $GITHUB_WORKSPACE/$folder/games/${game_name}/* .
+                      cp $GITHUB_WORKSPACE/$folder/games/${game_name}/published/* .
                     done
                   done
 
