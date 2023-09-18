@@ -77,7 +77,7 @@ jobs:
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
                   do                               
-                    ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-x86.out
+                    ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-x86
                   done
 
             - uses: actions/upload-artifact@v3
@@ -118,7 +118,7 @@ jobs:
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
                   do                               
-                    ./compile-game.sh $GITHUB_WORKSPACE/$dir windows-x86.exe
+                    ./compile-game.sh $GITHUB_WORKSPACE/$dir win-x86
                   done
 
             - uses: actions/upload-artifact@v3
@@ -160,7 +160,7 @@ jobs:
                       skm linux install                                 
                       for dir in ${GAME_DIR[@]}
                       do           
-                        ./compile-game.sh $dir linux-arm.out   
+                        ./compile-game.sh $dir linux-arm   
                       done
 
             - uses: actions/upload-artifact@v3
