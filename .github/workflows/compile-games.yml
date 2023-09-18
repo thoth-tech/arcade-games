@@ -128,7 +128,7 @@ jobs:
               with:
                   name: windows-programs
                   path: |
-                      **/games/*/published/
+                      **/games/*/published/ .
 
     # compile-games-arm:
     #     runs-on: ubuntu-latest
@@ -155,15 +155,15 @@ jobs:
     #               bind_mount_repository: true
     #               commands: |
     #                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
-    #                   sudo apt-get update 
+    #                   sudo apt-get update
     #                   sudo apt install --assume-yes git cmake
-    #                   bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)            
+    #                   bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
     #                   export PATH=$PATH:$HOME/.splashkit
     #                   sudo apt install --assume-yes libsdl2-dev libsdl2-gfx-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-image-dev libncurses-dev libpng-dev libcurl4-openssl-dev libbz2-dev libflac-dev libvorbis-dev libmikmod-dev libwebp-dev libfreetype6-dev
-    #                   skm linux install                                 
+    #                   skm linux install
     #                   for dir in ${GAME_DIR[@]}
-    #                   do           
-    #                     ./compile-game.sh $dir linux-arm   
+    #                   do
+    #                     ./compile-game.sh $dir linux-arm
     #                   done
 
     #         - uses: actions/upload-artifact@v3
@@ -174,8 +174,7 @@ jobs:
 
     push-games:
         runs-on: ubuntu-latest
-        needs:
-            [
+        needs: [
                 get-game-directory,
                 compile-games-linux,
                 compile-games-windows,
@@ -206,29 +205,10 @@ jobs:
               run: |
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
 
-                  FOLDERS=("windows-downloads" "linux-downloads")  "arm-downloads"
-                  for dir in ${GAME_DIR[@]}
-                  do    
-                    cd $GITHUB_WORKSPACE/$dir
-                    if [ ! -d "builds" ]; then
-                      mkdir builds
-                    else
-                      rm -rf builds/*
-                    fi     
-                    cd builds
-
-                    game_name=$(basename $dir)
-                    for folder in "${FOLDERS[@]}"
-                    do
-                      chmod 777 $GITHUB_WORKSPACE/$folder/games/${game_name}/*
-                      cp $GITHUB_WORKSPACE/$folder/games/${game_name}/* .
-                    done
-                  done
-
-                  # FOLDERS=("windows-downloads" "linux-downloads")
+                  # FOLDERS=("windows-downloads" "linux-downloads")  #"arm-downloads"
                   # for dir in ${GAME_DIR[@]}
                   # do    
-                  #   cd $GITHUB_WORKSPACE/compiled-games/$(basename $GAME_DIR)
+                  #   cd $GITHUB_WORKSPACE/$dir
                   #   if [ ! -d "builds" ]; then
                   #     mkdir builds
                   #   else
@@ -244,6 +224,24 @@ jobs:
                   #   done
                   # done
 
+                  FOLDERS=("windows-downloads" "linux-downloads")
+                  for dir in ${GAME_DIR[@]}
+                  do
+                    game_name=$(basename $dir)    
+                    cd $GITHUB_WORKSPACE/compiled-games
+                    if [ ! -d "${game_name}" ]; then
+                      mkdir ${game_name}
+                    else
+                      rm -rf ${game_name}/*
+                    fi     
+                    cd ${game_name}
+                    
+                    for folder in "${FOLDERS[@]}"
+                    do
+                      chmod 777 $GITHUB_WORKSPACE/$folder/games/${game_name}/*
+                      cp $GITHUB_WORKSPACE/$folder/games/${game_name}/published/* .
+                    done
+                  done
 
             - name: Git Add, Commit, Push
               run: |
