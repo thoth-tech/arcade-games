@@ -206,7 +206,7 @@ jobs:
               run: |
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
 
-                  FOLDERS=("windows-downloads" "linux-downloads")  "arm-downloads"
+                  FOLDERS=("windows-downloads" "linux-downloads")  #"arm-downloads"
                   for dir in ${GAME_DIR[@]}
                   do    
                     cd $GITHUB_WORKSPACE/$dir
