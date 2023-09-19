@@ -141,7 +141,6 @@ jobs:
               uses: pguyot/arm-runner-action@v2
               with:
                   cpu: cortex-a7
-                  cpu_info: raspberrypi_3b
                   base_image: raspios_lite:latest
                   image_additional_mb: 4096
                   shell: bash
