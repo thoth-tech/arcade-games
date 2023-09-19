@@ -140,7 +140,7 @@ jobs:
             - name: Install Splashkit & Compile Game
               uses: pguyot/arm-runner-action@v2
               with:
-                  cpu: cortex-a7
+                  cpu: cortex-a8
                   base_image: raspios_lite:latest
                   image_additional_mb: 4096
                   shell: bash
@@ -151,13 +151,16 @@ jobs:
                       read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                       sudo apt-get update
                       sudo apt install --assume-yes git cmake
+                      curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel STS
+                      # export PATH=$PATH:$HOME/.dotnet
+                      # export DOTNET_ROOT=$HOME/.dotnet
+                      echo $PATH
+                      echo $DOTNET_ROOT
+                      dotnet --version
                       bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
                       export PATH=$PATH:$HOME/.splashkit
                       sudo apt install --assume-yes libsdl2-dev libsdl2-gfx-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-image-dev libncurses-dev libpng-dev libcurl4-openssl-dev libbz2-dev libflac-dev libvorbis-dev libmikmod-dev libwebp-dev libfreetype6-dev
                       skm linux install
-                      curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel STS
-                      export PATH=$PATH:$HOME/.dotnet
-                      export DOTNET_ROOT=$HOME/.dotnet
                       for dir in ${GAME_DIR[@]}
                       do
                         ./compile-game.sh $dir linux-arm
