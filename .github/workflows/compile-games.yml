@@ -152,8 +152,8 @@ jobs:
                       sudo apt-get update
                       sudo apt install --assume-yes git cmake
                       curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel STS
-                      # export PATH=$PATH:$HOME/.dotnet
-                      # export DOTNET_ROOT=$HOME/.dotnet
+                      export PATH=$PATH:$HOME/.dotnet
+                      export DOTNET_ROOT=$HOME/.dotnet
                       echo $PATH
                       echo $DOTNET_ROOT
                       dotnet --version
