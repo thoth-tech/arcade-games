@@ -88,7 +88,7 @@ jobs:
 
             # - name: Setup upterm session
             #   uses: lhotari/action-upterm@v1
-    compile-dotnet-games-linux:
+    compile-dotnet-games-arm:
         runs-on: ubuntu-latest
         needs: get-game-directory
         steps:
@@ -102,6 +102,8 @@ jobs:
                   languageCFound=false  # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"; do
+                    echo pwd
+                    echo $dir
                     if [ -f "$dir"/*.csproj ]; then
                       languageCFound=true
                       break  # Exit the loop as soon as a .csproj file is found
@@ -259,6 +261,7 @@ jobs:
                 compile-games-linux,
                 compile-games-windows,
                 compile-games-arm,
+                compile-dotnet-games-arm,
             ]
         steps:
             - name: Checkout feature branch
