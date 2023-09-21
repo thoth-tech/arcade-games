@@ -99,18 +99,17 @@ jobs:
 
             - name: Check for .csproj file
               run: |
-                  languageCFound=false  # Initialize a boolean variable
+                  languageCSharp=false # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"; do
-                    echo pwd
-                    echo $dir
-                    if [ -f "$dir"/*.csproj ]; then
-                      languageCFound=true
+                    found=$(find "$dir" -name "*.csproj")
+                    if [ -n "$found" ]; then
+                      languageCSharp=true
                       break  # Exit the loop as soon as a .csproj file is found
                     fi
                   done
 
-                  if [ "$languageCFound" = false ]; then
+                  if [ "$languageCSharp" = false ]; then
                     echo "No C# files found"
                     exit 0
                   fi
@@ -139,7 +138,8 @@ jobs:
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
                   do
-                    if [ -f "$dir"/*.csproj ]; then
+                    found=$(find "$dir" -name "*.csproj")
+                    if [ -n "$found" ]; then
                       ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
                     fi                            
                   done
@@ -203,7 +203,8 @@ jobs:
                   CSharpFound=false  # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"; do
-                    if [ -f "$dir"/*.csproj ]; then
+                    found=$(find "$dir" -name "*.csproj")
+                    if [ -n "$found" ]; then
                       CSharpFound=true
                     else
                       CSharpFound=false
@@ -242,7 +243,8 @@ jobs:
                       skm linux install
                       for dir in ${GAME_DIR[@]}
                       do
-                        if [ ! -f "$dir"/*.csproj ]; then
+                        found=$(find "$dir" -name "*.csproj")
+                        if [ -n "$found" ]; then
                           ./compile-game.sh $dir linux-arm
                         fi
                       done
