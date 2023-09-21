@@ -1,4 +1,4 @@
-# ARCACDE CAR-RACING
+# CAR-RACING
 
 ## How to Install
 
