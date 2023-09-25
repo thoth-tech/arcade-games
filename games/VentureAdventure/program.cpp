@@ -1,5 +1,7 @@
 #include "splashkit.h"
 #include "game.h"
+#include "MainMenu.h"
+#include <iostream>
 
 using namespace std;
 
@@ -17,13 +19,8 @@ int main()
     window_toggle_border("VentureAdventure");
     load_resources();
 
-    string map = "level1.txt";
-    int level = 1;
-    bool win;
-    string levelnum = "Level 1";
-    
     game_data game;
-    game = new_game(map);
+    game = new_game();
 
     while(!quit_requested() && !key_down(ESCAPE_KEY)) 
     {
@@ -45,7 +42,7 @@ int main()
 
             draw_game(game);
 
-            win = update_game(game, levelnum);
+            update_game(game);
 
             if(game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH/2-138, SCREEN_HEIGHT/2-48, option_to_screen());
@@ -53,42 +50,39 @@ int main()
             start_debug(game);
 
             refresh_screen(60);
-
-            if (win == true && level < 3 )
-            {
-                level++;
-                map = "level";
-                map.append(to_string(level));
-                map.append(".txt");
-                levelnum = "Level ";
-                levelnum.append(to_string(level));
-                game = new_game(map);
-            };
-
-            if (win == true && level == 3)
-            {
-                delay(5000);
-                
-                play_music("intro");
-                set_music_volume(0.04);
-
-                start_screen();
-    
-                fade_music_out(1000);
-
-                play_music("game", 100);
-                set_music_volume(0.025);
-
-                level = 1;
-                map = "level";
-                map.append(to_string(level));
-                map.append(".txt");
-                levelnum = "Level ";
-                levelnum.append(to_string(level));
-                game = new_game(map);
-            };
         }
    }
 
+    MainMenu mainMenu;
+
+   
+    while (true) {
+        
+        system("clear");
+
+        mainMenu.Render();
+        std::cout << "Select an option: ";
+
+        int choice;
+        std::cin >> choice;
+
+        switch (choice) {
+        case 1:
+ 
+            break;
+        case 2:
+ 
+            break;
+        case 3:
+ 
+            break;
+        case 4:
+
+            return 0;
+        default:
+            std::cout << "Invalid choice. Please try again.\n";
+            break;
+        }
+    }
     return 0;
 }
