@@ -55,10 +55,11 @@ int main()
 
     MainMenu mainMenu;
 
-   
-    while (true) {
-        
-        system("clear");
+    bool quitGame = false;
+
+    while (!quitGame) {
+
+        system("clear"); 
 
         mainMenu.Render();
         std::cout << "Select an option: ";
@@ -68,17 +69,33 @@ int main()
 
         switch (choice) {
         case 1:
- 
+
+            std::cout << "Starting the game...\n";
+
+            while (true) {
+
+                if (GetUserInput() == 'esc') {
+                    break;
+                }
+            }
+
+
             break;
         case 2:
- 
+
+            std::cout << "Entering level select...\n";
+
             break;
         case 3:
- 
+
+            std::cout << "Showing how to play...\n";
+
             break;
         case 4:
 
-            return 0;
+            quitGame = true;
+            std::cout << "Quitting the game...\n";
+            break;
         default:
             std::cout << "Invalid choice. Please try again.\n";
             break;
