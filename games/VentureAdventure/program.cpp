@@ -22,19 +22,63 @@ int main()
     game_data game;
     game = new_game();
 
-    while(!quit_requested() && !key_down(ESCAPE_KEY)) 
+    MainMenu mainMenu;
+
+    bool quitGame = false;
+
+    while (!quitGame) {
+        system("clear");
+
+        mainMenu.Render();
+        cout << "Select an option: ";
+
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Starting the game...\n";
+            while (true) {
+                if (GetUserInput() == 'esc') {
+                    break;
+                }
+            }
+            break;
+
+        case 2:
+            cout << "Entering level select...\n";
+            break;
+
+        case 3:
+            mainMenu.ShowHowToPlay();
+            break;
+
+        case 4:
+            quitGame = true;
+            cout << "Quitting the game...\n";
+            break;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+            break;
+        }
+
+        if (choice != 1 && choice != 2 && choice != 3 && choice != 4) {
+            delay(1000);
+    }
+
+    while (!quit_requested() && !key_down(ESCAPE_KEY))
     {
         play_music("intro");
         set_music_volume(0.04);
 
         start_screen();
-    
+
         fade_music_out(1000);
 
         play_music("game", 100);
         set_music_volume(0.025);
 
-        while(!quit_requested() && !key_down(ESCAPE_KEY))
+        while (!quit_requested() && !key_down(ESCAPE_KEY))
         {
             process_events();
 
@@ -44,62 +88,14 @@ int main()
 
             update_game(game);
 
-            if(game.player.attacked == true)
-                draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH/2-138, SCREEN_HEIGHT/2-48, option_to_screen());
+            if (game.player.attacked == true)
+                draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
             start_debug(game);
 
             refresh_screen(60);
         }
-   }
-
-    MainMenu mainMenu;
-
-    bool quitGame = false;
-
-    while (!quitGame) {
-
-        system("clear"); 
-
-        mainMenu.Render();
-        std::cout << "Select an option: ";
-
-        int choice;
-        std::cin >> choice;
-
-        switch (choice) {
-        case 1:
-
-            std::cout << "Starting the game...\n";
-
-            while (true) {
-
-                if (GetUserInput() == 'esc') {
-                    break;
-                }
-            }
-
-
-            break;
-        case 2:
-
-            std::cout << "Entering level select...\n";
-
-            break;
-        case 3:
-
-            std::cout << "Showing how to play...\n";
-
-            break;
-        case 4:
-
-            quitGame = true;
-            std::cout << "Quitting the game...\n";
-            break;
-        default:
-            std::cout << "Invalid choice. Please try again.\n";
-            break;
-        }
     }
+
     return 0;
 }

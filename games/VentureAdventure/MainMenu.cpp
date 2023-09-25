@@ -15,3 +15,11 @@ void MainMenu::Render() {
     std::cout << "3. How to Play\n";
     std::cout << "4. Quit\n";
 }
+void MainMenu::ShowHowToPlay() {
+    system("clear");
+    std::cout << "=== How to Play ===\n";
+    std::cout << "Collect all the gems to win the game.\n";
+    std::cout << "You can move the boxes to reach the gems.\n";
+    std::cout << "Press 'esc' to go back to the main menu.\n";
+    std::cout << "====================\n";
+}
