@@ -102,7 +102,7 @@ jobs:
                   languageCSharp=false # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"; do
-                    found=$(find "$dir" -name "*.csproj")
+                    found=$(find $dir -name "*.csproj")
                     if [ -n "$found" ]; then
                       languageCSharp=true
                       break  # Exit the loop as soon as a .csproj file is found
@@ -138,7 +138,7 @@ jobs:
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
                   do
-                    found=$(find "$dir" -name "*.csproj")
+                    found=$(find $dir -name "*.csproj")
                     if [ -n "$found" ]; then
                       ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
                     fi                            
@@ -203,7 +203,7 @@ jobs:
                   CSharpFound=false  # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"; do
-                    found=$(find "$dir" -name "*.csproj")
+                    found=$(find $dir -name "*.csproj")
                     if [ -n "$found" ]; then
                       CSharpFound=true
                     else
@@ -217,8 +217,6 @@ jobs:
                     exit 0
                   fi
 
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
             - name: Install Splashkit & Compile Game
               uses: pguyot/arm-runner-action@v2
               with:
@@ -245,7 +243,7 @@ jobs:
                       skm linux install
                       for dir in ${GAME_DIR[@]}
                       do
-                        found=$(find "$dir" -name "*.csproj")
+                        found=$(find $dir -name "*.csproj")
                         if [ -n "$found" ]; then
                           ./compile-game.sh $dir linux-arm
                         fi
