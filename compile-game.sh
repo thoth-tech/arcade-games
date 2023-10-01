@@ -43,7 +43,7 @@ if [[ $language == "C#" ]]; then
 	if [[ -z "$command" ]]; then
 		echo "No compile command found, using default"
 		if [[ $BINARY_NAME == "linux-arm" ]]; then
-			skm dotnet publish --runtime linux-arm -o ./compiled/
+			skm dotnet publish --runtime linux-arm --no-self-contained -o ./compiled/
 		else
 			skm dotnet publish -o ./compiled/
 		fi

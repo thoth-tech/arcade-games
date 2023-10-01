@@ -217,6 +217,8 @@ jobs:
                     exit 0
                   fi
 
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
             - name: Install Splashkit & Compile Game
               uses: pguyot/arm-runner-action@v2
               with:
