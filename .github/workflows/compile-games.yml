@@ -118,7 +118,6 @@ jobs:
             - name: Compile Game
               run: |
                   export PATH=$PATH:/home/runneradmin/.splashkit 
-                  export PATH=$PATH:/home/runneradmin/.dotnet/tools
                   export PATH=$PATH:/c/Program Files/dotnet
                   dotnet --version
                   echo $PATH
