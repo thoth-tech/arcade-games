@@ -118,7 +118,6 @@ jobs:
             - name: Compile Game
               run: |
                   export PATH=$PATH:/home/runneradmin/.splashkit 
-                  export PATH=$PATH:/c/Program Files/dotnet
                   dotnet --version
                   echo $PATH
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
