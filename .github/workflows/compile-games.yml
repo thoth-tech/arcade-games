@@ -97,20 +97,18 @@ jobs:
                 shell: msys2 {0}
 
         steps:
-            - name: Setup dotnet
-              uses: actions/setup-dotnet@v3
-              with:
-                  dotnet-version: |
-                      6.0.x
-                      7.0.x
-            - run: dotnet --version
 
             - uses: msys2/setup-msys2@v2
               with:
                   msystem: MINGW64
                   update: true
                   install: git mingw-w64-x86_64-cc
-
+            - name: Setup dotnet
+              uses: actions/setup-dotnet@v3
+              with:
+                  dotnet-version: |
+                      6.0.x
+                      7.0.x
             - uses: actions/checkout@v3
               with:
                   fetch-depth: 0
@@ -121,6 +119,7 @@ jobs:
             - name: Compile Game
               run: |
                   export PATH=$PATH:/home/runneradmin/.splashkit 
+                  export PATH=$PATH:/c/Program\ Files/dotnet
                   echo $PATH
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
