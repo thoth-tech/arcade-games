@@ -97,6 +97,13 @@ jobs:
                 shell: msys2 {0}
 
         steps:
+            - name: Setup dotnet
+              uses: actions/setup-dotnet@v3
+              with:
+                  dotnet-version: |
+                      6.0.x
+                      7.0.x
+
             - uses: msys2/setup-msys2@v2
               with:
                   msystem: MINGW64
@@ -106,12 +113,7 @@ jobs:
             - uses: actions/checkout@v3
               with:
                   fetch-depth: 0
-            - name: Setup dotnet
-              uses: actions/setup-dotnet@v3
-              with:
-                  dotnet-version: |
-                      6.0.x
-                      7.0.x
+
             - name: Install SplashKit
               run: |
                   bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
