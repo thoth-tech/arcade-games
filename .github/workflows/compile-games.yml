@@ -97,27 +97,30 @@ jobs:
                 shell: msys2 {0}
 
         steps:
+
             - uses: msys2/setup-msys2@v2
               with:
                   msystem: MINGW64
                   update: true
                   install: git mingw-w64-x86_64-cc
-
-            - uses: actions/checkout@v3
-              with:
-                  fetch-depth: 0
             - name: Setup dotnet
               uses: actions/setup-dotnet@v3
               with:
                   dotnet-version: |
                       6.0.x
                       7.0.x
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
             - name: Install SplashKit
               run: |
                   bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
             - name: Compile Game
               run: |
                   export PATH=$PATH:/home/runneradmin/.splashkit 
+                  export PATH=$PATH:/c/Program\ Files/dotnet
+                  echo $PATH
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
                   do                               
@@ -201,7 +204,7 @@ jobs:
               run: |
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
 
-                  # FOLDERS=("windows-downloads" "linux-downloads")  #"arm-downloads"
+                  # FOLDERS=("linux-downloads" "windows-downloads")  #"arm-downloads"
                   # for dir in ${GAME_DIR[@]}
                   # do    
                   #   cd $GITHUB_WORKSPACE/$dir
