@@ -103,11 +103,11 @@ jobs:
           read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
           GAME_DIR=($GAME_DIR)
           CSharpFound=false  # Initialize a boolean variable
-          printf "%s\n" "${GAME_DIR[@]}"
+   
           for dir in "${GAME_DIR[@]}"
           do
             echo "$dir"
-            if [[ -f $dir*.csproj ]]; then
+            if [[ -f $dir"*.csproj" ]]; then
               CSharpFound=true
               echo $dir "Contatins C#"
               break  # Exit the loop as soon as a directory with a .csproj file is found
@@ -145,7 +145,7 @@ jobs:
           GAME_DIR=($GAME_DIR)
           for dir in ${GAME_DIR[@]}
           do
-            if [[ -f $dir*.csproj ]]; then
+            if [[ -f $dir"*.csproj" ]]; then
               echo $dir
               ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
             fi                            
