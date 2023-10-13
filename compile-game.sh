@@ -42,7 +42,11 @@ if [[ $language == "C#" ]]; then
 	# If command is empty
 	if [[ -z "$command" ]]; then
 		echo "No compile command found, using default"
-		skm dotnet publish -o ./compiled/
+		if [[ $BINARY_NAME == "linux-arm" ]]; then
+			skm dotnet publish --runtime linux-arm --no-self-contained -o ./compiled/
+		else
+			skm dotnet publish -o ./compiled/
+		fi
 	else
 		echo Appending output flag and name/loc 
 		command+=" -o ./compiled/"
@@ -84,36 +88,53 @@ tar -cvf "$AssetsTar" --files-from /dev/null
 # Function to add a directory to the archive if it exists
 add_directory_to_archive() {
     local directory="$1"
-    local lowercase_dir
-    lowercase_dir=$(echo "$directory" | tr '[:upper:]' '[:lower:]') # Convert to lowercase
-    local uppercase_dir
-    uppercase_dir=$(echo "$directory" | tr '[:lower:]' '[:upper:]') # Convert to uppercase
-    if [ -d "$lowercase_dir" ]; then
-        tar -rf "$AssetsTar" -C "$(dirname "$directory")" "$(basename "$directory")"
-    elif [ -d "$uppercase_dir" ]; then
+    # local lowercase_dir
+    # lowercase_dir=$(echo "$directory" | tr '[:upper:]' '[:lower:]') # Convert to lowercase
+    # local uppercase_dir
+    # uppercase_dir=$(echo "$directory" | tr '[:lower:]' '[:upper:]') # Convert to uppercase
+    # if [ -d "$lowercase_dir" ]; then
+    #     tar -rf "$AssetsTar" -C "$(dirname "$directory")" "$(basename "$directory")"
+    # elif [ -d "$uppercase_dir" ]; then
+    #     tar -rf "$AssetsTar" -C "$(dirname "$directory")" "$(basename "$directory")"
+    # fi
+	if [ -d "$directory" ]; then
         tar -rf "$AssetsTar" -C "$(dirname "$directory")" "$(basename "$directory")"
     fi
 }
 
-#List of Directories that may have assets
-AssetsDirectories=(
-    "Resources"
-	"resources"
-    "Animations"
-	"animations"
-    "Bundles"
-	"bundles"
-	"Databases"
-	"databases"
-	"Fonts"
-	"fonts"
-	"Images"
-	"images"
-	"Json"
-	"json"
-	"Sounds"
-	"sounds"
-)
+if [ $BINARY_NAME = "win-x86" ]; then
+	#List of Directories that may have assets (non case senstive)
+	AssetsDirectories=(
+		"resources"
+		"animations"
+		"bundles"
+		"databases"
+		"fonts"
+		"images"
+		"json"
+		"sounds"
+	)
+else
+	#List of Directories that may have assets (case senstive)
+	AssetsDirectories=(
+		"Resources"
+		"resources"
+		"Animations"
+		"animations"
+		"Bundles"
+		"bundles"
+		"Databases"
+		"databases"
+		"Fonts"
+		"fonts"
+		"Images"
+		"images"
+		"Json"
+		"json"
+		"Sounds"
+		"sounds"
+	)
+fi
 
 for dir in "${AssetsDirectories[@]}"; do
     add_directory_to_archive "$dir"
