@@ -103,6 +103,7 @@ jobs:
 
                   for dir in "${GAME_DIR[@]}"
                   do
+                    echo $dir
                     if [ -f $dir/*.csproj ]; then
                       CSharpFound=true
                       echo $dir "Contatins C#"
