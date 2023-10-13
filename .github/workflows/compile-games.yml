@@ -224,8 +224,10 @@ jobs:
                   for dir in "${GAME_DIR[@]}"; do
                     if [ -f $dir/*.csproj ]; then
                       CSharpFound=true
+                      echo $dir "Contatins C#"
                     else
                       CSharpFound=false
+                      echo $dir "No C#"
                       break  # Exit the loop as soon as a directory without a .csproj file is found
                     fi
                   done
