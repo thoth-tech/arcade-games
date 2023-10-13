@@ -101,6 +101,7 @@ jobs:
       - name: Check for .csproj file
         run: |
           read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+          GAME_DIR=($GAME_DIR)
           CSharpFound=false  # Initialize a boolean variable
           printf "%s\n" "${GAME_DIR[@]}"
           for dir in "${GAME_DIR[@]}"
@@ -141,6 +142,7 @@ jobs:
       - name: Compile Game
         run: |
           read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+          GAME_DIR=($GAME_DIR)
           for dir in ${GAME_DIR[@]}
           do
             if [[ -f $dir*.csproj ]]; then
