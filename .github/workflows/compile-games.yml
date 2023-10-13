@@ -101,17 +101,34 @@ jobs:
               run: |
                   languageCSharp=false # Initialize a boolean variable
 
+                  # for dir in "${GAME_DIR[@]}"; do
+                  #   found=$(find $dir -name "*.csproj")
+                  #   if [ -n "$found" ]; then
+                  #     languageCSharp=true
+                  #     break  # Exit the loop as soon as a .csproj file is found
+                  #   fi
+                  # done
+
+                  # if [ "$languageCSharp" = false ]; then
+                  #   echo "No C# files found"
+                  #   exit 0
+                  # fi
+
+
+                  CSharpFound=false  # Initialize a boolean variable
+
                   for dir in "${GAME_DIR[@]}"; do
-                    found=$(find $dir -name "*.csproj")
-                    if [ -n "$found" ]; then
-                      languageCSharp=true
-                      break  # Exit the loop as soon as a .csproj file is found
+                    if [ -f $dir/*.csproj ]; then
+                      CSharpFound=true
+                      echo $dir + "Contatins C#"
+                      break  # Exit the loop as soon as a directory with a .csproj file is found
                     fi
                   done
 
-                  if [ "$languageCSharp" = false ]; then
+                  if [ "$CSharpFound" = true ]; then
+                    echo "C# language detected"
+                  else
                     echo "No C# files found"
-                    exit 0
                   fi
 
             - name: Update Packages
@@ -158,7 +175,6 @@ jobs:
                 shell: msys2 {0}
 
         steps:
-
             - uses: msys2/setup-msys2@v2
               with:
                   msystem: MINGW64
@@ -206,8 +222,7 @@ jobs:
                   CSharpFound=false  # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"; do
-                    found=$(find $dir -name "*.csproj")
-                    if [ -n "$found" ]; then
+                    if [ -f $dir/*.csproj ]; then
                       CSharpFound=true
                     else
                       CSharpFound=false
@@ -217,7 +232,8 @@ jobs:
 
                   if [ "$CSharpFound" = true ]; then
                     echo "C# language detected in all directories"
-                    exit 0
+                  else
+                    echo "No C# files found"
                   fi
 
             - name: Install Splashkit & Compile Game

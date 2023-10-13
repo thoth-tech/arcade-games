@@ -102,25 +102,39 @@ add_directory_to_archive() {
     fi
 }
 
-#List of Directories that may have assets
-AssetsDirectories=(
-    "Resources"
-	"resources"
-    "Animations"
-	"animations"
-    "Bundles"
-	"bundles"
-	"Databases"
-	"databases"
-	"Fonts"
-	"fonts"
-	"Images"
-	"images"
-	"Json"
-	"json"
-	"Sounds"
-	"sounds"
-)
+if [$BINARY_NAME == "win-x86"]; then
+	#List of Directories that may have assets (non case senstive)
+	AssetsDirectories=(
+		"resources"
+		"animations"
+		"bundles"
+		"databases"
+		"fonts"
+		"images"
+		"json"
+		"sounds"
+	)
+else
+	#List of Directories that may have assets (case senstive)
+	AssetsDirectories=(
+		"Resources"
+		"resources"
+		"Animations"
+		"animations"
+		"Bundles"
+		"bundles"
+		"Databases"
+		"databases"
+		"Fonts"
+		"fonts"
+		"Images"
+		"images"
+		"Json"
+		"json"
+		"Sounds"
+		"sounds"
+	)
+fi
 
 for dir in "${AssetsDirectories[@]}"; do
     add_directory_to_archive "$dir"
