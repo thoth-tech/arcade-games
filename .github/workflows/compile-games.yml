@@ -101,7 +101,7 @@ jobs:
               run: |
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   CSharpFound=false  # Initialize a boolean variable
-
+                  printf "%s\n" "${GAME_DIR[@]}"
                   for dir in "${GAME_DIR[@]}"
                   do
                     echo "$dir"
@@ -117,7 +117,8 @@ jobs:
                   else
                     echo "No C# files found"
                   fi
-
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
             - name: Update Packages
               run: sudo apt-get update
 
