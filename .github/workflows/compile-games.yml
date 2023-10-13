@@ -99,33 +99,18 @@ jobs:
 
             - name: Check for .csproj file
               run: |
-                  languageCSharp=false # Initialize a boolean variable
-
-                  # for dir in "${GAME_DIR[@]}"; do
-                  #   found=$(find $dir -name "*.csproj")
-                  #   if [ -n "$found" ]; then
-                  #     languageCSharp=true
-                  #     break  # Exit the loop as soon as a .csproj file is found
-                  #   fi
-                  # done
-
-                  # if [ "$languageCSharp" = false ]; then
-                  #   echo "No C# files found"
-                  #   exit 0
-                  # fi
-
-
                   CSharpFound=false  # Initialize a boolean variable
 
-                  for dir in "${GAME_DIR[@]}"; do
+                  for dir in "${GAME_DIR[@]}"
+                  do
                     if [ -f $dir/*.csproj ]; then
                       CSharpFound=true
-                      echo $dir + "Contatins C#"
+                      echo $dir "Contatins C#"
                       break  # Exit the loop as soon as a directory with a .csproj file is found
                     fi
                   done
 
-                  if [ "$CSharpFound" = true ]; then
+                  if [ $CSharpFound = true ]; then
                     echo "C# language detected"
                   else
                     echo "No C# files found"
@@ -155,8 +140,7 @@ jobs:
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
                   do
-                    found=$(find $dir -name "*.csproj")
-                    if [ -n "$found" ]; then
+                    if [ -f $dir/*.csproj ]; then
                       ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
                     fi                            
                   done
@@ -235,7 +219,7 @@ jobs:
                   if [ "$CSharpFound" = true ]; then
                     echo "C# language detected in all directories"
                   else
-                    echo "No C# files found"
+                    echo "Directory without C# files found"
                   fi
 
             - name: Install Splashkit & Compile Game
@@ -264,8 +248,7 @@ jobs:
                       skm linux install
                       for dir in ${GAME_DIR[@]}
                       do
-                        found=$(find $dir -name "*.csproj")
-                        if [ -n "$found" ]; then
+                        if [ ! -f $dir/*.csproj ]; then
                           ./compile-game.sh $dir linux-arm
                         fi
                       done

@@ -102,7 +102,7 @@ add_directory_to_archive() {
     fi
 }
 
-if [$BINARY_NAME == "win-x86"]; then
+if [ $BINARY_NAME = "win-x86" ]; then
 	#List of Directories that may have assets (non case senstive)
 	AssetsDirectories=(
 		"resources"
