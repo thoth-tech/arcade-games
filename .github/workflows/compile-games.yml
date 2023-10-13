@@ -99,6 +99,7 @@ jobs:
 
             - name: Check for .csproj file
               run: |
+                  read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   CSharpFound=false  # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"
@@ -118,7 +119,7 @@ jobs:
                   fi
             - name: Setup upterm session
               uses: lhotari/action-upterm@v1
-              
+
             - name: Update Packages
               run: sudo apt-get update
 
@@ -206,6 +207,7 @@ jobs:
                   fetch-depth: 0
             - name: Check for .csproj file
               run: |
+                  read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   CSharpFound=false  # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"; do
