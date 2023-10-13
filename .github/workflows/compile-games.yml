@@ -105,7 +105,7 @@ jobs:
                   for dir in "${GAME_DIR[@]}"
                   do
                     echo "$dir"
-                    if [ -f $dir*.csproj ]; then
+                    if [[ -f $dir*.csproj ]]; then
                       CSharpFound=true
                       echo $dir "Contatins C#"
                       break  # Exit the loop as soon as a directory with a .csproj file is found
@@ -142,7 +142,7 @@ jobs:
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
                   do
-                    if [ -f $dir*.csproj ]; then
+                    if [[ -f $dir*.csproj ]]; then
                       ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
                     fi                            
                   done
@@ -209,7 +209,7 @@ jobs:
                   CSharpFound=false  # Initialize a boolean variable
 
                   for dir in "${GAME_DIR[@]}"; do
-                    if [ -f $dir*.csproj ]; then
+                    if [[ -f $dir*.csproj ]]; then
                       CSharpFound=true
                       echo $dir "Contatins C#"
                     else
@@ -251,7 +251,7 @@ jobs:
                       skm linux install
                       for dir in ${GAME_DIR[@]}
                       do
-                        if [ ! -f $dir*.csproj ]; then
+                        if [[ ! -f $dir*.csproj ]]; then
                           ./compile-game.sh $dir linux-arm
                         fi
                       done
