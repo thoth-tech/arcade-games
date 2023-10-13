@@ -117,8 +117,6 @@ jobs:
                   else
                     echo "No C# files found"
                   fi
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
 
             - name: Update Packages
               run: sudo apt-get update
