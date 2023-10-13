@@ -32,8 +32,8 @@ jobs:
                       fi
                   done
 
-                  # echo "::set-output name=game-directory::${GAME_DIR[@]}"
-                  echo game-directory=${GAME_DIR[@]} >> $GITHUB_OUTPUT
+                  echo "::set-output name=game-directory::${GAME_DIR[@]}"
+                  # echo game-directory=${GAME_DIR[@]} >> $GITHUB_OUTPUT
 
                   echo Games:
                   for dir in "${GAME_DIR[@]}"
@@ -117,8 +117,7 @@ jobs:
                   else
                     echo "No C# files found"
                   fi
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
+
             - name: Update Packages
               run: sudo apt-get update
 
