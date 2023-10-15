@@ -88,15 +88,6 @@ tar -cvf "$AssetsTar" --files-from /dev/null
 # Function to add a directory to the archive if it exists
 add_directory_to_archive() {
     local directory="$1"
-    # local lowercase_dir
-    # lowercase_dir=$(echo "$directory" | tr '[:upper:]' '[:lower:]') # Convert to lowercase
-    # local uppercase_dir
-    # uppercase_dir=$(echo "$directory" | tr '[:lower:]' '[:upper:]') # Convert to uppercase
-    # if [ -d "$lowercase_dir" ]; then
-    #     tar -rf "$AssetsTar" -C "$(dirname "$directory")" "$(basename "$directory")"
-    # elif [ -d "$uppercase_dir" ]; then
-    #     tar -rf "$AssetsTar" -C "$(dirname "$directory")" "$(basename "$directory")"
-    # fi
 	if [ -d "$directory" ]; then
         tar -rf "$AssetsTar" -C "$(dirname "$directory")" "$(basename "$directory")"
     fi
@@ -140,7 +131,16 @@ for dir in "${AssetsDirectories[@]}"; do
     add_directory_to_archive "$dir"
 done
 
-#compress the assets tar
-gzip "$AssetsTar"
-echo "Archive '$AssetsTar' created with specified directories."
-echo $GITHUB_WORKSPACE
+
+# List contents of the archive
+archive_contents=$(tar -tf "$AssetsTar")
+
+# Check if the archive is empty
+if [ -z "$archive_contents" ]; then
+    echo "No Assets Found"
+	rm "$AssetsTar"
+    else
+	#compress the assets tar
+	gzip "$AssetsTar"
+	echo "Archive '$AssetsTar' created with specified directories."
+fi
