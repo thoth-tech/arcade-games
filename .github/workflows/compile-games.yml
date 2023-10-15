@@ -102,12 +102,14 @@ jobs:
         run: |
           read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
           GAME_DIR=($GAME_DIR)
+
           CSharpFound=false  # Initialize a boolean variable
-   
+
           for dir in "${GAME_DIR[@]}"
           do
             echo "$dir"
-            if [[ -f $dir"*.csproj" ]]; then
+            found= find $GITHUB_WORKSPACE/"$dir" -name "*.csproj" -print
+            if [ -n $found ]; then
               CSharpFound=true
               echo $dir "Contatins C#"
               break  # Exit the loop as soon as a directory with a .csproj file is found
@@ -145,7 +147,8 @@ jobs:
           GAME_DIR=($GAME_DIR)
           for dir in ${GAME_DIR[@]}
           do
-            if [[ -f $dir"*.csproj" ]]; then
+            found= find $GITHUB_WORKSPACE/"$dir" -name "*.csproj" -print
+            if [ -n $found ]; then
               echo $dir
               ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
             fi                            
@@ -255,7 +258,8 @@ jobs:
             skm linux install
             for dir in ${GAME_DIR[@]}
             do
-              if [[ ! -f $dir*.csproj ]]; then
+              found= find "$dir" -name "*.csproj" -print
+              if [ ! -n $found ]; then
                 ./compile-game.sh $dir linux-arm
               fi
             done
