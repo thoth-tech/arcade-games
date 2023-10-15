@@ -143,7 +143,7 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: linux-programs
+          name: arm-programs
           path: |
             **/games/*/published/
 
