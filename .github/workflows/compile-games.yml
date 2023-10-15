@@ -108,8 +108,7 @@ jobs:
           for dir in "${GAME_DIR[@]}"
           do
             echo "$dir"
-            found= find $GITHUB_WORKSPACE/"$dir" -name "*.csproj" -print
-            if [ -n $found ]; then
+            if [ -f "$dir"*.csproj ]; then
               CSharpFound=true
               echo $dir "Contatins C#"
               break  # Exit the loop as soon as a directory with a .csproj file is found
@@ -148,8 +147,7 @@ jobs:
           for dir in ${GAME_DIR[@]}
           do
             echo "check " $dir
-            found= find $GITHUB_WORKSPACE/"$dir" -name "*.csproj" -print
-            if [ -n $found ]; then
+            if [ -f "$dir"*.csproj ]; then
               echo "Running for " $dir
               ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
             fi                            
