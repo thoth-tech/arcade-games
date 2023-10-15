@@ -147,9 +147,10 @@ jobs:
           GAME_DIR=($GAME_DIR)
           for dir in ${GAME_DIR[@]}
           do
+            echo "check " $dir
             found= find $GITHUB_WORKSPACE/"$dir" -name "*.csproj" -print
             if [ -n $found ]; then
-              echo $dir
+              echo "Running for " $dir
               ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
             fi                            
           done
