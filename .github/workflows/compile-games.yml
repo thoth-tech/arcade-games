@@ -48,8 +48,8 @@ jobs:
               fi
           done
           echo Games located: "${#GAME_DIR[@]}"
-          echo $CSharpFound
-          echo $NoCSharpFound
+          echo C# Found: $CSharpFound
+          echo No C# Found: $NoCSharpFound
           echo CSharpFound=$CSharpFound >> $GITHUB_OUTPUT
           echo NoCSharpFound=$NoCSharpFound >> $GITHUB_OUTPUT
 
@@ -224,7 +224,7 @@ jobs:
             skm linux install
             for dir in ${GAME_DIR[@]}
             do
-              if [ -f "$dir"*.csproj ]; then
+              if [ ! -f "$dir"*.csproj ]; then
                 ./compile-game.sh $dir linux-arm
               fi
             done
