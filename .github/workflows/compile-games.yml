@@ -34,8 +34,8 @@ jobs:
 
           #echo "::set-output name=game-directory::${GAME_DIR[@]}"
           echo game-directory=${GAME_DIR[@]} >> $GITHUB_OUTPUT
-          C#Found=false  
-          NoC#Found=flase
+          CSharpFound=false  
+          NoCSharpFound=flase
 
           echo Games:
           for dir in "${GAME_DIR[@]}"
@@ -48,8 +48,8 @@ jobs:
               fi
           done
           echo Games located: "${#GAME_DIR[@]}"
-          echo C#Found=$C#Found >> $GITHUB_OUTPUT
-          echo NoC#Found=$NoC#Found >> $GITHUB_OUTPUT
+          echo CSharpFound=$CSharpFound >> $GITHUB_OUTPUT
+          echo NoCSharpFound=$NoCSharpFound >> $GITHUB_OUTPUT
 
   compile-games-linux:
     runs-on: ubuntu-latest
@@ -99,7 +99,7 @@ jobs:
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
   compile-dotnet-games-arm:
-    if: needs.get-game-directory.outputs.NoC#Found == true
+    if: ${{ needs.get-game-directory.outputs.NoCSharpFound }} == true
     runs-on: ubuntu-latest
     needs: get-game-directory
     steps:
@@ -189,7 +189,7 @@ jobs:
             **/games/*/published/
 
   compile-games-arm:
-    if: needs.get-game-directory.outputs.NoC#Found == true
+    if: ${{ needs.get-game-directory.outputs.NoCSharpFound }} == true
     runs-on: ubuntu-latest
     needs: get-game-directory
     steps:
