@@ -42,12 +42,14 @@ jobs:
           do
               echo "$dir"
               if [ -f "$dir"*.csproj ]; then
-                C#Found=true #if any program has a .csproj file, set the variable to true
+                CSharpFound=true #if any program has a .csproj file, set the variable to true
               else
-                NoC#Found=true #if any program does not have a .csproj file, set the variable to true
+                NoCSharpFound=true #if any program does not have a .csproj file, set the variable to true
               fi
           done
           echo Games located: "${#GAME_DIR[@]}"
+          echo $CSharpFound
+          echo $NoCSharpFound
           echo CSharpFound=$CSharpFound >> $GITHUB_OUTPUT
           echo NoCSharpFound=$NoCSharpFound >> $GITHUB_OUTPUT
 
