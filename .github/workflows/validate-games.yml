@@ -8,7 +8,9 @@ jobs:
   validate-game: 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
       - name: validate-config
         run: |
           for game in "$GITHUB_WORKSPACE/games/"*
