@@ -35,7 +35,7 @@ jobs:
           #echo "::set-output name=game-directory::${GAME_DIR[@]}"
           echo game-directory=${GAME_DIR[@]} >> $GITHUB_OUTPUT
           CSharpFound=false  
-          NoCSharpFound=flase
+          NoCSharpFound=false
 
           echo Games:
           for dir in "${GAME_DIR[@]}"
