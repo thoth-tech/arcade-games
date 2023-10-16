@@ -252,6 +252,12 @@ jobs:
                 compile-games-arm,
                 compile-dotnet-games-arm,
             ]
+        if: |
+          always() &&
+          needs.compile-games-windows.result == 'success' &&
+          needs.compile-games-linux.result == 'success' &&
+          (needs.compile-games-arm.result == 'success' || needs.compile-games-arm.result == 'skipped') &&
+          (needs.compile-dotnet-games-arm.result == 'success' || needs.compile-dotnet-games-arm.result == 'skipped')
         steps:
             - name: Checkout feature branch
               uses: actions/checkout@v4
