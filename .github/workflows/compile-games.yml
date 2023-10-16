@@ -253,11 +253,11 @@ jobs:
                 compile-dotnet-games-arm,
             ]
         if: |
-          always() &&
-          needs.compile-games-windows.result == 'success' &&
-          needs.compile-games-linux.result == 'success' &&
-          (needs.compile-games-arm.result == 'success' || needs.compile-games-arm.result == 'skipped') &&
-          (needs.compile-dotnet-games-arm.result == 'success' || needs.compile-dotnet-games-arm.result == 'skipped')
+            always() &&
+            needs.compile-games-windows.result == 'success' &&
+            needs.compile-games-linux.result == 'success' &&
+            (needs.compile-games-arm.result == 'success' || needs.compile-games-arm.result == 'skipped') &&
+            (needs.compile-dotnet-games-arm.result == 'success' || needs.compile-dotnet-games-arm.result == 'skipped')
         steps:
             - name: Checkout feature branch
               uses: actions/checkout@v4
@@ -319,6 +319,9 @@ jobs:
 
     add-compiled-label:
         needs: push-games
+        if: |
+            always() &&
+            needs.push-games.result == 'success'
         runs-on: ubuntu-latest
         steps:
             - name: Add label
