@@ -21,9 +21,10 @@ jobs:
               with:
                   fetch-depth: 0
                   submodules: "recursive"
+
+            - id: get-game-directory
               env:
                 GITHUB_CONTEXT: ${{ toJson(github) }}
-            - id: get-game-directory
               run: |
                   cd $GITHUB_WORKSPACE
                   echo "$GITHUB_CONTEXT"
