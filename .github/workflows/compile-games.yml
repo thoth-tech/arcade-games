@@ -24,8 +24,9 @@ jobs:
             - id: get-game-directory
               run: |
                   cd $GITHUB_WORKSPACE
-                  declare DIRECTORIES=($(git diff origin/main...origin/${GITHUB_HEAD_REF} --dirstat=0 --diff-filter=AM games/ | sed 's/^[ 0-9.]\+% //g'))
-                  GAME_DIR=()
+                  # declare DIRECTORIES=($(git diff origin/main...origin/${GITHUB_HEAD_REF} --dirstat=0 --diff-filter=AM games/ | sed 's/^[ 0-9.]\+% //g'))
+                  declare DIRECTORIES=($(git diff --name-only --merge-base GITHUB_BASE_REF GITHUB_HEAD_REF games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
+                  GAME_DIR=() 
                   for dir in "${DIRECTORIES[@]}"
                   do
                       if [ $(expr length ${dir//[!\/]}) -eq 2  ]; then
