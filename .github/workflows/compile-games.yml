@@ -31,9 +31,9 @@ jobs:
 
                   # declare DIRECTORIES=($(git diff origin/main...origin/${GITHUB_HEAD_REF} --dirstat=0 --diff-filter=AM games/ | sed 's/^[ 0-9.]\+% //g'))
                   if [ "${GITHUB_REPOSITORY}" == "thoth-tech/arcade-games"]; then
-                    declare DIRECTORIES=($(git diff --name-only --merge-base upstream/${GITHUB_BASE_REF} origin/${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
+                    declare DIRECTORIES=($(git diff --name-only --merge-base upstream/${GITHUB_BASE_REF} ${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
                   else  
-                    declare DIRECTORIES=($(git diff --name-only --merge-base origin/${GITHUB_BASE_REF} origin/${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
+                    declare DIRECTORIES=($(git diff --name-only --merge-base origin/${GITHUB_BASE_REF} ${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
                   fi
                     GAME_DIR=() 
                   for dir in "${DIRECTORIES[@]}"
