@@ -27,7 +27,7 @@ jobs:
                   GITHUB_CONTEXT: ${{ toJson(github) }}
               run: |
                   cd $GITHUB_WORKSPACE
-                  echo "$GITHUB_CONTEXT"
+                  # echo "$GITHUB_CONTEXT"
 
                   # declare DIRECTORIES=($(git diff origin/main...origin/${GITHUB_HEAD_REF} --dirstat=0 --diff-filter=AM games/ | sed 's/^[ 0-9.]\+% //g'))
                   if [ "${GITHUB_REPOSITORY}" == "thoth-tech/arcade-games"]; then
