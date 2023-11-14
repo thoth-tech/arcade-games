@@ -23,8 +23,8 @@ jobs:
                   submodules: "recursive"
 
             - id: get-game-directory
-              # env:
-              #     GITHUB_CONTEXT: ${{ toJson(github) }}
+              env:
+                  GITHUB_CONTEXT: ${{ toJson(github) }}
               run: |
                   cd $GITHUB_WORKSPACE
                   # echo "$GITHUB_CONTEXT"
