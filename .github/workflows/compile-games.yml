@@ -1,7 +1,7 @@
 name: Compile Games
 on:
     repository_dispatch:
-    pull_request:
+    pull_request_target:
         types: [opened, reopened, synchronize, labeled, unlabeled]
         branches: [main]
 
@@ -19,13 +19,25 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
+                  repository: ${{github.event.pull_request.head.repo.full_name}}
                   fetch-depth: 0
                   submodules: "recursive"
+
+
             - id: get-game-directory
+              env:
+                  GITHUB_CONTEXT: ${{ toJson(github) }}
               run: |
                   cd $GITHUB_WORKSPACE
-                  declare DIRECTORIES=($(git diff origin/main...origin/${GITHUB_HEAD_REF} --dirstat=0 --diff-filter=AM games/ | sed 's/^[ 0-9.]\+% //g'))
-                  GAME_DIR=()
+                  # echo "$GITHUB_CONTEXT"
+
+                  # declare DIRECTORIES=($(git diff origin/main...origin/${GITHUB_HEAD_REF} --dirstat=0 --diff-filter=AM games/ | sed 's/^[ 0-9.]\+% //g'))
+                  if [ "${GITHUB_REPOSITORY}" == "thoth-tech/arcade-games"]; then
+                    declare DIRECTORIES=($(git diff --name-only --merge-base upstream/${GITHUB_BASE_REF} origin/${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
+                  else  
+                    declare DIRECTORIES=($(git diff --name-only --merge-base origin/${GITHUB_BASE_REF} origin/${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
+                  fi
+                    GAME_DIR=() 
                   for dir in "${DIRECTORIES[@]}"
                   do
                       if [ $(expr length ${dir//[!\/]}) -eq 2  ]; then
@@ -262,6 +274,7 @@ jobs:
             - name: Checkout feature branch
               uses: actions/checkout@v4
               with:
+                  repository: ${{github.event.pull_request.head.repo.full_name}}
                   fetch-depth: 0
                   submodules: "recursive"
 
