@@ -61,6 +61,8 @@ jobs:
                   echo No C# Found: $NoCSharpFound
                   echo CSharpFound=$CSharpFound >> $GITHUB_OUTPUT
                   echo NoCSharpFound=$NoCSharpFound >> $GITHUB_OUTPUT
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
 
     compile-games-linux:
         runs-on: ubuntu-latest
@@ -268,7 +270,8 @@ jobs:
             - name: Checkout feature branch
               uses: actions/checkout@v4
               with:
-                  # repository: ${{github.event.pull_request.head.repo.full_name}}
+                  repository: ${{github.event.pull_request.head.repo.full_name}}
+                  ref: ${{ github.head_ref }}
                   fetch-depth: 0
                   submodules: "recursive"
 
