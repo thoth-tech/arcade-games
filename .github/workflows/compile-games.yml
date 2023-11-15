@@ -64,8 +64,6 @@ jobs:
                   echo CSharpFound=$CSharpFound >> $GITHUB_OUTPUT
                   echo NoCSharpFound=$NoCSharpFound >> $GITHUB_OUTPUT
                   echo Number-of-games=${#GAME_DIR[@]} >> $GITHUB_OUTPUT
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
 
     compile-games-linux:
         if: needs.get-game-directory.outputs.Number-of-games > 0
