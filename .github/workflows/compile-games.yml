@@ -11,7 +11,8 @@ jobs:
         runs-on: ubuntu-latest
         env:
             GAME_DIR:
-            GIT_BASE_REPO: ${{ github.event.pull_request.base.repo.full_name }}  
+            GIT_BASE_REPO: ${{ github.event.pull_request.base.repo.full_name }}
+            GITHUB_CONTEXT: ${{ toJson(github) }}  
         outputs:
             game-directory: ${{ steps.get-game-directory.outputs.game-directory }}
             CSharpFound: ${{ steps.get-game-directory.outputs.CSharpFound }}
@@ -27,7 +28,7 @@ jobs:
             - id: get-game-directory
               run: |
                   cd $GITHUB_WORKSPACE
-                  if [ "${GIT_BASE_REPO}" == "thoth-tech/arcade-games"]; then
+                  if [ "${GIT_BASE_REPO}" == "thoth-tech/arcade-games" ]; then
                     git remote add upstream https://github.com/thoth-tech/arcade-games.git
                     git fetch upstream
                     echo "Compare upstream ${GITHUB_BASE_REF} with origin ${GITHUB_HEAD_REF}"
