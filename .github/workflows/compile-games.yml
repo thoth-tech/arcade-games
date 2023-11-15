@@ -78,7 +78,9 @@ jobs:
             - name: Checkout feature branch
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 0
+                  repository: ${{github.event.pull_request.head.repo.full_name}}
+                  ref: ${{ github.head_ref }}
+                  fetch-depth: 1
                   submodules: "recursive"
 
             - name: Update Packages
@@ -127,7 +129,9 @@ jobs:
             - name: Checkout feature branch
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 0
+                  repository: ${{github.event.pull_request.head.repo.full_name}}
+                  ref: ${{ github.head_ref }}
+                  fetch-depth: 1
                   submodules: "recursive"
             - name: Update Packages
               run: sudo apt-get update
@@ -189,7 +193,9 @@ jobs:
                       7.0.x
             - uses: actions/checkout@v4
               with:
-                  fetch-depth: 0
+                  repository: ${{github.event.pull_request.head.repo.full_name}}
+                  ref: ${{ github.head_ref }}
+                  fetch-depth: 1
                   submodules: "recursive"
 
             - name: Install SplashKit
@@ -219,7 +225,9 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                  fetch-depth: 0
+                  repository: ${{github.event.pull_request.head.repo.full_name}}
+                  ref: ${{ github.head_ref }}
+                  fetch-depth: 1
                   submodules: "recursive"
             - name: Install Splashkit & Compile Game
               uses: pguyot/arm-runner-action@v2
@@ -280,7 +288,7 @@ jobs:
               with:
                   repository: ${{github.event.pull_request.head.repo.full_name}}
                   ref: ${{ github.head_ref }}
-                  fetch-depth: 0
+                  fetch-depth: 1
                   submodules: "recursive"
 
             - uses: actions/download-artifact@v3
