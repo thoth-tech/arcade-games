@@ -28,6 +28,7 @@ jobs:
               run: |
                   cd $GITHUB_WORKSPACE
                   if [ "${GITHUB_REPOSITORY}" == "thoth-tech/arcade-games"]; then
+                    git fetch upstream
                     declare DIRECTORIES=($(git diff --name-only --merge-base upstream/${GITHUB_BASE_REF} origin/${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
                   else  
                     declare DIRECTORIES=($(git diff --name-only --merge-base origin/${GITHUB_BASE_REF} origin/${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
