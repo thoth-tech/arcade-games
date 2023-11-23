@@ -18,39 +18,39 @@ A quick way to get an idea of the game mechanics to have a look at this Puzzle P
 
 - **Falling Blocks**
 
-      The primary mechanic of the game is that there are descending coloured blocks that fall in couplets. Each couplet is made of two separate block entities that can be positioned by the player, but are initially joined as they descend. These blocks can be rotated and moved left or right as they fall to allow the player to strategically place them on the board. Blocks are considered as 'placed' when they either reach the bottom of the board, or one (or both) of the couplet reach another block. Individual blocks will then fall according to gravity to the lowest point they can.
+    The primary mechanic of the game is that there are descending coloured blocks that fall in couplets. Each couplet is made of two separate block entities that can be positioned by the player, but are initially joined as they descend. These blocks can be rotated and moved left or right as they fall to allow the player to strategically place them on the board. Blocks are considered as 'placed' when they either reach the bottom of the board, or one (or both) of the couplet reach another block. Individual blocks will then fall according to gravity to the lowest point they can. A button can be used to cause couplets to fall faster, like in Tetris.
 
 - **Breakers**
 
-      In addition to the falling blocks, there are occasionally 'breakers' that are part of the couplet. These breakers are not block shaped, but are represented by an icon associated with the same coloured block. Breakers need to be placed like any other block, but if a breaker is placed adjacent to a block or group of blocks of the same colour/pattern, those blocks will 'break' and be removed from the board.
+    In addition to the falling blocks, there are occasionally 'breakers' that are part of the couplet. These breakers are not block shaped, but are represented by an icon associated with the same coloured block. Breakers need to be placed like any other block, but if a breaker is placed adjacent to a block or group of blocks of the same colour/pattern, those blocks will 'break' and be removed from the board.
 
 - **Creating Groups**
 
-       The general aim of players is to position blocks so that they create groups of the same colour before 'breaking' them. The bigger the group, the larger the impact when the group is finally broken.
+    The general aim of players is to position blocks so that they create groups of the same colour before 'breaking' them. The bigger the group, the larger the impact when the group is finally broken.
 
 - **Gravity of blocks**
 
-      When blocks are removed from the board due to breakers, surrounding blocks will fall down to fill the created gaps. Large groups of the same colour (four or more) that are created in a rectangular pattern will create bigger block units that will always fall together, making it possible to have gaps in the board.
+    When blocks are removed from the board due to breakers, surrounding blocks will fall down to fill the created gaps. Large groups of the same colour (four or more) that are created in a rectangular pattern will create bigger block units that will always fall together, making it possible to have gaps in the board.
 
 - **Combos**
 
-      The board can be set-up in such a way that the player can cause combos. This is in the sense that when a group is broken, it could cause other pieces on the board to fall in such a way that another break will occur in the same 'move'. A move is definied by one couplet being placed by the player.
+    The board can be set-up in such a way that the player can cause combos. This is in the sense that when a group is broken, it could cause other pieces on the board to fall in such a way that another break will occur in the same 'move'. A move is definied by one couplet being placed by the player.
 
 - **Grey stone blocks (aka 'attacks')**
 
-      As part of the player versus player (PvP) aspect of this game, grey stone blocks can fall randomly onto the board in varying amounts. This is caused by the opposing player creating combos or breaking large groups. These grey blocks will turn into random other coloured blocks after two moves, and thus hinder the player by reducing space and obstructing their combos. This means speed in placing blocks can be key.
+    As part of the player versus player (PvP) aspect of this game, grey stone blocks can fall randomly onto the board in varying amounts. This is caused by the opposing player creating combos or breaking large groups. These grey blocks will turn into random other coloured blocks after two moves, and thus hinder the player by reducing space and obstructing their combos. This means speed in placing blocks can be key.
 
 - **Lose/Win conditions**
 
-      The game is lost when the player's blocks reach the top of the centre of the board, such that there is no room for new block couplets to spawn, much like Tetris. In extreme scenarios this could even be caused by attacks from the other player. This means offense strategy while still maintaining space on the board can be vital. The game is won by outlasting the other player.
+    The game is lost when the player's blocks reach the top of the centre of the board, such that there is no room for new block couplets to spawn, much like Tetris. In extreme scenarios this could even be caused by attacks from the other player. This means offense strategy while still maintaining space on the board can be vital. The game is won by outlasting the other player.
 
 - **Formulas**
 
-      At this time there haven't been decided formulas for single-player point scoring, how varying attacks are sent/spawned, or how couplets are randomized, but this will need to be nutted out during the development process, potentially through trial and error.
+    At this time there haven't been decided formulas for single-player point scoring, how varying attacks are sent/spawned, or how couplets are randomized, but this will need to be nutted out during the development process, potentially through trial and error.
 
 ## Controls
 
-The player will use the joystick to move couplets left or right, and use buttons to rotate blocks clockwise or anti-clockwise, as well as use a separate button to get blocks to drop instantly (like Tetris). The joystick currently won't be used to drop blocks to avoid accidents which could be detrimental to a player's game.
+The player will use the joystick to move couplets left or right, and use buttons to rotate blocks clockwise or anti-clockwise, as well as use a separate button to get couplets to drop faster. The joystick currently won't be used to drop blocks to avoid accidents which could be detrimental to a player's game.
 
 ## Game Art
 
