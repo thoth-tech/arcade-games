@@ -40,6 +40,10 @@ A quick way to get an idea of the game mechanics to have a look at this Puzzle P
 
     As part of the player versus player (PvP) aspect of this game, grey stone blocks can fall randomly onto the board in varying amounts. This is caused by the opposing player creating combos or breaking large groups. These grey blocks will turn into random other coloured blocks after two moves, and thus hinder the player by reducing space and obstructing their combos. This means speed in placing blocks can be key.
 
+- **Preview of next blocks**
+
+    Like in a classical Tetris game, players will be able to see a preview of the next incoming couplet, allowing them to make strategic decisions regarind where to place their current blocks.
+
 - **Lose/Win conditions**
 
     The game is lost when the player's blocks reach the top of the centre of the board, such that there is no room for new block couplets to spawn, much like Tetris. In extreme scenarios this could even be caused by attacks from the other player. This means offense strategy while still maintaining space on the board can be vital. The game is won by outlasting the other player.
