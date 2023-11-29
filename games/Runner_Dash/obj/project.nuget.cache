@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "I4M4B6tjFRXm/tvwIvEtw4xKbt4qq34tnB7M4x30Rr1evdqxudd0BbPMVbvhpZGysWTTtKCeGuUtf87/o2cAmA==",
+  "dgSpecHash": "dittIWp9sUxRu4S/OX4YiiGq3KbVB73/zHO0xCz8oxOdjcY7HHCxa/W7Il/7f3KhpbhoJhudP/UFo7RRiDHOjA==",
   "success": true,
-  "projectFilePath": "D:\\GithubRepos\\arcade-games\\games\\Runner_Dash\\Runner_Dash.csproj",
+  "projectFilePath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\Runner_Dash.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\jaron\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\jaron\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\jaron\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\jaron\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
+    "C:\\Users\\phili\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.15\\microsoft.netcore.app.ref.6.0.15.nupkg.sha512",
+    "C:\\Users\\phili\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.15\\microsoft.windowsdesktop.app.ref.6.0.15.nupkg.sha512",
+    "C:\\Users\\phili\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.15\\microsoft.aspnetcore.app.ref.6.0.15.nupkg.sha512",
+    "C:\\Users\\phili\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.15\\microsoft.netcore.app.host.win-x64.6.0.15.nupkg.sha512"
   ],
   "logs": []
 }

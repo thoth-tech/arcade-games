@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\jaron\\.nuget\\packages\\": {}
+    "C:\\Users\\phili\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GithubRepos\\arcade-games\\games\\Runner_Dash\\Runner_Dash.csproj",
+      "projectUniqueName": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\Runner_Dash.csproj",
       "projectName": "Runner_Dash",
-      "projectPath": "D:\\GithubRepos\\arcade-games\\games\\Runner_Dash\\Runner_Dash.csproj",
-      "packagesPath": "C:\\Users\\jaron\\.nuget\\packages\\",
-      "outputPath": "D:\\GithubRepos\\arcade-games\\games\\Runner_Dash\\obj\\",
+      "projectPath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\Runner_Dash.csproj",
+      "packagesPath": "C:\\Users\\phili\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\phili\\OneDrive - Deakin University\\2023 TRI-2\\SIT782 - Capstone\\Projects\\arcade-games-desktop\\games\\Runner_Dash\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jaron\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\phili\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -57,19 +57,19 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.25, 6.0.25]"
+            "version": "[6.0.15, 6.0.15]"
           },
           {
             "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[6.0.25, 6.0.25]"
+            "version": "[6.0.15, 6.0.15]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.25, 6.0.25]"
+            "version": "[6.0.15, 6.0.15]"
           },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[6.0.25, 6.0.25]"
+            "version": "[6.0.15, 6.0.15]"
           }
         ],
         "frameworkReferences": {
@@ -77,7 +77,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

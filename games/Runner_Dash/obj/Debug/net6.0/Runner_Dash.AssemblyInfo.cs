@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Runner_Dash")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+43fe50f3a3ce592435a17b03e8fd6c83a3af4d4b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Runner_Dash")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Runner_Dash")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
