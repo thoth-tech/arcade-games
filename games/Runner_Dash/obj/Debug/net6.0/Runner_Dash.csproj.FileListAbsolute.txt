@@ -13,3 +13,18 @@ C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Project
 C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.pdb
 C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.genruntimeconfig.cache
 C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\ref\Runner_Dash.dll
+D:\GithubRepos\arcade-games\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.exe
+D:\GithubRepos\arcade-games\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.deps.json
+D:\GithubRepos\arcade-games\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.runtimeconfig.json
+D:\GithubRepos\arcade-games\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.dll
+D:\GithubRepos\arcade-games\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.pdb
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.GeneratedMSBuildEditorConfig.editorconfig
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.AssemblyInfoInputs.cache
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.AssemblyInfo.cs
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.csproj.CoreCompileInputs.cache
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.sourcelink.json
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.dll
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\refint\Runner_Dash.dll
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.pdb
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.genruntimeconfig.cache
+D:\GithubRepos\arcade-games\games\Runner_Dash\obj\Debug\net6.0\ref\Runner_Dash.dll
