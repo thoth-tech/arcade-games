@@ -31,6 +31,10 @@ int main()
     /*window size of 576 x 864 calibrated to allow for board of 288w x 864h dimensions + some extra space. Dimensions based on blocks that are 75%
     of the original size, so are 48w x 72h. This board can thus fit 12 vertically and 6 horizontally. */
     open_window("Single Combat", 576, 900);
+    
+    //variable to define edge of the playing board.
+    int boardLeftEdge = 144;
+    int boardRightEdge = 432;
 
     //window_toggle_border("Single Combat"); uncomment this when ready for arcade
     load_resources();
@@ -62,9 +66,11 @@ int main()
 
         if (key_typed(A_KEY))
         {
+            if (sprite_x(GreenBlockSprite) > boardLeftEdge)
+            {
+                sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) - 48));
+            }
 
-
-            sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) - 48));
         }
 
         if (key_typed(D_KEY))
@@ -76,9 +82,6 @@ int main()
         {
             sprite_set_speed(GreenBlockSprite, 10);
         }
-
-
-        
     
 
     }
