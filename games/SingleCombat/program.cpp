@@ -35,37 +35,39 @@ int main()
     //window_toggle_border("Single Combat"); uncomment this when ready for arcade
     load_resources();
 
+    //create sprite
+    sprite GreenBlockSprite = create_sprite("greenblock.png");
 
-
-
-    while (!key_typed(ESCAPE_KEY) && !quit_requested())
-    {
-        process_events();
-        refresh_screen(60);
-
-        
+    //game board/play area
+    //fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
 
         //At 75% size (48w x 72h), can easily fit 12 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
         //Scaling down for the current art distorts slightly, this will be fine for testing purposes but worth fixing in future (need art with less pixels)
+        sprite_set_scale(GreenBlockSprite, 0.75);
+        //set start location of sprite, should spawn in 3rd column across
         //Note that the scale down means that the block start is not actually 0, 0. It's offset by 12.5%, so -8 and -12). Will be better to adjust art so that there's no need to scale
+        sprite_set_x(GreenBlockSprite, 232);
+        sprite_set_y(GreenBlockSprite, 6);
+        sprite_set_dx(GreenBlockSprite, 1);
+        sprite_set_dy(GreenBlockSprite, 1);
+        sprite_set_heading(GreenBlockSprite, 90);
+    
         
-        //press enter/return to start game
+            
+    while (!key_typed(ESCAPE_KEY) && !quit_requested())
+    {
+        process_events();
+        clear_screen(COLOR_WHITE);
+        update_sprite(GreenBlockSprite);
+        draw_sprite(GreenBlockSprite);
+        refresh_screen(60);
+        
+        
+        
         if (key_typed(RETURN_KEY))
         {
-            //game board/play area
-            fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
-
-            //create sprite, set start location and size, should spawn in 3rd column across
-            sprite GreenBlockSprite = create_sprite("greenblock.png");
-            sprite_set_x(GreenBlockSprite, 232);
-            sprite_set_y(GreenBlockSprite, 6);
-            sprite_set_scale(GreenBlockSprite, 0.75);
             draw_sprite(GreenBlockSprite);
-
         }
-
-
-
 
     }
     return 0;
