@@ -13,7 +13,8 @@ Player Two
 Up: UP_ARROW | Left: LEFT_ARROW | Down: DOWN_ARROW | Right: RIGHT_ARROW Weak(1): U | Weak(2): J Med(1) : I | Med(2) : K Hard(1): O | Hard(2): L
 
 General
-Start: ENTER Escape: ESC
+Start: ENTER 
+Escape: ESC
 */
 
 
@@ -42,13 +43,22 @@ int main()
         process_events();
         refresh_screen(60);
 
+        
+
         //At 75% size (48w x 72h), can easily fit 12 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
         //Scaling down for the current art distorts slightly, this will be fine for testing purposes but worth fixing in future (need art with less pixels)
         //Note that the scale down means that the block start is not actually 0, 0. It's offset by 12.5%, so -8 and -12). Will be better to adjust art so that there's no need to scale
-        draw_bitmap("greenblock.png", -8, -12, option_scale_bmp(0.75, 0.75, option_to_screen()));
+        
+        //press enter/return to start game
+        if (key_typed(RETURN_KEY))
+        {
+            //game board/play area
+            fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
 
-        //game board/play area
-        fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
+            //should spawn in 3rd section across
+            draw_bitmap("greenblock.png", 232, 6, option_scale_bmp(0.75, 0.75, option_to_screen()));
+        }
+
 
 
 
