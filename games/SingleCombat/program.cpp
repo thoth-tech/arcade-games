@@ -27,7 +27,7 @@ void load_resources()
 int main()
 {
     //max window size 1600 x 900 for Arcade Machine. Minimum 640 x 480
-    /*window size of 576 x 864 calibrated to allow for board of 576w x 864h dimensions + some extra space. Dimensions based on blocks that are 75%
+    /*window size of 576 x 864 calibrated to allow for board of 288w x 864h dimensions + some extra space. Dimensions based on blocks that are 75%
     of the original size, so are 48w x 72h. This board can thus fit 12 vertically and 6 horizontally. */
     open_window("Single Combat", 576, 900);
 
@@ -47,7 +47,8 @@ int main()
         //Note that the scale down means that the block start is not actually 0, 0. It's offset by 12.5%, so -8 and -12). Will be better to adjust art so that there's no need to scale
         draw_bitmap("greenblock.png", -8, -12, option_scale_bmp(0.75, 0.75, option_to_screen()));
 
-        
+        //game board/play area
+        fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
 
 
 
