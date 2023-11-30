@@ -34,7 +34,7 @@ int main()
     
     //variable to define edge of the playing board.
     int boardLeftEdge = 144;
-    int boardRightEdge = 432;
+    int boardRightEdge = 288;
 
     //window_toggle_border("Single Combat"); uncomment this when ready for arcade
     load_resources();
@@ -75,7 +75,12 @@ int main()
 
         if (key_typed(D_KEY))
         {
-            sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) + 48));
+
+            if (sprite_x(GreenBlockSprite) < boardRightEdge + 48)
+            {
+                sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) + 48));
+            }
+            
         }
 
         if (key_typed(S_KEY))
