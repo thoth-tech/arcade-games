@@ -36,6 +36,9 @@ int main()
     int boardLeftEdge = 144;
     int boardRightEdge = 288;
 
+    //this will vary based on where the bottom of any particular column is, as blocks are stacked;
+    int boardBottomEdge = 882;
+
     //window_toggle_border("Single Combat"); uncomment this when ready for arcade
     load_resources();
 
@@ -64,6 +67,7 @@ int main()
         draw_sprite(GreenBlockSprite);
         refresh_screen(60);
 
+        //lets block move left if not at edge of board
         if (key_typed(A_KEY))
         {
             if (sprite_x(GreenBlockSprite) > boardLeftEdge)
@@ -73,6 +77,7 @@ int main()
 
         }
 
+        //lets block move right if not at edge of board
         if (key_typed(D_KEY))
         {
 
@@ -83,10 +88,17 @@ int main()
             
         }
 
+        //speeds descent of block, can't be undone
         if (key_typed(S_KEY))
         {
             sprite_set_speed(GreenBlockSprite, 10);
         }
+
+        //sprite stops when it reaches the end of the board
+        if (sprite_y(GreenBlockSprite) >= boardBottomEdge - 90)
+            {
+                sprite_set_speed(GreenBlockSprite, 0);
+            } 
     
 
     }
