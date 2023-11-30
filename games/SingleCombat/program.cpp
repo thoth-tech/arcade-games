@@ -27,9 +27,14 @@ void load_resources()
 int main()
 {
     //max window size 1600 x 900 for Arcade Machine. Minimum 640 x 480
-    open_window("Single Combat", 1600, 900);
-    window_toggle_border("Single Combat");
+    /*window size of 576 x 864 calibrated to allow for board of 576w x 864h dimensions + some extra space. Dimensions based on blocks that are 75%
+    of the original size, so are 48w x 72h. This board can thus fit 12 vertically and 6 horizontally. */
+    open_window("Single Combat", 576, 900);
+
+    //window_toggle_border("Single Combat"); uncomment this when ready for arcade
     load_resources();
+
+
 
 
     while (!key_typed(ESCAPE_KEY) && !quit_requested())
@@ -37,16 +42,10 @@ int main()
         process_events();
         refresh_screen(60);
 
-        //this draws the 'board', not static for now, can create graphics later down the track
-        fill_rectangle(COLOR_BLACK, 360, 60, 360, 780);
-        draw_line(COLOR_RED, 358, 58, 721, 58, option_line_width(2));
-        draw_line(COLOR_RED, 358, 58, 358, 841, option_line_width(2));
-        draw_line(COLOR_RED, 721, 58, 721, 841, option_line_width(2));
-        draw_line(COLOR_RED, 358, 841,721, 841, option_line_width(2));
-
-        //at 50% size, can easily fit 13 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
+        //At 75% size (48w x 72h), can easily fit 12 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
         //Scaling down for the current art distorts slightly, this will be fine for testing purposes but worth fixing in future (need art with less pixels)
-        draw_bitmap("greenblock.png", 1, 50, option_scale_bmp(0.50, 0.50, option_to_screen()));
+        //Note that the scale down means that the block start is not actually 0, 0. It's offset by 12.5%, so -8 and -12). Will be better to adjust art so that there's no need to scale
+        draw_bitmap("greenblock.png", -8, -12, option_scale_bmp(0.75, 0.75, option_to_screen()));
 
         
 
