@@ -31,24 +31,26 @@ int main()
     window_toggle_border("Single Combat");
     load_resources();
 
-    
-
 
     while (!key_typed(ESCAPE_KEY) && !quit_requested())
     {
         process_events();
         refresh_screen(60);
 
+        //this draws the 'board', not static for now, can create graphics later down the track
+        fill_rectangle(COLOR_BLACK, 360, 60, 360, 780);
+        draw_line(COLOR_RED, 358, 58, 721, 58, option_line_width(2));
+        draw_line(COLOR_RED, 358, 58, 358, 841, option_line_width(2));
+        draw_line(COLOR_RED, 721, 58, 721, 841, option_line_width(2));
+        draw_line(COLOR_RED, 358, 841,721, 841, option_line_width(2));
+
         //at 50% size, can easily fit 13 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
         //Scaling down for the current art distorts slightly, this will be fine for testing purposes but worth fixing in future (need art with less pixels)
         draw_bitmap("greenblock.png", 1, 50, option_scale_bmp(0.50, 0.50, option_to_screen()));
-        draw_bitmap("greenbreaker.png", 1, 100, option_scale_bmp(0.50, 0.50, option_to_screen()));
-        draw_bitmap("redblock.png", 1, 150, option_scale_bmp(0.50, 0.50, option_to_screen()));
-        draw_bitmap("redbreaker.png", 1, 200, option_scale_bmp(0.50, 0.50, option_to_screen()));
-        draw_bitmap("blueblock.png", 1, 250, option_scale_bmp(0.50, 0.50, option_to_screen()));
-        draw_bitmap("bluebreaker.png", 1, 300, option_scale_bmp(0.50, 0.50, option_to_screen()));
-        draw_bitmap("yellowblock.png", 1, 350, option_scale_bmp(0.50, 0.50, option_to_screen()));
-        draw_bitmap("yellowbreaker.png", 1, 400, option_scale_bmp(0.50, 0.50, option_to_screen()));
+
+        
+
+
 
     }
     return 0;
