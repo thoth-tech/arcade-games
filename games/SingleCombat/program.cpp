@@ -61,13 +61,25 @@ int main()
         update_sprite(GreenBlockSprite);
         draw_sprite(GreenBlockSprite);
         refresh_screen(60);
-        
-        
-        
-        if (key_typed(RETURN_KEY))
+
+        if (key_typed(A_KEY))
         {
-            draw_sprite(GreenBlockSprite);
+            sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) - 48));
         }
+
+        if (key_typed(D_KEY))
+        {
+            sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) + 48));
+        }
+
+        if (key_typed(S_KEY))
+        {
+            sprite_set_speed(GreenBlockSprite, 10);
+        }
+
+
+        
+    
 
     }
     return 0;
