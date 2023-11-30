@@ -38,9 +38,6 @@ int main()
     //create sprite
     sprite GreenBlockSprite = create_sprite("greenblock.png");
 
-    //game board/play area
-    //fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
-
         //At 75% size (48w x 72h), can easily fit 12 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
         //Scaling down for the current art distorts slightly, this will be fine for testing purposes but worth fixing in future (need art with less pixels)
         sprite_set_scale(GreenBlockSprite, 0.75);
@@ -59,11 +56,14 @@ int main()
         process_events();
         clear_screen(COLOR_WHITE);
         update_sprite(GreenBlockSprite);
+        fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
         draw_sprite(GreenBlockSprite);
         refresh_screen(60);
 
         if (key_typed(A_KEY))
         {
+
+
             sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) - 48));
         }
 
