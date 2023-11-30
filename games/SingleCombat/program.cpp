@@ -55,8 +55,13 @@ int main()
             //game board/play area
             fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
 
-            //should spawn in 3rd section across
-            draw_bitmap("greenblock.png", 232, 6, option_scale_bmp(0.75, 0.75, option_to_screen()));
+            //create sprite, set start location and size, should spawn in 3rd column across
+            sprite GreenBlockSprite = create_sprite("greenblock.png");
+            sprite_set_x(GreenBlockSprite, 232);
+            sprite_set_y(GreenBlockSprite, 6);
+            sprite_set_scale(GreenBlockSprite, 0.75);
+            draw_sprite(GreenBlockSprite);
+
         }
 
 
