@@ -59,4 +59,4 @@ Sky Surge is a top-down shooter which draws inspiration from classics such as St
 ## Example Sprites
 
 ![Sprite 1](Images/plane2.JPG)
-![Sprite 2](Images/stealthbomber2.PNG)
+![Sprite 2](Images/stealthbomber2.png)
