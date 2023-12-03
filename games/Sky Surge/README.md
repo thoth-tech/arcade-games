@@ -48,13 +48,7 @@ Sky Surge is a top-down shooter which draws inspiration from classics such as St
 - Standard four button movement
 
 # UML Class Diagram
-
-
-
-
-
-
-
+![UMLClass](Images/UMLClass.png)
 
 ## Example Sprites
 
