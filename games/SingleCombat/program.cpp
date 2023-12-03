@@ -38,12 +38,48 @@ class Block
     }
 
     void update(){
+        if (moving)
+        {
+            double currentY = sprite_y(sprite);
+            if (currentY >= destinationY)
+            {
+                moving = false;
+            }
+            else{
+                sprite_set_y(sprite, currentY + 3);
+            }
+
+            if (key_typed(A_KEY))
+        {
+            if (sprite_x(sprite) > boardLeftEdge)
+            {
+                sprite_set_x(sprite, (sprite_x(sprite) - 48));
+            }
+
+        }
+
+        //lets block move right if not at edge of board
+        if (key_typed(D_KEY))
+        {
+
+            if (sprite_x(sprite) < boardRightEdge + 48)
+            {
+                sprite_set_x(sprite, (sprite_x(sprite) + 48));
+            }
+            
+        }
+            
+        }
         update_sprite(sprite);
         draw_sprite(sprite);
     }
 
     private:
     sprite sprite;
+    bool moving{true};
+    double destinationY{882};
+    double boardLeftEdge = 144;
+    double boardRightEdge = 288;
     
 };
 
@@ -54,17 +90,7 @@ void load_resources()
     load_resource_bundle("game_bundle", "game_bundle.txt");
 }
 
-/*bool moveTo(sprite sprite, int destinationY)
-{
-    double currentY;
-    currentY = sprite_y(sprite);
-    sprite_set_y(currentY + 1);
-    if ((currentY + 1) >= destinationY)
-    {
-        return true;
-    }
-    return false;
-}*/
+
 
 
 int main()
@@ -77,10 +103,8 @@ int main()
     
     
     //variable to define edge of the playing board.
-    int boardLeftEdge = 144;
-    int boardRightEdge = 288;
-    //this will vary based on where the bottom of any particular column is, as blocks are stacked;
-    int boardBottomEdge = 882;
+    
+
 
     //window_toggle_border("Single Combat"); uncomment this when ready for arcade
     load_resources();
