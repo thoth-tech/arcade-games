@@ -1,7 +1,8 @@
-//compile by running skm clang++ program.cpp -o SingleCombat
+//compile by running skm clang++ *.cpp -o SingleCombat
 
 #include "splashkit.h"
 #include <vector>
+#include "block.h"
 using namespace std;
 
 /* CONTROLS INFO
@@ -16,73 +17,6 @@ General
 Start: ENTER 
 Escape: ESC
 */
-
-
-class Block
-{
-    public: 
-    Block (){
-    //create sprite
-    sprite = create_sprite("greenblock.png");
-        //At 75% size (48w x 72h), can easily fit 12 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
-        //Scaling down for the current art distorts slightly, this will be fine for testing purposes but worth fixing in future (need art with less pixels)
-        sprite_set_scale(sprite, 0.75);
-        //set start location of sprite, should spawn in 3rd column across
-        //Note that the scale down means that the block start is not actually 0, 0. It's offset by 12.5%, so -8 and -12). Will be better to adjust art so that there's no need to scale
-        sprite_set_x(sprite, 232);
-        sprite_set_y(sprite, 6);
-        //sprite_set_dx(GreenBlockSprite, 1);
-        //sprite_set_dy(GreenBlockSprite, 1);
-        //sprite_set_heading(GreenBlockSprite, 90);
-        //sprite_set_speed(GreenBlockSprite, 1);
-    }
-
-    void update(){
-        if (moving)
-        {
-            double currentY = sprite_y(sprite);
-            if (currentY >= destinationY)
-            {
-                moving = false;
-            }
-            else{
-                sprite_set_y(sprite, currentY + 3);
-            }
-
-            if (key_typed(A_KEY))
-        {
-            if (sprite_x(sprite) > boardLeftEdge)
-            {
-                sprite_set_x(sprite, (sprite_x(sprite) - 48));
-            }
-
-        }
-
-        //lets block move right if not at edge of board
-        if (key_typed(D_KEY))
-        {
-
-            if (sprite_x(sprite) < boardRightEdge + 48)
-            {
-                sprite_set_x(sprite, (sprite_x(sprite) + 48));
-            }
-            
-        }
-            
-        }
-        update_sprite(sprite);
-        draw_sprite(sprite);
-    }
-
-    private:
-    sprite sprite;
-    bool moving{true};
-    double destinationY{882};
-    double boardLeftEdge = 144;
-    double boardRightEdge = 288;
-    
-};
-
 
 void load_resources()
 {
