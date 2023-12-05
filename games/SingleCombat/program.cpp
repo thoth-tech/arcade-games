@@ -1,9 +1,9 @@
 //compile by running skm clang++ *.cpp -o SingleCombat
 
 #include "splashkit.h"
-#include <vector>
 #include "block.h"
 using namespace std;
+
 
 /* CONTROLS INFO
 According to https://github.com/thoth-tech/arcade-games
@@ -17,6 +17,7 @@ General
 Start: ENTER 
 Escape: ESC
 */
+
 
 void load_resources()
 {

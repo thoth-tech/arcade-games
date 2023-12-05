@@ -1,11 +1,13 @@
+#pragma once
 #include "splashkit.h"
+
 
 class Block
 {
-    public:
+public:
     Block();
     void update();
-    private:
+private:
     sprite blockSprite;
     bool moving;
     double destinationY;
