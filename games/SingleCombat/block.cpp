@@ -1,5 +1,6 @@
-#include "splashkit.h"
 #include "block.h"
+#include "splashkit.h"
+
     
     Block::Block(){
     //create sprite

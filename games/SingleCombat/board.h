@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include "block.h"
+
+
 
 class Board
 {
