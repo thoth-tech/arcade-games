@@ -11,8 +11,8 @@ private:
     sprite blockSprite;
     bool moving;
     double destinationY;
-    double boardLeftEdge;
-    double boardRightEdge;
+    const double boardLeftEdge{144};
+    const double boardRightEdge{432};
     double movingSpeed;
     double blockHeight;
     double blockWidth;
