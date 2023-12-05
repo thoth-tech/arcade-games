@@ -11,4 +11,5 @@ class Block
     double destinationY;
     double boardLeftEdge;
     double boardRightEdge;
+    double movingSpeed;
 };
