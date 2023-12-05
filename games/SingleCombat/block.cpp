@@ -15,6 +15,8 @@
         boardLeftEdge = 144;
         boardRightEdge = 432;
         movingSpeed = 1;
+        blockHeight = 72;
+        blockWidth = 48;
     }
 
     void Block::update(){
@@ -29,14 +31,22 @@
                 moving = false;
             }
             else{
-                sprite_set_y(blockSprite, currentY + movingSpeed);
+                //checks that sprite will not go past the edge of the destination based on the moving speed when close
+                if (destinationY < currentY + movingSpeed)
+                {
+                    sprite_set_y(blockSprite, destinationY);
+                }
+                else
+                {
+                    sprite_set_y(blockSprite, currentY + movingSpeed);
+                }
             }
 
             if (key_typed(A_KEY))
         {
             if (sprite_x(blockSprite) > boardLeftEdge)
             {
-                sprite_set_x(blockSprite, (sprite_x(blockSprite) - 48));
+                sprite_set_x(blockSprite, (sprite_x(blockSprite) - blockWidth));
             }
 
         }
@@ -46,9 +56,9 @@
         if (key_typed(D_KEY))
         {
 
-            if (sprite_x(blockSprite) < boardRightEdge - 48)
+            if (sprite_x(blockSprite) < boardRightEdge - blockWidth)
             {
-                sprite_set_x(blockSprite, (sprite_x(blockSprite) + 48));
+                sprite_set_x(blockSprite, (sprite_x(blockSprite) + blockWidth));
             }
             
         }

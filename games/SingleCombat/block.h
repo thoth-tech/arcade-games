@@ -12,4 +12,6 @@ class Block
     double boardLeftEdge;
     double boardRightEdge;
     double movingSpeed;
+    double blockHeight;
+    double blockWidth;
 };
