@@ -1,8 +1,8 @@
-BITMAP, GreenBlock, greenblock.png, 64, 96, 1, 1, 1
-BITMAP, RedBlock, redblock.png, 64, 96, 1, 1, 1
-BITMAP, BlueBlock, blueblock.png, 64, 96, 1, 1, 1
-BITMAP, YellowBlock, yellowblock.png, 64, 96, 1, 1, 1
-BITMAP, GreenBreake, greenbreaker.png, 64, 96, 1, 1, 1
-BITMAP, RedBreaker, redbreaker.png, 64, 96, 1, 1, 1
-BITMAP, BlueBreaker, bluebreaker.png, 64, 96, 1, 1, 1
-BITMAP, YellowBreaker, yellowbreaker.png, 64, 96, 1, 1, 1
+BITMAP, GreenBlock, greenblock75.png, 48, 72, 1, 1, 1
+BITMAP, RedBlock, redblock75.png, 48, 72, 1, 1, 1
+BITMAP, BlueBlock, blueblock75.png, 48, 72, 1, 1, 1
+BITMAP, YellowBlock, yellowblock75.png, 48, 72, 1, 1, 1
+BITMAP, GreenBreake, greenbreaker75.png, 48, 72, 1, 1, 1
+BITMAP, RedBreaker, redbreaker75.png, 48, 72, 1, 1, 1
+BITMAP, BlueBreaker, bluebreaker75.png, 48, 72, 1, 1, 1
+BITMAP, YellowBreaker, yellowbreaker75.png, 48, 72, 1, 1, 1

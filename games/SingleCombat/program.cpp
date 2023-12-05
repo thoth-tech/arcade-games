@@ -25,12 +25,10 @@ void load_resources()
 }
 
 
-
-
 int main()
 {
     //max window size 1600 x 900 for Arcade Machine. Minimum 640 x 480
-    /*window size of 576 x 864 calibrated to allow for board of 288w x 864h dimensions + some extra space. Dimensions based on blocks that are 75%
+    /*window size of 576 x 900 calibrated to allow for board of 288w x 864h dimensions + some extra space.
     of the original size, so are 48w x 72h. This board can thus fit 12 vertically and 6 horizontally. */
     open_window("Single Combat", 576, 900);
     Block newBlock;
