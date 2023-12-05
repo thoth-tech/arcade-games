@@ -13,8 +13,6 @@
         sprite_set_y(blockSprite, 18);
         moving = true;
         destinationY = 810;
-        boardLeftEdge = 144;
-        boardRightEdge = 432;
         movingSpeed = 1;
         blockHeight = 72;
         blockWidth = 48;

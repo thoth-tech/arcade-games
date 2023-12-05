@@ -6,17 +6,19 @@ Board::Board(){
 
     for (int x = 0; x < 6; x++)
     {
-        blocks.push_back(std::vector<std::shared_ptr<Block>>());
+        grid.push_back(blocks());
 
         for(int y = 0; y < 12; y++)
         {
-            blocks[x].push_back(nullptr);
+            grid[x].push_back(nullptr);
         }
         
     }
 
     //creates a block with a pointer to it (greenBlock is the pointer)
     greenBlock = std::make_shared<Block>();
+    grid[3][0] = greenBlock;
+
 
 }
 
