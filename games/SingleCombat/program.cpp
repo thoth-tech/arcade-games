@@ -32,7 +32,7 @@ int main()
     /*window size of 576 x 900 calibrated to allow for board of 288w x 864h dimensions + some extra space.
     of the original size, so are 48w x 72h. This board can thus fit 12 vertically and 6 horizontally. */
     open_window("Single Combat", 576, 900);
-    Block newBlock;
+    //Block newBlock;
     Board board;
     
 
@@ -46,7 +46,7 @@ int main()
         process_events();
         clear_screen(COLOR_WHITE);
         fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
-        newBlock.update();
+        board.update();
         refresh_screen(60);
 
     }
