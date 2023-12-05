@@ -4,18 +4,23 @@
     Block::Block(){
     //create sprite
     blockSprite = create_sprite("greenblock75.png");
-        //At 100% size (48w x 72h), can easily fit 12 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
-        //window size currently of 576 x 900 calibrated to allow for board of 288w x 864h dimensions + some extra space
-        //set start location of sprite, should spawn in 3rd column across
-        sprite_set_x(blockSprite, 232);
-        sprite_set_y(blockSprite, 6);
+        //Refer to /Documentation/singelplayerGameDimensions1.png to help calculate block spawn location. Based on a 48w x 72h block as on 5th Dec 2023.
+        //Playing board can fit exactly 12 blocks vertically, and 6 blocks horizontally.
+
+        //Sets start location of sprite, should spawn in 3rd column across
+        sprite_set_x(blockSprite, 240);
+        sprite_set_y(blockSprite, 18);
         moving = true;
-        destinationY = 882;
+        destinationY = 810;
         boardLeftEdge = 144;
-        boardRightEdge = 288;
+        boardRightEdge = 432;
+        movingSpeed = 1;
     }
 
     void Block::update(){
+
+        //this loop allows the sprite to move downwards until it reaches it's destination. Splashkit's "sprite move to"function did not allow sprite to stop where it needed to while moving smoothly
+        //TO DO: User input needs to be moved out of this class
         if (moving)
         {
             double currentY = sprite_y(blockSprite);
@@ -24,7 +29,7 @@
                 moving = false;
             }
             else{
-                sprite_set_y(blockSprite, currentY + 3);
+                sprite_set_y(blockSprite, currentY + movingSpeed);
             }
 
             if (key_typed(A_KEY))
@@ -36,16 +41,24 @@
 
         }
 
-        //lets block move right if not at edge of board
+        //Lets block move right if not at edge of board. Offset by -48 due to the sprite anchor point being at it's top left corner (0,0 on bitmap). Sprite is 48px wide
+        //TO DO: In future these values, including the size of the board perhaps, should be stored in a variable somewhere, not hard-coded into multiple places. Causes issues if the bitmap size changes in future otherwise.
         if (key_typed(D_KEY))
         {
 
-            if (sprite_x(blockSprite) < boardRightEdge + 48)
+            if (sprite_x(blockSprite) < boardRightEdge - 48)
             {
                 sprite_set_x(blockSprite, (sprite_x(blockSprite) + 48));
             }
             
         }
+
+        if (key_typed(S_KEY))
+        {
+            //to ensure sprite arrives exactly at destination pixel, moving speed should always be a factor of 72 (block height)
+            movingSpeed = 8;
+        }
+
             
         }
         update_sprite(blockSprite);

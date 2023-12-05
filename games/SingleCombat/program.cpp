@@ -33,10 +33,6 @@ int main()
     open_window("Single Combat", 576, 900);
     Block newBlock;
     
-    
-    //variable to define edge of the playing board.
-    
-
 
     //window_toggle_border("Single Combat"); uncomment this when ready for arcade
     load_resources();
@@ -49,35 +45,7 @@ int main()
         clear_screen(COLOR_WHITE);
         fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
         newBlock.update();
-        //moveTo(GreenBlockSprite, 882);
         refresh_screen(60);
-
-        //lets block move left if not at edge of board
-        /*if (key_typed(A_KEY))
-        {
-            if (sprite_x(GreenBlockSprite) > boardLeftEdge)
-            {
-                sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) - 48));
-            }
-
-        }
-
-        //lets block move right if not at edge of board
-        if (key_typed(D_KEY))
-        {
-
-            if (sprite_x(GreenBlockSprite) < boardRightEdge + 48)
-            {
-                sprite_set_x(GreenBlockSprite, (sprite_x(GreenBlockSprite) + 48));
-            }
-            
-        }
-
-        //speeds descent of block, can't be undone
-        if (key_typed(S_KEY))
-        {
-            sprite_set_speed(GreenBlockSprite, 10);
-        }*/
 
     }
     return 0;
