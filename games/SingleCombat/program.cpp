@@ -2,7 +2,7 @@
 
 #include "splashkit.h"
 #include "block.h"
-using namespace std;
+#include "board.h"
 
 
 /* CONTROLS INFO
@@ -33,6 +33,7 @@ int main()
     of the original size, so are 48w x 72h. This board can thus fit 12 vertically and 6 horizontally. */
     open_window("Single Combat", 576, 900);
     Block newBlock;
+    Board board;
     
 
     //window_toggle_border("Single Combat"); uncomment this when ready for arcade
