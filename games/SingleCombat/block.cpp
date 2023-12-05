@@ -3,22 +3,16 @@
     
     Block::Block(){
     //create sprite
-    blockSprite = create_sprite("greenblock.png");
-        //At 75% size (48w x 72h), can easily fit 12 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
-        //Scaling down for the current art distorts slightly, this will be fine for testing purposes but worth fixing in future (need art with less pixels)
-        sprite_set_scale(blockSprite, 0.75);
+    blockSprite = create_sprite("greenblock75.png");
+        //At 100% size (48w x 72h), can easily fit 12 blocks vertically, and plenty of space for 6 horizontally for 2 player screens. Could get away with a bit larger if needed down the track
+        //window size currently of 576 x 900 calibrated to allow for board of 288w x 864h dimensions + some extra space
         //set start location of sprite, should spawn in 3rd column across
-        //Note that the scale down means that the block start is not actually 0, 0. It's offset by 12.5%, so -8 and -12). Will be better to adjust art so that there's no need to scale
         sprite_set_x(blockSprite, 232);
         sprite_set_y(blockSprite, 6);
         moving = true;
         destinationY = 882;
         boardLeftEdge = 144;
         boardRightEdge = 288;
-        //sprite_set_dx(GreenBlockSprite, 1);
-        //sprite_set_dy(GreenBlockSprite, 1);
-        //sprite_set_heading(GreenBlockSprite, 90);
-        //sprite_set_speed(GreenBlockSprite, 1);
     }
 
     void Block::update(){
