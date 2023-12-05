@@ -7,6 +7,6 @@ class Board
 public:
     Board();
 private:
-    typedef std::vector<int> rows;
+    typedef std::vector<std::shared_ptr<Block>> rows;
     std::vector<rows> blocks;
 };
