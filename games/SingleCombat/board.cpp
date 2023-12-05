@@ -6,14 +6,14 @@ Board::Board(){
 
     for (int x = 0; x < 6; x++)
     {
-        blocks.push_back(std::vector<int>());
+        blocks.push_back(std::vector<std::shared_ptr<Block>>());
 
         for(int y = 0; y < 12; y++)
         {
-            blocks[x].push_back(0);
+            blocks[x].push_back(nullptr);
         }
         
     }
-    
+
 
 }
