@@ -15,5 +15,12 @@ Board::Board(){
         
     }
 
+    //creates a block with a pointer to it (greenBlock is the pointer)
+    greenBlock = std::make_shared<Block>();
 
+}
+
+void Board::update()
+{
+    greenBlock->update();
 }
