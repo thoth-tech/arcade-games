@@ -15,7 +15,6 @@ Board::Board(){
         
     }
 
-
     //test creation of a block with a pointer to it (currentBlock is the pointer) that isn't in the grid
     currentBlock = std::make_shared<Block>(810, 1);
 
@@ -24,8 +23,24 @@ Board::Board(){
 
 void Board::update()
 {
-    currentBlock->update();
 
+     for (int y = 0; y < grid[0].size(); y++)
+    {
+        for(int x = 0; x < grid.size(); x++)
+        {
+            if (grid[x][y] != nullptr)
+            {
+            grid[x][y]->update();
+            }
+        }
+        
+    }
+
+    if (currentBlock->checkIfMoving() == true)
+    {
+
+        currentBlock->update();
+        
         if (key_typed(S_KEY))
         {
             //to ensure sprite arrives exactly at destination pixel, moving speed should always be a factor of 72 (block height)
@@ -43,9 +58,11 @@ void Board::update()
             
             currentBlock->moveRight();
         }
-    
-
-
-
-
+    }
+    else{
+    grid[0][0] = currentBlock;
+    currentBlock = std::make_shared<Block>(810, 1);
+    //update_all_sprites();
+    }
 }
+    

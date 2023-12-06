@@ -24,9 +24,6 @@
             break;
         }
 
-
-
-
         
         //Refer to /Documentation/singelplayerGameDimensions1.png to help calculate block spawn location. Based on a 48w x 72h block as on 5th Dec 2023.
         //Playing board can fit exactly 12 blocks vertically, and 6 blocks horizontally.
@@ -61,6 +58,11 @@
             {
                 sprite_set_x(blockSprite, (sprite_x(blockSprite) - blockWidth));
             }
+    }
+
+    bool Block::checkIfMoving()
+    {
+        return moving;
     }
 
     //Lets block move right if not at edge of board. Offset by -48 due to the sprite anchor point being at it's top left corner (0,0 on bitmap). Sprite is 48px wide
