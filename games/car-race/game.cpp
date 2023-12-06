@@ -76,7 +76,7 @@ game_data new_game()
     map_setup(game);
     game.score = 0;
     sprite_start_animation(game.car.car_sprite, "straight");
-    play_sound_effect("carmotor", 1, 0.1);
+    play_sound_effect("carmotor", 1, 0.7);
     return game;
 }
 // Function to handle user input
@@ -95,6 +95,16 @@ void handleInput(game_data &game)
     else if (key_typed(R_KEY))
     {
         switch_car_skin(game.car);
+    }
+    else if (key_down(W_KEY))
+    {
+        sprite_set_y(game.car.car_sprite, sprite_y(game.car.car_sprite) - 5);
+        sprite_start_animation(game.car.car_sprite, "straight");
+    }
+    else if (key_down(S_KEY))
+    {
+        sprite_set_y(game.car.car_sprite, sprite_y(game.car.car_sprite) + 5);
+        sprite_start_animation(game.car.car_sprite, "straight");
     }
     else
     {
@@ -132,6 +142,16 @@ void input_check_positions(game_data &game)
     {
         sprite_set_x(game.car.car_sprite, 650);
     }
+
+    if (sprite_y(game.car.car_sprite) <= 30)
+    {
+        sprite_set_y(game.car.car_sprite, 30);
+    }
+    else if (sprite_y(game.car.car_sprite) >= screen_height() - 175)
+    {
+        sprite_set_y(game.car.car_sprite, screen_height() -175);
+    }
+
 }
 // Function to remove cars that have gone out of range
 void out_range(game_data &game)
