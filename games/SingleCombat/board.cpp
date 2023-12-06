@@ -24,7 +24,7 @@ Board::Board(){
 void Board::update()
 {
 
-     for (int y = 0; y < grid[0].size(); y++)
+    for (int y = 0; y < grid[0].size(); y++)
     {
         for(int x = 0; x < grid.size(); x++)
         {
@@ -61,8 +61,9 @@ void Board::update()
     }
     else{
     grid[0][0] = currentBlock;
+    //currentBlock = nullptr; Will need to be used in phase two where there is temporarily no currentBlock
+
     currentBlock = std::make_shared<Block>(810, 1);
-    //update_all_sprites();
     }
 }
     
