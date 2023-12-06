@@ -15,6 +15,7 @@ Board::Board(){
         
     }
 
+
     //test creation of a block with a pointer to it (currentBlock is the pointer) that isn't in the grid
     currentBlock = std::make_shared<Block>(810, 1);
 
