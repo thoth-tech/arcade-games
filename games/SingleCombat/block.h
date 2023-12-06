@@ -18,6 +18,7 @@ public:
     void speedUp(double speed);
     void moveLeft();
     void moveRight();
+    bool checkIfMoving();
 private:
     sprite blockSprite;
     colour blockColour;
