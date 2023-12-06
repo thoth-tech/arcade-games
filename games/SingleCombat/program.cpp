@@ -45,6 +45,8 @@ int main()
     {
         process_events();
         clear_screen(COLOR_WHITE);
+        //TO DO: fill rectangle draws the 'board' background, this is temporary but in future board should be a bitmap and belong to the board/be updated there.
+        //fill rectangle must come first as then board/blocks are drawn and updated after/on-top of it
         fill_rectangle(COLOR_BLACK, 144, 18, 288, 864);
         board.update();
         refresh_screen(60);

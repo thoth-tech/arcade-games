@@ -2,7 +2,7 @@
 #include "splashkit.h"
 
     
-    Block::Block(){
+    Block::Block(double destination, double speed){
     //create sprite
     blockSprite = create_sprite("greenblock75.png");
         //Refer to /Documentation/singelplayerGameDimensions1.png to help calculate block spawn location. Based on a 48w x 72h block as on 5th Dec 2023.
@@ -13,12 +13,41 @@
         sprite_set_y(blockSprite, 18);
 
         moving = true;
-        movingSpeed = 1;
+        movingSpeed = speed;
 
         //TO DO: destination should be a parameter given upon creation.
         //So should colour
-        destinationY = 810;
+        destinationY = destination;
         
+    }
+
+    double Block::currentY()
+    {
+        double currentY = sprite_y(blockSprite);
+        return currentY;
+    }
+
+    void Block::speedUp(double speed)
+    {
+        movingSpeed = speed;
+    }
+
+    void Block::moveLeft()
+    {
+        if (sprite_x(blockSprite) > boardLeftEdge)
+            {
+                sprite_set_x(blockSprite, (sprite_x(blockSprite) - blockWidth));
+            }
+    }
+
+    //Lets block move right if not at edge of board. Offset by -48 due to the sprite anchor point being at it's top left corner (0,0 on bitmap). Sprite is 48px wide
+    void Block::moveRight()
+    {
+        
+        if (sprite_x(blockSprite) < boardRightEdge - blockWidth)
+            {
+                sprite_set_x(blockSprite, (sprite_x(blockSprite) + blockWidth));
+            }
     }
 
     void Block::update(){
@@ -27,50 +56,21 @@
         //TO DO: User input needs to be moved out of this class
         if (moving)
         {
-            double currentY = sprite_y(blockSprite);
-            if (currentY >= destinationY)
+            if (this->currentY() >= destinationY)
             {
                 moving = false;
             }
             else{
                 //checks that sprite will not go past the edge of the destination based on the moving speed when close
-                if (destinationY < currentY + movingSpeed)
+                if (destinationY < this->currentY() + movingSpeed)
                 {
                     sprite_set_y(blockSprite, destinationY);
                 }
                 else
                 {
-                    sprite_set_y(blockSprite, currentY + movingSpeed);
+                    sprite_set_y(blockSprite, this->currentY() + movingSpeed);
                 }
             }
-
-            if (key_typed(A_KEY))
-        {
-            if (sprite_x(blockSprite) > boardLeftEdge)
-            {
-                sprite_set_x(blockSprite, (sprite_x(blockSprite) - blockWidth));
-            }
-
-        }
-
-        //Lets block move right if not at edge of board. Offset by -48 due to the sprite anchor point being at it's top left corner (0,0 on bitmap). Sprite is 48px wide
-        //TO DO: In future these values, including the size of the board perhaps, should be stored in a variable somewhere, not hard-coded into multiple places. Causes issues if the bitmap size changes in future otherwise.
-        if (key_typed(D_KEY))
-        {
-
-            if (sprite_x(blockSprite) < boardRightEdge - blockWidth)
-            {
-                sprite_set_x(blockSprite, (sprite_x(blockSprite) + blockWidth));
-            }
-            
-        }
-
-        if (key_typed(S_KEY))
-        {
-            //to ensure sprite arrives exactly at destination pixel, moving speed should always be a factor of 72 (block height)
-            movingSpeed = 8;
-        }
-
             
         }
         update_sprite(blockSprite);
