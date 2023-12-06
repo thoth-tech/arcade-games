@@ -4,7 +4,30 @@
     
     Block::Block(double destination, double speed){
     //create sprite
-    blockSprite = create_sprite("greenblock75.png");
+
+        //rnd is 0-4 as after some testing, found that rnd did not include the max number
+        blockColour = static_cast<colour>(rnd(0,4));
+
+        switch (blockColour)
+        {
+            case RED:
+            blockSprite = create_sprite("redblock75.png");
+            break;
+            case BLUE:
+            blockSprite = create_sprite("blueblock75.png");
+            break;
+            case GREEN:
+            blockSprite = create_sprite("greenblock75.png");
+            break;
+            case YELLOW:
+            blockSprite = create_sprite("yellowblock75.png");
+            break;
+        }
+
+
+
+
+        
         //Refer to /Documentation/singelplayerGameDimensions1.png to help calculate block spawn location. Based on a 48w x 72h block as on 5th Dec 2023.
         //Playing board can fit exactly 12 blocks vertically, and 6 blocks horizontally.
 

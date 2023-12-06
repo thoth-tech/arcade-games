@@ -18,6 +18,7 @@ private:
     //test pointer to block, not in grid
     std::shared_ptr<Block> currentBlock;
 
+
     const double boardLeftEdge{144};
     const double boardRightEdge{432};
     const double boardTopEdge{18};
