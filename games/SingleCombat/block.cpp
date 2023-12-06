@@ -34,7 +34,7 @@
 
     void Block::moveLeft()
     {
-        if (sprite_x(blockSprite) > boardLeftEdge)
+        if (sprite_x(blockSprite) > boardLeftEdge && moving == true)
             {
                 sprite_set_x(blockSprite, (sprite_x(blockSprite) - blockWidth));
             }
@@ -44,7 +44,7 @@
     void Block::moveRight()
     {
         
-        if (sprite_x(blockSprite) < boardRightEdge - blockWidth)
+        if (sprite_x(blockSprite) < boardRightEdge - blockWidth && moving == true)
             {
                 sprite_set_x(blockSprite, (sprite_x(blockSprite) + blockWidth));
             }
