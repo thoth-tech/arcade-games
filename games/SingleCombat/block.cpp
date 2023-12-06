@@ -11,11 +11,14 @@
         //Sets start location of sprite, should spawn in 3rd column across
         sprite_set_x(blockSprite, 240);
         sprite_set_y(blockSprite, 18);
+
         moving = true;
-        destinationY = 810;
         movingSpeed = 1;
-        blockHeight = 72;
-        blockWidth = 48;
+
+        //TO DO: destination should be a parameter given upon creation.
+        //So should colour
+        destinationY = 810;
+        
     }
 
     void Block::update(){

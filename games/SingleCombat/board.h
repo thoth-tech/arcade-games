@@ -15,5 +15,11 @@ private:
     typedef std::vector<pointer> blocks;
     std::vector<blocks> grid;
 
+    //test pointer to block
     std::shared_ptr<Block> greenBlock;
+
+    const double boardLeftEdge{144};
+    const double boardRightEdge{432};
+    const double boardTopEdge{18};
+    const double boardBottomEdge{882}
 };
