@@ -21,6 +21,7 @@ Board::Board(){
     leftEdge = boardLeftEdge;
     rightEdge = boardRightEdge;
     activeColumn = 2;
+    activeRow = 0;
     currentDestination = boardBottomEdge;
     currentBlock = std::make_shared<Block>(currentDestination, 1);
     
@@ -55,6 +56,7 @@ void Board::changeDestination(int column)
             //TODO: are column and y the right way around here?
             if (grid[column][y] != nullptr)
             {
+            activeRow = y + 1;
             currentDestination = boardBottomEdge - (72 * (y + 1));
             }
             
@@ -74,6 +76,7 @@ void Board::update()
 {
     //these two lines are just for testing these functions output before grid is fully working
     write_line(activeColumn);
+    write_line(activeRow);
     write_line(currentDestination);
 
     for (int y = 0; y < grid[0].size(); y++)
@@ -120,7 +123,7 @@ void Board::update()
     else{
   
     //need code here to place current block into the correct part of the grid.
-    grid[activeColumn][0] = currentBlock;
+    grid[activeColumn][activeRow] = currentBlock;
 
     activeColumn = 2;
     changeDestination(activeColumn);
