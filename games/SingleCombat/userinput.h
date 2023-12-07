@@ -5,7 +5,7 @@
 class UserInput
 {
 public:
-    bool checkLeft(){return key_typed(A_KEY);};
-    bool checkDown(){return key_typed(S_KEY);};
-    bool checkRight(){return key_typed(D_KEY);};
+    bool checkLeftKey(){return key_typed(A_KEY);};
+    bool checkDownKey(){return key_typed(S_KEY);};
+    bool checkRightKey(){return key_typed(D_KEY);};
 };

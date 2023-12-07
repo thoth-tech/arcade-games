@@ -13,13 +13,15 @@ public:
     void update();
     double getDestination();
     bool checkIfEmpty();
+    double findTopBlock(int column);
+    int findColumn(double Xcoord);
 private:
     //vector of vectors. A grid of blocks
     typedef std::shared_ptr<Block> pointer;
     typedef std::vector<pointer> blocks;
     std::vector<blocks> grid;
 
-    //test pointer to block, not in grid
+    //pointer to the current block
     std::shared_ptr<Block> currentBlock;
 
     const double boardLeftEdge{144};

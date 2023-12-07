@@ -42,24 +42,48 @@ bool Board::checkIfEmpty(){
 
 }
 
+
+double Board::findTopBlock(int column)
+{
+        for(int y = 0; y < grid[column].size(); y++)
+        {
+            //TODO: are column and y the right way around here?
+            if (grid[column][y] != nullptr)
+            {
+            // return Y coord of top block
+            }
+        }
+}
+
+
+//takes Xcoord given to it. Finds which column in the grid this corresponds to.
+int Board::findColumn(double Xcoord)
+{
+    //note that there is a double involved in this equation.
+    int x = (Xcoord - boardLeftEdge) / 48;
+    return x;
+}
+
+
 //this function will get to get/update the destination of the block which will change with key strokes
 double Board::getDestination()
 {
     double destination = boardBottomEdge;
     double Ycoord = currentBlock->currentY();
     double Xcoord = currentBlock->currentX();
+
+    //std::shared_ptr<Block> blockBelow;
+
     //steps to this function
-    //1. check if grid has anything in it, loop through all but if any are not null, we can continue. if it is, just return destination
-
-
-
+    //1. check if grid has anything in it. If it is, just return destination, if not then continue.
     //2. find which column matches the Xcoord of the current block
     //3. In that column, find the first pointer in the array that isn't null
     //4. For the block that pointer is pointing too, get the currentY. destination will be the currentY
-    //in theory you could just calculate the destination by the array ID (+1), but this would not be messy if the block dimensions ever changed as would be using an assumed constant
     return destination;
     
 }
+
+
 
 
 
@@ -82,19 +106,20 @@ void Board::update()
 
         currentBlock->update();
         
-        if (userInput.checkDown())
+        if (userInput.checkDownKey())
         {
             //to ensure sprite arrives exactly at destination pixel, moving speed should always be a factor of 72 (block height)
             currentBlock->speedUp(8);
         }
 
-        if (userInput.checkLeft())
+        if (userInput.checkLeftKey())
         {
-            
+            //will need to check if columns next to it are available to move to based on X coord
             currentBlock->moveLeft(leftEdge);
         }
 
-        if (userInput.checkRight())
+        //will need to check if columns next to it are available to move to based on X coord
+        if (userInput.checkRightKey())
         {
             
             currentBlock->moveRight(rightEdge);
