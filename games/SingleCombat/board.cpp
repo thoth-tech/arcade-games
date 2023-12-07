@@ -67,7 +67,8 @@ void Board::update()
     grid[0][0] = currentBlock;
     //currentBlock = nullptr; Will need to be used in phase two where there is temporarily no currentBlock
 
-    currentBlock = std::make_shared<Block>(810, 1);
+    //the destination shouldn't be boardBottomEdge for this, will need to be calculated since board won't be empty anymore.
+    currentBlock = std::make_shared<Block>(boardBottomEdge, 1);
     }
 }
     
