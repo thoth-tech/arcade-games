@@ -16,10 +16,11 @@ Board::Board(){
         
     }
 
-    //test creation of a block with a pointer to it (currentBlock is the pointer) that isn't in the grid
-    currentBlock = std::make_shared<Block>(810, 1);
-    
-    
+    //first block creation, with a pointer to it (currentBlock is the pointer). Not in the grid to start.
+    //at the start, the only relevant edges are the left and right board edges, but as more blocks are placed, leftEdge and rightEdge might be edges of other blocks.
+    currentBlock = std::make_shared<Block>(boardBottomEdge, 1);
+    leftEdge = boardLeftEdge;
+    rightEdge = boardRightEdge;
 
 
 }
@@ -53,13 +54,13 @@ void Board::update()
         if (userInput.checkLeft())
         {
             
-            currentBlock->moveLeft();
+            currentBlock->moveLeft(leftEdge);
         }
 
         if (userInput.checkRight())
         {
             
-            currentBlock->moveRight();
+            currentBlock->moveRight(rightEdge);
         }
     }
     else{

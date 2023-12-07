@@ -24,6 +24,8 @@ private:
     const double boardRightEdge{432};
     const double boardTopEdge{18};
     const double boardBottomEdge{882};
+    double leftEdge;
+    double rightEdge;
 
     UserInput userInput;
 };
