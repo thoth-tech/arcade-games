@@ -20,10 +20,11 @@ Board::Board(){
 
     //first block creation, with a pointer to it (currentBlock is the pointer). Not in the grid to start.
     //at the start, the only relevant edges are the left and right board edges, but as more blocks are placed, leftEdge and rightEdge might be edges of other blocks.
-    currentBlock = std::make_shared<Block>(boardBottomEdge, 1);
     leftEdge = boardLeftEdge;
     rightEdge = boardRightEdge;
     activeColumn = 2;
+    currentDestination = boardBottomEdge;
+    currentBlock = std::make_shared<Block>(currentDestination, 1);
     
 
 }
@@ -46,19 +47,18 @@ bool Board::checkIfEmpty(){
 }
 
 
-double Board::findTopBlock(int column)
+void Board::changeDestination(int column)
 {
-        double topmostCoord = boardBottomEdge;
+        currentDestination = boardBottomEdge;
         for(int y = 0; y < grid[column].size(); y++)
         {
             //TODO: are column and y the right way around here?
             if (grid[column][y] != nullptr)
             {
-            topmostCoord = boardBottomEdge - (72 * (y + 1));
+            currentDestination = boardBottomEdge - (72 * (y + 1));
             }
             
         }
-        return topmostCoord;
 }
 
 
@@ -70,35 +70,10 @@ void Board::changeActiveColumn(double Xcoord)
     activeColumn = x;
 }
 
-/*
-//this function will get to get/update the destination of the block which will change with key strokes
-double Board::getDestination()
-{
-    double destination = boardBottomEdge;
-    //double Ycoord = currentBlock->currentY();
-    double Xcoord = currentBlock->currentX();
-
-    if (checkIfEmpty() != true)
-    {
-        destination = 
-    }
-
-
-    //std::shared_ptr<Block> blockBelow;
-
-    //steps to create this function
-    //1. check if grid has anything in it. If it is, just return destination, if not then continue.
-    //2. find which column matches the Xcoord of the current block
-    //3. In that column, find the first pointer in the array that isn't null
-    //4. For the block that pointer is pointing too, get the currentY. destination will be the currentY
-
-    return destination;
-    
-}
-*/
 void Board::update()
 {
     write_line(activeColumn);
+    write_line(currentDestination);
 
     for (int y = 0; y < grid[0].size(); y++)
     {
@@ -128,6 +103,7 @@ void Board::update()
             //will need to check if columns next to it are available to move to based on X coord
             currentBlock->moveLeft(leftEdge);
             changeActiveColumn(currentBlock->currentX());
+            changeDestination(activeColumn);
         }
 
         //will need to check if columns next to it are available to move to based on X coord
@@ -135,15 +111,18 @@ void Board::update()
         {
             currentBlock->moveRight(rightEdge);
             changeActiveColumn(currentBlock->currentX());
+            changeDestination(activeColumn);
         }
     }
     else{
   
     grid[0][0] = currentBlock;
+    activeColumn = 2;
+    changeDestination(activeColumn);
     //currentBlock = nullptr; Will need to be used in phase two where there is temporarily no currentBlock
 
     //the destination shouldn't be boardBottomEdge for this, will need to be calculated since board won't be empty anymore.
-    currentBlock = std::make_shared<Block>(boardBottomEdge, 1);
+    currentBlock = std::make_shared<Block>(currentDestination, 1);
     }
 }
     

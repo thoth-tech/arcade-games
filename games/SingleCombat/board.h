@@ -10,9 +10,8 @@ class Board
 public:
     Board();
     void update();
-    double getDestination();
     bool checkIfEmpty();
-    double findTopBlock(int column);
+    void changeDestination(int column);
     void changeActiveColumn(double Xcoord);
 private:
     //vector of vectors. A grid of blocks
@@ -30,6 +29,7 @@ private:
     double leftEdge;
     double rightEdge;
     int activeColumn;
+    double currentDestination;
 
     UserInput userInput;
 };
