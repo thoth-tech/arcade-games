@@ -2,8 +2,6 @@
 #include <iostream>
 
 
-
-
 Board::Board(){
 
 
@@ -29,7 +27,7 @@ Board::Board(){
 
 }
 
-//checks if grid is empty
+//this function might not be needed anymore, but checks if entire grid is empty or not
 bool Board::checkIfEmpty(){
 
     for (int y = 0; y < grid[0].size(); y++)
@@ -45,6 +43,8 @@ bool Board::checkIfEmpty(){
     return true;
 
 }
+
+
 
 
 void Board::changeDestination(int column)
@@ -72,6 +72,7 @@ void Board::changeActiveColumn(double Xcoord)
 
 void Board::update()
 {
+    //these two lines are just for testing these functions output before grid is fully working
     write_line(activeColumn);
     write_line(currentDestination);
 
@@ -118,12 +119,13 @@ void Board::update()
     }
     else{
   
-    grid[3][0] = currentBlock;
+    //need code here to place current block into the correct part of the grid.
+    grid[activeColumn][0] = currentBlock;
+
     activeColumn = 2;
     changeDestination(activeColumn);
     //currentBlock = nullptr; Will need to be used in phase two where there is temporarily no currentBlock
 
-    //the destination shouldn't be boardBottomEdge for this, will need to be calculated since board won't be empty anymore.
     currentBlock = std::make_shared<Block>(currentDestination, 1);
     }
 }
