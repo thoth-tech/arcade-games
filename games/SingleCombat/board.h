@@ -2,6 +2,8 @@
 #include <vector>
 #include <memory>
 #include "block.h"
+#include "userinput.h"
+
 
 
 class Board
@@ -22,4 +24,6 @@ private:
     const double boardRightEdge{432};
     const double boardTopEdge{18};
     const double boardBottomEdge{882};
+
+    UserInput userInput;
 };
