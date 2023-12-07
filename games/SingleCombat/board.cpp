@@ -104,6 +104,7 @@ void Board::update()
             currentBlock->moveLeft(leftEdge);
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
+            currentBlock->updateDestination(currentDestination);
         }
 
         //will need to check if columns next to it are available to move to based on X coord
@@ -112,11 +113,12 @@ void Board::update()
             currentBlock->moveRight(rightEdge);
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
+            currentBlock->updateDestination(currentDestination);
         }
     }
     else{
   
-    grid[0][0] = currentBlock;
+    grid[3][0] = currentBlock;
     activeColumn = 2;
     changeDestination(activeColumn);
     //currentBlock = nullptr; Will need to be used in phase two where there is temporarily no currentBlock
