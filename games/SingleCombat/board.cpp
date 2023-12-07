@@ -45,21 +45,24 @@ bool Board::checkIfEmpty(){
 
 double Board::findTopBlock(int column)
 {
+        double topmostCoord = boardBottomEdge;
         for(int y = 0; y < grid[column].size(); y++)
         {
             //TODO: are column and y the right way around here?
             if (grid[column][y] != nullptr)
             {
-            // return Y coord of top block
+            topmostCoord = boardBottomEdge - (72 * (y + 1));
             }
+            
         }
+        return topmostCoord;
 }
 
 
 //takes Xcoord given to it. Finds which column in the grid this corresponds to.
 int Board::findColumn(double Xcoord)
 {
-    //note that there is a double involved in this equation.
+    //note that there is a double involved in this equation. Int returned should be 0, 1, 2, 3, 4 or 5.
     int x = (Xcoord - boardLeftEdge) / 48;
     return x;
 }
@@ -89,6 +92,9 @@ double Board::getDestination()
 
 void Board::update()
 {
+
+    write_line(findTopBlock(5));
+
     for (int y = 0; y < grid[0].size(); y++)
     {
         for(int x = 0; x < grid.size(); x++)
@@ -126,7 +132,7 @@ void Board::update()
         }
     }
     else{
-    grid[0][0] = currentBlock;
+    grid[5][0] = currentBlock;
     //currentBlock = nullptr; Will need to be used in phase two where there is temporarily no currentBlock
 
     //the destination shouldn't be boardBottomEdge for this, will need to be calculated since board won't be empty anymore.
