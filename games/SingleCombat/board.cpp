@@ -47,20 +47,21 @@ bool Board::checkIfEmpty(){
 
 
 
-
 void Board::changeDestination(int column)
 {
-        currentDestination = boardBottomEdge;
+        
         for(int y = 0; y < grid[column].size(); y++)
         {
-            //TODO: are column and y the right way around here?
             if (grid[column][y] != nullptr)
             {
+            //TODO: some sort of bug with this active column
             activeRow = y + 1;
             currentDestination = boardBottomEdge - (72 * (y + 1));
-            }
-            
+            return;
+            }   
         }
+        activeRow = 0;
+        currentDestination = boardBottomEdge;
 }
 
 
