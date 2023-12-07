@@ -51,6 +51,13 @@
         return currentY;
     }
 
+    double Block::currentX()
+    {
+        double currentX = sprite_x(blockSprite);
+        return currentX;
+    }
+
+
     void Block::speedUp(double speed)
     {
         movingSpeed = speed;

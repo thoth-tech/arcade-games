@@ -22,8 +22,15 @@ Board::Board(){
     leftEdge = boardLeftEdge;
     rightEdge = boardRightEdge;
 
+}
+
+//this function will get to get/update the destination of the block which will change with key strokes
+double Board::getDestination()
+{
 
 }
+
+
 
 void Board::update()
 {

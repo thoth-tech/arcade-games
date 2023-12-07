@@ -15,6 +15,7 @@ public:
     Block(double destination, double speed);
     void update();
     double currentY();
+    double currentX();
     void speedUp(double speed);
     void moveLeft(double edge);
     void moveRight(double edge);

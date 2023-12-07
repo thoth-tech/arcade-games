@@ -11,6 +11,7 @@ class Board
 public:
     Board();
     void update();
+    double getDestination();
 private:
     //vector of vectors. A grid of blocks
     typedef std::shared_ptr<Block> pointer;
