@@ -21,20 +21,50 @@ Board::Board(){
     currentBlock = std::make_shared<Block>(boardBottomEdge, 1);
     leftEdge = boardLeftEdge;
     rightEdge = boardRightEdge;
+    
+
+}
+
+//checks if grid is empty
+bool Board::checkIfEmpty(){
+
+    for (int y = 0; y < grid[0].size(); y++)
+    {
+        for(int x = 0; x < grid.size(); x++)
+        {
+            if (grid[x][y] != nullptr)
+            {
+            return false;
+            }
+        } 
+    }
+    return true;
 
 }
 
 //this function will get to get/update the destination of the block which will change with key strokes
 double Board::getDestination()
 {
+    double destination = boardBottomEdge;
+    double Ycoord = currentBlock->currentY();
+    double Xcoord = currentBlock->currentX();
+    //steps to this function
+    //1. check if grid has anything in it, loop through all but if any are not null, we can continue. if it is, just return destination
 
+
+
+    //2. find which column matches the Xcoord of the current block
+    //3. In that column, find the first pointer in the array that isn't null
+    //4. For the block that pointer is pointing too, get the currentY. destination will be the currentY
+    //in theory you could just calculate the destination by the array ID (+1), but this would not be messy if the block dimensions ever changed as would be using an assumed constant
+    return destination;
+    
 }
 
 
 
 void Board::update()
 {
-
     for (int y = 0; y < grid[0].size(); y++)
     {
         for(int x = 0; x < grid.size(); x++)

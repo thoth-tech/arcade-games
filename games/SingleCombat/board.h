@@ -12,6 +12,7 @@ public:
     Board();
     void update();
     double getDestination();
+    bool checkIfEmpty();
 private:
     //vector of vectors. A grid of blocks
     typedef std::shared_ptr<Block> pointer;
