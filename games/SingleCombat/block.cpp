@@ -35,10 +35,14 @@
         moving = true;
         movingSpeed = speed;
 
-        //TO DO: destination should be a parameter given upon creation.
-        //So should colour
-        destinationY = destination;
+        //destination is generally based on the lowest Y point, but need to consider the block height as coordinates are anchored to the top
+        destinationY = destination - blockHeight;
         
+    }
+
+        bool Block::checkIfMoving()
+    {
+        return moving;
     }
 
     double Block::currentY()
@@ -52,24 +56,19 @@
         movingSpeed = speed;
     }
 
-    void Block::moveLeft()
+    void Block::moveLeft(double edge)
     {
-        if (sprite_x(blockSprite) > boardLeftEdge && moving == true)
+        if (sprite_x(blockSprite) > edge && moving == true)
             {
                 sprite_set_x(blockSprite, (sprite_x(blockSprite) - blockWidth));
             }
     }
 
-    bool Block::checkIfMoving()
-    {
-        return moving;
-    }
-
     //Lets block move right if not at edge of board. Offset by -48 due to the sprite anchor point being at it's top left corner (0,0 on bitmap). Sprite is 48px wide
-    void Block::moveRight()
+    void Block::moveRight(double edge)
     {
         
-        if (sprite_x(blockSprite) < boardRightEdge - blockWidth && moving == true)
+        if (sprite_x(blockSprite) < edge - blockWidth && moving == true)
             {
                 sprite_set_x(blockSprite, (sprite_x(blockSprite) + blockWidth));
             }

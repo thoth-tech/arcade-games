@@ -16,8 +16,8 @@ public:
     void update();
     double currentY();
     void speedUp(double speed);
-    void moveLeft();
-    void moveRight();
+    void moveLeft(double edge);
+    void moveRight(double edge);
     bool checkIfMoving();
 private:
     sprite blockSprite;
@@ -27,9 +27,6 @@ private:
     double movingSpeed;
     const double blockHeight{72};
     const double blockWidth{48};
-    //TO DO: can these be given to board class? at the moment they are also used in block class.
-    const double boardLeftEdge{144};
-    const double boardRightEdge{432};
 
    
 };
