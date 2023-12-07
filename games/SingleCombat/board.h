@@ -5,7 +5,6 @@
 #include "userinput.h"
 
 
-
 class Board
 {
 public:
@@ -14,7 +13,7 @@ public:
     double getDestination();
     bool checkIfEmpty();
     double findTopBlock(int column);
-    int findColumn(double Xcoord);
+    void changeActiveColumn(double Xcoord);
 private:
     //vector of vectors. A grid of blocks
     typedef std::shared_ptr<Block> pointer;
@@ -30,6 +29,7 @@ private:
     const double boardBottomEdge{882};
     double leftEdge;
     double rightEdge;
+    int activeColumn;
 
     UserInput userInput;
 };

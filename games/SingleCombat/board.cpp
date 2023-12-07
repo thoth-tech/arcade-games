@@ -2,6 +2,8 @@
 #include <iostream>
 
 
+
+
 Board::Board(){
 
 
@@ -21,6 +23,7 @@ Board::Board(){
     currentBlock = std::make_shared<Block>(boardBottomEdge, 1);
     leftEdge = boardLeftEdge;
     rightEdge = boardRightEdge;
+    activeColumn = 2;
     
 
 }
@@ -60,40 +63,42 @@ double Board::findTopBlock(int column)
 
 
 //takes Xcoord given to it. Finds which column in the grid this corresponds to.
-int Board::findColumn(double Xcoord)
+void Board::changeActiveColumn(double Xcoord)
 {
     //note that there is a double involved in this equation. Int returned should be 0, 1, 2, 3, 4 or 5.
     int x = (Xcoord - boardLeftEdge) / 48;
-    return x;
+    activeColumn = x;
 }
 
-
+/*
 //this function will get to get/update the destination of the block which will change with key strokes
 double Board::getDestination()
 {
     double destination = boardBottomEdge;
-    double Ycoord = currentBlock->currentY();
+    //double Ycoord = currentBlock->currentY();
     double Xcoord = currentBlock->currentX();
+
+    if (checkIfEmpty() != true)
+    {
+        destination = 
+    }
+
 
     //std::shared_ptr<Block> blockBelow;
 
-    //steps to this function
+    //steps to create this function
     //1. check if grid has anything in it. If it is, just return destination, if not then continue.
     //2. find which column matches the Xcoord of the current block
     //3. In that column, find the first pointer in the array that isn't null
     //4. For the block that pointer is pointing too, get the currentY. destination will be the currentY
+
     return destination;
     
 }
-
-
-
-
-
+*/
 void Board::update()
 {
-
-    write_line(findTopBlock(5));
+    write_line(activeColumn);
 
     for (int y = 0; y < grid[0].size(); y++)
     {
@@ -122,17 +127,19 @@ void Board::update()
         {
             //will need to check if columns next to it are available to move to based on X coord
             currentBlock->moveLeft(leftEdge);
+            changeActiveColumn(currentBlock->currentX());
         }
 
         //will need to check if columns next to it are available to move to based on X coord
         if (userInput.checkRightKey())
         {
-            
             currentBlock->moveRight(rightEdge);
+            changeActiveColumn(currentBlock->currentX());
         }
     }
     else{
-    grid[5][0] = currentBlock;
+  
+    grid[0][0] = currentBlock;
     //currentBlock = nullptr; Will need to be used in phase two where there is temporarily no currentBlock
 
     //the destination shouldn't be boardBottomEdge for this, will need to be calculated since board won't be empty anymore.

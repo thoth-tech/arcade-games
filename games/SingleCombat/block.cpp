@@ -57,6 +57,11 @@
         return currentX;
     }
 
+    void Block::updateDestination(double destination)
+    {
+        destinationY = destination - blockHeight;
+    }
+
 
     void Block::speedUp(double speed)
     {

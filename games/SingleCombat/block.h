@@ -20,6 +20,7 @@ public:
     void moveLeft(double edge);
     void moveRight(double edge);
     bool checkIfMoving();
+    void updateDestination(double destination);
 private:
     sprite blockSprite;
     colour blockColour;
