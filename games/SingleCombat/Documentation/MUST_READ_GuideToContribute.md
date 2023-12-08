@@ -14,6 +14,8 @@ This document will serve as an overview of the documentation for the Single Comb
 
 5. If you make any design decisions, document them in the documentation folder when they happen so that you don't forget. The ClassDescriptionsAndDecisions.md file is particularly useful for information about the development of each class.
 
+6. Make a pull request for your code to be reviewed and merged. Someone will be responsible for dealing with any conflicts, make sure you know who this is and communicate as needed.
+
 ## Standards to follow - MUST READ
 
 - Use camelCase for created methods and attributes. The only exception to this is Class names which use PascalCase.
