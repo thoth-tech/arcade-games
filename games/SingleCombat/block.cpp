@@ -36,7 +36,7 @@
         movingSpeed = speed;
 
         //destination is generally based on the lowest Y point, but need to consider the block height as coordinates are anchored to the top
-        destinationY = destination - blockHeight;
+        destinationY = destination;
         
     }
 
@@ -59,7 +59,7 @@
 
     void Block::updateDestination(double destination)
     {
-        destinationY = destination - blockHeight;
+        destinationY = destination;
     }
 
 

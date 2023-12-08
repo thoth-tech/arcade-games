@@ -21,9 +21,11 @@ Board::Board(){
     leftEdge = boardLeftEdge;
     rightEdge = boardRightEdge;
     activeColumn = 2;
-    activeRow = 0;
-    currentDestination = boardBottomEdge;
+    activeRow = 11;
+    changeDestination(activeColumn);
     currentBlock = std::make_shared<Block>(currentDestination, 1);
+    
+
     
 
 }
@@ -46,22 +48,23 @@ bool Board::checkIfEmpty(){
 }
 
 
-
+//updates activerow and currentdestination for a given column
 void Board::changeDestination(int column)
 {
-        
+        activeRow = 11;
+        //currentDestination = boardBottomEdge;
         for(int y = 0; y < grid[column].size(); y++)
         {
             if (grid[column][y] != nullptr)
             {
             //TODO: some sort of bug with this active column
-            activeRow = y + 1;
-            currentDestination = boardBottomEdge - (72 * (y + 1));
-            return;
+            activeRow = y - 1;
+            
+            break;
             }   
         }
-        activeRow = 0;
-        currentDestination = boardBottomEdge;
+        currentDestination = boardTopEdge + (72 * activeRow);
+        
 }
 
 
@@ -128,8 +131,6 @@ void Board::update()
 
     activeColumn = 2;
     changeDestination(activeColumn);
-    //currentBlock = nullptr; Will need to be used in phase two where there is temporarily no currentBlock
-
     currentBlock = std::make_shared<Block>(currentDestination, 1);
     }
 }
