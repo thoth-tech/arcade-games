@@ -78,10 +78,13 @@ void Board::changeActiveColumn(double Xcoord)
 
 void Board::update()
 {
-    //these two lines are just for testing these functions output before grid is fully working
+
+//TODO: turn into debug function
+#ifdef DEBUGSC
     write_line(activeColumn);
     write_line(activeRow);
     write_line(currentDestination);
+#endif
 
     for (int y = 0; y < grid[0].size(); y++)
     {
