@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 #include "block.h"
-#include "userinput.h"
+#include "userInput.h"
 
 
 class Board
