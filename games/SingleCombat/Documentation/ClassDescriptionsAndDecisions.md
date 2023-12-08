@@ -14,6 +14,8 @@ Use this file to keep information about the different classes, such as what they
 
 - Will be able to compare it's colour to other blocks when asked by the board, can return a boolean true or false.
 
+- Breaker status can probably just be a boolean value, but need to think about how to use this to determine the bitmap for breakers. Breaker spawn chance percentage will be decided by board rather than block
+
 ## Board Class
 
 - Board class will be responsible for managing a lot of the gameplay logic. It holds the 2D array/vector of all block pointers and manages logic for how they are are placed, break and move. It will also have details about the board size and blocks size which the blocks themselves don't actually need to know.
