@@ -10,7 +10,6 @@ class Board
 public:
     Board();
     void update();
-    bool checkIfEmpty();
     void changeDestination(int column);
     void changeActiveColumn(double Xcoord);
 private:
