@@ -79,7 +79,7 @@ void Board::changeActiveColumn(double Xcoord)
 void Board::update()
 {
 
-//TODO: turn into debug function
+//debug
 #ifdef DEBUGSC
     write_line(activeColumn);
     write_line(activeRow);
