@@ -1,4 +1,5 @@
 //compile by running skm clang++ *.cpp -o SingleCombat
+//run debug by running skm clang++ -DDEBUGSC *.cpp -o SingleCombat
 
 #include "splashkit.h"
 #include "block.h"
