@@ -2,7 +2,7 @@
 #include "splashkit.h"
 
     
-    Block::Block(double destination, double speed){
+    Block::Block(double destination, double speed, double startX, double startY){
     //create sprite
 
         //rnd is 0-4 as after some testing, found that rnd did not include the max number as suggested in SplashKit documentation
@@ -31,8 +31,8 @@
 
         //Sets start location of sprite, should spawn in 3rd column across
         //TODO: The coordinates should be fed to block class from the board class
-        sprite_set_x(blockSprite, 240);
-        sprite_set_y(blockSprite, 18);
+        sprite_set_x(blockSprite, startX);
+        sprite_set_y(blockSprite, startY);
 
         moving = true;
         movingSpeed = speed;
