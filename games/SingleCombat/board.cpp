@@ -57,7 +57,7 @@ bool Board::checkValidMove(int column)
 {
     double y;
     y = currentBlock->currentY();
-    if (grid[column][(y / blockHeight) + 0.5] != nullptr)
+    if (grid[column][(y / blockHeight) + 1] != nullptr)
     {
         return false;
     }
