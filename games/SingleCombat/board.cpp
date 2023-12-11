@@ -26,10 +26,20 @@ Board::Board(){
     //changeDestination here will figure out the destination based on the details above
     changeDestination(activeColumn);
     currentBlock = std::make_shared<Block>(currentDestination, 1);
-    
 
-    
+}
 
+double Board::calculateMoveLeft()
+{
+    double newX = currentBlock->currentX() - blockWidth;
+    return newX;
+    
+}
+
+double Board::calculateMoveRight()
+{
+    double newX = currentBlock->currentX() + blockWidth;
+    return newX;
 }
 
 //updates activerow and currentdestination based on the given column
@@ -55,21 +65,6 @@ void Board::changeActiveColumn(double Xcoord)
     int x = (Xcoord - boardLeftEdge) / blockWidth;
     activeColumn = x;
 }
-
-double Board::calculateMoveLeft()
-{
-    double newX = currentBlock->currentX() - blockWidth;
-    return newX;
-}
-
-double Board::calculateMoveRight()
-{
-    double newX = currentBlock->currentX() + blockWidth;
-    return newX;
-}
-
-
-
 
 
 void Board::update()
@@ -103,7 +98,7 @@ void Board::update()
         if (userInput.checkDownKey())
         {
             //Speed should ideally always be a factor of 72 (block height) to help block arrive neatly at the destination with little correction
-            currentBlock->speedUp(8);
+            currentBlock->speedUp(12);
         }
 
         if (userInput.checkLeftKey())
@@ -119,7 +114,7 @@ void Board::update()
         //TODO: duplicate code here as with above, can make into a separte function to update column and destination
         if (userInput.checkRightKey())
         {
-            currentBlock->moveRight(rightEdge, calculateMoveRight());
+            currentBlock->moveRight(rightEdge - blockWidth, calculateMoveRight());
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
             currentBlock->updateDestination(currentDestination);

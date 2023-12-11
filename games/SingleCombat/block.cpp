@@ -88,7 +88,7 @@
     void Block::moveRight(double edge, double coordinate)
     {
         
-        if (sprite_x(blockSprite) < edge - blockWidth && moving == true)
+        if (sprite_x(blockSprite) < edge && moving == true)
             {
                 sprite_set_x(blockSprite, coordinate);
             }
@@ -103,7 +103,8 @@
             {
                 moving = false;
             }
-            else{
+            else
+            {
                 //checks that sprite will not accidentally go past the edge of the destination when it gets close. Moving speed would sometimes cause an offset without this.
                 if (destinationY < this->currentY() + movingSpeed)
                 {
