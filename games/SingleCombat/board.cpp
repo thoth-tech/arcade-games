@@ -17,9 +17,6 @@ Board::Board(){
     }
 
 
-    leftEdge = boardLeftEdge;
-    rightEdge = boardRightEdge;
-
     //first block creation, with a pointer to it (currentBlock is the pointer). Not in the grid to start. Gives the starting column and destination row (bottom row since grid will be empty)
     activeColumn = 2;
     activeRow = 11;
@@ -33,15 +30,25 @@ Board::Board(){
 
 double Board::calculateMoveLeft()
 {
-    double newX = currentBlock->currentX() - blockWidth;
-    return newX;
+    double x;
+    x = currentBlock->currentX();
+    if (x > boardLeftEdge)
+    {
+        x = x - blockWidth;
+    }
+    return x;
     
 }
 
 double Board::calculateMoveRight()
 {
-    double newX = currentBlock->currentX() + blockWidth;
-    return newX;
+    double x;
+    x = currentBlock->currentX();
+    if (x < boardRightEdge - blockWidth)
+    {
+        x = x + blockWidth;
+    }
+    return x;
 }
 
 //updates activerow and currentdestination based on the given column
@@ -106,7 +113,8 @@ void Board::update()
         if (userInput.checkLeftKey())
         {
             //TODO: will need to check if columns next to it are available to move to based on X coord
-            currentBlock->moveLeft(leftEdge, calculateMoveLeft());
+            currentBlock->moveLeft(
+            calculateMoveLeft());
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
             currentBlock->updateDestination(currentDestination);
@@ -116,7 +124,7 @@ void Board::update()
         //TODO: duplicate code here as with above, can make into a separte function to update column and destination
         if (userInput.checkRightKey())
         {
-            currentBlock->moveRight(rightEdge - blockWidth, calculateMoveRight());
+            currentBlock->moveRight(calculateMoveRight());
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
             currentBlock->updateDestination(currentDestination);

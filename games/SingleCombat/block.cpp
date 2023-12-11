@@ -74,9 +74,9 @@
 
     //moves sprite left (1 column over)
     //TODO the calulation of coordinate to move to should be done in board class and passed to here as an attribute
-    void Block::moveLeft(double edge, double coordinate)
+    void Block::moveLeft(double coordinate)
     {
-        if (sprite_x(blockSprite) > edge && moving == true)
+        if (moving == true)
             {
                 sprite_set_x(blockSprite, coordinate);
             }
@@ -85,10 +85,10 @@
 
     //moves sprite left (1 column over)
     //TODO the calulation of coordinate to move to should be done in board class and passed to here as an attribute
-    void Block::moveRight(double edge, double coordinate)
+    void Block::moveRight(double coordinate)
     {
         
-        if (sprite_x(blockSprite) < edge && moving == true)
+        if (moving == true)
             {
                 sprite_set_x(blockSprite, coordinate);
             }
