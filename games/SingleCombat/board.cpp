@@ -28,11 +28,12 @@ Board::Board(){
 
 }
 
+
 double Board::calculateMoveLeft()
 {
     double x;
     x = currentBlock->currentX();
-    if (x > boardLeftEdge)
+    if (x > boardLeftEdge && checkValidMove(activeColumn - 1))
     {
         x = x - blockWidth;
     }
@@ -40,15 +41,31 @@ double Board::calculateMoveLeft()
     
 }
 
+//checks if can move right and then returns new coordinate if so
 double Board::calculateMoveRight()
 {
     double x;
     x = currentBlock->currentX();
-    if (x < boardRightEdge - blockWidth)
+    if (x < boardRightEdge - blockWidth && checkValidMove(activeColumn + 1))
     {
         x = x + blockWidth;
     }
     return x;
+}
+
+bool Board::checkValidMove(int column)
+{
+    double y;
+    y = currentBlock->currentY();
+    if (grid[column][(y / blockHeight) + 0.5] != nullptr)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+    
 }
 
 //updates activerow and currentdestination based on the given column
@@ -113,8 +130,7 @@ void Board::update()
         if (userInput.checkLeftKey())
         {
             //TODO: will need to check if columns next to it are available to move to based on X coord
-            currentBlock->moveLeft(
-            calculateMoveLeft());
+            currentBlock->moveLeft(calculateMoveLeft());
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
             currentBlock->updateDestination(currentDestination);
