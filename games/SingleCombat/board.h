@@ -14,6 +14,7 @@ public:
     void changeActiveColumn(double Xcoord);
     double calculateMoveLeft();
     double calculateMoveRight();
+    bool checkValidMove(int column);
 private:
     //vector of vectors. A grid of blocks
     typedef std::shared_ptr<Block> pointer;
