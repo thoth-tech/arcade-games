@@ -25,6 +25,8 @@ private:
     const double boardRightEdge{432};
     const double boardTopEdge{18};
     const double boardBottomEdge{882};
+    const double blockHeight{72};
+    const double blockWidth{48};
     double leftEdge;
     double rightEdge;
     int activeColumn;
