@@ -1,0 +1,9 @@
+2023-12-05 12:55:47,673 WARNING [default] Attempting to get fullscreen from invalid window
+2023-12-05 12:55:47,674 WARNING [default] Attempting to clear an invalid window!
+2023-12-05 12:55:47,675 WARNING [default] Attempting to draw to a surface that does not exist.
+2023-12-05 13:02:15,583 WARNING [default] Attempting to get width of invalid window
+2023-12-05 13:02:15,583 WARNING [default] Attempting to get height of invalid window
+2023-12-05 13:03:18,669 WARNING [default] Attempting to get width of invalid window
+2023-12-05 13:03:18,669 WARNING [default] Attempting to get height of invalid window
+2023-12-05 13:12:34,477 WARNING [default] Attempting to get position of invalid window
+2023-12-05 13:12:34,478 WARNING [default] Attempting to get position of invalid window
