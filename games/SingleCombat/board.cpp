@@ -23,9 +23,11 @@ Board::Board(){
     //first block creation, with a pointer to it (currentBlock is the pointer). Not in the grid to start. Gives the starting column and destination row (bottom row since grid will be empty)
     activeColumn = 2;
     activeRow = 11;
+    startX = boardLeftEdge + activeColumn * blockWidth;
+    startY = boardTopEdge;
     //changeDestination here will figure out the destination based on the details above
     changeDestination(activeColumn);
-    currentBlock = std::make_shared<Block>(currentDestination, 1);
+    currentBlock = std::make_shared<Block>(currentDestination, 1, startX, startY);
 
 }
 
@@ -135,7 +137,7 @@ void Board::update()
     //TODO: can make a function to create a new block (and then use another function to update destination stuff)
     activeColumn = 2;
     changeDestination(activeColumn);
-    currentBlock = std::make_shared<Block>(currentDestination, 1);
+    currentBlock = std::make_shared<Block>(currentDestination, 1, startX, startY);
     }
 }
     

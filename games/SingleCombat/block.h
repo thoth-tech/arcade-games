@@ -12,7 +12,7 @@
 class Block
 {
 public:
-    Block(double destination, double speed);
+    Block(double destination, double speed, double startX, double startY);
     void update();
     double currentY();
     double currentX();

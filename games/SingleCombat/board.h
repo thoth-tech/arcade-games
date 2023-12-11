@@ -29,6 +29,8 @@ private:
     const double boardBottomEdge{882};
     const double blockHeight{72};
     const double blockWidth{48};
+    double startX;
+    double startY;
     double leftEdge;
     double rightEdge;
     int activeColumn;
