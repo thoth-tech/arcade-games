@@ -45,15 +45,14 @@ void Board::changeDestination(int column)
             break;
             }   
         }
-        currentDestination = boardTopEdge + (72 * activeRow);
-        
+        currentDestination = boardTopEdge + (blockHeight * activeRow);
 }
 
 //takes Xcoord given to it. Finds which column in the grid this corresponds to.
 void Board::changeActiveColumn(double Xcoord)
 {
     //note that there is a double involved in this equation. Int returned should be 0, 1, 2, 3, 4 or 5.
-    int x = (Xcoord - boardLeftEdge) / 48;
+    int x = (Xcoord - boardLeftEdge) / blockWidth;
     activeColumn = x;
 }
 
@@ -94,7 +93,7 @@ void Board::update()
         if (userInput.checkLeftKey())
         {
             //TODO: will need to check if columns next to it are available to move to based on X coord
-            currentBlock->moveLeft(leftEdge);
+            currentBlock->moveLeft(leftEdge, currentBlock->currentX() - blockWidth);
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
             currentBlock->updateDestination(currentDestination);
@@ -104,7 +103,7 @@ void Board::update()
         //TODO: duplicate code here as with above, can make into a separte function to update column and destination
         if (userInput.checkRightKey())
         {
-            currentBlock->moveRight(rightEdge);
+            currentBlock->moveRight(rightEdge, currentBlock->currentX() + blockWidth);
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
             currentBlock->updateDestination(currentDestination);

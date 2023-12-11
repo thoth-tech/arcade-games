@@ -24,6 +24,7 @@
             break;
         }
 
+
         
         //Refer to Game Design folder in Documentation to help calculate block spawn location. Based on a 48w x 72h block as on 5th Dec 2023.
         //Playing board can fit exactly 12 blocks vertically, and 6 blocks horizontally.
@@ -73,23 +74,23 @@
 
     //moves sprite left (1 column over)
     //TODO the calulation of coordinate to move to should be done in board class and passed to here as an attribute
-    void Block::moveLeft(double edge)
+    void Block::moveLeft(double edge, double coordinate)
     {
         if (sprite_x(blockSprite) > edge && moving == true)
             {
-                sprite_set_x(blockSprite, (sprite_x(blockSprite) - blockWidth));
+                sprite_set_x(blockSprite, coordinate);
             }
     }
 
 
     //moves sprite left (1 column over)
     //TODO the calulation of coordinate to move to should be done in board class and passed to here as an attribute
-    void Block::moveRight(double edge)
+    void Block::moveRight(double edge, double coordinate)
     {
         
         if (sprite_x(blockSprite) < edge - blockWidth && moving == true)
             {
-                sprite_set_x(blockSprite, (sprite_x(blockSprite) + blockWidth));
+                sprite_set_x(blockSprite, coordinate);
             }
     }
 
