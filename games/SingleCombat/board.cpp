@@ -56,6 +56,22 @@ void Board::changeActiveColumn(double Xcoord)
     activeColumn = x;
 }
 
+double Board::calculateMoveLeft()
+{
+    double newX = currentBlock->currentX() - blockWidth;
+    return newX;
+}
+
+double Board::calculateMoveRight()
+{
+    double newX = currentBlock->currentX() + blockWidth;
+    return newX;
+}
+
+
+
+
+
 void Board::update()
 {
 
@@ -93,7 +109,7 @@ void Board::update()
         if (userInput.checkLeftKey())
         {
             //TODO: will need to check if columns next to it are available to move to based on X coord
-            currentBlock->moveLeft(leftEdge, currentBlock->currentX() - blockWidth);
+            currentBlock->moveLeft(leftEdge, calculateMoveLeft());
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
             currentBlock->updateDestination(currentDestination);
@@ -103,7 +119,7 @@ void Board::update()
         //TODO: duplicate code here as with above, can make into a separte function to update column and destination
         if (userInput.checkRightKey())
         {
-            currentBlock->moveRight(rightEdge, currentBlock->currentX() + blockWidth);
+            currentBlock->moveRight(rightEdge, calculateMoveRight());
             changeActiveColumn(currentBlock->currentX());
             changeDestination(activeColumn);
             currentBlock->updateDestination(currentDestination);
