@@ -17,8 +17,8 @@ public:
     double currentY();
     double currentX();
     void speedUp(double speed);
-    void moveLeft(double edge, double coordinate);
-    void moveRight(double edge, double coordinate);
+    void moveLeft(double coordinate);
+    void moveRight(double coordinate);
     bool checkIfMoving();
     void updateDestination(double destination);
 private:
