@@ -1,5 +1,4 @@
 using System;
-using System.Xml;
 using SplashKitSDK;
 
 
@@ -276,73 +275,73 @@ namespace TD
             do
             {//here the game responds to user inputs to either move the player character
             //or respond with why the input was not possible/valid
-                Console.WriteLine("use arrow keys to move");
-                int i = 0;
-                bool WallHit = false;
-                do
+                try
                 {
+                    Console.WriteLine("\nUse the arrow keys to move or press X to return to the main menu.\n");
+
                     var choice = Console.ReadKey(true).Key;
-                    WallHit = false;
-                    if (choice == ConsoleKey.UpArrow)
+                    
+                    switch (choice)
                     {
-                        if (player.x > 0)
-                        {
-                            player.x -= 1;
+                        case ConsoleKey.UpArrow:
+                            if (player.x > 0)
+                            {
+                                player.x -= 1;
+                                Console.WriteLine("");
+                                gameplay(EnemyMoveDiagonal, EnemySkipTurnPercent, EnemyCount);
+                                field.draw(this, EnemyCount, EnemyMoveDiagonal, EnemySkipTurnPercent);
+                            }
+                            else
+                                throw new InvalidOperationException("\nOh! You hit the top wall! Try moving in another direction.\n");
+
                             break;
-                        }
-                        else
-                        {
-                            WallHit = true;
-                            Console.WriteLine("Oh! You hit the top wall! Try moving in another direction.");
-                        }
-                    }
-                    else if (choice == ConsoleKey.DownArrow)
-                    {
-                        if (player.x < field.size - 1)
-                        {
-                            player.x += 1;
+                        case ConsoleKey.DownArrow:
+                            if (player.x < field.size - 1)
+                            {
+                                player.x += 1;
+                                Console.WriteLine("");
+                                gameplay(EnemyMoveDiagonal, EnemySkipTurnPercent, EnemyCount);
+                                field.draw(this, EnemyCount, EnemyMoveDiagonal, EnemySkipTurnPercent);
+                            }
+                            else
+                                throw new InvalidOperationException("\nOh! You hit the bottom wall! Try moving in another direction.\n");
+
                             break;
-                        }
-                        else
-                        {
-                            WallHit = true;
-                            Console.WriteLine("Oh! You hit the bottom wall! Try moving in another direction.");
-                        }
-                    }
-                    else if (choice == ConsoleKey.RightArrow)
-                    {
-                        if (player.y < field.size - 1)
-                        {
-                            player.y += 1;
+                        case ConsoleKey.LeftArrow:
+                            if (player.y > 0)
+                            {
+                                player.y -= 1;
+                                Console.WriteLine("");
+                                gameplay(EnemyMoveDiagonal, EnemySkipTurnPercent, EnemyCount);
+                                field.draw(this, EnemyCount, EnemyMoveDiagonal, EnemySkipTurnPercent);
+                            }
+                            else
+                                throw new InvalidOperationException("\nOh! You hit the left wall! Try moving in another direction.\n");
+
                             break;
-                        }
-                        else
-                        {
-                            WallHit = true;
-                            Console.WriteLine("Oh! You hit the right wall! Try moving in another direction.");
-                        }
-                    }
-                    else if (choice == ConsoleKey.LeftArrow)
-                    {
-                        if (player.y > 0)
-                        {
-                            player.y -= 1;
+                        case ConsoleKey.RightArrow:
+                            if (player.y < field.size - 1)
+                            {
+                                player.y += 1;
+                                Console.WriteLine("");
+                                gameplay(EnemyMoveDiagonal, EnemySkipTurnPercent, EnemyCount);
+                                field.draw(this, EnemyCount, EnemyMoveDiagonal, EnemySkipTurnPercent);
+                            }
+                            else
+                                throw new InvalidOperationException("\nOh! You hit the right wall! Try moving in another direction.\n");
+
                             break;
-                        }
-                        else
-                        {
-                            WallHit = true;
-                            Console.WriteLine("Oh! You hit the left wall! Try moving in another direction.");
-                        }
+                        case ConsoleKey.X:
+                            Console.WriteLine("Returning to main menu.");
+                            return;
+                        default:
+                            throw new InvalidOperationException("Invalid option, Please try again.");
                     }
-                    if(WallHit==false)
-                    {
-                        Console.WriteLine("Invalid option, Please try again");
-                    }
-                }while(i == 0);
-                Console.WriteLine("");//enemy actions are processed after the player moves
-                gameplay(EnemyMoveDiagonal, EnemySkipTurnPercent, EnemyCount);
-                field.draw(this, EnemyCount, EnemyMoveDiagonal, EnemySkipTurnPercent);
+                }
+                catch (System.Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             } while (player.win);
         }
 
