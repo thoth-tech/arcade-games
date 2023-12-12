@@ -19,7 +19,7 @@ Board::Board(){
 
     //first block creation, with a pointer to it (currentBlock is the pointer). Not in the grid to start. Gives the starting column and destination row (bottom row since grid will be empty)
     activeColumn = 2;
-    activeRow = 11;
+    destinationRow = 11;
     startX = boardLeftEdge + activeColumn * blockWidth;
     startY = boardTopEdge;
     //changeDestination here will figure out the destination based on the details above
@@ -57,7 +57,7 @@ bool Board::checkValidMove(int column)
 {
     double y;
     y = currentBlock->currentY();
-    if (grid[column][(y / blockHeight) + 1] != nullptr)
+    if (grid[column][((y - boardTopEdge) / blockHeight) + 1] != nullptr)
     {
         return false;
     }
@@ -68,20 +68,20 @@ bool Board::checkValidMove(int column)
     
 }
 
-//updates activerow and currentdestination based on the given column
+//updates destinationRow and currentdestination based on the given column
 void Board::changeDestination(int column)
 {
-        activeRow = 11;
+        destinationRow = 11;
         //currentDestination = boardBottomEdge;
         for(int y = 0; y < grid[column].size(); y++)
         {
             if (grid[column][y] != nullptr)
             {
-            activeRow = y - 1;
+            destinationRow = y - 1;
             break;
             }   
         }
-        currentDestination = boardTopEdge + (blockHeight * activeRow);
+        currentDestination = boardTopEdge + (blockHeight * destinationRow);
 }
 
 //takes Xcoord given to it. Finds which column in the grid this corresponds to.
@@ -99,7 +99,7 @@ void Board::update()
 //debug
 #ifdef DEBUGSC
     write_line(activeColumn);
-    write_line(activeRow);
+    write_line(destinationRow);
     write_line(currentDestination);
 #endif
 
@@ -149,7 +149,7 @@ void Board::update()
     else{
   
     //puts the block into the 2D array
-    grid[activeColumn][activeRow] = currentBlock;
+    grid[activeColumn][destinationRow] = currentBlock;
     
     /*phases may need to have some logic here. There will not always be a currentBlock if the board
     is breaking or readjusting other blocks. Refer to Game Design documentation folder for more information about different phases.
