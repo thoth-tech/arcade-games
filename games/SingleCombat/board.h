@@ -35,7 +35,7 @@ private:
     double leftEdge;
     double rightEdge;
     int activeColumn;
-    int activeRow;
+    int destinationRow;
     double currentDestination;
 
     UserInput userInput;
