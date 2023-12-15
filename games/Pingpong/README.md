@@ -55,7 +55,6 @@ background was chosen for this game. The dimensions of each asset were calculate
 horizontal and vertical obstacles were drawn as boundaries. A free bubble bitmap was selected
 for the ball asset.
 
-![Alt text](image.png)
 
 ## _Asset Creation_
 
@@ -65,8 +64,6 @@ borders. These assets were then called in the game to create the complete backgr
 The ball asset was designed next, with the specifications that it would spawn at the center with
 a random angle and speed. Player assets, represented as cursors or blocks, were also
 designed and called in the game.
-
-![Alt text](image-1.png)
 
 ## _In-Game Rule and Physics_
 
@@ -86,8 +83,6 @@ were addressed and resolved to ensure smooth gameplay.
 After debugging, the game screen was redesigned using Canva backgrounds. This step
 enhanced the visual appeal of the game and provided a more immersive experience for the
 players.
-
-![Alt text](image-2.png)
 
 ## _Conclusion_
 
