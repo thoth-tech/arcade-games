@@ -1,0 +1,78 @@
+SplashKit Animation
+//ID,CELL,DUR,NEXT
+
+//-----Right Movements-----
+
+//Right Run
+f:[100-102], [0-2], 4, 
+
+//Right Rise
+f:[103-104], [3-4], 4,
+
+//Right Spot Player
+f:105, 5, 8, 106
+f:[106-108], [6-8], 4,
+
+//Right Battle cry
+f:[109-111], [9-11], 4,
+
+//Right Attack
+f:[112-115], [12-15], 7,
+
+//Right Decend 
+f:[118-120], [18-20], 7,
+
+//Right Dying
+f:121, 21, 5, 122
+f:122, 22, 5,
+
+//Right Idle
+f:123, 0, 6, 
+
+//Right Animation Identifiers
+i:RightRun, 100
+i:RightRise, 103
+i:RightSpotPlayer, 105
+i:RightBattleCry, 109
+i:RightAttack, 112
+i:RightDecend, 118
+i:RightDying, 121
+i:RightIdle, 123
+
+//-----Left Movements-----
+
+//Left Run
+f:[200-202], [23-25], 4, 
+
+//Left Rise
+f:[203-204], [26-27], 4,
+
+//Left Spot Player
+f:205, 28, 8, 206
+f:[206-208], [29-31], 4,
+
+//Left Battle cry
+f:[209-211], [32-34], 4,
+
+//Left Attack
+f:[212-214], [35-37], 7,
+
+//Left Decend 
+f:[215-217], [38-40], 7,
+
+//Left Dying
+f:218, 21, 5, 219
+f:219, 22, 5,
+
+//Left Idle
+f:230, 23, 6, 
+
+//Left Animation Identifiers
+i:LeftRun, 200
+i:LeftRise, 203
+i:LeftSpotPlayer, 205
+i:LeftBattleCry, 209
+i:LeftAttack, 212
+i:LeftDecend, 215
+i:LeftDying, 218
+i:LeftIdle, 230

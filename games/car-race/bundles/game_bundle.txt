@@ -1,0 +1,19 @@
+//Animation
+ANIM,roadanim,roadAnimation.txt
+ANIM,caranim,carAnimation.txt
+//Cars
+BITMAP,blackcarsolo,blackcarsolo.png
+BITMAP,policecarsolo,policecarsolo.png
+BITMAP,yellowcar,yellowcar.png
+BITMAP,redcar,redcar.png
+//Background
+BITMAP,game,game.png
+BITMAP,home,homescreen.png
+BITMAP,ending,ending.png
+//FONTS
+FONT,digi,digi.ttf
+//SOUNDS
+SOUND,carcrash,carcrash.mp3
+SOUND,carmotor,carmotor.wav
+SOUND,endmusic,endmusic.wav
+SOUND,gameplaymusic, gameplaymusic.mp3
