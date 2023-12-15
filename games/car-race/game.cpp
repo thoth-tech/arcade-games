@@ -62,10 +62,14 @@ void randomCars(game_data &game)
     {
     int randomIndex = rand() % CARS_COUNT; // Generate a random index between 0 and 6
     int x = xLocations[randomIndex];
-    car_model model = carModels[rand() % 2]; // Randomly select a car model
-    int speed = random_range(MIN_SPEED, MAX_SPEED); // Randomly select a speed
-    car_data laner_cars = new_car(model, speed, x, -300); // Create a car sprite at the selected x location
-    game.cars.push_back(laner_cars); // Add the car to the game's car vector
+    if (x!=9999) // prevent the usage of the changed spawn location, which is changed 
+    {            // to prevent clipping from multi NPC car lanes
+        car_model model = carModels[rand() % 2]; // Randomly select a car model
+        int speed = random_range(MIN_SPEED, MAX_SPEED); // Randomly select a speed
+        car_data laner_cars = new_car(model, speed, x, -300); // Create a car sprite at the selected x location
+        game.cars.push_back(laner_cars); // Add the car to the game's car vector
+        xLocations[randomIndex]=9999; // change the spawn location to prevent npc cars clipping through eachother
+    }
    }
 }
 auto last_call_time = std::chrono::steady_clock::now(); // Track the last time the function was called
