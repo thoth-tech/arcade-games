@@ -1,2 +1,0 @@
-ANIM,RatAnim,rat.txt
-BITMAP,Rat,Rat.png,64,32,4,8,32 
