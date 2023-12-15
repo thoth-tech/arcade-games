@@ -1,0 +1,9 @@
+{
+    "name" : "Road_Mk_Dotted",
+    "bmp_fp" : "road_mk_dotted.png",
+    "values" : 
+    {
+        "length" : 22,
+        "spacing" : 22
+    }
+}

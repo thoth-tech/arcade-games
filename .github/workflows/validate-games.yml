@@ -1,0 +1,21 @@
+name: Validate Game
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs: 
+  validate-game: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - name: validate-config
+        run: |
+          for game in "$GITHUB_WORKSPACE/games/"*
+          do
+            echo "Validating ${game}"
+            ./config-test.sh "${game}"/config.txt
+            echo
+          done

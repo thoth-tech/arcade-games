@@ -1,0 +1,20 @@
+SplashKit Animation
+
+//Frames are declared using the f: keyword and include
+//the following comma-separated values:
+//ID, CELL, DURATION, NEXT
+f:0,0,1,
+f:1,1,3,
+f:2,2,3,
+//Multi-frame: ranges are enclosed in square brackets []
+//[a-b] represents numbers from a to b (inclusive)
+//[a,b,c] represents explicit values
+//[a-b,c] represents a combination
+// -- Animation Identifiers --
+i:straight,0
+i:right,1
+i:left,2
+//v: identifier, change in x velocity, change in y velocity
+v:0,0,0
+v:1,4,0
+v:2,-4,0
