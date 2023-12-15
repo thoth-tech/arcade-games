@@ -8,11 +8,11 @@
 #--------------------------------------------------------------------
 #   Task    |  Who    | Date     | Comments
 #-----------+---------+----------+-----------------------------------
-#  Sprint 1 |         |          | 
+#  Sprint 1 |PrathammGupta|20231115| Created
 #-----------+---------+----------+-----------------------------------
-#  Sprint 2 |         |          | 
+#  Sprint 2 |PrathammGupta|20231130| Added Description
 #-----------+---------+----------+-----------------------------------
-#  Sprint 3 |         |          | 
+#  Sprint 3 |PrathammGupta|20231215| Added New Files
 #-----------+---------+----------+-----------------------------------
 
 #--------------------------------------------------------------------
@@ -20,28 +20,28 @@
 #--------------------------------------------------------------------
 
 # The title of your game (eg. Super Mario)
-title=
+title= PingPong
 
 # The name of the author (eg. Jane Doe)
-author=
+author= PrathammGupta
 
 # The genre of your game (eg. Platformer)
-genre=
+genre= gaming
 
 # A Description of your game
-description=
+description= A homemade version of pingpong 
 
 # A classification rating to advise the nature of the content (eg. MA 15+)
 rating=PG
 
 # Programming language the game is written in (eg. C++) 
-language=
+language=C++
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=
+image=images/pong.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
-repository=https://github.com/yourname/yourgame
+repository=https://github.com/PrathammGupta/arcade-games/games/Pingpong
 
 # [Optional] Uncomment to include path to the game executable (game.exe)
 #executable=game.exe
