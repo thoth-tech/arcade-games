@@ -31,13 +31,13 @@ genre=
 # A Description of your game
 description=
 
-# A classification rating to advise the nature of the content (eg. MA 15+)
+# A classification rating to advise the nature of the content 
 rating=PG
 
-# Programming language the game is written in (eg. C++) 
+# Programming language the game is written in 
 language=
 
-# Path to your game thumbnail image (eg. images/icon.png)
+# Path to your game thumbnail image 
 image=
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
