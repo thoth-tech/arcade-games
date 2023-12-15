@@ -1,0 +1,15 @@
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.exe
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.deps.json
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.runtimeconfig.json
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.dll
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\bin\Debug\net6.0\Runner_Dash.pdb
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.csproj.AssemblyReference.cache
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.AssemblyInfoInputs.cache
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.AssemblyInfo.cs
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.csproj.CoreCompileInputs.cache
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.dll
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\refint\Runner_Dash.dll
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.pdb
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\Runner_Dash.genruntimeconfig.cache
+C:\Users\phili\OneDrive - Deakin University\2023 TRI-2\SIT782 - Capstone\Projects\arcade-games-desktop\games\Runner_Dash\obj\Debug\net6.0\ref\Runner_Dash.dll
