@@ -4,3 +4,7 @@
 [submodule "games/DXBallGame"]
 	path = games/DXBallGame
 	url = https://github.com/thoth-tech/DXBallGame
+[submodule "games/PingPong"]
+	path = games/PingPong
+	url = https://github.com/thoth-tech/arcade-games/tree/main/games/Pingpong
+	
