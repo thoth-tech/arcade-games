@@ -8,11 +8,11 @@
 #--------------------------------------------------------------------
 #   Task    |  Who    | Date     | Comments
 #-----------+---------+----------+-----------------------------------
-#  Sprint 1 |         |          | 
+#  Sprint 1 |   PRATHAM GUPTA      |     20231511     | CREATED
 #-----------+---------+----------+-----------------------------------
-#  Sprint 2 |         |          | 
+#  Sprint 2 |    PRATHAM GUPTA     |    20233011      | FIX ERRORS
 #-----------+---------+----------+-----------------------------------
-#  Sprint 3 |         |          | 
+#  Sprint 3 |   PRATHAM GUPTA      |     20231512     | FINISH CHAMGES
 #-----------+---------+----------+-----------------------------------
 
 #--------------------------------------------------------------------
@@ -20,31 +20,31 @@
 #--------------------------------------------------------------------
 
 # The title of your game (eg. Super Mario)
-title=
+title=PINGPONG
 
 # The name of the author (eg. Jane Doe)
-author=
+author=PRATHAM GUPTA
 
 # The genre of your game (eg. Platformer)
-genre=
+genre=GAMING
 
 # A Description of your game
-description=
+description= A HOMEMADE VERSION OF PINGPONG
 
 # A classification rating to advise the nature of the content (eg. MA 15+)
-rating=PG
+rating=PG 21
 
 # Programming language the game is written in (eg. C++) 
-language=
+language=C++
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=
+image=loading.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
-repository=https://github.com/yourname/yourgame
+repository=https://github.com/PrathammGupta/arcade-games
 
 # [Optional] Uncomment to include path to the game executable (game.exe)
-#executable=game.exe
+#executable=loading.exe
 
 # [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
 #compile-command=skm g++ *.cpp -o game
