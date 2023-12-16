@@ -2,7 +2,7 @@
 
 ## How to Install
 
-- Install [Splashkit](https://www.splashkit.io) to your computer 
+- Install Splashkit to your computer 
 - Enter to your terminal and open the project folder
 - Enter command `skm clang++ program.cpp player.cpp game.cpp obstacle.cpp ball.cpp -o kkc` to build the file
 - Enter command `./kkc` to play the game
@@ -54,7 +54,6 @@ The design process began with drawing the background bitmap using Canva. A footb
 background was chosen for this game. The dimensions of each asset were calculated, and
 horizontal and vertical obstacles were drawn as boundaries. A free bubble bitmap was selected
 for the ball asset.
-
 
 ## _Asset Creation_
 
