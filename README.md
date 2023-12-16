@@ -1,7 +1,7 @@
-# Guide to Contribute a Game to the Arcade Machine
+# Guide to Contribute a Game to the Arcade Machine 
 
 This guide takes you through the steps required for your game to be added into the arcade-machine
-library
+library 
 
 ---
 
@@ -29,7 +29,7 @@ Table of contents
 ## Coding
 
 To make the game accessible and controllable by the arcade machine, some additional code or changes
-are required
+are required.
 
 ### Quit Request
 
