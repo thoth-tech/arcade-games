@@ -8,11 +8,11 @@
 #--------------------------------------------------------------------
 #   Task    |  Who    | Date     | Comments
 #-----------+---------+----------+-----------------------------------
-#  Sprint 1 |         |          | 
+#  Sprint 1 | PRATHAM GUPTA | 20231115 | Created
 #-----------+---------+----------+-----------------------------------
-#  Sprint 2 |         |          | 
+#  Sprint 2 | PRATHAM GUPTA | 20231130 | Added New Map and Ball
 #-----------+---------+----------+-----------------------------------
-#  Sprint 3 |         |          | 
+#  Sprint 3 | PRATHAM GUPTA | 20231217 | Complete The Game
 #-----------+---------+----------+-----------------------------------
 
 #--------------------------------------------------------------------
@@ -20,31 +20,31 @@
 #--------------------------------------------------------------------
 
 # The title of your game (eg. Super Mario)
-title=
+title=PINGPONG
 
 # The name of the author (eg. Jane Doe)
-author=
+author=PRATHAM GUPTA
 
 # The genre of your game (eg. Platformer)
-genre=
+genre=GAMING
 
 # A Description of your game
-description=
+description=A homemade version of the pingpong video game.
 
 # A classification rating to advise the nature of the content (eg. MA 15+)
-rating=PG
+rating=G
 
 # Programming language the game is written in (eg. C++) 
-language=
+language=C++
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=
+image=images/loading.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
-repository=https://github.com/yourname/yourgame
+repository= https://github.com/PrathammGupta/arcade-games
 
-# [Optional] Uncomment to include path to the game executable (game.exe)
-#executable=game.exe
+# [Optional] Path to the game executable (game.exe) - Uncomment if required
+#executable=loading.exe
 
-# [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
-#compile-command=skm g++ *.cpp -o game
+# [Optional] Specific compile command - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp') - Uncomment  if required
+compile-command=skm c++ *.cpp -o abc
