@@ -4,7 +4,7 @@
 [submodule "games/DXBallGame"]
 	path = games/DXBallGame
 	url = https://github.com/thoth-tech/DXBallGame
-[submodule "games/Pingpong"]
-	path = games/Pingpong
+[submodule "D:\Project\arcade-games\games\Pingpong"]
+	path = D:\Project\arcade-games\games\Pingpong
 	url = https://github.com/thoth-tech/arcade-games.git
 	
