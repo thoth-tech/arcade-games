@@ -4,8 +4,8 @@
 
 - Install Splashkit to your computer 
 - Enter to your terminal and open the project folder
-- Enter command `skm clang++ program.cpp player.cpp game.cpp obstacle.cpp ball.cpp -o kkc` to build the file
-- Enter command `./kkc` to play the game
+- Enter command `skm clang++ *.cpp -o abc` to build the file
+- Enter command `./abc` to play the game
 - Press ENTER button to start the game 
 
 > Arcade Machine Mechanisms
