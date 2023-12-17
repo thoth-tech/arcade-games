@@ -44,7 +44,7 @@ ball and pipes. Implement a robust mechanism to prevent the ball from passing
 
 through pipes during vertical collisions.
 
-![air-hockey](images/air_hockey.png)
+![air-hockey](air_hockey.png)
 
 <a name="br4"></a> 
 
