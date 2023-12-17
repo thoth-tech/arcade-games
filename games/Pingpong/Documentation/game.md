@@ -22,9 +22,10 @@ This documentation serves as a comprehensive guide for the development of the ga
 
 It outlines bug ﬁxes and enhancements aimed at improving the gameplay experience.
 
-The document is designed for both developers and beginners to provide clarity on the
+The document is designed for both developers and beginners to provide clarity on the planned features.
 
-planned features.
+![Introduction Page](homepage.png)
+
 
 **2. Bug Fixes**
 
@@ -63,6 +64,8 @@ Reﬁne the wall collision logic to prevent the ball from penetrating walls duri
 vertical end collisions. Implement a boundary check to ensure the ball remains
 
 within the playable area.
+
+![map 2](screen2.png)
 
 ***● End Screen Bugs***
 
@@ -116,7 +119,9 @@ Integrate a background switch feature, associating different maps with unique
 
 buttons. Ensure a smooth transition between backgrounds without impacting
 
+![map](map1.png)
 
+![map](map2.png)
 
 <a name="br6"></a> 
 
@@ -156,11 +161,13 @@ animations). Consider performance implications and provide alternative SVG
 
 animations if needed.
 
-
+![End Screen](final.png)
 
 <a name="br8"></a> 
 
 *4. Flow Chart*
+
+![Flow Chart](flow.png)
 
 *5. Conclusion*
 
@@ -194,6 +201,7 @@ comprehensive guide is here to walk you through the ins and outs of the game. Ge
 
 ready for an exciting adventure!
 
+![homepage](homepage2.png)
 
 
 <a name="br10"></a> 
