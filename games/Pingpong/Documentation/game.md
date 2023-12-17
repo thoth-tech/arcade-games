@@ -10,43 +10,11 @@
 
 PING-PONG
 
-
-
-<a name="br2"></a> 
-
-**Table of Contents**
-
-**GAME DEVELOPMENT DOCUMENTATION**
-
-INTRODUCTION—---------------------------------------------------------------------------------------1
-
-BUG FIXES—----------------------------------------------------------------------------------------------2-3
-
-EXCITING ENHANCEMENTS—----------------------------------------------------------------------3-5
-
-FLOW CHART—-------------------------------------------------------------------------------------------6
-
-CONCLUSION—-------------------------------------------------------------------------------------------6
-
-**FOR BEGINNERS**
-
-INTRODUCTION—---------------------------------------------------------------------------------------7
-
-HOW TO PLAY—-----------------------------------------------------------------------------------------7-8
-
-BUG FIXES—----------------------------------------------------------------------------------------------8-9
-
-EXCITING ENHANCEMENTS—----------------------------------------------------------------------9-1O
-
-CONCLUSION—-------------------------------------------------------------------------------------------10-11
-
-
-
 <a name="br3"></a> 
 
-**~~Game Development~~**
+*Game Development*
 
-**~~Documentation~~**
+**Documentation**
 
 **1. Introduction**
 
@@ -60,11 +28,11 @@ planned features.
 
 **2. Bug Fixes**
 
-**● Vertical Collision with Pipes**
+***● Vertical Collision with Pipes***
 
 Issue Description:
 
-The current implementation allows the ball to pass through pipes during vertical
+The current implementation allows the ball to pass through pipes during vertica
 
 collisions, compromising the accuracy of collision detection.
 
@@ -76,11 +44,11 @@ ball and pipes. Implement a robust mechanism to prevent the ball from passing
 
 through pipes during vertical collisions.
 
-
+![air-hockey](images/air_hockey.png)
 
 <a name="br4"></a> 
 
-**● Vertical End Collisions with Walls**
+***● Vertical End Collisions with Walls***
 
 Issue Description:
 
@@ -96,7 +64,7 @@ vertical end collisions. Implement a boundary check to ensure the ball remains
 
 within the playable area.
 
-**● End Screen Bugs**
+***● End Screen Bugs***
 
 Issue Description:
 
@@ -112,9 +80,9 @@ transition from gameplay to the end screen, and accurate display of game
 
 results.
 
-**3. Enhancements**
+***3. Enhancements***
 
-**● Ball Speed Increase**
+***● Ball Speed Increase***
 
 
 
@@ -192,9 +160,9 @@ animations if needed.
 
 <a name="br8"></a> 
 
-**4. Flow Chart**
+*4. Flow Chart*
 
-**5. Conclusion**
+*5. Conclusion*
 
 This documentation provides detailed insights into the bug ﬁxes and enhancements
 
@@ -212,9 +180,9 @@ of these features.
 
 <a name="br9"></a> 
 
-**~~Beginner's Comprehensive~~**
+*Beginner's Comprehensive*
 
-**~~Guide to the Exciting Game~~**
+**Guide to the Exciting Game**
 
 **1. Introduction**
 
@@ -246,7 +214,7 @@ screen.
 
 Now, let's make your gaming experience even better!
 
-**Controls**
+*Controls*
 
 Before you embark on your journey, familiarize yourself with the controls:
 
@@ -270,7 +238,7 @@ Before you embark on your journey, familiarize yourself with the controls:
 
 <a name="br11"></a> 
 
-**Objective**
+*Objective*
 
 Your mission, should you choose to accept it, is to guide a bouncing ball through a
 
@@ -364,7 +332,7 @@ These animations will add a touch of magic!
 
 <a name="br15"></a> 
 
-**5. Conclusion**
+*5. Conclusion*
 
 Armed with this guide, you're ready to dive into the game with newfound knowledge and
 
