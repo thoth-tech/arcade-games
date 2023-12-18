@@ -1,21 +1,32 @@
 //Loading
 BITMAP,loaded,loading.png
 BITMAP,controls,controls.png
+BITMAP,schoose,soccerchoose.png
+BITMAP,pchoose,pingpong.png
+BITMAP,scoreboard,scoreboard.png
+// BITMAP,background3,pingbase.png
+
 //Ending
 BITMAP,gameover,gameover.png
 //Board
 BITMAP,background,background.png
+BITMAP,background2,player1.png
+BITMAP,background3,pingbase.png
 BITMAP,vertical,vertical.png
 BITMAP,horizontal,horizontal.png
 
+
 //Balls
 BITMAP,ball,ball.png
-BITMAP,ball2,ball2.png
+BITMAP,ball2,putt2.png
 
 //Strikers
 BITMAP,striker,striker.png
 BITMAP,bstriker,bluestriker.png
 BITMAP,rstriker,redstriker2.png
+BITMAP,bsoccer,characterBlue2.png
+BITMAP,rsoccer,characterRed2.png
+BITMAP,soccerball,ball_soccer2.png
 
 //FONTS
 FONT,font1,font1.ttf

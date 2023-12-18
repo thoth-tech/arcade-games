@@ -11,31 +11,36 @@ bitmap player_bitmap(player_skin skin)
         return bitmap_named("bstriker");
     case PLAYER2:
         return bitmap_named("rstriker");
+    case RED_PLAYER:
+        return bitmap_named("rsoccer");
+    case BLUE_PLAYER:
+        return bitmap_named("bsoccer");
     default:
         return bitmap_named("striker");
     }
 }
 
 // Function to create a new player with the given player type
-player_data new_player(bool player_type)
+player_data new_player(player_skin skin, bool type)
 {
     player_data result;
-    result.player_type = player_type;
+    result.player_type = type;
+    result.skin = skin;
     
     // Set the default bitmap based on the player type
-    bitmap default_bitmap = player_bitmap(PLAYER2);
+    bitmap default_bitmap = player_bitmap(skin);
     result.player_sprite = create_sprite(default_bitmap);
     result.score = 0;
     
     // Set the initial position of the player sprite based on the player type
-    if (player_type)
+    if (type)
     {
         sprite_set_x(result.player_sprite, 173);
         sprite_set_y(result.player_sprite, 262);
     }
     else
     {
-        result.player_sprite = create_sprite(player_bitmap(PLAYER1));
+        
         sprite_set_x(result.player_sprite, 1060);
         sprite_set_y(result.player_sprite, 262);
     }
@@ -50,7 +55,11 @@ void draw_player(const player_data &player_to_draw)
 }
 
 // Function to update the player sprite
-void update_player(player_data &player_to_update)
+void update_player(player_data &player)
 {
-    update_sprite(player_to_update.player_sprite);
+    update_sprite(player.player_sprite);
+    player.player_top = sprite_y(player.player_sprite);
+    player.player_bottom = player.player_top + sprite_height(player.player_sprite);
+    player.player_left = sprite_x(player.player_sprite);
+    player.player_right = player.player_left + sprite_width(player.player_sprite);
 }

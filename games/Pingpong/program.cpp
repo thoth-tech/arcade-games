@@ -1,9 +1,3 @@
-/*
-Command:
-skm clang++ program.cpp player.cpp game.cpp obstacle.cpp ball.cpp -o kkc
-./kkc
-
-*/
 #include "splashkit.h"
 #include "game.h"
 using std::vector;
@@ -28,11 +22,10 @@ int main()
     while (not quit_requested())
     {
        process_events(); 
-       clear_screen(COLOR_AQUA);
+       clear_screen(COLOR_BLACK);
        draw_game(game);
        update_game(game);
        refresh_screen(60); 
     }
-
     return 0;
 }

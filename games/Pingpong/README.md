@@ -2,10 +2,10 @@
 
 ## How to Install
 
-- Install [Splashkit](https://www.splashkit.io) to your computer 
+- Install Splashkit to your computer 
 - Enter to your terminal and open the project folder
-- Enter command `skm clang++ program.cpp player.cpp game.cpp obstacle.cpp ball.cpp -o kkc` to build the file
-- Enter command `./kkc` to play the game
+- Enter command `skm clang++ *.cpp -o abc` to build the file
+- Enter command `./abc` to play the game
 - Press ENTER button to start the game 
 
 > Arcade Machine Mechanisms
@@ -55,8 +55,6 @@ background was chosen for this game. The dimensions of each asset were calculate
 horizontal and vertical obstacles were drawn as boundaries. A free bubble bitmap was selected
 for the ball asset.
 
-![Alt text](image.png)
-
 ## _Asset Creation_
 
 The game assets were created following the design specifications. The background bitmap was
@@ -65,8 +63,6 @@ borders. These assets were then called in the game to create the complete backgr
 The ball asset was designed next, with the specifications that it would spawn at the center with
 a random angle and speed. Player assets, represented as cursors or blocks, were also
 designed and called in the game.
-
-![Alt text](image-1.png)
 
 ## _In-Game Rule and Physics_
 
@@ -86,8 +82,6 @@ were addressed and resolved to ensure smooth gameplay.
 After debugging, the game screen was redesigned using Canva backgrounds. This step
 enhanced the visual appeal of the game and provided a more immersive experience for the
 players.
-
-![Alt text](image-2.png)
 
 ## _Conclusion_
 

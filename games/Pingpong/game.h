@@ -6,12 +6,20 @@
 #include "player.h"    // Include the header file for the player object
 #include "ball.h"      // Include the header file for the ball object
 #include "obstacle.h"  // Include the header file for the obstacle object
+
+enum game_type
+{
+    AIRHOCKEY,
+    FOOTBALL
+};
+
 // Define a struct to hold the game data
 struct game_data
 {
     player_data player1; // Data for player 1
     player_data player2; // Data for player 2
     ball_data ball;      // Data for the ball
+    game_type type;
 
     vector<obstacle_data> obstacles; // Collection of obstacle data
 
@@ -19,11 +27,13 @@ struct game_data
     bool intro_played; // Flag to indicate if the game intro has been played
     bool started;      // Flag to indicate if the game has started
     bool ended;        // Flag to indicate if the game has ended
+    timer time;
 };
 // Function to create a new game and return the game data
 game_data new_game();
 // Function to draw the game on the screen
 void draw_game(game_data &game);
+
 // Function to update the game state
 void update_game(game_data &game);
 // Function to draw the end screen of the game
