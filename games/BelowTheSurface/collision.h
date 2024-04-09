@@ -63,7 +63,7 @@ void check_solid_block_collisions(vector<vector<shared_ptr<Block>>> solid_blocks
                 }
                 else if (collision == "Bottom")
                 {
-                    if (level_players[k]->is_on_floor() &&!(level_players[k]->is_on_ladder()))
+                    if (level_players[k]->is_on_floor() && !(level_players[k]->is_on_ladder()))
                         break;
 
                     if (!sound_effect_playing("HeadHit"))
@@ -94,7 +94,7 @@ void check_solid_block_collisions(vector<vector<shared_ptr<Block>>> solid_blocks
                         sprite_start_animation(level_players[k]->get_player_sprite(), "ClimbIdle");
                         break;
                     }
-                        
+
                     level_players[k]->set_player_dx(0);
                     level_players[k]->set_on_floor(false);
                     sprite_set_x(level_players[k]->get_player_sprite(), sprite_x(level_players[k]->get_player_sprite()) - 3);
@@ -121,10 +121,11 @@ void check_solid_block_collisions(vector<vector<shared_ptr<Block>>> solid_blocks
                 break;
         }
 
-        if (collision == "None" && level_players[k]->is_on_ladder()==false){
+        if (collision == "None" && level_players[k]->is_on_ladder() == false)
+        {
             level_players[k]->set_on_floor(false);
         }
-            
+
         // if (collision == "None")
         //     level_players[k]->set_on_floor(false);
     }
@@ -153,7 +154,7 @@ void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, unorder
     for (int k = 0; k < level_players.size(); k++)
     {
         string collision = "None";
-        bool y_condi = false,x_condi;
+        bool y_condi = false, x_condi;
         for (int j = 0; j < ladders.size(); j++)
         {
             for (int i = 0; i < ladders[j].size(); i++)
@@ -162,11 +163,15 @@ void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, unorder
                 top_side = ladders[j][i]->get_top();
 
                 x_condi = (sprite_x(level_players[k]->get_player_sprite()) > left_side - 32 && sprite_x(level_players[k]->get_player_sprite()) < left_side + 32);
-                for(int m = 0; m < lad_pos_top[left_side].size(); m++){
-                    if(sprite_y(level_players[k]->get_player_sprite()) <= (lad_pos_top[left_side][m] + 2) && sprite_y(level_players[k]->get_player_sprite()) >= (lad_pos_top[left_side][m] - 1)){
+                for (int m = 0; m < lad_pos_top[left_side].size(); m++)
+                {
+                    if (sprite_y(level_players[k]->get_player_sprite()) <= (lad_pos_top[left_side][m] + 2) && sprite_y(level_players[k]->get_player_sprite()) >= (lad_pos_top[left_side][m] - 1))
+                    {
                         y_condi = true;
                         break;
-                    }else{
+                    }
+                    else
+                    {
                         continue;
                     }
                 }
@@ -174,23 +179,29 @@ void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, unorder
                 collision = ladders[j][i]->test_collision(level_players[k]->get_player_hitbox());
 
                 // If player touch the top of the ladder in the exact x position
-                if(collision == "Top" && (x_condi && y_condi)){
-                    if(key_typed(level_players[k]->input.attack_key))
+                if (collision == "Top" && (x_condi && y_condi))
+                {
+                    if (key_typed(level_players[k]->input.attack_key))
                         level_players[k]->set_player_won(true);
 
-                    if(key_down(level_players[k]->input.crouch_key)){ //Drop the player down when crouch key is pressed
+                    if (key_down(level_players[k]->input.crouch_key))
+                    { // Drop the player down when crouch key is pressed
                         level_players[k]->set_on_floor(false);
-                    }else{
+                    }
+                    else
+                    {
                         level_players[k]->set_on_floor(true);
                         level_players[k]->set_on_ladder(true);
 
-                        //this prevent the player stepping on random ladder block that's not the top of the ladder
-                        if(level_players[k]->get_state_type() != "JumpFall" || level_players[k]->get_state_type() != "JumpRise"){
+                        // this prevent the player stepping on random ladder block that's not the top of the ladder
+                        if (level_players[k]->get_state_type() != "JumpFall" || level_players[k]->get_state_type() != "JumpRise")
+                        {
                             sprite_set_y(level_players[k]->get_player_sprite(), top_side - 1);
                         }
                     }
                     break;
-                }else if (!(collision == "None" || collision == "Top") && (key_typed(level_players[k]->input.jump_key) || key_typed(level_players[k]->input.crouch_key)))
+                }
+                else if (!(collision == "None" || collision == "Top") && (key_typed(level_players[k]->input.jump_key) || key_typed(level_players[k]->input.crouch_key)))
                 {
                     level_players[k]->set_on_ladder(true);
                     sprite_set_y(level_players[k]->get_player_sprite(), sprite_y(level_players[k]->get_player_sprite()) - 10);
@@ -236,18 +247,18 @@ void check_enemy_solid_block_collisions(vector<vector<shared_ptr<Block>>> solid_
 
                 if (collision == "Top")
                 {
-                    if(level_enemies[k]->get_ai()->get_is_flying())
+                    if (level_enemies[k]->get_ai()->get_is_flying())
                     {
                         level_enemies[k]->get_ai()->set_flying_up(true);
                     }
-                    
+
                     level_enemies[k]->get_ai()->set_on_floor(true);
                     level_enemies[k]->get_ai()->set_y_value(solid_blocks[j][i]->get_top());
                     break;
                 }
                 else if (collision == "Bottom")
                 {
-                    if(level_enemies[k]->get_ai()->get_is_flying())
+                    if (level_enemies[k]->get_ai()->get_is_flying())
                     {
                         level_enemies[k]->get_ai()->set_flying_up(false);
                     }
@@ -327,7 +338,7 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
         string collision = "None";
         for (int j = 0; j < level_players.size(); j++)
         {
-            if(level_players[j]->get_state_type() == "Dying" || level_players[j]->get_state_type() == "Spawn")
+            if (level_players[j]->get_state_type() == "Dying" || level_players[j]->get_state_type() == "Spawn")
                 continue;
 
             collision = level_enemies[i]->test_collision(level_players[j]->get_player_hitbox());
@@ -368,9 +379,11 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
                         play_sound_effect("EnemyDead");
                     level_enemies[i]->set_dead(true);
                 }
-                else 
+                else
                 {
-                    if(level_enemies[i]->get_vulnerable())
+                    if (!sound_effect_playing("EnemyHurt"))
+                        play_sound_effect("EnemyHurt");
+                    if (level_enemies[i]->get_vulnerable())
                         level_enemies[i]->take_damage(1); // By 1 hp.
                 }
                 level_players[j]->change_state(new JumpRiseState, "JumpRise");
@@ -434,8 +447,8 @@ void check_toxic_block_collisions(vector<vector<shared_ptr<ToxicBlock>>> toxic, 
             {
                 if (!rect_on_screen(toxic[j][i]->get_block_hitbox()))
                     continue;
-                
-                if(level_players[k]->get_state_type() == "Dying" || level_players[k]->get_state_type() == "Spawn")
+
+                if (level_players[k]->get_state_type() == "Dying" || level_players[k]->get_state_type() == "Spawn")
                     continue;
 
                 collision = toxic[j][i]->test_collision(level_players[k]->get_player_hitbox());
@@ -485,7 +498,7 @@ void check_holdable_pipe_block_collisions(vector<vector<shared_ptr<HoldablePipeB
                     continue;
 
                 if (collision != "None")
-                {                            
+                {
                     // Pink and purple can interact with these pipes
                     if (pipes[j][i]->get_cell() < 6)
                     {
@@ -546,7 +559,7 @@ void check_turnable_pipe_block_collisions(vector<vector<shared_ptr<TurnablePipeB
                         {
                             if (!sound_effect_playing("TurnPipe"))
                                 play_sound_effect("TurnPipe");
-                            //write_line("Turned");
+                            // write_line("Turned");
                             pipes[j][i]->set_turnable(false);
                             break;
                         }
@@ -558,7 +571,7 @@ void check_turnable_pipe_block_collisions(vector<vector<shared_ptr<TurnablePipeB
                         {
                             if (!sound_effect_playing("TurnPipe"))
                                 play_sound_effect("TurnPipe");
-                            //write_line("Turned");
+                            // write_line("Turned");
                             pipes[j][i]->set_turnable(false);
                             break;
                         }
@@ -567,8 +580,8 @@ void check_turnable_pipe_block_collisions(vector<vector<shared_ptr<TurnablePipeB
                     else
                     {
                         if (!sound_effect_playing("TurnPipe"))
-                                play_sound_effect("TurnPipe");
-                        //write_line("Turned");
+                            play_sound_effect("TurnPipe");
+                        // write_line("Turned");
                         pipes[j][i]->set_turnable(false);
                         break;
                     }
@@ -625,7 +638,7 @@ void check_multi_turnable_pipe_block_collisions(vector<vector<shared_ptr<MultiTu
                     else
                     {
                         if (!sound_effect_playing("TurnPipe"))
-                                play_sound_effect("TurnPipe");
+                            play_sound_effect("TurnPipe");
                         if (pipes[j][i]->get_turnable())
                             pipes[j][i]->set_turnable(false);
                         else
