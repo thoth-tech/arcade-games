@@ -573,6 +573,12 @@ void check_turnable_pipe_block_collisions(vector<vector<shared_ptr<TurnablePipeB
                         break;
                     }
                 }
+                else if (key_typed(level_players[k]->input.attack_key))
+                {
+                    // this doubles as both "attack" and an auditory "no valve (turnpipe) to turn" message
+                    if (!sound_effect_playing("Attack"))
+                        play_sound_effect("Attack");
+                }
             }
         }
     }
@@ -633,6 +639,12 @@ void check_multi_turnable_pipe_block_collisions(vector<vector<shared_ptr<MultiTu
 
                         break;
                     }
+                }
+                else if (key_typed(level_players[k]->input.attack_key))
+                {
+                    // this doubles as both "attack" and an auditory "no valve (turnpipe) to turn" message
+                    if (!sound_effect_playing("Attack"))
+                        play_sound_effect("Attack");
                 }
             }
         }
