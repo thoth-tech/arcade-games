@@ -654,7 +654,7 @@ void start_screen()
     int ven = 500;
     int adv = 542;
 
-    while( not key_down(SPACE_KEY) && not quit_requested() && not key_down(ESCAPE_KEY))
+    while( not key_down(RETURN_KEY) && not quit_requested() && not key_down(ESCAPE_KEY))
     {
         process_events();
 
@@ -665,7 +665,7 @@ void start_screen()
 
         if(ven == SCREEN_HEIGHT/2-150)
         {
-            draw_text("PRESS SPACE BAR TO START", COLOR_BLANCHED_ALMOND, "font.ttf", 20, SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT-50, option_to_screen());
+            draw_text("PRESS ENTER KEY TO START", COLOR_BLANCHED_ALMOND, "font.ttf", 20, SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT-50, option_to_screen());
             draw_text("By Anthony George", COLOR_BLANCHED_ALMOND, "font.ttf", 10, SCREEN_WIDTH/2+20, SCREEN_HEIGHT/2-50, option_to_screen());
         }
 
