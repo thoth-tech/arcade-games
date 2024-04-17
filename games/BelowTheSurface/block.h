@@ -1,5 +1,5 @@
 #include "splashkit.h"
-#include "types.h"
+//#include "types.h" will not compile with this line included not sure if safe to delete
 
 #pragma once
 
@@ -312,14 +312,24 @@ class Ladder : public Block
 
 class PipeBlock : public Block
 {
+    protected:
+        color shade;
     public:
         PipeBlock(bitmap cell_sheet, point_2d position, int cell) : Block(cell_sheet, position)
         {
             this->cell = cell;
             this->opts.draw_cell = this->cell;
+            this->shade.r = 0;
+            this->shade.g = 0;
+            this->shade.b = 0;
+            this->shade.a = 0.5;
         }
 
-        string test_collision(rectangle one) override { return "None"; };
+        string test_collision(rectangle one) override 
+        {
+            fill_rectangle(shade, intersection(one, hitbox));
+            return "None"; 
+        }
 };
 
 class DecorativeBlock : public Block

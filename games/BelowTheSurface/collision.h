@@ -32,6 +32,21 @@ bool test_rectangle_collision(rectangle one, rectangle two)
         return false;
 };
 
+void check_decoration_shadows(vector<vector<shared_ptr<Block>>> decorations, vector<shared_ptr<Player>> level_players)
+{
+    for (int k = 0; k < level_players.size(); k++)
+    {
+        string collision = "None";
+        for (int j = 0; j < decorations.size(); j++)
+        {
+            for (int i = 0; i < decorations[j].size(); i++)
+            {
+                collision = decorations[j][i]->test_collision(level_players[k]->get_player_hitbox());
+            }
+        }
+    }
+}
+
 void check_solid_block_collisions(vector<vector<shared_ptr<Block>>> solid_blocks, vector<shared_ptr<Player>> level_players)
 {
     for (int k = 0; k < level_players.size(); k++)
