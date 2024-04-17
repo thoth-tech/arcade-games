@@ -701,6 +701,12 @@ void hud(game_data &game, string levelnum)
     draw_text(" x 3" , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
     draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(3));
     draw_text(" x "+ to_string(game.player.gem), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
+    draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
+    draw_text("Arrow Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
+    draw_text(" Joystick ", COLOR_BLACK, "font.ttf", 20, 19*TILESIZE - 5, 11*TILESIZE - 10);
+    draw_text("Restart Level: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 12*TILESIZE);
+    draw_text("R key /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 13*TILESIZE);
+    draw_text("Button 1 ", COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 14*TILESIZE - 10);
     
 }
 
