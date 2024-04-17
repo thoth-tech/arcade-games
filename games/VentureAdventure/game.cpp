@@ -280,7 +280,7 @@ void handle_input(game_data &game)
     game.player.x_id  = game.player.x_pos/TILESIZE;
     game.player.stopped = false;
 
-    if(key_down(UP_KEY) && game.player.walking == false)
+    if(key_down(W_KEY) && game.player.walking == false)
     {  
         sprite_start_animation(game.player.player_sprite, "stand_u");
         // stop at walls
@@ -320,7 +320,7 @@ void handle_input(game_data &game)
         }
     }
 
-    if(key_down(DOWN_KEY) && game.player.walking == false)
+    if(key_down(S_KEY) && game.player.walking == false)
     {
         sprite_start_animation(game.player.player_sprite, "stand_d");
 
@@ -358,7 +358,7 @@ void handle_input(game_data &game)
         }
     }
 
-    if(key_down(LEFT_KEY) && game.player.walking == false)
+    if(key_down(A_KEY) && game.player.walking == false)
     {
         sprite_start_animation(game.player.player_sprite, "stand_l");
 
@@ -395,7 +395,7 @@ void handle_input(game_data &game)
         }   
     }
 
-    if(key_down(RIGHT_KEY) && game.player.walking == false )
+    if(key_down(D_KEY) && game.player.walking == false )
     {
         sprite_start_animation(game.player.player_sprite, "stand_r");
 
@@ -702,7 +702,7 @@ void hud(game_data &game, string levelnum)
     draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(3));
     draw_text(" x "+ to_string(game.player.gem), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
     draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
-    draw_text("Arrow Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
+    draw_text("WASD Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
     draw_text(" Joystick ", COLOR_BLACK, "font.ttf", 20, 19*TILESIZE - 5, 11*TILESIZE - 10);
     draw_text("Restart Level: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 12*TILESIZE);
     draw_text("R key /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 13*TILESIZE);
