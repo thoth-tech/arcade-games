@@ -654,7 +654,7 @@ void start_screen()
     int ven = 500;
     int adv = 542;
 
-    while( not key_down(SPACE_KEY) && not quit_requested() )
+    while( not key_down(SPACE_KEY) && not quit_requested() && not key_down(ESCAPE_KEY))
     {
         process_events();
 
