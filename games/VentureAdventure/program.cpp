@@ -52,6 +52,11 @@ int main()
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
+            if (key_down(R_KEY))
+            {
+                game = new_game(map);
+            }
+
             start_debug(game);
 
             refresh_screen(60);
