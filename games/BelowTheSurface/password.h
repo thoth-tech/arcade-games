@@ -241,7 +241,6 @@ public:
         {
             selection += 6;
             error = false;
-            write_line(selection);
 
             if (selection >= keyboard.size() - 1)
             {
@@ -302,14 +301,14 @@ public:
             
         }
         //if last value in the array isn't an underscore anymore, password will automatically try to submit
-        if (underscore[4]->get_value() != "_")
-            {
-                string temp = "";
-                for (int i = 0; i < underscore.size(); i += 2)
-                    temp.append(underscore[i]->get_value());
+        if (underscore[8]->get_value() != "_")
+        {
+            string temp = "";
+            for (int i = 0; i < underscore.size(); i += 2)
+                temp.append(underscore[i]->get_value());
 
-                password = temp;
-            }
+            password = temp;
+        }
 
         return password;
     };
