@@ -269,7 +269,17 @@ public:
                 underscore[letter]->set_value(select);
                 letter += 2;
             }
+            
         }
+        //if last value in the array isn't an underscore anymore, password will automatically try to submit
+        if (underscore[4]->get_value() != "_")
+            {
+                string temp = "";
+                for (int i = 0; i < underscore.size(); i += 2)
+                    temp.append(underscore[i]->get_value());
+
+                password = temp;
+            }
 
         return password;
     };
