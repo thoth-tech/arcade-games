@@ -99,7 +99,7 @@ public:
 
     void process_alphabet()
     {
-        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ<~`";
+        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ<`";
         int row = 0;
         int col = 0;
         int letter_width = 0;
@@ -129,13 +129,6 @@ public:
             if (str == "<")
             {
                 str = "DEL";
-                pos.y += letter_height * 2;
-            }
-            if (str == "~")
-            {
-                str = "ENTER";
-                pos.x -= col * letter_width * 3;
-                pos.x += col * letter_width * 4;
                 pos.y += letter_height * 2;
             }
             if (str == "`")
@@ -249,14 +242,6 @@ public:
                 if (letter > 0)
                     letter -= 2;
                 underscore[letter]->set_value("_");
-            }
-            else if (select == "ENTER")
-            {
-                string temp = "";
-                for (int i = 0; i < underscore.size(); i += 2)
-                    temp.append(underscore[i]->get_value());
-
-                password = temp;
             }
             else if (select == "EXIT")
             {
