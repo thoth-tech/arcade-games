@@ -1247,13 +1247,7 @@ void PasswordScreen::update()
         //if password is full and has no underscores, shows error message
         else if(password.length() == 5 && !password.contains('_'))
         {
-            string error_message = "Invalid Password";
-            font font_type = font_named("DefaultFont");
-            int font_size = 15;
-            int width = text_width(error_message, font_type, font_size);
-            point_2d pos = screen_center();
-            pos.x = pos.x - width / 2;
-            draw_text(error_message, COLOR_RED, font_type, font_size, pos.x, 10);
+            password_screen->incorrect_password();
         }
 
     }

@@ -71,6 +71,7 @@ public:
     {
         return this->letter_height;
     };
+
 };
 
 class Password
@@ -95,6 +96,22 @@ public:
         {
             element[i]->draw();
         }
+    };
+
+
+    void incorrect_password()
+    {
+        string error_message = "Try Again";
+        font font_type = font_named("DefaultFont");
+        int font_size = 15;
+        int width = text_width(error_message, font_type, font_size);
+        point_2d pos = screen_center();
+        pos.x = pos.x - width / 2;
+        draw_text(error_message, COLOR_RED, font_type, font_size, pos.x, 10);
+        play_sound_effect("BossAttack");
+        if (letter > 0)
+        letter -= 2;
+        underscore[letter]->set_value("_");
     };
 
     void process_alphabet()
@@ -206,7 +223,7 @@ public:
             if (selection > keyboard.size() - 1)
             {
                 if (selection < 30)
-                    selection = 27;
+                    selection = 26;
                 else
                     selection = 0 + (selection - 30);
             }
@@ -221,7 +238,7 @@ public:
                 if (selection < -2)
                     selection = selection + 30;
                 else
-                    selection = 27;
+                    selection = 26;
             }
         }
 
