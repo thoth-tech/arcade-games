@@ -81,6 +81,7 @@ private:
     vector<std::shared_ptr<Letter>> underscore;
     int selection = 0;
     int letter = 0;
+    bool error = false;
 
 public:
     Password()
@@ -101,17 +102,35 @@ public:
 
     void incorrect_password()
     {
+        play_sound_effect("BossAttack");
+        error = true;
+
+        //removes one of the letters when password is wrong to prevent endless loop of sound effect
+        if (letter > 0)
+        letter -= 2;
+        underscore[letter]->set_value("_");
+
+        
+        
+    };
+
+    void draw_error()
+    {
         string error_message = "Try Again";
         font font_type = font_named("DefaultFont");
         int font_size = 15;
         int width = text_width(error_message, font_type, font_size);
         point_2d pos = screen_center();
         pos.x = pos.x - width / 2;
+
+        if (error){
         draw_text(error_message, COLOR_RED, font_type, font_size, pos.x, 10);
-        play_sound_effect("BossAttack");
-        if (letter > 0)
-        letter -= 2;
-        underscore[letter]->set_value("_");
+        }
+        if (!error)
+        {
+            draw_text(" ", COLOR_RED, font_type, font_size, pos.x, 10);
+        }
+
     };
 
     void process_alphabet()
@@ -203,6 +222,7 @@ public:
         if (key_typed(RIGHT_KEY)) // Orginal Key D_KEY
         {
             selection += 1;
+            error = false;
 
             if (selection > keyboard.size() - 1)
                 selection = 0;
@@ -211,6 +231,7 @@ public:
         if (key_typed(LEFT_KEY)) // Orginal Key A_KEY
         {
             selection -= 1;
+            error = false;
 
             if (selection < 0)
                 selection = keyboard.size() - 1;
@@ -219,6 +240,7 @@ public:
         if (key_typed(DOWN_KEY)) // Orginal Key S_KEY
         {
             selection += 6;
+            error = false;
 
             if (selection > keyboard.size() - 1)
             {
@@ -226,12 +248,14 @@ public:
                     selection = 26;
                 else
                     selection = 0 + (selection - 30);
+                
             }
         }
 
         if (key_typed(UP_KEY)) // Orginal Key W_KEY
         {
             selection -= 6;
+            error = false;
 
             if (selection < 0)
             {
@@ -302,6 +326,7 @@ public:
         string password = input();
         draw_element(keyboard);
         draw_element(underscore);
+        draw_error();
 
         return password;
     }

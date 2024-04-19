@@ -1247,6 +1247,7 @@ void PasswordScreen::update()
         //if password is full and has no underscores, shows error message
         else if(password.length() == 5 && !password.contains('_'))
         {
+            
             password_screen->incorrect_password();
         }
 
