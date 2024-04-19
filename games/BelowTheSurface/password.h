@@ -241,14 +241,16 @@ public:
         {
             selection += 6;
             error = false;
+            write_line(selection);
 
-            if (selection > keyboard.size() - 1)
+            if (selection >= keyboard.size() - 1)
             {
-                if (selection < 30)
-                    selection = 26;
-                else
+                if (selection > 29)
                     selection = 0 + (selection - 30);
-                
+                else if (selection > 26)
+                    selection = 27;
+                else
+                    selection = 26;
             }
         }
 
@@ -257,12 +259,14 @@ public:
             selection -= 6;
             error = false;
 
-            if (selection < 0)
+            if (selection <= 0)
             {
-                if (selection < -2)
+                if (selection < -4)
                     selection = selection + 30;
-                else
+                else if (selection < -3 )
                     selection = 26;
+                else
+                    selection = 27;
             }
         }
 
