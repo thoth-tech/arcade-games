@@ -475,7 +475,6 @@ class ToxicBlock : public Block
         {
             this->cell = cell;
             this->opts.draw_cell = this->cell;
-
             animation_script toxic_script = animation_script_named("CellAnim");
             animation anim = create_animation(toxic_script, "ToxicFlow");
             drawing_options opts = option_defaults();
