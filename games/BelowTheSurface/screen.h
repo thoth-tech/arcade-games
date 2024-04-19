@@ -1206,7 +1206,7 @@ void PasswordScreen::update()
         {
             enter_level(2, screen);
         }
-        else if(password == "EZPZ_")
+        else if(password == "EZPZY")
         {
             enter_level(3, screen);
         }
@@ -1234,7 +1234,7 @@ void PasswordScreen::update()
         {
             enter_level(9, screen);
         }
-        else if(password == "BOSS_")
+        else if(password == "BOSSY")
         {
             enter_level(10, screen);
         }     
