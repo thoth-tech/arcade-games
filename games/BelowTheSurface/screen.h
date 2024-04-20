@@ -1247,7 +1247,7 @@ void PasswordScreen::update()
             enter_level(50, screen);
         }
         //if password is full and has no underscores, shows error message
-        else if(password.length() == 5 && !password.contains('_'))
+        else if(password.length() == 5 && password.find('_') == std::string::npos)
         {
             
             password_screen->incorrect_password();
