@@ -31,6 +31,8 @@ int main()
         {
             draw_bitmap("home", 0, 0, option_to_screen());
             refresh_screen(60);
+            stop_sound_effect("endmusic");
+            play_sound_effect("gameplaymusic");
             delay(3000);
             game_started = true;
         }
@@ -42,16 +44,31 @@ int main()
         update_game(game);
         } else {
             stop_sound_effect("carmotor");
+            stop_sound_effect("gameplaymusic");
             draw_bitmap("ending", 0, 0, option_to_screen());
             draw_text("Score: "+ to_string((int)game.score), COLOR_WHITE, "digi", 70, 100, 400, option_to_screen());
             if(key_typed(RETURN_KEY)) {
                 game = new_game();
+                game_started = false;
+                
+                
+                play_sound_effect("gameplaymusic");
                 stop_sound_effect("endmusic");
             }
             if(!musicplayed) {
                 play_sound_effect("endmusic", 1);
-    
+             
                 musicplayed = true;
+            }
+            else
+            {
+                if (key_typed(RETURN_KEY))
+                {
+                    stop_sound_effect("endmusic");
+                    musicplayed = false;  // Reset musicplayed flag
+                }
+
+                
             }
         
         }

@@ -16,3 +16,4 @@ FONT,digi,digi.ttf
 SOUND,carcrash,carcrash.mp3
 SOUND,carmotor,carmotor.wav
 SOUND,endmusic,endmusic.wav
+SOUND,gameplaymusic, gameplaymusic.mp3
