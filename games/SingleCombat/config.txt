@@ -47,4 +47,4 @@ repository=https://github.com/thoth-tech/arcade-games/games/SingleCombat
 executable=SingleCombat.exe
 
 # [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
-#compile-command=skm g++ *.cpp
+compile-command=skm clang++ *.cpp -o SingleCombat

@@ -62,10 +62,14 @@ void randomCars(game_data &game)
     {
     int randomIndex = rand() % CARS_COUNT; // Generate a random index between 0 and 6
     int x = xLocations[randomIndex];
-    car_model model = carModels[rand() % 2]; // Randomly select a car model
-    int speed = random_range(MIN_SPEED, MAX_SPEED); // Randomly select a speed
-    car_data laner_cars = new_car(model, speed, x, -300); // Create a car sprite at the selected x location
-    game.cars.push_back(laner_cars); // Add the car to the game's car vector
+    if (x!=9999) // prevent the usage of the changed spawn location, which is changed 
+    {            // to prevent clipping from multi NPC car lanes
+        car_model model = carModels[rand() % 2]; // Randomly select a car model
+        int speed = random_range(MIN_SPEED, MAX_SPEED); // Randomly select a speed
+        car_data laner_cars = new_car(model, speed, x, -300); // Create a car sprite at the selected x location
+        game.cars.push_back(laner_cars); // Add the car to the game's car vector
+        xLocations[randomIndex]=9999; // change the spawn location to prevent npc cars clipping through eachother
+    }
    }
 }
 auto last_call_time = std::chrono::steady_clock::now(); // Track the last time the function was called
@@ -76,7 +80,7 @@ game_data new_game()
     map_setup(game);
     game.score = 0;
     sprite_start_animation(game.car.car_sprite, "straight");
-    play_sound_effect("carmotor", 1, 0.1);
+    play_sound_effect("carmotor", 1, 0.7);
     return game;
 }
 // Function to handle user input
@@ -95,6 +99,16 @@ void handleInput(game_data &game)
     else if (key_typed(R_KEY))
     {
         switch_car_skin(game.car);
+    }
+    else if (key_down(W_KEY))
+    {
+        sprite_set_y(game.car.car_sprite, sprite_y(game.car.car_sprite) - 5);
+        sprite_start_animation(game.car.car_sprite, "straight");
+    }
+    else if (key_down(S_KEY))
+    {
+        sprite_set_y(game.car.car_sprite, sprite_y(game.car.car_sprite) + 5);
+        sprite_start_animation(game.car.car_sprite, "straight");
     }
     else
     {
@@ -132,6 +146,16 @@ void input_check_positions(game_data &game)
     {
         sprite_set_x(game.car.car_sprite, 650);
     }
+
+    if (sprite_y(game.car.car_sprite) <= 30)
+    {
+        sprite_set_y(game.car.car_sprite, 30);
+    }
+    else if (sprite_y(game.car.car_sprite) >= screen_height() - 175)
+    {
+        sprite_set_y(game.car.car_sprite, screen_height() -175);
+    }
+
 }
 // Function to remove cars that have gone out of range
 void out_range(game_data &game)
