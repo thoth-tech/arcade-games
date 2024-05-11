@@ -241,8 +241,8 @@ void enemy_collision(game_data &game)
     for (int i = 0; i < game.enemies.size(); i++)
         if(sprite_collision(game.player.player_sprite, game.enemies[i].enemy_sprite))
         {
-            play_sound_effect("diamond");
-            //game.player.gem += 1;
+            play_sound_effect("damage");
+            new_life(game.player);
             //remove_gem(game, i);
         }
 }

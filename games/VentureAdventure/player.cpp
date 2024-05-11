@@ -111,3 +111,9 @@ void update_player(player_data &player_to_update)
     update_sprite(player_to_update.player_sprite);
     update_sprite_animation(player_to_update.player_sprite);
 }
+
+void new_life(player_data &player_to_reset)
+{
+    sprite_set_x(player_to_reset.player_sprite, SCREEN_WIDTH/2);
+    sprite_set_y(player_to_reset.player_sprite, SCREEN_HEIGHT/2);
+}

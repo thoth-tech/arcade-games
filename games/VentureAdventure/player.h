@@ -39,4 +39,6 @@ void draw_player(const player_data &player_to_draw);
 
 void update_player(player_data &player_to_update);
 
+void new_life(player_data &player_to_reset);
+
 #endif 
