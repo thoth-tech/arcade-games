@@ -167,6 +167,8 @@ bool update_game(game_data &game, string levelnum, int lives)
 
     box_enemy_collision(game);
 
+    enemy_collision(game);
+
     bool win = level_clear(game);
 
     moving(game);
@@ -233,19 +235,23 @@ void swap(gem_data g1, gem_data g2)
     g2 = temp;
 }
 
-
 void gem_collision(game_data &game)
 {
     for (int i = 0; i < game.gems.size(); i++)
+    {
         if(sprite_collision(game.player.player_sprite, game.gems[i].gem_sprite))
         {
+            
             play_sound_effect("diamond");
             game.gemCount += 1;
             remove_gem(game, i);
             //this is here to keep light_fire sound effect out of a loop
             if (game.gems.size() == 0)
-                play_sound_effect("light_fire");
+            {
+            play_sound_effect("light_fire");
+            }
         }
+    }
 }
 
 //collision check between player and enemy, removes lives
@@ -263,7 +269,6 @@ void enemy_collision(game_data &game)
             else{
             play_sound_effect("damage");
             game.player = new_player();
-            new_life(game.player);
             game.lives -= 1;
             }
         }
@@ -478,7 +483,7 @@ void moving(game_data &game)
         // collect gem
         gem_collision(game);
 
-        enemy_collision(game);
+        
 
         if(game.player.y_prev > game.player.y_pos && game.player.y_pos <= game.player.next)
         {

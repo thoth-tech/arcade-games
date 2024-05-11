@@ -63,8 +63,8 @@ player_data new_player()
     result.player_sprite = create_sprite(hero_pack, result.animation);
 
     // set player in centre of map
-    sprite_set_x(result.player_sprite, SCREEN_WIDTH/2);
-    sprite_set_y(result.player_sprite, SCREEN_HEIGHT/2);
+    sprite_set_x(result.player_sprite, 256);
+    sprite_set_y(result.player_sprite, 256);
     
     // set player co-ords
     result.x_pos   = sprite_x(result.player_sprite);
@@ -111,18 +111,4 @@ void update_player(player_data &player_to_update)
 {
     update_sprite(player_to_update.player_sprite);
     update_sprite_animation(player_to_update.player_sprite);
-}
-
-void new_life(player_data &player_to_reset)
-{
-    sprite_set_x(player_to_reset.player_sprite, SCREEN_WIDTH/2);
-    sprite_set_y(player_to_reset.player_sprite, SCREEN_HEIGHT/2);
-
-    player_to_reset.x_pos   = sprite_x(player_to_reset.player_sprite);
-    player_to_reset.y_pos   = sprite_y(player_to_reset.player_sprite);
-
-    player_to_reset.x_id    = player_to_reset.x_pos/TILESIZE;
-    player_to_reset.y_id    = player_to_reset.y_pos/TILESIZE;
-
-
 }
