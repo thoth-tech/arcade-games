@@ -25,6 +25,7 @@ game_data new_game(string map)
     new_game.player = new_player();
 
     new_game.gemCount = 0;
+    new_game.lives = 3;
 
     // pass in the map to be displayed 
     get_objects(new_game);
@@ -246,6 +247,7 @@ void enemy_collision(game_data &game)
             play_sound_effect("damage");
             game.player = new_player();
             new_life(game.player);
+            game.lives -= 1;
         }
 }
 
@@ -716,7 +718,7 @@ void hud(game_data &game, string levelnum)
     draw_text(levelnum , COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
     draw_text("Collect all the Gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
     draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
-    draw_text(" x 3" , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
+    draw_text(" x "+ to_string(game.lives) , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
     draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(3));
     draw_text(" x "+ to_string(game.gemCount), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
     draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);

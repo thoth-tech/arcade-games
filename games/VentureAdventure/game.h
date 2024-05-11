@@ -27,6 +27,7 @@ struct game_data
     vector<enemy_data> enemies;
     bitmap map;
     int gemCount;
+    int lives;
     int index[64];
     point_2d map_loc;
     vector<point_2d> solid;
