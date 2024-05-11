@@ -97,6 +97,7 @@ void get_objects(game_data &game)
             if(game.map_array[i][j] == ENEMY)
                 add_enemy(game, j*TILESIZE, i*TILESIZE);
         }
+
 }
 
 // draws all objects
@@ -143,6 +144,8 @@ void draw_game(const game_data &game)
 // updates all objects
 bool update_game(game_data &game, string levelnum, int lives)
 {
+
+    
     update_player(game.player);
 
     for (int i = 0; i < game.boxes.size(); i++)
@@ -198,7 +201,9 @@ void add_gem(game_data &game, int x, int y)
     gem.x_id = x/TILESIZE;
     gem.y_id = y/TILESIZE;
 
-    game.gems.push_back(gem);
+    //DEBUG - USE THIS TO MAKE LEVEL EASIER (ONLY 1 GEM)
+    //if (game.gems.size() < 1)
+        game.gems.push_back(gem);
 }
 
 void add_enemy(game_data &game, int x, int y)
