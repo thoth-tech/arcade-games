@@ -264,6 +264,9 @@ void enemy_collision(game_data &game)
             if(game.lives == 0)
             {
             play_sound_effect("game_over");
+            stop_music();
+            draw_text("Game Over", COLOR_BLACK, "font.ttf", 70, SCREEN_WIDTH / 2 - 142, SCREEN_HEIGHT / 2 - 48, option_to_screen());
+            draw_text("Game Over", COLOR_DARK_RED, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
             game.gameover = true;
             }
             else{
@@ -274,7 +277,7 @@ void enemy_collision(game_data &game)
         }
 }
 
-//I don't think this code is functional?
+//Don't think this code is functional. Have commented it out in game update loop. Not sure on the issue but have started developing other functions to do with enemies
 void attack(game_data &game)
 {
     int box_id;
@@ -797,7 +800,7 @@ void hud(game_data &game, string levelnum)
     draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
     draw_text("WASD Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
     draw_text(" Joystick ", COLOR_BLACK, "font.ttf", 20, 19*TILESIZE - 5, 11*TILESIZE - 10);
-    draw_text("Restart Level: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 12*TILESIZE);
+    draw_text("Reset Map: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 12*TILESIZE);
     draw_text("R key /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 13*TILESIZE);
     draw_text("Button 1 ", COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 14*TILESIZE - 10);
     

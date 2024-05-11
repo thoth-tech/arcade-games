@@ -22,7 +22,8 @@ int main()
     int totallevels = 3;
     int level = 1;
     bool win;
-    int lives = 3;
+    int startinglives = 3;
+    int currentlives = startinglives;
     string levelnum = "Level 1";
 
     game_data game;
@@ -48,10 +49,11 @@ int main()
 
             draw_game(game);
 
-            win = update_game(game, levelnum, lives);
+            win = update_game(game, levelnum, currentlives);
 
-            lives = check_lives(game);
+            currentlives = check_lives(game);
 
+            //Don't think this is functional?
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
@@ -74,12 +76,10 @@ int main()
                 levelnum = "Level ";
                 levelnum.append(to_string(level));
                 game = new_game(map);
-            };
-
-
-            if ((win == true && level >= totallevels) || (check_gameover(game) == true))
+            }
+            else if ((win == true && level >= totallevels) || (check_gameover(game) == true))
             {
-                delay(3000);
+                delay(5000);
 
                 play_music("intro");
                 set_music_volume(0.04);
@@ -92,7 +92,7 @@ int main()
                 set_music_volume(0.025);
 
                 level = 1;
-                lives = 3;
+                currentlives = startinglives;
                 map = "Resources/levels/level";
                 map.append(to_string(level));
                 map.append(".txt");
