@@ -81,8 +81,8 @@ void get_objects(game_data &game)
     for (int i = 0; i < w; i++)
         for (int j = 0; j < h; j++)
         {
-            //tiles with numbers defined between 1 and 300 are 'solid'. Excludes 'enemy' currently defines as 200 (so that collision is possible. This if statement needs to be adjusted if more enemy tile numbers are added)
-            if(game.map_array[i][j] > 1 && game.map_array[i][j] < 300 && game.map_array[i][j] != 200)
+            //tiles with numbers defined between 1 and 300 are 'solid'. Excludes 'enemy' currently defined as 200, and campfire(80), so that collision is possible. This if statement needs to be adjusted if more enemy tile numbers are added)
+            if(game.map_array[i][j] > 1 && game.map_array[i][j] < 300 && game.map_array[i][j] != 200 && game.map_array[i][j] != 84)
             {
                 int solid_x = j*TILESIZE;
                 int solid_y = i*TILESIZE;
@@ -163,6 +163,8 @@ bool update_game(game_data &game, string levelnum, int lives)
 
     box_gem_collision(game);
 
+    box_start_collision(game);
+
     box_enemy_collision(game);
 
     bool win = level_clear(game);
@@ -240,6 +242,9 @@ void gem_collision(game_data &game)
             play_sound_effect("diamond");
             game.gemCount += 1;
             remove_gem(game, i);
+            //this is here to keep light_fire sound effect out of a loop
+            if (game.gems.size() == 0)
+                play_sound_effect("light_fire");
         }
 }
 
@@ -663,6 +668,25 @@ void box_gem_collision(game_data &game)
         }
 }
 
+//prevents boxes from being able to be pushed over the player starting location (where they spawn if they lose a life). 8,8 position is hard coded in currently.
+void box_start_collision(game_data &game)
+{
+    for (int i = 0; i < game.boxes.size(); i++)               
+        {             
+            if(game.boxes[i].up_next == 8 && game.boxes[i].x_id == 8)
+                game.boxes[i].up_stopped = true;
+
+            if(game.boxes[i].down_next == 8 && game.boxes[i].x_id == 8)
+                game.boxes[i].down_stopped = true;
+
+            if(game.boxes[i].left_next == 8 && game.boxes[i].y_id == 8)
+                game.boxes[i].left_stopped = true;
+
+            if(game.boxes[i].right_next == 8 && game.boxes[i].y_id == 8)
+                game.boxes[i].right_stopped = true;
+        }
+}
+
 void box_enemy_collision(game_data &game)
 {
     for (int i = 0; i < game.boxes.size(); i++)            
@@ -684,13 +708,13 @@ void box_enemy_collision(game_data &game)
 
 bool level_clear(game_data &game)
 {   
-    bitmap stairs = load_bitmap("stairs", "stairs.png");
+    bitmap fire = load_bitmap("fire", "fire.png");
 
     if(game.gems.size() == 0)
     {
-        draw_bitmap(stairs, SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
+        draw_bitmap(fire, SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
         
-        if(sprite_bitmap_collision(game.player.player_sprite, stairs, SCREEN_HEIGHT/2, SCREEN_WIDTH/2))
+        if(sprite_bitmap_collision(game.player.player_sprite, fire, SCREEN_HEIGHT/2, SCREEN_WIDTH/2))
         {
             sprite_set_x(game.player.player_sprite, game.player.x_prev);
             sprite_set_y(game.player.player_sprite, game.player.y_prev);
@@ -763,7 +787,7 @@ void hud(game_data &game, string levelnum)
     draw_text("Collect all the Gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
     draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
     draw_text(" x "+ to_string(game.lives) , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
-    draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(3));
+    draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(2));
     draw_text(" x "+ to_string(game.gemCount), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
     draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
     draw_text("WASD Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);

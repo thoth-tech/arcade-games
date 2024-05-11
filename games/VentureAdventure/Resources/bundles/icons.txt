@@ -1,8 +1,9 @@
 // Tiles & Art
 BITMAP,tiles,forest_tiles.png
 BITMAP,back,back.jpg
-BITMAP,stairs,stairs.png
+BITMAP,fire,fire.png
 BITMAP,title,title.png
+BITMAP,entry,ground_tiles.png
 
 // Sprite
 //BITMAP,hero,hero7.png
@@ -16,6 +17,7 @@ SOUND,diamond,diamond.wav
 SOUND,win,win.mp3
 SOUND,damage,damage2.wav
 SOUND,game_over,game_over.mp3
+SOUND,light_fire,lightfire.wav
 
 
 // Programming, Game Design & Development by Anthony George
