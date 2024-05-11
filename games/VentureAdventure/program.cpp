@@ -57,7 +57,7 @@ int main()
                 game = new_game(map);
             }
 
-            start_debug(game);
+            //start_debug(game);
 
             refresh_screen(60);
 

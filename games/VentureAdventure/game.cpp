@@ -78,7 +78,8 @@ void get_objects(game_data &game)
     for (int i = 0; i < w; i++)
         for (int j = 0; j < h; j++)
         {
-            if(game.map_array[i][j] > 1 && game.map_array[i][j] < 300)
+            //tiles with numbers defined between 1 and 300 are 'solid'. Excludes 'enemy' currently defines as 200 (so that collision is possible. This if statement needs to be adjusted if more enemy tile numbers are added)
+            if(game.map_array[i][j] > 1 && game.map_array[i][j] < 300 && game.map_array[i][j] != 200)
             {
                 int solid_x = j*TILESIZE;
                 int solid_y = i*TILESIZE;
@@ -222,6 +223,7 @@ void swap(gem_data g1, gem_data g2)
     g2 = temp;
 }
 
+
 void gem_collision(game_data &game)
 {
     for (int i = 0; i < game.gems.size(); i++)
@@ -230,6 +232,18 @@ void gem_collision(game_data &game)
             play_sound_effect("diamond");
             game.player.gem += 1;
             remove_gem(game, i);
+        }
+}
+
+//adding a first collision check between player and enemy 
+void enemy_collision(game_data &game)
+{
+    for (int i = 0; i < game.enemies.size(); i++)
+        if(sprite_collision(game.player.player_sprite, game.enemies[i].enemy_sprite))
+        {
+            play_sound_effect("diamond");
+            //game.player.gem += 1;
+            //remove_gem(game, i);
         }
 }
 
@@ -440,6 +454,8 @@ void moving(game_data &game)
     {       
         // collect gem
         gem_collision(game);
+
+        enemy_collision(game);
 
         if(game.player.y_prev > game.player.y_pos && game.player.y_pos <= game.player.next)
         {
