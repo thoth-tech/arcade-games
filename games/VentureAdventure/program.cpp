@@ -55,6 +55,7 @@ int main()
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
+            //intended for use when soft-locked/trapped by boxes without needing to restart game. will reset gems and player on current level, but won't reset lives
             if (key_down(R_KEY))
             {
                 game = new_game(map);

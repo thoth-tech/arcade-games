@@ -167,7 +167,8 @@ bool update_game(game_data &game, string levelnum, int lives)
 
     moving(game);
 
-    attack(game);
+    //Attack doesn't seem to be functional, CastielM has ended up starting own enemy/collision code which operates out of the moving function, which is where the player/gem collision function was
+    //attack(game);
 
     hud(game, levelnum);
 
@@ -240,7 +241,7 @@ void gem_collision(game_data &game)
         }
 }
 
-//adding a first collision check between player and enemy 
+//collision check between player and enemy, removes lives
 void enemy_collision(game_data &game)
 {
 
@@ -261,6 +262,7 @@ void enemy_collision(game_data &game)
         }
 }
 
+//I don't think this code is functional?
 void attack(game_data &game)
 {
     int box_id;
