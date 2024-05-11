@@ -4,6 +4,8 @@
  * Deakin University 
 */
 
+//TO SPEED UP TESTING: Use commented out line in "add_gem" method to speed up testing, it will cause only one gem to spawn per level.
+
 #include "game.h"
 #include "splashkit.h"
 #include <iostream>
@@ -201,7 +203,7 @@ void add_gem(game_data &game, int x, int y)
     gem.x_id = x/TILESIZE;
     gem.y_id = y/TILESIZE;
 
-    //DEBUG - USE THIS TO MAKE LEVEL EASIER (ONLY 1 GEM)
+    //DEBUG TOOL - use if statement below to make level easier to complete (only 1 gem). Push_back line is always required  
     //if (game.gems.size() < 1)
         game.gems.push_back(gem);
 }
