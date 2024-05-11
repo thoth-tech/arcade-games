@@ -163,6 +163,8 @@ bool update_game(game_data &game, string levelnum, int lives)
 
     box_gem_collision(game);
 
+    box_enemy_collision(game);
+
     bool win = level_clear(game);
 
     moving(game);
@@ -540,6 +542,7 @@ void box_collision(game_data &game)
     }
 }
 
+
 void box_wall_collision(game_data &game)
 {
     for (int i = 0; i < game.boxes.size(); i++)
@@ -656,6 +659,25 @@ void box_gem_collision(game_data &game)
                 game.boxes[i].left_stopped = true;
 
             if(game.boxes[i].right_next == game.gems[j].x_id && game.boxes[i].y_id == game.gems[j].y_id)
+                game.boxes[i].right_stopped = true;
+        }
+}
+
+void box_enemy_collision(game_data &game)
+{
+    for (int i = 0; i < game.boxes.size(); i++)            
+        for (int j = 0; j < game.enemies.size(); j++)     
+        {             
+            if(game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
+                game.boxes[i].up_stopped = true;
+
+            if(game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
+                game.boxes[i].down_stopped = true;
+
+            if(game.boxes[i].left_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
+                game.boxes[i].left_stopped = true;
+
+            if(game.boxes[i].right_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
                 game.boxes[i].right_stopped = true;
         }
 }
