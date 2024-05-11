@@ -82,7 +82,8 @@ player_data new_player()
     result.x_prev  = 0, result.y_prev  = 0;
 
     // initalise gems and bullets
-    result.gem     = 0;
+    //commenting out this gem = 0 line as number of gems collected are not actually stored here, this number is visual only. Will initialise it elsewhere.
+    //result.gem = 0;
     result.bullet  = 0;
 
     result.walking  = false;
@@ -116,4 +117,12 @@ void new_life(player_data &player_to_reset)
 {
     sprite_set_x(player_to_reset.player_sprite, SCREEN_WIDTH/2);
     sprite_set_y(player_to_reset.player_sprite, SCREEN_HEIGHT/2);
+
+    player_to_reset.x_pos   = sprite_x(player_to_reset.player_sprite);
+    player_to_reset.y_pos   = sprite_y(player_to_reset.player_sprite);
+
+    player_to_reset.x_id    = player_to_reset.x_pos/TILESIZE;
+    player_to_reset.y_id    = player_to_reset.y_pos/TILESIZE;
+
+
 }

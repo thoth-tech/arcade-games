@@ -24,6 +24,8 @@ game_data new_game(string map)
 
     new_game.player = new_player();
 
+    new_game.gemCount = 0;
+
     // pass in the map to be displayed 
     get_objects(new_game);
 
@@ -230,7 +232,7 @@ void gem_collision(game_data &game)
         if(sprite_collision(game.player.player_sprite, game.gems[i].gem_sprite))
         {
             play_sound_effect("diamond");
-            game.player.gem += 1;
+            game.gemCount += 1;
             remove_gem(game, i);
         }
 }
@@ -242,8 +244,8 @@ void enemy_collision(game_data &game)
         if(sprite_collision(game.player.player_sprite, game.enemies[i].enemy_sprite))
         {
             play_sound_effect("damage");
+            game.player = new_player();
             new_life(game.player);
-            //remove_gem(game, i);
         }
 }
 
@@ -716,7 +718,7 @@ void hud(game_data &game, string levelnum)
     draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
     draw_text(" x 3" , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
     draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(3));
-    draw_text(" x "+ to_string(game.player.gem), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
+    draw_text(" x "+ to_string(game.gemCount), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
     draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
     draw_text("WASD Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
     draw_text(" Joystick ", COLOR_BLACK, "font.ttf", 20, 19*TILESIZE - 5, 11*TILESIZE - 10);
@@ -749,7 +751,7 @@ void start_debug(const game_data &game)
     write_line("Player down next: "+ to_string(game.player.down_next));
     write_line("Player left next: "+ to_string(game.player.left_next));
     write_line("Player right next: "+ to_string(game.player.right_next));
-    write_line("Gems: "+ to_string(game.player.gem));
+    write_line("Gems: "+ to_string(game.gemCount));
     write_line("=======================");
     write_line();
     write_line("====== Box Info 1 ======");
