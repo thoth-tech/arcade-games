@@ -40,7 +40,7 @@ vector<vector<int> > new_level(string file);
 
 void get_objects(game_data &game);
 
-bool update_game(game_data &game, string levelnum);
+bool update_game(game_data &game, string levelnum, int lives);
 
 void draw_game(const game_data &game);
 
@@ -73,6 +73,8 @@ void enemy_collision(game_data &game);
 bool level_clear(game_data &game);
 
 bool check_gameover(game_data &game);
+
+int check_lives(game_data game);
 
 void attack(game_data &game);
 

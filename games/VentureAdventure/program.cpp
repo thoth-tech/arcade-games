@@ -22,6 +22,7 @@ int main()
     int totallevels = 3;
     int level = 1;
     bool win;
+    int lives = 3;
     string levelnum = "Level 1";
 
     game_data game;
@@ -47,7 +48,9 @@ int main()
 
             draw_game(game);
 
-            win = update_game(game, levelnum);
+            win = update_game(game, levelnum, lives);
+
+            lives = check_lives(game);
 
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
@@ -73,7 +76,7 @@ int main()
             };
 
 
-            if ((win == true && level >= totallevels)|| (check_gameover(game) == true))
+            if ((win == true && level >= totallevels) || (check_gameover(game) == true))
             {
                 delay(3000);
 
@@ -88,6 +91,7 @@ int main()
                 set_music_volume(0.025);
 
                 level = 1;
+                lives = 3;
                 map = "Resources/levels/level";
                 map.append(to_string(level));
                 map.append(".txt");

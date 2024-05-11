@@ -25,7 +25,6 @@ game_data new_game(string map)
     new_game.player = new_player();
 
     new_game.gemCount = 0;
-    new_game.lives = 3;
     new_game.gameover = false;
 
     // pass in the map to be displayed 
@@ -142,7 +141,7 @@ void draw_game(const game_data &game)
 }
 
 // updates all objects
-bool update_game(game_data &game, string levelnum)
+bool update_game(game_data &game, string levelnum, int lives)
 {
     update_player(game.player);
 
@@ -151,6 +150,8 @@ bool update_game(game_data &game, string levelnum)
 
     for (int i = 0; i < game.enemies.size(); i++)
         update_enemy(game.enemies[i]);
+
+    game.lives = lives;
 
     handle_input(game);
 
@@ -681,6 +682,11 @@ bool level_clear(game_data &game)
 bool check_gameover(game_data &game)
     {
         return game.gameover;
+    }
+
+int check_lives(game_data game)
+    {
+        return game.lives;
     }
 
 void start_screen()
