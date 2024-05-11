@@ -26,6 +26,7 @@ game_data new_game(string map)
 
     new_game.gemCount = 0;
     new_game.lives = 3;
+    new_game.gameover = false;
 
     // pass in the map to be displayed 
     get_objects(new_game);
@@ -241,13 +242,21 @@ void gem_collision(game_data &game)
 //adding a first collision check between player and enemy 
 void enemy_collision(game_data &game)
 {
+
     for (int i = 0; i < game.enemies.size(); i++)
         if(sprite_collision(game.player.player_sprite, game.enemies[i].enemy_sprite))
         {
+            if(game.lives == 0)
+            {
+            play_sound_effect("game_over");
+            game.gameover = true;
+            }
+            else{
             play_sound_effect("damage");
             game.player = new_player();
             new_life(game.player);
             game.lives -= 1;
+            }
         }
 }
 
@@ -668,6 +677,11 @@ bool level_clear(game_data &game)
     }
     return false;
 }
+
+bool check_gameover(game_data &game)
+    {
+        return game.gameover;
+    }
 
 void start_screen()
 {

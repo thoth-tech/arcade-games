@@ -73,9 +73,9 @@ int main()
             };
 
 
-            if (win == true && level >= totallevels)
+            if ((win == true && level >= totallevels)|| (check_gameover(game) == true))
             {
-                delay(5000);
+                delay(3000);
 
                 play_music("intro");
                 set_music_volume(0.04);
@@ -97,6 +97,8 @@ int main()
             };
         }
     }
+
+    
 
     return 0;
 }

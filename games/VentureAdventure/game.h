@@ -28,6 +28,7 @@ struct game_data
     bitmap map;
     int gemCount;
     int lives;
+    bool gameover;
     int index[64];
     point_2d map_loc;
     vector<point_2d> solid;
@@ -70,6 +71,8 @@ void gem_collision(game_data &game);
 void enemy_collision(game_data &game);
 
 bool level_clear(game_data &game);
+
+bool check_gameover(game_data &game);
 
 void attack(game_data &game);
 
