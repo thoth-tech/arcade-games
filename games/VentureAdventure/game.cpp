@@ -180,8 +180,8 @@ bool update_game(game_data &game, string levelnum, int lives)
 
     enemy_move(game);
     //debugging
-    write_line(to_string(game.enemies[0].x_id));
-    write_line(to_string(game.enemies[0].x_pos));
+    write_line("id" + to_string(game.enemies[1].x_id));
+    write_line("next left" + to_string(game.enemies[1].left_next));
     
     
     bool win = level_clear(game);
@@ -320,6 +320,8 @@ void enemy_move(game_data &game)
             game.enemies[i].x_id = game.enemies[i].x_pos/TILESIZE;
             game.enemies[i].left_next  = game.enemies[i].x_id - 1;
             game.enemies[i].right_next = game.enemies[i].x_id + 1;
+            game.enemies[i].down_next  = game.enemies[i].y_id - 1;
+            game.enemies[i].up_next = game.enemies[i].y_id + 1;
 
         for (int j = 0; j < game.solid.size(); j++)
         {
@@ -818,6 +820,9 @@ void box_enemy_collision(game_data &game)
     for (int i = 0; i < game.boxes.size(); i++)
     {
 
+        game.boxes[i].x_prev = sprite_x(game.boxes[i].box_sprite) - TILESIZE;
+        game.boxes[i].y_prev = sprite_y(game.boxes[i].box_sprite) - TILESIZE;
+
     if(game.player.y_prev > game.player.y_pos && game.player.y_pos <= game.player.next)
         {
             game.boxes[i].y_pos = sprite_y(game.boxes[i].box_sprite);
@@ -827,21 +832,90 @@ void box_enemy_collision(game_data &game)
 
             for (int j = 0; j < game.enemies.size(); j++)
             {
-                if(game.boxes[i].up_next == game.enemies[j].left_next 
-                ||game.boxes[i].up_next == game.enemies[j].right_next 
-                ||game.boxes[i].up_next == game.enemies[j].down_next
-                ||game.boxes[i].x_id == game.enemies[j].x_id)
+                if((game.boxes[i].y_id - 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id + 1)
+                ||(game.boxes[i].y_id - 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id - 1)
+                ||(game.boxes[i].y_id - 1 == game.enemies[j].y_id + 1 && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].y_id - 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
                     {
                         game.boxes[i].up_stopped = true;
-                        box_collision(game);
+                        game.boxes[i].y_pos = game.boxes[i].y_prev * TILESIZE;
                     }
 
             }
 
 
         }
-    }
 
+    if(game.player.y_prev < game.player.y_pos && game.player.y_pos >= game.player.next)
+        {
+            game.boxes[i].y_pos = sprite_y(game.boxes[i].box_sprite);
+            game.boxes[i].y_id = game.boxes[i].y_pos/TILESIZE;
+            game.boxes[i].up_next = game.boxes[i].y_id - 1;
+            game.boxes[i].down_next = game.boxes[i].y_id + 1;
+
+            for (int j = 0; j < game.enemies.size(); j++)
+            {
+                if((game.boxes[i].y_id + 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id + 1)
+                ||(game.boxes[i].y_id + 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id - 1)
+                ||(game.boxes[i].y_id + 1 == game.enemies[j].y_id - 1 && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].y_id + 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
+                    {
+                        game.boxes[i].down_stopped = true;
+                        game.boxes[i].y_pos = game.boxes[i].y_prev * TILESIZE;
+                    }
+
+            }
+        }
+    
+
+    if(game.player.x_prev > game.player.x_pos && game.player.x_pos <= game.player.next)
+        {
+            game.boxes[i].x_pos = sprite_x(game.boxes[i].box_sprite);
+            game.boxes[i].x_id = game.boxes[i].x_pos/TILESIZE;
+            game.boxes[i].left_next  = game.boxes[i].x_id - 1;
+            game.boxes[i].right_next = game.boxes[i].x_id + 1;
+
+            for (int j = 0; j < game.enemies.size(); j++)
+            {
+                if((game.boxes[i].x_id - 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id + 1)
+                ||(game.boxes[i].x_id - 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id - 1)
+                ||(game.boxes[i].x_id - 1 == game.enemies[j].x_id + 1 && game.boxes[i].y_id == game.enemies[j].y_id)
+                ||(game.boxes[i].x_id - 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
+                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
+                    {
+                        game.boxes[i].left_stopped = true;
+                        game.boxes[i].x_pos = game.boxes[i].x_prev * TILESIZE;
+                    }
+
+            }
+        }
+
+    if(game.player.x_prev < game.player.x_pos && game.player.x_pos >= game.player.next)
+        {
+            game.boxes[i].x_pos = sprite_x(game.boxes[i].box_sprite);
+            game.boxes[i].x_id = game.boxes[i].x_pos/TILESIZE;
+            game.boxes[i].left_next  = game.boxes[i].x_id - 1;
+            game.boxes[i].right_next = game.boxes[i].x_id + 1;
+
+            for (int j = 0; j < game.enemies.size(); j++)
+            {
+                if((game.boxes[i].x_id + 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id + 1)
+                ||(game.boxes[i].x_id + 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id - 1)
+                ||(game.boxes[i].x_id + 1 == game.enemies[j].x_id - 1 && game.boxes[i].y_id == game.enemies[j].y_id)
+                ||(game.boxes[i].x_id + 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
+                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
+                    {
+                        game.boxes[i].right_stopped = true;
+                        game.boxes[i].x_pos = game.boxes[i].x_prev * TILESIZE;
+                    }
+
+            }
+        }
+
+
+    }
 }
 
 bool level_clear(game_data &game)
