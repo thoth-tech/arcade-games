@@ -238,6 +238,7 @@ void add_enemy(game_data &game, int x, int y)
     //start walking left animation when initialised
     sprite_start_animation(enemy.enemy_sprite, "w_left");
     
+    
 }
 
 void remove_gem(game_data &game, int i)
@@ -312,7 +313,7 @@ void enemy_move(game_data &game)
         for (int j = 0; j < game.solid.size(); j++)
         {
              
-             if (sprite_bitmap_collision(game.enemies[i].enemy_sprite, game.map, game.solid[j].x + TILESIZE, game.solid[j].y))
+             if (sprite_bitmap_collision(game.enemies[i].enemy_sprite, game.map, game.solid[j].x, game.solid[j].y))
                 {
                     if(game.enemies[i].dir[ELEFT] == true)
                     {
