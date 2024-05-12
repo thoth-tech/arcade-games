@@ -234,18 +234,18 @@ void add_enemy(game_data &game, int x, int y)
 
 void remove_gem(game_data &game, int i)
 {
+    write_line("gems size: " + to_string(game.gems.size()));
     int gem_index = i;
-    for(int j = 0; j < game.gems.size(); j++)
+    for(int j = 0; j < game.gems.size()-1; j++)
     {
-        if(game.gems.size() == 1)
-            break;
-
-        else if(gem_index <= j)
+        if(gem_index <= j)
         {
+            write_line("gem index: " + to_string(gem_index));
+            write_line("j + 1 " + to_string(j + 1));
             swap(game.gems[gem_index], game.gems[j + 1]);
             gem_index++;
         }
-        
+
     }
     game.gems.pop_back();
 }
@@ -263,16 +263,22 @@ void gem_collision(game_data &game)
     {
         if(sprite_collision(game.player.player_sprite, game.gems[i].gem_sprite))
         {
-            
+            write_line("a");
             play_sound_effect("diamond");
+            write_line("b");
             game.gemCount += 1;
+            write_line("c");
             remove_gem(game, i);
+            write_line("d");
             //this is here to keep light_fire sound effect out of a loop
             if (game.gems.size() == 0)
             {
             play_sound_effect("light_fire");
             }
+            write_line("e");
         }
+        write_line(to_string(i));
+        
     }
 }
 
