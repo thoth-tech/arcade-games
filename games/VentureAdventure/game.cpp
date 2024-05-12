@@ -12,7 +12,7 @@
 #include <fstream>
 
 //DEBUG TOOL - make this 'true' to enable easier level completion, will cause only 1 gem to generate.
-bool debugeasymode = false;
+bool debugeasymode = true;
 
 using namespace std;
 
@@ -282,7 +282,8 @@ void enemy_collision(game_data &game)
         {
             if(game.lives == 0)
             {
-            play_sound_effect("game_over");
+            float vol = 0.3;
+            play_sound_effect("game_over", vol);
             stop_music();
             draw_text("Game Over", COLOR_BLACK, "font.ttf", 70, SCREEN_WIDTH / 2 - 142, SCREEN_HEIGHT / 2 - 48, option_to_screen());
             draw_text("Game Over", COLOR_DARK_RED, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
@@ -747,7 +748,8 @@ bool level_clear(game_data &game)
             sprite_set_y(game.player.player_sprite, game.player.y_prev);
             sprite_start_animation(game.player.player_sprite, "stand_d");
             stop_music();
-            play_sound_effect("win");
+            float vol = 0.1;
+            play_sound_effect("win", vol);
             return true;
         }
     }
