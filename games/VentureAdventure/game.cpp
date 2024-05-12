@@ -179,6 +179,10 @@ bool update_game(game_data &game, string levelnum, int lives)
     enemy_collision(game);
 
     enemy_move(game);
+    //debugging
+    write_line(to_string(game.enemies[0].x_id));
+    write_line(to_string(game.enemies[0].x_pos));
+    
     
     bool win = level_clear(game);
 
@@ -308,7 +312,7 @@ void enemy_collision(game_data &game)
 
 void enemy_move(game_data &game)
 {
-    //checks all enemies for collision with solid tiles and adjusts direction accordingly
+    //checks all enemies for collision with solid tiles and adjusts direction accordingly. Currently only left/right movement
     
     for (int i = 0; i < game.enemies.size(); i++)
     {
@@ -794,7 +798,7 @@ void box_start_collision(game_data &game)
 
 void box_enemy_collision(game_data &game)
 {
-    for (int i = 0; i < game.boxes.size(); i++)      
+    /* for (int i = 0; i < game.boxes.size(); i++)      
 
         for (int j = 0; j < game.enemies.size(); j++)     
         {             
@@ -809,7 +813,35 @@ void box_enemy_collision(game_data &game)
 
             if(game.boxes[i].right_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
                 game.boxes[i].right_stopped = true;
+        }*/
+
+    for (int i = 0; i < game.boxes.size(); i++)
+    {
+
+    if(game.player.y_prev > game.player.y_pos && game.player.y_pos <= game.player.next)
+        {
+            game.boxes[i].y_pos = sprite_y(game.boxes[i].box_sprite);
+            game.boxes[i].y_id = game.boxes[i].y_pos/TILESIZE;
+            game.boxes[i].up_next = game.boxes[i].y_id - 1;
+            game.boxes[i].down_next = game.boxes[i].y_id + 1;
+
+            for (int j = 0; j < game.enemies.size(); j++)
+            {
+                if(game.boxes[i].up_next == game.enemies[j].left_next 
+                ||game.boxes[i].up_next == game.enemies[j].right_next 
+                ||game.boxes[i].up_next == game.enemies[j].down_next
+                ||game.boxes[i].x_id == game.enemies[j].x_id)
+                    {
+                        game.boxes[i].up_stopped = true;
+                        box_collision(game);
+                    }
+
+            }
+
+
         }
+    }
+
 }
 
 bool level_clear(game_data &game)
