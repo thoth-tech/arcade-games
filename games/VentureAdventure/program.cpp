@@ -75,11 +75,13 @@ int main()
                 map.append(".txt");
                 levelnum = "Level ";
                 levelnum.append(to_string(level));
+                play_music("game", 100);
+                set_music_volume(0.025);
                 game = new_game(map);
             }
             else if ((win == true && level >= totallevels) || (check_gameover(game) == true))
             {
-                delay(5000);
+                delay(3000);
 
                 play_music("intro");
                 set_music_volume(0.04);

@@ -12,7 +12,7 @@
 #include <fstream>
 
 //DEBUG TOOL - make this 'true' to enable easier level completion, will cause only 1 gem to generate.
-bool debugeasymode = false;
+bool debugeasymode = true;
 
 using namespace std;
 
