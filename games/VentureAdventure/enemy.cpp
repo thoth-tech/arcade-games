@@ -22,6 +22,12 @@ enemy_data new_enemy(int x, int y)
     result.x_id    = result.x_pos/TILESIZE;
     result.y_id    = result.y_pos/TILESIZE;
 
+    result.up_next    = result.y_id - 1;
+    result.down_next  = result.y_id + 1;
+    result.left_next  = result.x_id - 1;
+    result.right_next = result.x_id + 1;
+
+
     for (int i = 0; i < 4; i++)
         result.dir[i] = 0;
 

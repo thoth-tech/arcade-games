@@ -312,9 +312,11 @@ void enemy_move(game_data &game)
     
     for (int i = 0; i < game.enemies.size(); i++)
     {
-        //makes sure x_id is up to date with movement
-        game.enemies[i].x_id = sprite_x(game.enemies[i].enemy_sprite)/TILESIZE;
-        
+            game.enemies[i].x_pos = sprite_x(game.enemies[i].enemy_sprite);
+            game.enemies[i].x_id = game.enemies[i].x_pos/TILESIZE;
+            game.enemies[i].left_next  = game.enemies[i].x_id - 1;
+            game.enemies[i].right_next = game.enemies[i].x_id + 1;
+
         for (int j = 0; j < game.solid.size(); j++)
         {
              
@@ -792,7 +794,8 @@ void box_start_collision(game_data &game)
 
 void box_enemy_collision(game_data &game)
 {
-    for (int i = 0; i < game.boxes.size(); i++)            
+    for (int i = 0; i < game.boxes.size(); i++)      
+
         for (int j = 0; j < game.enemies.size(); j++)     
         {             
             if(game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
