@@ -84,6 +84,8 @@ void attack(game_data &game);
 
 void start_screen();
 
+void win_screen();
+
 void credits();
 
 void hud(game_data &game, string levelnum);

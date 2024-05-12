@@ -81,7 +81,12 @@ int main()
             }
             else if ((win == true && level >= totallevels) || (check_gameover(game) == true))
             {
-                delay(3000);
+                if (win)
+                {
+                    win_screen();
+                }
+                
+                delay(5000);
 
                 play_music("intro");
                 set_music_volume(0.04);

@@ -12,7 +12,7 @@
 #include <fstream>
 
 //DEBUG TOOL - make this 'true' to enable easier level completion, will cause only 1 gem to generate.
-bool debugeasymode = true;
+bool debugeasymode = false;
 
 using namespace std;
 
@@ -794,6 +794,13 @@ void start_screen()
     }
 }
 
+void win_screen()
+{
+    draw_text("You Win!", COLOR_BLACK, "font.ttf", 70, SCREEN_WIDTH / 2 - 112, SCREEN_HEIGHT / 2 - 48, option_to_screen());
+    draw_text("You Win!", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 108, SCREEN_HEIGHT / 2 - 48, option_to_screen());
+    refresh_screen(60);
+}
+
 void credits()
 {
     int x = 500; 
@@ -814,7 +821,8 @@ void credits()
 void hud(game_data &game, string levelnum)
 {
     draw_text(levelnum , COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
-    draw_text("Collect all the Gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
+    draw_text("Collect all the gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
+    draw_text("and return to camp" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 2*TILESIZE);
     draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
     draw_text(" x "+ to_string(game.lives) , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
     draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(2));
