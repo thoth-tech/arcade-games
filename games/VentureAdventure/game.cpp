@@ -4,12 +4,15 @@
  * Deakin University 
 */
 
-//TO SPEED UP TESTING: Use commented out line in "add_gem" method to speed up testing, it will cause only one gem to spawn per level.
+
 
 #include "game.h"
 #include "splashkit.h"
 #include <iostream>
 #include <fstream>
+
+//DEBUG TOOL - make this 'true' to enable easier level completion, will cause only 1 gem to generate.
+bool debugeasymode = false;
 
 using namespace std;
 
@@ -19,6 +22,7 @@ game_data new_game(string map)
 
     // use new_level function to load the map to new_game.map_array
     new_game.map_array = new_level(map);
+
 
     // load the tiles to be used for the map design
     new_game.map = load_bitmap("tiles", "forest_tiles.png");
@@ -203,9 +207,20 @@ void add_gem(game_data &game, int x, int y)
     gem.x_id = x/TILESIZE;
     gem.y_id = y/TILESIZE;
 
-    //DEBUG TOOL - use if statement below to make level easier to complete (only 1 gem). Push_back line is always required  
-    //if (game.gems.size() < 1)
+    //if easy mode is enabled, will only add 1 gem to the level
+    if (debugeasymode == true)
+    {
+        if (game.gems.size() < 1)
+        {
+            game.gems.push_back(gem);
+        }
+    }
+    //required to add all gems when easy mode not enabled
+    else
+    {
         game.gems.push_back(gem);
+    }
+    
 }
 
 void add_enemy(game_data &game, int x, int y)
