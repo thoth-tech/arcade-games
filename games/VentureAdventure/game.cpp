@@ -342,8 +342,6 @@ void enemy_move(game_data &game)
                         game.enemies[i].dir[ERIGHT] = false;
                         game.enemies[i].dir[ELEFT] = true;
                     }
-
-                
                 }
         }
    
@@ -820,11 +818,9 @@ void box_enemy_collision(game_data &game)
     for (int i = 0; i < game.boxes.size(); i++)
     {
 
-        game.boxes[i].x_prev = sprite_x(game.boxes[i].box_sprite) - TILESIZE;
-        game.boxes[i].y_prev = sprite_y(game.boxes[i].box_sprite) - TILESIZE;
-
     if(game.player.y_prev > game.player.y_pos && game.player.y_pos <= game.player.next)
         {
+            game.boxes[i].y_prev = sprite_y(game.boxes[i].box_sprite) + TILESIZE;
             game.boxes[i].y_pos = sprite_y(game.boxes[i].box_sprite);
             game.boxes[i].y_id = game.boxes[i].y_pos/TILESIZE;
             game.boxes[i].up_next = game.boxes[i].y_id - 1;
@@ -832,6 +828,7 @@ void box_enemy_collision(game_data &game)
 
             for (int j = 0; j < game.enemies.size(); j++)
             {
+                game.enemies[j].y_prev = sprite_y(game.enemies[j].enemy_sprite) - TILESIZE;
                 if((game.boxes[i].y_id - 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id + 1)
                 ||(game.boxes[i].y_id - 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id - 1)
                 ||(game.boxes[i].y_id - 1 == game.enemies[j].y_id + 1 && game.boxes[i].x_id == game.enemies[j].x_id)
@@ -839,7 +836,8 @@ void box_enemy_collision(game_data &game)
                 ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
                     {
                         game.boxes[i].up_stopped = true;
-                        game.boxes[i].y_pos = game.boxes[i].y_prev * TILESIZE;
+                        game.boxes[i].y_pos = game.boxes[i].y_prev;
+                        game.enemies[j].y_pos = game.enemies[j].y_prev;
                     }
 
             }
@@ -849,6 +847,7 @@ void box_enemy_collision(game_data &game)
 
     if(game.player.y_prev < game.player.y_pos && game.player.y_pos >= game.player.next)
         {
+            game.boxes[i].y_prev = sprite_y(game.boxes[i].box_sprite) - TILESIZE;
             game.boxes[i].y_pos = sprite_y(game.boxes[i].box_sprite);
             game.boxes[i].y_id = game.boxes[i].y_pos/TILESIZE;
             game.boxes[i].up_next = game.boxes[i].y_id - 1;
@@ -856,6 +855,7 @@ void box_enemy_collision(game_data &game)
 
             for (int j = 0; j < game.enemies.size(); j++)
             {
+                game.enemies[j].y_prev = sprite_y(game.enemies[j].enemy_sprite) + TILESIZE;
                 if((game.boxes[i].y_id + 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id + 1)
                 ||(game.boxes[i].y_id + 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id - 1)
                 ||(game.boxes[i].y_id + 1 == game.enemies[j].y_id - 1 && game.boxes[i].x_id == game.enemies[j].x_id)
@@ -863,7 +863,8 @@ void box_enemy_collision(game_data &game)
                 ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
                     {
                         game.boxes[i].down_stopped = true;
-                        game.boxes[i].y_pos = game.boxes[i].y_prev * TILESIZE;
+                        game.boxes[i].y_pos = game.boxes[i].y_prev;
+                        game.enemies[j].y_pos = game.enemies[j].y_prev;
                     }
 
             }
@@ -872,6 +873,7 @@ void box_enemy_collision(game_data &game)
 
     if(game.player.x_prev > game.player.x_pos && game.player.x_pos <= game.player.next)
         {
+            game.boxes[i].x_prev = sprite_x(game.boxes[i].box_sprite) - TILESIZE;
             game.boxes[i].x_pos = sprite_x(game.boxes[i].box_sprite);
             game.boxes[i].x_id = game.boxes[i].x_pos/TILESIZE;
             game.boxes[i].left_next  = game.boxes[i].x_id - 1;
@@ -879,6 +881,7 @@ void box_enemy_collision(game_data &game)
 
             for (int j = 0; j < game.enemies.size(); j++)
             {
+                game.enemies[j].x_prev = sprite_x(game.enemies[j].enemy_sprite) + TILESIZE;
                 if((game.boxes[i].x_id - 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id + 1)
                 ||(game.boxes[i].x_id - 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id - 1)
                 ||(game.boxes[i].x_id - 1 == game.enemies[j].x_id + 1 && game.boxes[i].y_id == game.enemies[j].y_id)
@@ -886,7 +889,8 @@ void box_enemy_collision(game_data &game)
                 ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
                     {
                         game.boxes[i].left_stopped = true;
-                        game.boxes[i].x_pos = game.boxes[i].x_prev * TILESIZE;
+                        game.boxes[i].x_pos = game.boxes[i].x_prev;
+                        game.enemies[j].x_pos = game.enemies[j].x_prev;
                     }
 
             }
@@ -894,6 +898,7 @@ void box_enemy_collision(game_data &game)
 
     if(game.player.x_prev < game.player.x_pos && game.player.x_pos >= game.player.next)
         {
+            game.boxes[i].x_prev = sprite_x(game.boxes[i].box_sprite) + TILESIZE;
             game.boxes[i].x_pos = sprite_x(game.boxes[i].box_sprite);
             game.boxes[i].x_id = game.boxes[i].x_pos/TILESIZE;
             game.boxes[i].left_next  = game.boxes[i].x_id - 1;
@@ -901,6 +906,7 @@ void box_enemy_collision(game_data &game)
 
             for (int j = 0; j < game.enemies.size(); j++)
             {
+                game.enemies[j].x_prev = sprite_x(game.enemies[j].enemy_sprite) - TILESIZE;
                 if((game.boxes[i].x_id + 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id + 1)
                 ||(game.boxes[i].x_id + 1 == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id - 1)
                 ||(game.boxes[i].x_id + 1 == game.enemies[j].x_id - 1 && game.boxes[i].y_id == game.enemies[j].y_id)
@@ -908,7 +914,8 @@ void box_enemy_collision(game_data &game)
                 ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
                     {
                         game.boxes[i].right_stopped = true;
-                        game.boxes[i].x_pos = game.boxes[i].x_prev * TILESIZE;
+                        game.boxes[i].x_pos = game.boxes[i].x_prev;
+                        game.enemies[j].x_pos = game.enemies[j].x_prev;
                     }
 
             }
