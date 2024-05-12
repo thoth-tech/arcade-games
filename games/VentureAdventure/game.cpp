@@ -178,6 +178,8 @@ bool update_game(game_data &game, string levelnum, int lives)
 
     enemy_collision(game);
 
+    enemy_move(game);
+
     bool win = level_clear(game);
 
     moving(game);
@@ -229,7 +231,13 @@ void add_enemy(game_data &game, int x, int y)
 
     enemy.id = game.enemies.size();
 
+    enemy.dir[ELEFT] = true;
+
     game.enemies.push_back(enemy);
+
+    //start walking left animation when initialised
+    sprite_start_animation(enemy.enemy_sprite, "w_left");
+    
 }
 
 void remove_gem(game_data &game, int i)
@@ -295,6 +303,38 @@ void enemy_collision(game_data &game)
             game.lives -= 1;
             }
         }
+}
+
+void enemy_move(game_data &game)
+{
+    for (int i = 0; i < game.enemies.size(); i++)
+    {
+        for (int j = 0; j < game.solid.size(); j++)
+        {
+             
+             if (sprite_bitmap_collision(game.enemies[i].enemy_sprite, game.map, game.solid[j].x + TILESIZE, game.solid[j].y))
+                {
+                    if(game.enemies[i].dir[ELEFT] == true)
+                    {
+                        sprite_start_animation(game.enemies[i].enemy_sprite, "w_right");
+                        game.enemies[i].dir[ELEFT] = false;
+                        game.enemies[i].dir[ERIGHT] = true;
+                        
+
+                    }
+                    else if(game.enemies[i].dir[ERIGHT] == true)
+                    {
+                        sprite_start_animation(game.enemies[i].enemy_sprite, "w_left");
+                        game.enemies[i].dir[ERIGHT] = false;
+                        game.enemies[i].dir[ELEFT] = true;
+                    }
+
+                
+                }
+        }
+   
+    
+    }
 }
 
 //Don't think this code is functional. Have commented it out in game update loop. Not sure on the issue but have started developing other functions to do with enemies

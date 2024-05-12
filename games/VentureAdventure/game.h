@@ -74,6 +74,8 @@ void gem_collision(game_data &game);
 
 void enemy_collision(game_data &game);
 
+void enemy_move(game_data &game);
+
 bool level_clear(game_data &game);
 
 bool check_gameover(game_data &game);

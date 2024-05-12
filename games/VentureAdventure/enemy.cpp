@@ -23,7 +23,7 @@ enemy_data new_enemy(int x, int y)
     result.y_id    = result.y_pos/TILESIZE;
 
     for (int i = 0; i < 4; i++)
-        result.move[i] = 0;
+        result.dir[i] = 0;
 
     sprite_set_collision_bitmap(result.enemy_sprite, enemy_pack);
     sprite_start_animation(result.enemy_sprite, "s_left");

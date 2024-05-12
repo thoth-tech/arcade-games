@@ -5,12 +5,20 @@
 
 using namespace std;
 
+enum dir_kind
+{
+    EUP,
+    EDOWN,
+    ELEFT,
+    ERIGHT,
+};
 struct enemy_data
 {
     sprite      enemy_sprite;
+    dir_kind   kind;
     animation_script   animation;
 
-    bool move[4];
+    bool dir[4];
     bool stopped;
 
     int id;
