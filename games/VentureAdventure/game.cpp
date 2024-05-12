@@ -179,7 +179,7 @@ bool update_game(game_data &game, string levelnum, int lives)
     enemy_collision(game);
 
     enemy_move(game);
-
+    
     bool win = level_clear(game);
 
     moving(game);
@@ -308,8 +308,13 @@ void enemy_collision(game_data &game)
 
 void enemy_move(game_data &game)
 {
+    //checks all enemies for collision with solid tiles and adjusts direction accordingly
+    
     for (int i = 0; i < game.enemies.size(); i++)
     {
+        //makes sure x_id is up to date with movement
+        game.enemies[i].x_id = sprite_x(game.enemies[i].enemy_sprite)/TILESIZE;
+        
         for (int j = 0; j < game.solid.size(); j++)
         {
              
@@ -334,9 +339,38 @@ void enemy_move(game_data &game)
                 }
         }
    
-    
+    }
+
+    //checks all enemies for collision with boxes and adjusts direction accordingly
+    for (int i = 0; i < game.enemies.size(); i++)
+    {
+        for (int j = 0; j < game.boxes.size(); j++)
+        {
+             
+             if (sprite_collision(game.enemies[i].enemy_sprite, game.boxes[j].box_sprite))
+                {
+                    if(game.enemies[i].dir[ELEFT] == true)
+                    {
+                        sprite_start_animation(game.enemies[i].enemy_sprite, "w_right");
+                        game.enemies[i].dir[ELEFT] = false;
+                        game.enemies[i].dir[ERIGHT] = true;
+                        
+
+                    }
+                    else if(game.enemies[i].dir[ERIGHT] == true)
+                    {
+                        sprite_start_animation(game.enemies[i].enemy_sprite, "w_left");
+                        game.enemies[i].dir[ERIGHT] = false;
+                        game.enemies[i].dir[ELEFT] = true;
+                    }
+
+                
+                }
+        }
+   
     }
 }
+
 
 //Don't think this code is functional. Have commented it out in game update loop. Not sure on the issue but have started developing other functions to do with enemies
 void attack(game_data &game)
