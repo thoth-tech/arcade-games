@@ -534,6 +534,7 @@ void handle_input(game_data &game)
 
     if(key_down(D_KEY) && game.player.walking == false )
     {
+
         sprite_start_animation(game.player.player_sprite, "stand_r");
 
         for (int i = 0; i < game.solid.size(); i++)
@@ -795,7 +796,7 @@ void box_enemy_collision(game_data &game)
     {
 
     //if player is moving up
-    if(game.player.y_prev > game.player.y_pos && game.player.y_pos <= game.player.next)
+    if(game.player.y_pos <= game.player.next)
         {
             update_box_position(game);
 
@@ -817,7 +818,7 @@ void box_enemy_collision(game_data &game)
         }
 
     //if player is moving down
-    if(game.player.y_prev < game.player.y_pos && game.player.y_pos >= game.player.next)
+    if(game.player.y_pos >= game.player.next)
         {
             update_box_position(game);
 
@@ -837,7 +838,7 @@ void box_enemy_collision(game_data &game)
         }
     
     //if player is moving left
-    if(game.player.x_prev > game.player.x_pos && game.player.x_pos <= game.player.next)
+    if(game.player.x_pos <= game.player.next)
         {
             update_box_position(game);
 
@@ -857,7 +858,7 @@ void box_enemy_collision(game_data &game)
         }
 
     //if player is moving right
-    if(game.player.x_prev < game.player.x_pos && game.player.x_pos >= game.player.next)
+    if(game.player.x_pos >= game.player.next)
         {
             update_box_position(game);
 
