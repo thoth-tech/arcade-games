@@ -174,8 +174,6 @@ bool update_game(game_data &game, string levelnum, int lives)
 
     box_start_collision(game);
 
-    box_enemy_collision(game);
-
     enemy_collision(game);
 
     enemy_move(game);
@@ -420,6 +418,7 @@ void handle_input(game_data &game)
 
     if(key_down(W_KEY) && game.player.walking == false)
     {  
+        box_enemy_collision(game);
         sprite_start_animation(game.player.player_sprite, "stand_u");
         // stop at walls
         for (int i = 0; i < game.solid.size(); i++)
@@ -460,6 +459,7 @@ void handle_input(game_data &game)
 
     if(key_down(S_KEY) && game.player.walking == false)
     {
+        box_enemy_collision(game);
         sprite_start_animation(game.player.player_sprite, "stand_d");
 
         for (int i = 0; i < game.solid.size(); i++)
@@ -498,6 +498,7 @@ void handle_input(game_data &game)
 
     if(key_down(A_KEY) && game.player.walking == false)
     {
+        box_enemy_collision(game);
         sprite_start_animation(game.player.player_sprite, "stand_l");
 
         for (int i = 0; i < game.solid.size(); i++)
@@ -535,7 +536,7 @@ void handle_input(game_data &game)
 
     if(key_down(D_KEY) && game.player.walking == false )
     {
-
+        box_enemy_collision(game);
         sprite_start_animation(game.player.player_sprite, "stand_r");
 
         for (int i = 0; i < game.solid.size(); i++)
@@ -636,21 +637,16 @@ void box_collision(game_data &game)
         if (sprite_collision(game.player.player_sprite, game.boxes[i].box_sprite))
         {
             if( game.player.move[UP] == true && game.boxes[i].up_stopped == false)
-                sprite_set_y(game.boxes[i].box_sprite, sprite_y(game.player.player_sprite) - TILESIZE);
+                {sprite_set_y(game.boxes[i].box_sprite, sprite_y(game.player.player_sprite) - TILESIZE);}
 
-                //experiment with making box always go to it's full next tile. Currently if player dies while moving box (aka respawns), box will be moved partially between tiles and can be walked through
-                //improvement/change could be adding some sort of temporary invincibility when hit instead of respawn
-                
-                //sprite_set_y(game.boxes[i].box_sprite, game.boxes[i].up_next * TILESIZE);
-    
             if( game.player.move[DOWN] == true && game.boxes[i].down_stopped == false )
-                sprite_set_y(game.boxes[i].box_sprite, sprite_y(game.player.player_sprite) + TILESIZE);
+                {sprite_set_y(game.boxes[i].box_sprite, sprite_y(game.player.player_sprite) + TILESIZE);}
 
             if( game.player.move[LEFT] == true && game.boxes[i].left_stopped == false )
-                sprite_set_x(game.boxes[i].box_sprite, sprite_x(game.player.player_sprite) - TILESIZE);
+                {sprite_set_x(game.boxes[i].box_sprite, sprite_x(game.player.player_sprite) - TILESIZE);}
 
             if( game.player.move[RIGHT] == true && game.boxes[i].right_stopped == false )
-                sprite_set_x(game.boxes[i].box_sprite, sprite_x(game.player.player_sprite) + TILESIZE);
+                {sprite_set_x(game.boxes[i].box_sprite, sprite_x(game.player.player_sprite) + TILESIZE);}
         }
 
     }
@@ -803,7 +799,7 @@ void box_enemy_collision(game_data &game)
     {
 
     //if player is moving up
-    if(game.player.y_pos >= game.player.up_next)
+    if(game.player.y_id >= game.player.up_next)
         {
             update_box_position(game);
 
@@ -825,7 +821,7 @@ void box_enemy_collision(game_data &game)
         }
 
     //if player is moving down
-    if(game.player.y_pos >= game.player.down_next)
+    if(game.player.y_id <= game.player.down_next)
         {
             update_box_position(game);
 
@@ -845,7 +841,7 @@ void box_enemy_collision(game_data &game)
         }
     
     //if player is moving left
-    if(game.player.x_pos >= game.player.left_next)
+    if(game.player.x_id >= game.player.left_next)
         {
             update_box_position(game);
 
@@ -865,7 +861,7 @@ void box_enemy_collision(game_data &game)
         }
 
     //if player is moving right
-    if(game.player.x_pos >= game.player.right_next)
+    if(game.player.x_id <= game.player.right_next)
         {
             update_box_position(game);
 
