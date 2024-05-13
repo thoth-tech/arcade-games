@@ -25,6 +25,10 @@ int main()
     game_data game;
     game = new_game(map);
 
+    bool debugging_output_enabled = true;      // change this to toggle the debugging output on/off
+    vector<string> old_debug_message = { "" };
+    bool still_waiting;
+
     while (!quit_requested() && !key_down(ESCAPE_KEY))
     {
         play_music("intro");
@@ -50,7 +54,29 @@ int main()
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
-            start_debug(game);
+            if (debugging_output_enabled)
+            {
+                // get current debugging info
+                vector<string> new_debug_message = get_verbose_debugging_message(game);
+
+                // only send the debug info if the game state has changed since last cycle
+                if (old_debug_message != new_debug_message)
+                {
+                    for(int i = 0; i < new_debug_message.size(); i++)
+                    {
+                        write_line(new_debug_message[i]);
+                    }
+                    still_waiting = false;
+                }
+                else if (!still_waiting)
+                {
+                    write_line("Waiting for game state to change...");
+                    still_waiting = true;
+                }
+
+                // save the current cycle's message for comparison in the next cycle
+                old_debug_message = new_debug_message;
+            }
 
             refresh_screen(60);
 
