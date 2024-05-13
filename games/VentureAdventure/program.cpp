@@ -18,9 +18,9 @@ int main()
     load_resources();
 
     //use this to adjust starting level (for debugging) or to change total number of levels when adding new levels
-    string map = "Resources/levels/level1.txt";
+    string map = "Resources/levels/level3.txt";
     int totallevels = 4;
-    int level = 1;
+    int level = 3;
     bool win;
     int startinglives = 3;
     int currentlives = startinglives;
