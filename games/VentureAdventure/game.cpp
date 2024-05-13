@@ -309,7 +309,8 @@ void enemy_collision(game_data &game)
 
 void enemy_move(game_data &game)
 {
-    //checks all enemies for collision with solid tiles and adjusts direction accordingly. Currently only left/right movement
+    //checks all enemies for collision with solid tiles and adjusts direction accordingly. Currently only left/right movement.
+    //Briefly attempted vertical movement but animation gets caught in block
     
     for (int i = 0; i < game.enemies.size(); i++)
     {
