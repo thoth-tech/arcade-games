@@ -27,7 +27,7 @@ int main()
 
     bool debugging_output_enabled = true;      // change this to toggle the debugging output on/off
     vector<string> old_debug_message = { "" };
-    bool still_waiting;
+    bool still_waiting = false;
 
     while (!quit_requested() && !key_down(ESCAPE_KEY))
     {
