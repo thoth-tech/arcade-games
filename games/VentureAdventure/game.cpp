@@ -418,7 +418,25 @@ void handle_input(game_data &game)
 
     if(key_down(W_KEY) && game.player.walking == false)
     {  
-        box_enemy_collision(game);
+        update_enemy_position(game);
+        update_box_position(game);
+        for (int i = 0; i < game.boxes.size(); i++)
+        {
+
+            for (int j = 0; j < game.enemies.size(); j++)
+            {
+                
+                if((game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].left_next)
+                ||(game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].right_next)
+                ||(game.boxes[i].up_next == game.enemies[j].down_next && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
+                    {
+                        game.boxes[i].up_stopped = true;
+                    }
+        }
+
+        }
         sprite_start_animation(game.player.player_sprite, "stand_u");
         // stop at walls
         for (int i = 0; i < game.solid.size(); i++)
@@ -459,7 +477,25 @@ void handle_input(game_data &game)
 
     if(key_down(S_KEY) && game.player.walking == false)
     {
-        box_enemy_collision(game);
+        update_enemy_position(game);
+        update_box_position(game);
+        for (int i = 0; i < game.boxes.size(); i++)
+        {
+
+            for (int j = 0; j < game.enemies.size(); j++)
+            {
+                
+                if((game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].left_next)
+                ||(game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].right_next)
+                ||(game.boxes[i].down_next == game.enemies[j].up_next && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
+                    {
+                        game.boxes[i].down_stopped = true;
+                    }
+        }
+
+        }
         sprite_start_animation(game.player.player_sprite, "stand_d");
 
         for (int i = 0; i < game.solid.size(); i++)
@@ -498,7 +534,25 @@ void handle_input(game_data &game)
 
     if(key_down(A_KEY) && game.player.walking == false)
     {
-        box_enemy_collision(game);
+        update_enemy_position(game);
+        update_box_position(game);
+        for (int i = 0; i < game.boxes.size(); i++)
+        {
+
+            for (int j = 0; j < game.enemies.size(); j++)
+            {
+                
+                if((game.boxes[i].left_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].down_next)
+                ||(game.boxes[i].left_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].up_next)
+                ||(game.boxes[i].left_next == game.enemies[j].right_next && game.boxes[i].y_id == game.enemies[j].y_id)
+                ||(game.boxes[i].left_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
+                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
+                    {
+                        game.boxes[i].left_stopped = true;
+                    }
+        }
+
+        }
         sprite_start_animation(game.player.player_sprite, "stand_l");
 
         for (int i = 0; i < game.solid.size(); i++)
@@ -536,7 +590,27 @@ void handle_input(game_data &game)
 
     if(key_down(D_KEY) && game.player.walking == false )
     {
-        box_enemy_collision(game);
+        update_enemy_position(game);
+        update_box_position(game);
+        for (int i = 0; i < game.boxes.size(); i++)
+        {
+
+            for (int j = 0; j < game.enemies.size(); j++)
+            {
+                
+                if((game.boxes[i].right_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].down_next)
+                ||(game.boxes[i].right_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].up_next)
+                ||(game.boxes[i].right_next == game.enemies[j].left_next && game.boxes[i].y_id == game.enemies[j].y_id)
+                ||(game.boxes[i].right_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
+                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
+                    {
+                        game.boxes[i].right_stopped = true;
+                    }
+        }
+
+        }
+
+
         sprite_start_animation(game.player.player_sprite, "stand_r");
 
         for (int i = 0; i < game.solid.size(); i++)
@@ -573,7 +647,6 @@ void handle_input(game_data &game)
         }  
     }
 }
-
 void moving(game_data &game)
 {
     if(game.player.walking == true)
@@ -791,99 +864,6 @@ void box_start_collision(game_data &game)
         }
 }
 
-void box_enemy_collision(game_data &game)
-{
-    //currently boxes cannot trap enemies in a 1x1 area as to prevent boxes and enemies colliding/glitching, this function checks both the enemy current position and next tile
-
-    for (int i = 0; i < game.boxes.size(); i++)
-    {
-
-    //if player is moving up
-    if(game.player.y_id >= game.player.up_next)
-        {
-            update_box_position(game);
-
-            for (int j = 0; j < game.enemies.size(); j++)
-            {
-                update_enemy_position(game);
-                if((game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].left_next)
-                ||(game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].right_next)
-                ||(game.boxes[i].up_next == game.enemies[j].down_next && game.boxes[i].x_id == game.enemies[j].x_id)
-                ||(game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
-                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
-                    {
-                        game.boxes[i].up_stopped = true;
-                    }
-
-            }
-
-
-        }
-
-    //if player is moving down
-    if(game.player.y_id <= game.player.down_next)
-        {
-            update_box_position(game);
-
-            for (int j = 0; j < game.enemies.size(); j++)
-            {
-                update_enemy_position(game);
-                if((game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].left_next)
-                ||(game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].right_next)
-                ||(game.boxes[i].down_next == game.enemies[j].up_next && game.boxes[i].x_id == game.enemies[j].x_id)
-                ||(game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
-                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
-                    {
-                        game.boxes[i].down_stopped = true;
-                    }
-
-            }
-        }
-    
-    //if player is moving left
-    if(game.player.x_id >= game.player.left_next)
-        {
-            update_box_position(game);
-
-            for (int j = 0; j < game.enemies.size(); j++)
-            {
-                update_enemy_position(game); 
-                if((game.boxes[i].left_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].down_next)
-                ||(game.boxes[i].left_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].up_next)
-                ||(game.boxes[i].left_next == game.enemies[j].right_next && game.boxes[i].y_id == game.enemies[j].y_id)
-                ||(game.boxes[i].left_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
-                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
-                    {
-                        game.boxes[i].left_stopped = true;
-                    }
-
-            }
-        }
-
-    //if player is moving right
-    if(game.player.x_id <= game.player.right_next)
-        {
-            update_box_position(game);
-
-            for (int j = 0; j < game.enemies.size(); j++)
-            {
-                update_enemy_position(game); 
-
-                if((game.boxes[i].right_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].down_next)
-                ||(game.boxes[i].right_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].up_next)
-                ||(game.boxes[i].right_next == game.enemies[j].left_next && game.boxes[i].y_id == game.enemies[j].y_id)
-                ||(game.boxes[i].right_next == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id)
-                ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
-                    {
-                        game.boxes[i].right_stopped = true;
-                    }
-
-            }
-        }
-
-
-    }
-}
 
 void update_enemy_position (game_data &game)
 {
