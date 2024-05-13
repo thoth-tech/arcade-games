@@ -179,9 +179,6 @@ bool update_game(game_data &game, string levelnum, int lives)
     enemy_collision(game);
 
     enemy_move(game);
-    //debugging
-    write_line("id" + to_string(game.enemies[1].x_id));
-    write_line("next left" + to_string(game.enemies[1].left_next));
     
     
     bool win = level_clear(game);
@@ -792,23 +789,23 @@ void box_start_collision(game_data &game)
 
 void box_enemy_collision(game_data &game)
 {
+    //currently boxes cannot trap enemies in a 1x1 area as to prevent boxes and enemies colliding/glitching, this function checks both the enemy current position and next tile
+
     for (int i = 0; i < game.boxes.size(); i++)
     {
 
     //if player is moving up
     if(game.player.y_prev > game.player.y_pos && game.player.y_pos <= game.player.next)
         {
-            game.boxes[i].y_pos = sprite_y(game.boxes[i].box_sprite);
-            game.boxes[i].y_id = game.boxes[i].y_pos/TILESIZE;
-            game.boxes[i].up_next = game.boxes[i].y_id - 1;
-            game.boxes[i].down_next = game.boxes[i].y_id + 1;
+            update_box_position(game);
 
             for (int j = 0; j < game.enemies.size(); j++)
             {
-                if((game.boxes[i].y_id - 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id + 1)
-                ||(game.boxes[i].y_id - 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id - 1)
-                ||(game.boxes[i].y_id - 1 == game.enemies[j].y_id + 1 && game.boxes[i].x_id == game.enemies[j].x_id)
-                ||(game.boxes[i].y_id - 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
+                update_enemy_position(game);
+                if((game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].left_next)
+                ||(game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].right_next)
+                ||(game.boxes[i].up_next == game.enemies[j].down_next && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].up_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
                 ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
                     {
                         game.boxes[i].up_stopped = true;
@@ -822,17 +819,15 @@ void box_enemy_collision(game_data &game)
     //if player is moving down
     if(game.player.y_prev < game.player.y_pos && game.player.y_pos >= game.player.next)
         {
-            game.boxes[i].y_pos = sprite_y(game.boxes[i].box_sprite);
-            game.boxes[i].y_id = game.boxes[i].y_pos/TILESIZE;
-            game.boxes[i].up_next = game.boxes[i].y_id - 1;
-            game.boxes[i].down_next = game.boxes[i].y_id + 1;
+            update_box_position(game);
 
             for (int j = 0; j < game.enemies.size(); j++)
             {
-                if((game.boxes[i].y_id + 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id + 1)
-                ||(game.boxes[i].y_id + 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id - 1)
-                ||(game.boxes[i].y_id + 1 == game.enemies[j].y_id - 1 && game.boxes[i].x_id == game.enemies[j].x_id)
-                ||(game.boxes[i].y_id + 1 == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
+                update_enemy_position(game);
+                if((game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].left_next)
+                ||(game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].right_next)
+                ||(game.boxes[i].down_next == game.enemies[j].up_next && game.boxes[i].x_id == game.enemies[j].x_id)
+                ||(game.boxes[i].down_next == game.enemies[j].y_id && game.boxes[i].x_id == game.enemies[j].x_id)
                 ||(game.boxes[i].x_id == game.enemies[j].x_id && game.boxes[i].y_id == game.enemies[j].y_id))
                     {
                         game.boxes[i].down_stopped = true;
@@ -891,7 +886,12 @@ void update_enemy_position (game_data &game)
     for (int i = 0; i < game.enemies.size(); i++)
     {
         game.enemies[i].x_pos = sprite_x(game.enemies[i].enemy_sprite);
-        game.enemies[i].x_id = game.enemies[i].x_pos/TILESIZE;
+        /*enemy uses animation vectors to move, and as a result this calculation of x_id using division can sometimes be rounded wrong.
+        This assists with rounding but not ideal. Possibly animation shouldn't be used to change x and y positions. At the moment the player also does so would require
+        significant changes*/
+
+        game.enemies[i].x_id = ((TILESIZE/2) + game.enemies[i].x_pos) /TILESIZE;
+
         game.enemies[i].left_next = game.enemies[i].x_id - 1;
         game.enemies[i].right_next = game.enemies[i].x_id + 1;
         game.enemies[i].up_next = game.enemies[i].y_id - 1;
@@ -905,7 +905,7 @@ void update_box_position (game_data &game)
     for (int i = 0; i < game.enemies.size(); i++)
     {
         game.boxes[i].x_pos = sprite_x(game.boxes[i].box_sprite);
-        game.boxes[i].x_id = game.boxes[i].x_pos/TILESIZE;
+        game.boxes[i].x_id = ((TILESIZE/2) + game.enemies[i].x_pos) /TILESIZE;
         game.boxes[i].left_next = game.boxes[i].x_id - 1;
         game.boxes[i].right_next = game.boxes[i].x_id + 1;
         game.boxes[i].up_next = game.boxes[i].y_id - 1;
