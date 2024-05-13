@@ -7,7 +7,7 @@ BITMAP,greenGuy,GreenGuy.png, 32, 64, 4, 8, 32
 
 SOUND, Jump, Jump.wav
 SOUND, HeadHit, HeadHit.wav
-SOUND, Attack, TurnPipe.wav
+SOUND, TurnPipe, TurnPipe.wav
 SOUND, Dead, Dead.wav
 SOUND, Hurt, Hurt.wav
 SOUND, Water, Water.wav
