@@ -348,6 +348,8 @@ void enemy_move(game_data &game)
                     if(game.enemies[i].dir[ELEFT] == true)
                     {
                         sprite_start_animation(game.enemies[i].enemy_sprite, "w_right");
+                        //adjusts enemy x pos slightly after collision to prevent it from getting stuck in the box
+                        sprite_set_x(game.enemies[i].enemy_sprite, game.enemies[i].x_pos + TILESIZE / 8);
                         game.enemies[i].dir[ELEFT] = false;
                         game.enemies[i].dir[ERIGHT] = true;
                         
@@ -356,6 +358,8 @@ void enemy_move(game_data &game)
                     else if(game.enemies[i].dir[ERIGHT] == true)
                     {
                         sprite_start_animation(game.enemies[i].enemy_sprite, "w_left");
+                        //adjusts enemy x pos slightly after collision to prevent it from getting stuck in the box
+                        sprite_set_x(game.enemies[i].enemy_sprite, game.enemies[i].x_pos - TILESIZE / 8);
                         game.enemies[i].dir[ERIGHT] = false;
                         game.enemies[i].dir[ELEFT] = true;
                     }
