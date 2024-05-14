@@ -24,7 +24,8 @@ struct player_data
     bool attacked;
 
     //int gem;
-    int bullet;
+    //int bullet;
+    
     int x_pos, y_pos;
     int x_prev, y_prev;
     int x_id, y_id;

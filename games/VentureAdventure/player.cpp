@@ -82,9 +82,9 @@ player_data new_player()
     result.x_prev  = 0, result.y_prev  = 0;
 
     // initalise gems and bullets
-    //commenting out this gem = 0 line as number of gems collected are not actually stored here, this number is visual only. Will initialise it elsewhere.
+    //commenting out theses line as number of gems collected are not actually stored here, this number is visual only. Will initialise it elsewhere. Bullets unused
     //result.gem = 0;
-    result.bullet  = 0;
+    //result.bullet  = 0;
 
     result.walking  = false;
     result.attacked = false;
