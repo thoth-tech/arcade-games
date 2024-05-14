@@ -10,6 +10,7 @@
 #include "splashkit.h"
 #include <iostream>
 #include <fstream>
+#include <math.h>
 
 //DEBUG TOOL - make this 'true' to enable easier level completion, will cause only 1 gem to generate.
 bool debugeasymode = false;
@@ -299,6 +300,7 @@ void enemy_collision(game_data &game)
             }
             else{
             play_sound_effect("damage");
+            game.lifelost = true;
             game.player = new_player();
             game.lives -= 1;
             }
@@ -709,21 +711,71 @@ void moving(game_data &game)
 
 void box_collision(game_data &game)
 {
+    game.lifelost = false;
+
     for(int i = 0; i < game.boxes.size(); i++)
     {
         if (sprite_collision(game.player.player_sprite, game.boxes[i].box_sprite))
-        {
+        {   
             if( game.player.move[UP] == true && game.boxes[i].up_stopped == false)
-                {sprite_set_y(game.boxes[i].box_sprite, sprite_y(game.player.player_sprite) - TILESIZE);}
+             {  
+                
+                //checks for enemy collision, if player is hit, box will move either return to original tile or move to next tile depending on rounding
+                //this fixes bug where box would get left between tiles on death and cause a waterfall of issues
+                enemy_collision(game);
+                if (game.lifelost == true)
+                {
+                    game.boxes[i].y_id = round(sprite_y(game.boxes[i].box_sprite) / TILESIZE);
+                    sprite_set_y(game.boxes[i].box_sprite, game.boxes[i].y_id * TILESIZE);
+                }
+                else
+                {
+                sprite_set_y(game.boxes[i].box_sprite, sprite_y(game.player.player_sprite) - TILESIZE);
+                }
+             }
 
             if( game.player.move[DOWN] == true && game.boxes[i].down_stopped == false )
-                {sprite_set_y(game.boxes[i].box_sprite, sprite_y(game.player.player_sprite) + TILESIZE);}
+            {  
+                enemy_collision(game);
+                if (game.lifelost == true)
+                {
+                    game.boxes[i].y_id = round(sprite_y(game.boxes[i].box_sprite) / TILESIZE);
+                    sprite_set_y(game.boxes[i].box_sprite, game.boxes[i].y_id * TILESIZE);
+                }
+                else
+                {
+                sprite_set_y(game.boxes[i].box_sprite, sprite_y(game.player.player_sprite) + TILESIZE);;
+                }
+             }
 
             if( game.player.move[LEFT] == true && game.boxes[i].left_stopped == false )
-                {sprite_set_x(game.boxes[i].box_sprite, sprite_x(game.player.player_sprite) - TILESIZE);}
+            {  
+                enemy_collision(game);
+                if (game.lifelost == true)
+                {
+                    game.boxes[i].x_id = round(sprite_x(game.boxes[i].box_sprite) / TILESIZE);
+                    sprite_set_x(game.boxes[i].box_sprite, game.boxes[i].x_id * TILESIZE);
+                }
+                else
+                {
+                sprite_set_x(game.boxes[i].box_sprite, sprite_x(game.player.player_sprite) - TILESIZE);
+                }
+             }
+
 
             if( game.player.move[RIGHT] == true && game.boxes[i].right_stopped == false )
-                {sprite_set_x(game.boxes[i].box_sprite, sprite_x(game.player.player_sprite) + TILESIZE);}
+            {  
+                enemy_collision(game);
+                if (game.lifelost == true)
+                {
+                    game.boxes[i].x_id = round(sprite_x(game.boxes[i].box_sprite) / TILESIZE);
+                    sprite_set_x(game.boxes[i].box_sprite, game.boxes[i].x_id * TILESIZE);
+                }
+                else
+                {
+                sprite_set_x(game.boxes[i].box_sprite, sprite_x(game.player.player_sprite) + TILESIZE);
+                }
+             }
         }
 
     }

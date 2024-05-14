@@ -29,6 +29,7 @@ struct game_data
     int gemCount;
     int lives;
     bool gameover;
+    bool lifelost = false;
     int index[64];
     point_2d map_loc;
     vector<point_2d> solid;
