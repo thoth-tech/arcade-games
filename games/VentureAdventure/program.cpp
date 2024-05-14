@@ -17,17 +17,26 @@ int main()
     window_toggle_border("VentureAdventure");
     load_resources();
 
-    //use this to adjust starting level (for debugging) or to change total number of levels when adding new levels
-    string map = "Resources/levels/level1.txt";
+    //TESTING and DEBUG TOOL. Use these to adjust starting level, to update total levels when adding new level, or adjust lives
     int totallevels = 4;
-    int level = 1;
-    bool win;
+    int startinglevel = 1;
     int startinglives = 3;
+
+
+    int currentlevel = startinglevel;
+    bool win;
     int currentlives = startinglives;
-    string levelnum = "Level 1";
+    string levelnum;
+    string map;
 
     game_data game;
+    map = "Resources/levels/level";
+    map.append(to_string(currentlevel));
+    map.append(".txt");
+    levelnum = "Level ";
+    levelnum.append(to_string(currentlevel));
     game = new_game(map);
+    
 
     while (!quit_requested() && !key_down(ESCAPE_KEY))
     {
@@ -67,19 +76,19 @@ int main()
 
             refresh_screen(60);
 
-            if (win == true && level < totallevels)
+            if (win == true && currentlevel < totallevels)
             {
-                level++;
+                currentlevel++;
                 map = "Resources/levels/level";
-                map.append(to_string(level));
+                map.append(to_string(currentlevel));
                 map.append(".txt");
                 levelnum = "Level ";
-                levelnum.append(to_string(level));
+                levelnum.append(to_string(currentlevel));
                 play_music("game", 100);
                 set_music_volume(0.025);
                 game = new_game(map);
             }
-            else if ((win == true && level >= totallevels) || (check_gameover(game) == true))
+            else if ((win == true && currentlevel >= totallevels) || (check_gameover(game) == true))
             {
                 if (win)
                 {
@@ -98,13 +107,13 @@ int main()
                 play_music("game", 100);
                 set_music_volume(0.025);
 
-                level = 1;
+                currentlevel = startinglevel;
                 currentlives = startinglives;
                 map = "Resources/levels/level";
-                map.append(to_string(level));
+                map.append(to_string(currentlevel));
                 map.append(".txt");
                 levelnum = "Level ";
-                levelnum.append(to_string(level));
+                levelnum.append(to_string(currentlevel));
                 game = new_game(map);
             };
         }
