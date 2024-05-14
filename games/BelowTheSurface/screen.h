@@ -1024,7 +1024,7 @@ void CreditsScreen::update()
     bitmap logo = bitmap_named("TeamLogo");
     font screen_font = font_named("DefaultFont");
     color font_color = COLOR_WHITE;
-    int font_size = 25;
+    int font_size = 18;
     vector<string> credits;
 
     if (!music_playing())
@@ -1044,13 +1044,20 @@ void CreditsScreen::update()
     credits.push_back("Sound Design: Lily Lan");
     credits.push_back("Additional Artwork: Lachlan Morgan");
 
-    draw_bitmap(logo, pt.x - bitmap_width(logo)/2, pt.y - bitmap_height(logo)/2 - 200, option_to_screen());
-    draw_text("CREDITS", font_color, screen_font, 80, pt.x- text_width("CREDITS", screen_font, 80)/2, (pt.y - text_height("CREDITS", screen_font, 80)/2) - 350, option_to_screen());
+    float scale = 0.15f;
+    int vertical_shift = -100;
+    int bitmap_vertical_shift = -200;
 
-    int height = (text_height(credits[0], screen_font, font_size) * 2) + 13;
+    draw_bitmap(logo, pt.x - bitmap_width(logo) / 2, pt.y - bitmap_height(logo) / 2 - 200 - bitmap_vertical_shift, option_to_screen());
 
-    for(int i = 0; i < credits.size(); i++)
-        draw_text(credits[i], font_color, screen_font, font_size, 150, (pt.y + (i * height/2)) + 30, option_to_screen());
+    draw_text("CREDITS", font_color, screen_font, 50, pt.x - (text_width("CREDITS", screen_font, 50) * scale) / 2 - 160, (pt.y - (text_height("CREDITS", screen_font, 50) * scale) / 2) - 200, option_scale_bmp(scale, scale));
+
+    int height = (text_height(credits[0], screen_font, font_size) * 1.2) + 15;
+
+    for (int i = 0; i < credits.size(); i++)
+    {
+        draw_text(credits[i], font_color, screen_font, font_size, 140 * scale, (pt.y + (i * height / 2)) + vertical_shift, option_scale_bmp(scale, scale));
+    }
 
     if(key_typed(RETURN_KEY) || key_typed(screen->input_key))
         this->screen->change_state(new MenuScreen, "Menu");
