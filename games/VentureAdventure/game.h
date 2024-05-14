@@ -68,8 +68,6 @@ void box_gem_collision(game_data &game);
 
 void box_start_collision(game_data &game);
 
-void box_enemy_collision(game_data &game);
-
 void gem_collision(game_data &game);
 
 void enemy_collision(game_data &game);
