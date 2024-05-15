@@ -280,7 +280,7 @@ void handle_input(game_data &game)
     game.player.x_id  = game.player.x_pos/TILESIZE;
     game.player.stopped = false;
 
-    if(key_down(UP_KEY) && game.player.walking == false)
+    if(key_down(W_KEY) && game.player.walking == false)
     {  
         sprite_start_animation(game.player.player_sprite, "stand_u");
         // stop at walls
@@ -320,7 +320,7 @@ void handle_input(game_data &game)
         }
     }
 
-    if(key_down(DOWN_KEY) && game.player.walking == false)
+    if(key_down(S_KEY) && game.player.walking == false)
     {
         sprite_start_animation(game.player.player_sprite, "stand_d");
 
@@ -358,7 +358,7 @@ void handle_input(game_data &game)
         }
     }
 
-    if(key_down(LEFT_KEY) && game.player.walking == false)
+    if(key_down(A_KEY) && game.player.walking == false)
     {
         sprite_start_animation(game.player.player_sprite, "stand_l");
 
@@ -395,7 +395,7 @@ void handle_input(game_data &game)
         }   
     }
 
-    if(key_down(RIGHT_KEY) && game.player.walking == false )
+    if(key_down(D_KEY) && game.player.walking == false )
     {
         sprite_start_animation(game.player.player_sprite, "stand_r");
 
@@ -654,7 +654,7 @@ void start_screen()
     int ven = 500;
     int adv = 542;
 
-    while( not key_down(SPACE_KEY) && not quit_requested() )
+    while( not key_down(RETURN_KEY) && not quit_requested() && not key_down(ESCAPE_KEY))
     {
         process_events();
 
@@ -665,7 +665,7 @@ void start_screen()
 
         if(ven == SCREEN_HEIGHT/2-150)
         {
-            draw_text("PRESS SPACE BAR TO START", COLOR_BLANCHED_ALMOND, "font.ttf", 20, SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT-50, option_to_screen());
+            draw_text("PRESS ENTER KEY TO START", COLOR_BLANCHED_ALMOND, "font.ttf", 20, SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT-50, option_to_screen());
             draw_text("By Anthony George", COLOR_BLANCHED_ALMOND, "font.ttf", 10, SCREEN_WIDTH/2+20, SCREEN_HEIGHT/2-50, option_to_screen());
         }
 
@@ -701,6 +701,12 @@ void hud(game_data &game, string levelnum)
     draw_text(" x 3" , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
     draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(3));
     draw_text(" x "+ to_string(game.player.gem), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
+    draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
+    draw_text("WASD Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
+    draw_text(" Joystick ", COLOR_BLACK, "font.ttf", 20, 19*TILESIZE - 5, 11*TILESIZE - 10);
+    draw_text("Restart Level: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 12*TILESIZE);
+    draw_text("R key /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 13*TILESIZE);
+    draw_text("Button 1 ", COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 14*TILESIZE - 10);
     
 }
 
