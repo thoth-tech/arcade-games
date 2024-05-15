@@ -80,6 +80,12 @@ int main()
                 old_debug_message = new_debug_message;
             }
 
+            // intended for use when soft-locked/trapped by boxes without needing to restart game. will reset gems and player on current level, but won't reset lives
+            if (key_down(R_KEY))
+            {
+                game = new_game(map);
+            }
+
             refresh_screen(60);
 
             if (win == true && level < totallevels)
