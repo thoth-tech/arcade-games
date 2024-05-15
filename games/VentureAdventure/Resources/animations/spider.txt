@@ -22,8 +22,8 @@ f:[18-20],[18-20],10,18
 //f:[21-23],[21-23],10,21
 
 //vectors
-//3rd number here indicates how many units the x/y position of the sprite changes. Can be used to change enemy speed
-//Enemy currently slightly slower than player, all levels completeable
+//2nd and 3rd numbers in these sequences indicate the change in x and y position that the sprite changes each frame. Can be used to adjust enemy movement speed
+//For animation frame speed, refer to DUR above
 v:[0-2],0,4
 v:[6-8],-0.8,0
 v:[12-14],0.8,0

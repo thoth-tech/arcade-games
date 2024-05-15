@@ -37,7 +37,8 @@ int main()
     levelnum.append(to_string(currentlevel));
     game = new_game(map);
     
-
+    // process start screen. could be expanded in future to be a main menu. no way to return to this screen unless game is lost or won, but there's currently no need to go back anyway
+    // could also have a proper controls menu/button in future to view controls during the game rather than displayed in the hud (see game.cpp file for hud)
     while (!quit_requested() && !key_down(ESCAPE_KEY))
     {
         play_music("intro");
@@ -50,6 +51,7 @@ int main()
         play_music("game", 100);
         set_music_volume(0.025);
 
+        // processes game/levels
         while (!quit_requested() && !key_down(ESCAPE_KEY))
         {
             process_events();
@@ -58,13 +60,16 @@ int main()
 
             draw_game(game);
 
+            // updates game. keeps track of win conditions for each level
             win = update_game(game, levelnum, currentlives);
 
             currentlives = check_lives(game);
 
-            //Don't think this is functional?
+
+            // method 'attack' in game.cpp that changes this variable is not currently function
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
+
 
             //intended for use when soft-locked/trapped by boxes without needing to restart game. will reset gems and player on current level, but won't reset lives
             if (key_down(R_KEY))
@@ -76,6 +81,7 @@ int main()
 
             refresh_screen(60);
 
+            // when a level is won, loads next level until the last level
             if (win == true && currentlevel < totallevels)
             {
                 currentlevel++;
@@ -88,6 +94,7 @@ int main()
                 set_music_volume(0.025);
                 game = new_game(map);
             }
+            // if last level is won or game is lost, returns to main menu. Gamer over sounds and message call are currently within the game.cpp file
             else if ((win == true && currentlevel >= totallevels) || (check_gameover(game) == true))
             {
                 if (win)
@@ -107,6 +114,7 @@ int main()
                 play_music("game", 100);
                 set_music_volume(0.025);
 
+                // resets level conditions
                 currentlevel = startinglevel;
                 currentlives = startinglives;
                 map = "Resources/levels/level";
