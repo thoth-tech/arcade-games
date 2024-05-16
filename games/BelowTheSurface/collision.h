@@ -369,7 +369,6 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
                         play_sound_effect("EnemyDead");
                     }
                     level_enemies[i]->set_dead(true);
-                    write_line("<= 0 HP");
                 }
                 else // Otherwise take damage
                 {
@@ -377,7 +376,6 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
                     {
                         level_enemies[i]->take_damage(1);
                     }
-                    write_line(">0 HP");
                 }
                 level_players[j]->change_state(new JumpRiseState, "JumpRise");
                 level_players[j]->set_player_dx(0);
