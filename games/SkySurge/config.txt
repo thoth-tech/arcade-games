@@ -21,7 +21,7 @@ rating=PG
 language=C#
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=images/SkySurge.png
+image=images/SkySurge-config-image.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
 repository=https://github.com/ayanmasood/arcade-games.git
