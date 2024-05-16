@@ -1,15 +1,33 @@
-title =Sky Surge
+#--------------------------------------------------------------------
+# PLEASE ONLY EDIT CONTENT AFTER THE "=" SIGN FOR EACH CONFIGURATION SETTING  
+#--------------------------------------------------------------------
 
+# The title of your game (eg. Super Mario)
+title=Sky Surge
+
+# The name of the author (eg. Jane Doe)
 author=Ayan Masood
 
+# The genre of your game (eg. Platformer)
 genre=Top down
 
+# A Description of your game
 description=Survive waves of enemies using with increasing difficulty.
 
+# A classification rating to advise the nature of the content (eg. MA 15+)
 rating=PG
 
+# Programming language the game is written in (eg. C++) 
 language=C#
 
-image=images/SkySurge.png
+# Path to your game thumbnail image (eg. images/icon.png)
+image=images/SkySurge-config-image.png
 
+# Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
 repository=https://github.com/ayanmasood/arcade-games.git
+
+# [Optional] Uncomment to include path to the game executable (game.exe)
+#executable=game.exe
+
+# [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
+#compile-command=skm g++ *.cpp -o game

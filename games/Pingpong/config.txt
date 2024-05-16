@@ -20,10 +20,10 @@
 #--------------------------------------------------------------------
 
 # The title of your game (eg. Super Mario)
-title=
+title=Ping Pong
 
 # The name of the author (eg. Jane Doe)
-author=
+author=various
 
 # The genre of your game (eg. Platformer)
 genre=
@@ -38,10 +38,10 @@ rating=PG
 language=
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=
+image=images/Pingpong-config-image.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
-repository=https://github.com/yourname/yourgame
+repository=https://github.com/thoth-tech/arcade-games
 
 # [Optional] Uncomment to include path to the game executable (game.exe)
 #executable=game.exe

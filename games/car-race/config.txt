@@ -20,25 +20,25 @@
 #--------------------------------------------------------------------
 
 # The title of your game (eg. Super Mario)
-title=
+title=car-race
 
 # The name of the author (eg. Jane Doe)
-author=
+author=Khushi Laddi
 
 # The genre of your game (eg. Platformer)
-genre=
+genre=Top down
 
 # A Description of your game
-description=
+description=Car racing game
 
 # A classification rating to advise the nature of the content (eg. MA 15+)
 rating=PG
 
 # Programming language the game is written in (eg. C++) 
-language=
+language=C++
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=
+image=images/car-race-config-image.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
 repository=https://github.com/yourname/yourgame
