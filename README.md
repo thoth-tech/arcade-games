@@ -175,7 +175,7 @@ When creating the fork, **uncheck** the "Copy the main branch only" option, whic
 
 If you only have the main branch in your fork, it can cause automated build tools to fail when you submit a PR.
 
-![image](images/fork-branches.png)
+![image](images/fork-branches-dark.png)
 
 You will now have the arcade-games repository in your personal Git.
 
