@@ -258,6 +258,7 @@ public:
             selection -= 6;
             error = false;
 
+            // A is 0
             if (selection < 0)
             {
                 if (selection < -4)
