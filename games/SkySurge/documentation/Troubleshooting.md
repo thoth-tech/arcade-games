@@ -13,6 +13,6 @@ The below steps may be helpful in resolving these problems.
 
 ### MinGW / MSYS2 users on Windows
 
-* Many MSYS2 terminal options are available. It's typically recommended to use the **MINGW64** option for 64-bit operating systems, and the **MINGW32** Option for 32-bit operating systems.
+* Many MSYS2 terminal options are available. It's typically recommended to use the **MINGW64** option for 64-bit operating systems, and the **MINGW32** option for 32-bit operating systems.
 * Using the terminal built into your IDE (e,g., Visual Studio or Visual Studio Code) to build/run the game can sometimes cause problems that can be solved by using the appropriate MSYS2 terminal instead.
 * If you find that you're able to build/run the game with less errors when using PowerShell or Command Prompt (as compared to using the appropriate MSYS2 terminal option for your system), it's possible that your MinGW installation is corrupted somehow. Reinstalling MinGW might resolve this.
