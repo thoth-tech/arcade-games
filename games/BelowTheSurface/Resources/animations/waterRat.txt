@@ -19,7 +19,7 @@ f:[109-111], [9-11], 4,
 //Right Attack
 f:[112-115], [12-15], 7,
 
-//Right Decend 
+//Right Descend 
 f:[118-120], [18-20], 7,
 
 //Right Dying
@@ -35,7 +35,7 @@ i:RightRise, 103
 i:RightSpotPlayer, 105
 i:RightBattleCry, 109
 i:RightAttack, 112
-i:RightDecend, 118
+i:RightDescend, 118
 i:RightDying, 121
 i:RightIdle, 123
 
@@ -57,7 +57,7 @@ f:[209-211], [32-34], 4,
 //Left Attack
 f:[212-214], [35-37], 7,
 
-//Left Decend 
+//Left Descend 
 f:[215-217], [38-40], 7,
 
 //Left Dying
@@ -73,6 +73,6 @@ i:LeftRise, 203
 i:LeftSpotPlayer, 205
 i:LeftBattleCry, 209
 i:LeftAttack, 212
-i:LeftDecend, 215
+i:LeftDescend, 215
 i:LeftDying, 218
 i:LeftIdle, 230
