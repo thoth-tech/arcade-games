@@ -38,10 +38,10 @@ rating=PG
 language=
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=images/loading.png
+image=images/Pingpong-config-image.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
-repository=https://github.com/yourname/yourgame
+repository=https://github.com/thoth-tech/arcade-games
 
 # [Optional] Uncomment to include path to the game executable (game.exe)
 #executable=game.exe
