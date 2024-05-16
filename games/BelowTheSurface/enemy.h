@@ -232,7 +232,7 @@ class WaterRat : public Enemy
         {
             std::shared_ptr<Behaviour> ai(new WaterRatBehaviour(enemy_sprite, level_players));
             this->ai = ai;
-            this->hp = 5; // Since HP is effectively 0-indexed, Blob effectively has 6 hit points.
+            this->hp = 5; // Since HP is effectively 0-indexed, WaterRat effectively has 6 hit points.
             this->is_boss = true;
             this->is_vulnerable = false;
             point_2d pos = this->position;
