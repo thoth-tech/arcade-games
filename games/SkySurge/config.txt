@@ -10,6 +10,6 @@ rating=PG
 
 language=C#
 
-image=images/SkySurge.png
+image=Resources/images/SkySurge.png
 
 repository=https://github.com/ayanmasood/arcade-games.git
