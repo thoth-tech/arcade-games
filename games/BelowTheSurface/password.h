@@ -214,7 +214,7 @@ public:
         }
     };
 
-    // changed keys for Arcade Machine orgianl key in comments
+    // changed keys for Arcade Machine original key in comments
     string input()
     {
         string password = "";
