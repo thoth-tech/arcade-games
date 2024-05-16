@@ -34,18 +34,18 @@ class HUD
 
                 if(level_players[1]->player_lives==3)
                 {                
-                    draw_bitmap("PinkLive", 190, 55, option_to_screen());
-                    draw_bitmap("PinkLive", 155, 55, option_to_screen());
-                    draw_bitmap("PinkLive", 120, 55, option_to_screen());
+                    draw_bitmap("PinkLive", 190, 59, option_to_screen());
+                    draw_bitmap("PinkLive", 155, 59, option_to_screen());
+                    draw_bitmap("PinkLive", 120, 59, option_to_screen());
                 }
                 if(level_players[1]->player_lives==2)
                 {
-                    draw_bitmap("PinkLive", 155, 55, option_to_screen());
-                    draw_bitmap("PinkLive", 120, 55, option_to_screen());
+                    draw_bitmap("PinkLive", 155, 59, option_to_screen());
+                    draw_bitmap("PinkLive", 120, 59, option_to_screen());
                 }
                 if(level_players[1]->player_lives==1)
                 {
-                    draw_bitmap("PinkLive", 120, 55, option_to_screen());
+                    draw_bitmap("PinkLive", 120, 59, option_to_screen());
                 }
 
                 draw_bitmap("BlueEmptyBar", 270, 80, option_part_bmp(0, 0, 64, 32, option_to_screen()));
@@ -53,18 +53,18 @@ class HUD
 
                 if(level_players[0]->player_lives==3)
                 {                
-                    draw_bitmap("BlueLive", 335, 55, option_to_screen());
-                    draw_bitmap("BlueLive", 300, 55, option_to_screen());
-                    draw_bitmap("BlueLive", 265, 55, option_to_screen());
+                    draw_bitmap("BlueLive", 335, 59, option_to_screen());
+                    draw_bitmap("BlueLive", 300, 59, option_to_screen());
+                    draw_bitmap("BlueLive", 265, 59, option_to_screen());
                 }
                 if(level_players[0]->player_lives==2)
                 {
-                    draw_bitmap("BlueLive", 300, 55, option_to_screen());
-                    draw_bitmap("BlueLive", 265, 55, option_to_screen());
+                    draw_bitmap("BlueLive", 300, 59, option_to_screen());
+                    draw_bitmap("BlueLive", 265, 59, option_to_screen());
                 }
                 if(level_players[0]->player_lives==1)
                 {
-                    draw_bitmap("BlueLive", 265, 55, option_to_screen());
+                    draw_bitmap("BlueLive", 265, 59, option_to_screen());
                 } 
             }
             else
@@ -72,20 +72,21 @@ class HUD
                 draw_bitmap("PurpleEmptyBar", 125, 80, option_part_bmp(0, 0, 64, 32, option_to_screen()));
                 draw_bitmap("PurpleHealthBar", 125, 80, option_part_bmp(0, 0, 64/3*level_players[0]->player_health, 32, option_to_screen()));
                    
-                   if(level_players[0]->player_lives==3)
+                // have to offset the PurpleLive sprite 1px down (for some reason) to make it align with pink/blue
+                if(level_players[0]->player_lives==3)
                 {                
-                    draw_bitmap("PurpleLive", 190, 55, option_to_screen());
-                    draw_bitmap("PurpleLive", 155, 55, option_to_screen());
-                    draw_bitmap("PurpleLive", 120, 55, option_to_screen());
+                    draw_bitmap("PurpleLive", 190, 60, option_to_screen());
+                    draw_bitmap("PurpleLive", 155, 60, option_to_screen());
+                    draw_bitmap("PurpleLive", 120, 60, option_to_screen());
                 }
                 if(level_players[0]->player_lives==2)
                 {
-                    draw_bitmap("PurpleLive", 155, 55, option_to_screen());
-                    draw_bitmap("PurpleLive", 120, 55, option_to_screen());
+                    draw_bitmap("PurpleLive", 155, 60, option_to_screen());
+                    draw_bitmap("PurpleLive", 120, 60, option_to_screen());
                 }
                 if(level_players[0]->player_lives==1)
                 {
-                    draw_bitmap("PurpleLive", 120, 55, option_to_screen());
+                    draw_bitmap("PurpleLive", 120, 60, option_to_screen());
                 }
             }
         };
