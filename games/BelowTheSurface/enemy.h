@@ -21,7 +21,7 @@ class Enemy
         Enemy(sprite enemy_sprite, point_2d position, vector<std::shared_ptr<Player>> level_players)
         {
             this->is_dead = false;
-            this->hp = 0;
+            this->hp = 0;   // HP is essentially 0-indexed, and most units spawn at 0 HP
             this->enemy_sprite = enemy_sprite;
             this->position = position;
             this->level_players = level_players;
@@ -178,7 +178,7 @@ class Blob : public Enemy
         {
             std::shared_ptr<Behaviour> ai(new BlobBehaviour(enemy_sprite, level_players));
             this->ai = ai;
-            this->hp = 3; // Blob has 3 hit points. If blob gets jumped on 3 times. It dies.
+            this->hp = 2; // Since HP is effectively 0-indexed, Blob effectively has 3 hit points.
             point_2d pos = this->position;
             sprite_set_position(enemy_sprite, pos);
 
@@ -232,7 +232,7 @@ class WaterRat : public Enemy
         {
             std::shared_ptr<Behaviour> ai(new WaterRatBehaviour(enemy_sprite, level_players));
             this->ai = ai;
-            this->hp = 5;
+            this->hp = 5; // Since HP is effectively 0-indexed, Blob effectively has 6 hit points.
             this->is_boss = true;
             this->is_vulnerable = false;
             point_2d pos = this->position;
