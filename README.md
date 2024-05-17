@@ -171,9 +171,11 @@ Click the ‘_Fork_’ button at the top right of the screen and create a fork o
 
 ![image](images/fork-repo.png)
 
-When creating the fork, **uncheck** the "Copy the main branch only" option, which is selected by default.
+When creating the fork, **uncheck** the "Copy the main branch only" option, which is selected by
+default.
 
-If you only have the main branch in your fork, it can cause automated build tools to fail when you submit a PR.
+If you only have the main branch in your fork, it can cause automated build tools to fail when you
+submit a PR.
 
 ![image](images/fork-branches-dark.png)
 
