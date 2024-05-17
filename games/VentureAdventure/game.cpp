@@ -91,7 +91,7 @@ void get_objects(game_data &game)
         for (int j = 0; j < h; j++)
         {
             // Tiles with numbers defined between 1 and 300 are 'solid'. 
-            // Excludes 'enemy' currently defined as 200, and campfire(80), so that collision is possible. This if statement needs to be adjusted if more enemy tile numbers are added)
+            // Excludes 'enemy' currently defined as 200, and campfire(84), so that collision is possible. This if statement needs to be adjusted if more enemy tile numbers are added)
             if(game.map_array[i][j] > 1 && game.map_array[i][j] < 300 && game.map_array[i][j] != 200 && game.map_array[i][j] != 84)
             {
                 int solid_x = j*TILESIZE;
