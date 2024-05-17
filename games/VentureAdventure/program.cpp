@@ -23,6 +23,7 @@ int main()
     int level = 1;
     bool win;
     string levelnum = "Level 1";
+    //timer level_timer = create_timer("level_timer");
 
     game_data game;
     game = new_game(map);
@@ -52,6 +53,11 @@ int main()
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
+            // if (!timer_started(level_timer))
+            // {
+            //     start_timer(level_timer);
+            // }
+
             if (key_down(R_KEY))
             {
                 game = new_game(map);
@@ -63,6 +69,11 @@ int main()
 
             if (win == true && level < totallevels)
             {
+                // todo: add pause upon level completion? (it's a bit weird to immediately dump the player into the next level)
+
+                // process level timer
+                //todo (the stuff that's commented out is the in-progress stuff)
+
                 level++;
                 map = "Resources/levels/level";
                 map.append(to_string(level));
