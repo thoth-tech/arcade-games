@@ -1,0 +1,9 @@
+SplashKit Animation
+
+f:[8-9],[8-9],20,8
+f:[4-6],[4-6],20,4
+
+
+
+i:runr,8
+i:runl,4

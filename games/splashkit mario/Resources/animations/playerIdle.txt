@@ -1,0 +1,6 @@
+SplashKit Animation
+
+// standing still
+f:18,8,1,
+
+i:idle,18
