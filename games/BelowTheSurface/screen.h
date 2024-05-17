@@ -1191,11 +1191,6 @@ void PasswordScreen::update()
     {
         string password = password_screen->update();
 
-        if (password != "")
-        {
-            write_line("Password entered: " + password);
-        }
-
         if(password == "EXITEXITEXIT")
         {
             play_sound_effect("Select");
