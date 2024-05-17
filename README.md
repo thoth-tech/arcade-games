@@ -1,7 +1,7 @@
 # Guide to Contribute a Game to the Arcade Machine
 
 This guide takes you through the steps required for your game to be added into the arcade-machine
-library
+library.
 
 ---
 
@@ -29,7 +29,7 @@ Table of contents
 ## Coding
 
 To make the game accessible and controllable by the arcade machine, some additional code or changes
-are required
+are required.
 
 ### Quit Request
 
@@ -52,15 +52,11 @@ The window size of your game cannot exceed 1600 x 900, this is to allow your gam
 inside the arcade-machine itself. Similarly, there is a minimum window size of 640 x 480, to ensure
 visibility for the user.
 
-The window size of your game cannot exceed 1600 x 900, this is to allow your game to sit neatly
-inside the arcade-machine itself. Similarly, but mainly for aesthetic purposes, a minimum window
-size of 640 x 480 is expected.
-
 ### Window Border
 
 We ask that you remove the border before compiling your game. The Arcade Machine provides a more
 immersive experience for the user if there is no border. To remove the border of your game window,
-use SplashKit’s `window_toggle_border();` function after the `open_window()` function like so:
+use SplashKit's `window_toggle_border();` function after the `open_window()` function like so:
 
 ```cpp
 int main()
@@ -97,13 +93,15 @@ int main()
 
 ### Other
 
-To ensure the arcade machine can retrieve files using path information, please refrain from adding whitespace to any file path.
+To ensure the arcade machine can retrieve files using path information, please refrain from adding
+whitespace to any file path.
 **Example:**
 Use `my-game` instead of `my game`.. etc.
 
 ## Controls
 
-The following keys are required to be the functional keys of your game to be compatible with the arcade machine.  
+The following keys are required to be the functional keys of your game to be compatible with the
+arcade machine.  
 
 ### Player One
 
@@ -137,7 +135,7 @@ your game.
 This image must be sized as 600px x 540px so it will be displayed correctly in the games menu.  
 The supported formats are png, jpg and bmp.
 
-If you don’t have access to image editing software such as Adobe Illustrator/Photoshop etc, we
+If you don't have access to image editing software such as Adobe Illustrator/Photoshop etc, we
 suggest you use a browser-based tool such as [resizeimage](https://resizeimage.net/) to resize, crop
 or format a screenshot of your game.
 
@@ -167,7 +165,7 @@ You have now completed all the steps required to have your game showcased on the
 
 To contribute your game, go to the
 [Thoth Tech arcade-games repository](https://github.com/thoth-tech/arcade-games)  
-Click the ‘_Fork_’ button at the top right of the screen and create a fork of this repository.
+Click the '_Fork_' button at the top right of the screen and create a fork of this repository.
 
 ![image](images/fork-repo.png)
 
@@ -191,7 +189,7 @@ In your commit message, include your name and the name of the game:
 
 ```git
 
-git commit -m ”Anthony George - Venture Adventure”
+git commit -m "Anthony George - Venture Adventure"
 git push
 ```
 
@@ -201,7 +199,7 @@ You will now see your game in the remote fork.
 
 Now create a Pull request to have your game added to the arcade-machine.
 
-Click the ‘_Pull requests_’ tab, then click ‘_New pull request_’ button, then click '_Create pull
+Click the '_Pull requests_' tab, then click '_New pull request_' button, then click '_Create pull
 request_'
 
 ![image](images/pull-request.png)
@@ -212,6 +210,6 @@ Write a message for the Arcade Machine and hit '_Create pull request_'
 
 You will see that merging is blocked until a member of the Arcade-Machine team has reviewed your
 game.  
- We will be sure to get in contact with you once it has been approved!
+We will be sure to get in contact with you once it has been approved!
 
 ![image](images/review.png)
