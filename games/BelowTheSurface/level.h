@@ -604,7 +604,7 @@ class Easy  : public Level
             this->level_name = "Easy...enough";
             shared_ptr<Background> backg(new GreyBackground);
             this->background = backg;
-            this->password = "EZPZ";
+            this->password = "EZPZY";
             this->pre_level_side_text.push_back("Climb to the top...");
             this->pre_level_side_text.push_back("Watch out for snakes!");
             this->pre_level_image = bitmap_named("level3");
@@ -643,7 +643,7 @@ class BossLevel : public Level
             this->level_name = "Boss Fight";
             shared_ptr<Background> backg(new GreyBackground);
             this->background = backg;
-            this->password = "BOSS";
+            this->password = "BOSSY";
             this->pre_level_side_text.push_back("Water Rat is angry!");
             this->pre_level_side_text.push_back("...watch out!");
             this->pre_level_image = bitmap_named("level9");

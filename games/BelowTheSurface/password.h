@@ -71,6 +71,7 @@ public:
     {
         return this->letter_height;
     };
+
 };
 
 class Password
@@ -80,6 +81,7 @@ private:
     vector<std::shared_ptr<Letter>> underscore;
     int selection = 0;
     int letter = 0;
+    bool error = false;
 
 public:
     Password()
@@ -97,9 +99,43 @@ public:
         }
     };
 
+
+    void incorrect_password()
+    {
+        play_sound_effect("BossAttack");
+        error = true;
+
+        //removes one of the letters when password is wrong to prevent endless loop of sound effect
+        if (letter > 0)
+        letter -= 2;
+        underscore[letter]->set_value("_");
+
+        
+        
+    };
+
+    void draw_error()
+    {
+        string error_message = "Try Again";
+        font font_type = font_named("DefaultFont");
+        int font_size = 15;
+        int width = text_width(error_message, font_type, font_size);
+        point_2d pos = screen_center();
+        pos.x = pos.x - width / 2;
+
+        if (error){
+        draw_text(error_message, COLOR_RED, font_type, font_size, pos.x, 10);
+        }
+        if (!error)
+        {
+            draw_text(" ", COLOR_RED, font_type, font_size, pos.x, 10);
+        }
+
+    };
+
     void process_alphabet()
     {
-        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ<~`";
+        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ<`";
         int row = 0;
         int col = 0;
         int letter_width = 0;
@@ -129,13 +165,6 @@ public:
             if (str == "<")
             {
                 str = "DEL";
-                pos.y += letter_height * 2;
-            }
-            if (str == "~")
-            {
-                str = "ENTER";
-                pos.x -= col * letter_width * 3;
-                pos.x += col * letter_width * 4;
                 pos.y += letter_height * 2;
             }
             if (str == "`")
@@ -193,6 +222,7 @@ public:
         if (key_typed(RIGHT_KEY)) // Orginal Key D_KEY
         {
             selection += 1;
+            error = false;
 
             if (selection > keyboard.size() - 1)
                 selection = 0;
@@ -201,6 +231,7 @@ public:
         if (key_typed(LEFT_KEY)) // Orginal Key A_KEY
         {
             selection -= 1;
+            error = false;
 
             if (selection < 0)
                 selection = keyboard.size() - 1;
@@ -209,24 +240,30 @@ public:
         if (key_typed(DOWN_KEY)) // Orginal Key S_KEY
         {
             selection += 6;
+            error = false;
 
-            if (selection > keyboard.size() - 1)
+            if (selection >= keyboard.size() - 1)
             {
-                if (selection < 30)
+                if (selection > 29)
+                    selection = 0 + (selection - 30);
+                else if (selection > 26)
                     selection = 27;
                 else
-                    selection = 0 + (selection - 30);
+                    selection = 26;
             }
         }
 
         if (key_typed(UP_KEY)) // Orginal Key W_KEY
         {
             selection -= 6;
+            error = false;
 
-            if (selection < 0)
+            if (selection <= 0)
             {
-                if (selection < -2)
+                if (selection < -4)
                     selection = selection + 30;
+                else if (selection < -3 )
+                    selection = 26;
                 else
                     selection = 27;
             }
@@ -250,14 +287,6 @@ public:
                     letter -= 2;
                 underscore[letter]->set_value("_");
             }
-            else if (select == "ENTER")
-            {
-                string temp = "";
-                for (int i = 0; i < underscore.size(); i += 2)
-                    temp.append(underscore[i]->get_value());
-
-                password = temp;
-            }
             else if (select == "EXIT")
             {
                 password = "EXITEXITEXIT";
@@ -269,6 +298,16 @@ public:
                 underscore[letter]->set_value(select);
                 letter += 2;
             }
+            
+        }
+        //if last value in the array isn't an underscore anymore, password will automatically try to submit
+        if (underscore[8]->get_value() != "_")
+        {
+            string temp = "";
+            for (int i = 0; i < underscore.size(); i += 2)
+                temp.append(underscore[i]->get_value());
+
+            password = temp;
         }
 
         return password;
@@ -290,6 +329,7 @@ public:
         string password = input();
         draw_element(keyboard);
         draw_element(underscore);
+        draw_error();
 
         return password;
     }

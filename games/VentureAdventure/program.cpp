@@ -17,7 +17,9 @@ int main()
     window_toggle_border("VentureAdventure");
     load_resources();
 
+    //use this to adjust starting level (for debugging) or to change total number of levels when adding new levels
     string map = "Resources/levels/level1.txt";
+    int totallevels = 3;
     int level = 1;
     bool win;
     string levelnum = "Level 1";
@@ -50,11 +52,16 @@ int main()
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
+            if (key_down(R_KEY))
+            {
+                game = new_game(map);
+            }
+
             start_debug(game);
 
             refresh_screen(60);
 
-            if (win == true && level < 3)
+            if (win == true && level < totallevels)
             {
                 level++;
                 map = "Resources/levels/level";
@@ -65,7 +72,8 @@ int main()
                 game = new_game(map);
             };
 
-            if (win == true && level == 3)
+
+            if (win == true && level >= totallevels)
             {
                 delay(5000);
 
