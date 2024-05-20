@@ -105,8 +105,6 @@ int main()
                 game = new_game(map);
             }
 
-            start_debug(game);
-
             refresh_screen(60);
 
             // when a level is won, loads next level until the last level
