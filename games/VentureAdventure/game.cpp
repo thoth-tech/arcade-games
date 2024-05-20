@@ -1115,6 +1115,7 @@ vector<string> get_verbose_debugging_message(const game_data &game)
     message.push_back("Player down next: "+ to_string(game.player.down_next));
     message.push_back("Player left next: "+ to_string(game.player.left_next));
     message.push_back("Player right next: "+ to_string(game.player.right_next));
+    message.push_back("Gems: "+ to_string(game.gems.size()));
     message.push_back("=======================");
     message.push_back("");
     message.push_back("====== Box Info 1 ======");
