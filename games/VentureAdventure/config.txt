@@ -40,7 +40,7 @@ rating=PG
 language=C++
 
 # Path to your game thumbnail image (eg. images/icon.png)
-image=images/VenAd.png
+image=Resources/images/VenAd.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
 repository=https://github.com/thoth-tech/arcade-games

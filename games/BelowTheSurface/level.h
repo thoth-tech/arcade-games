@@ -402,6 +402,7 @@ class Level
             check_water_empty_multi_turn_block_collisions(empty_multi_turn_pipes, water);
             check_turn_multi_empty_pipes(multi_turn_pipes, empty_multi_turn_pipes);
             check_collectable_collisions(level_collectables, level_players);
+            check_decoration_shadows(decoration, level_players);
         }
 
         string get_level_name()

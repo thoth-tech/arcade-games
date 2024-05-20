@@ -36,6 +36,11 @@ int main()
     levelnum = "Level ";
     levelnum.append(to_string(currentlevel));
     game = new_game(map);
+
+    bool debugging_output_enabled = true;      // change this to toggle the debugging output on/off
+    vector<string> old_debug_message = { "" };
+    bool still_waiting = false;
+
     
     // process start screen. could be expanded in future to be a main menu. no way to return to this screen unless game is lost or won, but there's currently no need to go back anyway
     // could also have a proper controls menu/button in future to view controls during the game rather than displayed in the hud (see game.cpp file for hud)
@@ -70,14 +75,37 @@ int main()
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
+            if (debugging_output_enabled)
+            {
+                // get current debugging info
+                vector<string> new_debug_message = get_verbose_debugging_message(game);
 
-            //intended for use when soft-locked/trapped by boxes without needing to restart game. will reset gems and player on current level, but won't reset lives
+                // only send the debug info if the game state has changed since last cycle
+                if (old_debug_message != new_debug_message)
+                {
+                    for(int i = 0; i < new_debug_message.size(); i++)
+                    {
+                        write_line(new_debug_message[i]);
+                    }
+                    still_waiting = false;
+                }
+                else if (!still_waiting)
+                {
+                    write_line("Waiting for game state to change...");
+                    still_waiting = true;
+                }
+
+                // save the current cycle's message for comparison in the next cycle
+                old_debug_message = new_debug_message;
+            }
+
+            // intended for use when soft-locked/trapped by boxes without needing to restart game. will reset gems and player on current level, but won't reset lives
             if (key_down(R_KEY))
             {
                 game = new_game(map);
             }
 
-            //start_debug(game);
+            start_debug(game);
 
             refresh_screen(60);
 
