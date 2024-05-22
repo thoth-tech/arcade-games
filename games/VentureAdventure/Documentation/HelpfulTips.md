@@ -1,4 +1,4 @@
-# Help Tips
+# Helpful Tips
 
 ## Debugging Output
 
@@ -16,4 +16,4 @@ To change the enemy speed, refer to the **/Resources/animations/spider.txt** fil
 
 ## Adding New Resources
 
-Make sure to edit the **/Resources/bundles/icon.txt** file if you are adding new assests such as images, sound effects or animations to the game. This file also includes art credits.
+Make sure to edit the **/Resources/bundles/icon.txt** file if you are adding new assets such as images, sound effects or animations to the game. This file also includes art credits.

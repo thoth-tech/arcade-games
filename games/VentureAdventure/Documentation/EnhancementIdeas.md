@@ -16,6 +16,7 @@ while playing, rather than showing them in the HUD
 - Add a timer that times each level
 - Add enemies that can move up and down
 - Add different types of enemies or obstacles
+- Add different types of gems into the game, maybe they each have their own mechanic?
 - Add a way to get new lives (especially if the game grows in number of levels)
 - Add a way to destroy enemies, such as pushing boxes into them, or maybe a way for the player to 'attack'
 - Add a story or lore to the game
