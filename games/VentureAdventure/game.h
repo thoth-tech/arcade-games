@@ -75,6 +75,6 @@ void credits();
 
 void hud(game_data &game, string levelnum);
 
-void start_debug(const game_data &game);
+vector<string> get_verbose_debugging_message(const game_data &game);
 
 #endif

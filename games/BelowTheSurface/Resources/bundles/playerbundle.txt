@@ -13,6 +13,7 @@ SOUND, Hurt, Hurt.wav
 SOUND, Water, Water.wav
 SOUND, Pickup, Pickup.wav
 SOUND, EnemyDead, EnemyDead.wav
+SOUND, EnemyHurt, EnemyHurt.flac
 SOUND, Toxic, Toxic.mp3
 SOUND, PickHeart, PickHeart.wav
 SOUND, Jumpfall, Jumpfall.wav
