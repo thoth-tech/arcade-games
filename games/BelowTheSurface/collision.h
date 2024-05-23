@@ -339,7 +339,7 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
 
                 if (attack_success)
                 {
-                    if (level_enemies[i]->get_hp() == 0)
+                    if (level_enemies[i]->get_hp() <= 0)
                     {
                         play_sound_effect("EnemyDead");
                         level_enemies[i]->set_dead(true);
