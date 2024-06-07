@@ -1,0 +1,5 @@
+SplashKit Animation
+
+f:[1-17], [1-17],10,1
+
+i:portal,1

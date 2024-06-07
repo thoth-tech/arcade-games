@@ -1,0 +1,5 @@
+SplashKit Animation
+
+f:[1-8],[1-8],15,1
+
+i:coin,1
