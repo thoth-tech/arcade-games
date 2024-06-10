@@ -8,12 +8,26 @@ BITMAP,yellowcar,yellowcar.png
 BITMAP,redcar,redcar.png
 //Background
 BITMAP,game,game.png
+BITMAP,game2,game2.png
 BITMAP,home,homescreen.png
+BITMAP,select,selectscreen.png
 BITMAP,ending,ending.png
+BITMAP,levelup,levelup.png
+BITMAP,paused,paused.png
+BITMAP,finish,finish.png
+// PowerUP
+BITMAP,shield,shield.png
+BITMAP,coin,coin.png
+BITMAP,speedup,speedup.png
+BITMAP,slowdown,slowdown.png
+// Barricade
+BITMAP,barricade2,barricade2.png
 //FONTS
 FONT,digi,digi.ttf
 //SOUNDS
 SOUND,carcrash,carcrash.mp3
 SOUND,carmotor,carmotor.wav
 SOUND,endmusic,endmusic.wav
-SOUND,gameplaymusic, gameplaymusic.mp3
+SOUND,powerup1,powerup1.mp3
+SOUND,powerup2,powerup2.mp3
+SOUND,powerup3,powerup3.mp3
