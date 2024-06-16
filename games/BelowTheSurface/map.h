@@ -477,7 +477,7 @@ class LevelOjectsMap
                 for (int j = 0; j < this->map_width; j++)
                 {
                     position.x = j * this->tile_size;
-                    position.y = i * this->tile_size;
+                    position.y = i * this->tile_size + 10;
 
                     int cell = ((this->map_array[i][j]) - 1) - offset;
 
