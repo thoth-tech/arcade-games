@@ -8,11 +8,9 @@
 #--------------------------------------------------------------------
 #   Task    |  Who    | Date     | Comments
 #-----------+---------+----------+-----------------------------------
-#  Sprint 1 | AGEORGE | 20220326 | Created
+#  Sprint 1 |CastielM | 20231205 | Created
 #-----------+---------+----------+-----------------------------------
-#  Sprint 2 | AGEORGE | 20220511 | Added Description
-#-----------+---------+----------+-----------------------------------
-#  Sprint 3 | AGEORGE | 20220828 | Added win, linux and macos params
+#           |         |          | 
 #-----------+---------+----------+-----------------------------------
 
 #--------------------------------------------------------------------
@@ -23,7 +21,7 @@
 title=Single Combat
 
 # The name of the author (eg. Jane Doe)
-author=Castiel McIntosh
+author=CastielM
 
 # The genre of your game (eg. Platformer)
 genre=Puzzle
@@ -41,7 +39,7 @@ language=C++
 image=/Resources/images/greenblock.png
 
 # Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
-repository=https://github.com/thoth-tech/arcade-games/games/SingleCombat
+repository=https://github.com/thoth-tech/arcade-games/
 
 # [Optional] Uncomment to include path to the game executable (game.exe)
 executable=SingleCombat.exe
