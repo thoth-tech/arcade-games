@@ -42,6 +42,8 @@ BITMAP, GreyBackground,Background4.png
 BITMAP, DarkBackground, Background3.png
 BITMAP, BlueBackground, blue_background.png
 BITMAP, TeamLogo, teamlogo.png
+BITMAP, ControlPic, ControlPic.png
+BITMAP, ControlPic2, ControlPic2.png
 BITMAP, Company2, companylogo1.png
 BITMAP, Company1, companylogo2.png
 
