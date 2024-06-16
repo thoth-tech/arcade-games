@@ -43,7 +43,7 @@ gem_data new_gem(int x, int y)
     sprite_set_y(result.gem_sprite, result.y);
 
     sprite_set_collision_bitmap(result.gem_sprite, gem_pack);
-    sprite_start_animation(result.gem_sprite, DIAMOND);
+    sprite_start_animation(result.gem_sprite, RUBY);
 
     return result;
 }

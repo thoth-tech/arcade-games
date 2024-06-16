@@ -63,8 +63,8 @@ player_data new_player()
     result.player_sprite = create_sprite(hero_pack, result.animation);
 
     // set player in centre of map
-    sprite_set_x(result.player_sprite, SCREEN_WIDTH/2);
-    sprite_set_y(result.player_sprite, SCREEN_HEIGHT/2);
+    sprite_set_x(result.player_sprite, 256);
+    sprite_set_y(result.player_sprite, 256);
     
     // set player co-ords
     result.x_pos   = sprite_x(result.player_sprite);
@@ -80,10 +80,6 @@ player_data new_player()
     result.left_next  = result.x_id - 1;
     result.right_next = result.x_id + 1;
     result.x_prev  = 0, result.y_prev  = 0;
-
-    // initalise gems and bullets
-    result.gem     = 0;
-    result.bullet  = 0;
 
     result.walking  = false;
     result.attacked = false;

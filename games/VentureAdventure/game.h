@@ -26,6 +26,10 @@ struct game_data
     vector<gem_data> gems;
     vector<enemy_data> enemies;
     bitmap map;
+    int gemCount;
+    int lives;
+    bool gameover;
+    bool lifelost = false;
     int index[64];
     point_2d map_loc;
     vector<point_2d> solid;
@@ -37,7 +41,7 @@ vector<vector<int> > new_level(string file);
 
 void get_objects(game_data &game);
 
-bool update_game(game_data &game, string levelnum);
+bool update_game(game_data &game, string levelnum, int lives);
 
 void draw_game(const game_data &game);
 
@@ -63,13 +67,29 @@ void box_box_collision(game_data &game);
 
 void box_gem_collision(game_data &game);
 
+void box_start_collision(game_data &game);
+
 void gem_collision(game_data &game);
 
+void enemy_collision(game_data &game);
+
+void enemy_move(game_data &game);
+
+void update_enemy_position(game_data &game);
+
+void update_box_position(game_data &game);
+
 bool level_clear(game_data &game);
+
+bool check_gameover(game_data &game);
+
+int check_lives(game_data game);
 
 void attack(game_data &game);
 
 void start_screen();
+
+void win_screen();
 
 void credits();
 

@@ -17,20 +17,33 @@ int main()
     window_toggle_border("VentureAdventure");
     load_resources();
 
-    //use this to adjust starting level (for debugging) or to change total number of levels when adding new levels
-    string map = "Resources/levels/level1.txt";
-    int totallevels = 3;
-    int level = 1;
+    //TESTING and DEBUG TOOL. Use these to adjust starting level, to update total levels when adding new level, or adjust lives
+    int totallevels = 4;
+    int startinglevel = 1;
+    int startinglives = 3;
+
+
+    int currentlevel = startinglevel;
     bool win;
-    string levelnum = "Level 1";
+    int currentlives = startinglives;
+    string levelnum;
+    string map;
 
     game_data game;
+    map = "Resources/levels/level";
+    map.append(to_string(currentlevel));
+    map.append(".txt");
+    levelnum = "Level ";
+    levelnum.append(to_string(currentlevel));
     game = new_game(map);
 
     bool debugging_output_enabled = true;      // change this to toggle the debugging output on/off
     vector<string> old_debug_message = { "" };
     bool still_waiting = false;
 
+    
+    // process start screen. could be expanded in future to be a main menu. no way to return to this screen unless game is lost or won, but there's currently no need to go back anyway
+    // could also have a proper controls menu/button in future to view controls during the game rather than displayed in the hud (see game.cpp file for hud)
     while (!quit_requested() && !key_down(ESCAPE_KEY))
     {
         play_music("intro");
@@ -43,6 +56,7 @@ int main()
         play_music("game", 100);
         set_music_volume(0.025);
 
+        // processes game/levels
         while (!quit_requested() && !key_down(ESCAPE_KEY))
         {
             process_events();
@@ -51,8 +65,13 @@ int main()
 
             draw_game(game);
 
-            win = update_game(game, levelnum);
+            // updates game. keeps track of win conditions for each level
+            win = update_game(game, levelnum, currentlives);
 
+            currentlives = check_lives(game);
+
+
+            // method 'attack' in game.cpp that changes this variable is not currently function
             if (game.player.attacked == true)
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
 
@@ -88,20 +107,27 @@ int main()
 
             refresh_screen(60);
 
-            if (win == true && level < totallevels)
+            // when a level is won, loads next level until the last level
+            if (win == true && currentlevel < totallevels)
             {
-                level++;
+                currentlevel++;
                 map = "Resources/levels/level";
-                map.append(to_string(level));
+                map.append(to_string(currentlevel));
                 map.append(".txt");
                 levelnum = "Level ";
-                levelnum.append(to_string(level));
+                levelnum.append(to_string(currentlevel));
+                play_music("game", 100);
+                set_music_volume(0.025);
                 game = new_game(map);
-            };
-
-
-            if (win == true && level >= totallevels)
+            }
+            // if last level is won or game is lost, returns to main menu. Gamer over sounds and message call are currently within the game.cpp file
+            else if ((win == true && currentlevel >= totallevels) || (check_gameover(game) == true))
             {
+                if (win)
+                {
+                    win_screen();
+                }
+                
                 delay(5000);
 
                 play_music("intro");
@@ -114,16 +140,20 @@ int main()
                 play_music("game", 100);
                 set_music_volume(0.025);
 
-                level = 1;
+                // resets level conditions
+                currentlevel = startinglevel;
+                currentlives = startinglives;
                 map = "Resources/levels/level";
-                map.append(to_string(level));
+                map.append(to_string(currentlevel));
                 map.append(".txt");
                 levelnum = "Level ";
-                levelnum.append(to_string(level));
+                levelnum.append(to_string(currentlevel));
                 game = new_game(map);
             };
         }
     }
+
+    
 
     return 0;
 }
