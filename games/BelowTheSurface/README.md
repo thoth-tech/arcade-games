@@ -4,8 +4,8 @@
 ## How to Install
 
 - Install [Splashkit](https://www.splashkit.io) to your computer 
-- Enter command `git clone https://github.com/thoth-tech/build-a-game-team` to your terminal
-- Enter command `cd build-a-game-team`
+- Enter command `git clone https://github.com/thoth-tech/arcade-games` to your terminal
+- Enter command `cd arcade-games/games/BelowTheSurface`
 - Enter command `skm g++ program.cpp -o game`
 - Enter command `./game` to play
 
