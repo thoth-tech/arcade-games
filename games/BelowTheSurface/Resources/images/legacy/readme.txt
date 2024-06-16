@@ -1,0 +1,1 @@
+This folder stores replaced art assets in case they're wanted again at some point in the future.

@@ -20,15 +20,15 @@ BITMAP, Edge, edge.png, 64, 64, 1, 1, 1
 
 BITMAP, BlueHealthBar, bluehb.png, 64, 32, 1, 1, 1
 BITMAP, BlueEmptyBar, blueehb.png, 64, 32, 1, 1, 1
-BITMAP, BlueLive, bluecap.png, 64, 64, 1, 1, 1
+BITMAP, BlueLive, blueface.png, 64, 64, 1, 1, 1
 
 BITMAP, PinkHealthBar, pinkhb.png, 64, 32, 1, 1, 1
 BITMAP, PinkEmptyBar, pinkehb.png, 64, 32, 1, 1, 1
-BITMAP, PinkLive, pinkcap.png, 64, 64, 1, 1, 1
+BITMAP, PinkLive, pinkface.png, 64, 64, 1, 1, 1
 
 BITMAP, PurpleHealthBar, purplehb.png, 64, 32, 1, 1, 1
 BITMAP, PurpleEmptyBar, purpleehb.png, 64, 32, 1, 1, 1
-BITMAP, PurpleLive, purplecap.png, 64, 64, 1, 1, 1
+BITMAP, PurpleLive, purpleface.png, 64, 64, 1, 1, 1
 
 SOUND, Select, Select.wav
 SOUND, GameOver, Gameover.wav
