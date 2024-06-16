@@ -214,7 +214,7 @@ public:
         }
     };
 
-    // changed keys for Arcade Machine orgianl key in comments
+    // changed keys for Arcade Machine original key in comments
     string input()
     {
         string password = "";
@@ -258,7 +258,8 @@ public:
             selection -= 6;
             error = false;
 
-            if (selection <= 0)
+            // A is 0
+            if (selection < 0)
             {
                 if (selection < -4)
                     selection = selection + 30;
