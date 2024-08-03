@@ -3,8 +3,6 @@
 
 #include "splashkit.h"
 
-using namespace std;
-
 struct enemy_data
 {
     sprite      enemy_sprite;

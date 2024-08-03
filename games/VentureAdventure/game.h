@@ -15,9 +15,6 @@
 #define GEM   400 // gems are indicated with '400' on the map
 #define ENEMY 200 // enemies are indicated with '200' on the map 
 
-using namespace std;
-using std::vector;
-
 struct game_data
 {
     vector<vector<int> > map_array;
@@ -49,7 +46,8 @@ void add_enemy(game_data &game, int x, int y);
 
 void remove_gem(game_data &game, int i);
 
-void swap(int &value1, int &value2);
+// Unused - original author was accidentally using std::swap without realizing
+// void swap(int &value1, int &value2);
 
 void handle_input(game_data &game);
 

@@ -1,8 +1,6 @@
 #include "gems.h"
 #include "splashkit.h"
 
-using namespace std;
-
 string gem_image(gem_kind gem)
 {
     switch (gem)

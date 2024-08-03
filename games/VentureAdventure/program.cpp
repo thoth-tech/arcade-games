@@ -2,8 +2,6 @@
 #include "game.h"
 #include "debugging.h"
 
-using namespace std;
-
 void load_resources()
 {
     load_resource_bundle("game_bundle", "icons.txt");
@@ -84,7 +82,7 @@ int main()
             if (level_completed && level_id < TOTAL_LEVELS)
             {
                 level_id++;
-                level_map = "Resources/levels/level" + to_string(level_id) + ".txt";
+                level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
                 game = new_game(level_map);
             };
 
@@ -99,7 +97,7 @@ int main()
                 fade_music_out(1000);
 
                 level_id = 1;
-                level_map = "Resources/levels/level" + to_string(level_id) + ".txt";
+                level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
                 game = new_game(level_map);
             };
         }

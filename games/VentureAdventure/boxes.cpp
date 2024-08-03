@@ -2,8 +2,6 @@
 #include "game.h"
 #include "splashkit.h"
 
-using namespace std;
-
 bitmap box_image(box_kind p_up)
 {
     switch (p_up)

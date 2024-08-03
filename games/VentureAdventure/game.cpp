@@ -9,8 +9,6 @@
 #include <iostream>
 #include <fstream>
 
-using namespace std;
-
 game_data new_game(string map)
 {
     game_data new_game;
@@ -39,14 +37,14 @@ vector<vector<int> > new_level(string file)
     vector<vector<int> > map;
 
     // load in the level layout from file
-    ifstream map_level;
+    std::ifstream map_level;
 
     map_level.open(file);
 
     // Check for errors
     if(map_level.fail())
     {
-        cerr << "Error Opening File" << endl;
+        std::cerr << "Error Opening File" << std::endl;
         exit(1);
     }
 
@@ -200,27 +198,27 @@ void add_enemy(game_data &game, int x, int y)
 void remove_gem(game_data &game, int i)
 {
     int gem_index = i;
-    for(int j = 0; j < game.gems.size(); j++)
+    for (int j = 0; j < game.gems.size(); j++)
     {
-        if(game.gems.size() == 1)
+        if (game.gems.size() == 1)
             break;
 
-        else if(gem_index <= j)
+        else if (gem_index <= j)
         {
-            swap(game.gems[gem_index], game.gems[j + 1]);
+            std::swap(game.gems[gem_index], game.gems[j + 1]);
             gem_index++;
         }
-        
     }
     game.gems.pop_back();
 }
 
-void swap(gem_data g1, gem_data g2)
-{
-    gem_data temp = g1;
-    g1 = g2;
-    g2 = temp;
-}
+// Unused - original author was accidentally using std::swap without realizing
+// void swap(gem_data g1, gem_data g2)
+// {
+//     gem_data temp = g1;
+//     g1 = g2;
+//     g2 = temp;
+// }
 
 void gem_collision(game_data &game)
 {
@@ -695,14 +693,14 @@ void credits()
 
 void draw_hud(game_data &game, int level_id)
 {
-    string level_name = "Level " + to_string(level_id);
+    string level_name = "Level " + std::to_string(level_id);
 
     draw_text(level_name, COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
     draw_text("Collect all the Gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
     draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
     draw_text(" x 3" , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
     draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(3));
-    draw_text(" x "+ to_string(game.player.gem), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
+    draw_text(" x "+ std::to_string(game.player.gem), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
     draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
     draw_text("WASD Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
     draw_text(" Joystick ", COLOR_BLACK, "font.ttf", 20, 19*TILESIZE - 5, 11*TILESIZE - 10);
