@@ -22,8 +22,8 @@ int main()
     load_resources();
 
     const int TOTAL_LEVELS = 3;     // Remember to update this value when adding new levels
-    const float MUSIC_VOLUME_INTRO = 0.04;
-    const float MUSIC_VOLUME_LOOP = 0.025;
+    const float MUSIC_VOLUME_INTRO = 0.05;
+    const float MUSIC_VOLUME_LOOP = 0.03;
 
     string level_map = "Resources/levels/level1.txt";   // Use this to adjust starting level (e.g., for debugging)
     int level_id = 1;
@@ -43,15 +43,18 @@ int main()
 
         start_screen();
         fade_music_out(1000);
-        
-        play_music("game", 100);
-        set_music_volume(MUSIC_VOLUME_LOOP);
 
         while (!quit_requested() && !key_down(ESCAPE_KEY))
         {
             process_events();
             clear_screen();
             draw_game(game);
+
+            if(!music_playing() && !sound_effect_playing("level_win"))
+            {
+                play_music("game", 100);
+                set_music_volume(MUSIC_VOLUME_LOOP);
+            }
 
             level_completed = update_game(game, level_id);
 
@@ -112,9 +115,6 @@ int main()
 
                 start_screen();
                 fade_music_out(1000);
-
-                play_music("game", 100);
-                set_music_volume(MUSIC_VOLUME_LOOP);
 
                 level_id = 1;
                 level_map = "Resources/levels/level" + to_string(level_id) + ".txt";

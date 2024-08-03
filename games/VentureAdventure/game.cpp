@@ -157,7 +157,7 @@ bool update_game(game_data &game, int level_id)
 
     box_gem_collision(game);
 
-    bool win = level_clear(game);
+    bool level_completed = level_clear(game);
 
     moving(game);
 
@@ -165,7 +165,7 @@ bool update_game(game_data &game, int level_id)
 
     draw_hud(game, level_id);
 
-    return win;
+    return level_completed;
 }
 
 void add_box(game_data &game, int x, int y)
