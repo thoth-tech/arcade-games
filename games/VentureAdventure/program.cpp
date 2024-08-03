@@ -42,18 +42,15 @@ int main()
         set_music_volume(MUSIC_VOLUME_INTRO);
 
         start_screen();
-
         fade_music_out(1000);
-
+        
         play_music("game", 100);
         set_music_volume(MUSIC_VOLUME_LOOP);
 
         while (!quit_requested() && !key_down(ESCAPE_KEY))
         {
             process_events();
-
             clear_screen();
-
             draw_game(game);
 
             level_completed = update_game(game, level_id);
@@ -114,7 +111,6 @@ int main()
                 set_music_volume(MUSIC_VOLUME_INTRO);
 
                 start_screen();
-
                 fade_music_out(1000);
 
                 play_music("game", 100);
