@@ -1,9 +1,3 @@
-/*
- * This program has been written entirely 
- * By Anthony George - 220180567
- * Deakin University 
-*/
-
 #include "game.h"
 #include "splashkit.h"
 #include <iostream>
