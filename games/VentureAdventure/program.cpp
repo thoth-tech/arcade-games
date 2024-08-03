@@ -1,5 +1,6 @@
 #include "splashkit.h"
 #include "game.h"
+#include "debugging.h"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ int main()
     game_data game;
     game = new_game(level_map);
 
-    bool debugging_output_enabled = true;      // change this to toggle the debugging output on/off
+    bool debugging_output_enabled = true;      // Change this to toggle the debugging output on/off
     vector<string> old_debug_message = { "" };
     bool still_waiting = false;
 
@@ -50,7 +51,7 @@ int main()
             clear_screen();
             draw_game(game);
 
-            if(!music_playing() && !sound_effect_playing("level_win"))
+            if (!music_playing() && !sound_effect_playing("level_win"))
             {
                 play_music("game", 100);
                 set_music_volume(MUSIC_VOLUME_LOOP);
@@ -69,29 +70,10 @@ int main()
 
             if (debugging_output_enabled)
             {
-                // get current debugging info
-                vector<string> new_debug_message = get_verbose_debugging_message(game);
-
-                // only send the debug info if the game state has changed since last cycle
-                if (old_debug_message != new_debug_message)
-                {
-                    for (int i = 0; i < new_debug_message.size(); i++)
-                    {
-                        write_line(new_debug_message[i]);
-                    }
-                    still_waiting = false;
-                }
-                else if (!still_waiting)
-                {
-                    write_line("Waiting for game state to change...");
-                    still_waiting = true;
-                }
-
-                // save the current cycle's message for comparison in the next cycle
-                old_debug_message = new_debug_message;
+                process_debugging(game, old_debug_message, still_waiting);
             }
 
-            // intended for use when soft-locked/trapped by boxes without needing to restart game. will reset gems and player on current level, but won't reset lives
+            // Intended for use when soft-locked/trapped by boxes without needing to restart game. Will reset gems and player on current level, but won't reset lives
             if (key_down(R_KEY))
             {
                 game = new_game(level_map);
