@@ -27,7 +27,7 @@ int main()
 
     string level_map = "Resources/levels/level1.txt";   // Use this to adjust starting level (e.g., for debugging)
     int level_id = 1;
-    bool player_won;
+    bool level_completed;
 
     game_data game;
     game = new_game(level_map);
@@ -56,7 +56,7 @@ int main()
 
             draw_game(game);
 
-            player_won = update_game(game, level_id);
+            level_completed = update_game(game, level_id);
 
             if (game.player.attacked == true)
             {
@@ -99,14 +99,14 @@ int main()
 
             refresh_screen(60);
 
-            if (player_won && level_id < TOTAL_LEVELS)
+            if (level_completed && level_id < TOTAL_LEVELS)
             {
                 level_id++;
                 level_map = "Resources/levels/level" + to_string(level_id) + ".txt";
                 game = new_game(level_map);
             };
 
-            if (player_won && level_id >= TOTAL_LEVELS)
+            if (level_completed && level_id >= TOTAL_LEVELS)
             {
                 delay(5000);
 

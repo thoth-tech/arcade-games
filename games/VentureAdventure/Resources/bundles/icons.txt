@@ -13,7 +13,7 @@ BITMAP,box4,box4.png
 
 // Sounds
 SOUND,diamond,diamond.wav
-SOUND,win,win.mp3
+SOUND,level_win,win.mp3
 
 
 // Programming, Game Design & Development by Anthony George
