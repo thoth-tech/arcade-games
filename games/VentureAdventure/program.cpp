@@ -13,19 +13,25 @@ void load_resources()
 
 int main()
 {
-    open_window("VentureAdventure", 672, SCREEN_HEIGHT);
-    window_toggle_border("VentureAdventure");
+    const string WINDOW_NAME = "VentureAdventure";
+    const int WINDOW_WIDTH = 672;
+    const int WINDOW_HEIGHT = SCREEN_HEIGHT;
+
+    open_window(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
+    window_toggle_border(WINDOW_NAME);
     load_resources();
 
-    //use this to adjust starting level (for debugging) or to change total number of levels when adding new levels
-    string map = "Resources/levels/level1.txt";
-    int totallevels = 3;
-    int level = 1;
-    bool win;
-    string levelnum = "Level 1";
+    const int TOTAL_LEVELS = 3;     // Remember to update this value when adding new levels
+    const float MUSIC_VOLUME_INTRO = 0.04;
+    const float MUSIC_VOLUME_LOOP = 0.025;
+
+    string level_map = "Resources/levels/level1.txt";   // Use this to adjust starting level (e.g., for debugging)
+    int level_id = 1;
+    bool player_won;
+    string level_name = "Level 1";
 
     game_data game;
-    game = new_game(map);
+    game = new_game(level_map);
 
     bool debugging_output_enabled = true;      // change this to toggle the debugging output on/off
     vector<string> old_debug_message = { "" };
@@ -34,14 +40,14 @@ int main()
     while (!quit_requested() && !key_down(ESCAPE_KEY))
     {
         play_music("intro");
-        set_music_volume(0.04);
+        set_music_volume(MUSIC_VOLUME_INTRO);
 
         start_screen();
 
         fade_music_out(1000);
 
         play_music("game", 100);
-        set_music_volume(0.025);
+        set_music_volume(MUSIC_VOLUME_LOOP);
 
         while (!quit_requested() && !key_down(ESCAPE_KEY))
         {
@@ -51,10 +57,16 @@ int main()
 
             draw_game(game);
 
-            win = update_game(game, levelnum);
+            player_won = update_game(game, level_name);
 
             if (game.player.attacked == true)
-                draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", 70, SCREEN_WIDTH / 2 - 138, SCREEN_HEIGHT / 2 - 48, option_to_screen());
+            {
+                double text_x = SCREEN_WIDTH / 2 - 138;
+                double text_y = SCREEN_HEIGHT / 2 - 48;
+                int font_size = 70;
+
+                draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", font_size, text_x, text_y, option_to_screen());
+            }
 
             if (debugging_output_enabled)
             {
@@ -64,7 +76,7 @@ int main()
                 // only send the debug info if the game state has changed since last cycle
                 if (old_debug_message != new_debug_message)
                 {
-                    for(int i = 0; i < new_debug_message.size(); i++)
+                    for (int i = 0; i < new_debug_message.size(); i++)
                     {
                         write_line(new_debug_message[i]);
                     }
@@ -83,44 +95,43 @@ int main()
             // intended for use when soft-locked/trapped by boxes without needing to restart game. will reset gems and player on current level, but won't reset lives
             if (key_down(R_KEY))
             {
-                game = new_game(map);
+                game = new_game(level_map);
             }
 
             refresh_screen(60);
 
-            if (win == true && level < totallevels)
+            if (player_won && level_id < TOTAL_LEVELS)
             {
-                level++;
-                map = "Resources/levels/level";
-                map.append(to_string(level));
-                map.append(".txt");
-                levelnum = "Level ";
-                levelnum.append(to_string(level));
-                game = new_game(map);
+                level_id++;
+                level_map = "Resources/levels/level";
+                level_map.append(to_string(level_id));
+                level_map.append(".txt");
+                level_name = "Level ";
+                level_name.append(to_string(level_id));
+                game = new_game(level_map);
             };
 
-
-            if (win == true && level >= totallevels)
+            if (player_won && level_id >= TOTAL_LEVELS)
             {
                 delay(5000);
 
                 play_music("intro");
-                set_music_volume(0.04);
+                set_music_volume(MUSIC_VOLUME_INTRO);
 
                 start_screen();
 
                 fade_music_out(1000);
 
                 play_music("game", 100);
-                set_music_volume(0.025);
+                set_music_volume(MUSIC_VOLUME_LOOP);
 
-                level = 1;
-                map = "Resources/levels/level";
-                map.append(to_string(level));
-                map.append(".txt");
-                levelnum = "Level ";
-                levelnum.append(to_string(level));
-                game = new_game(map);
+                level_id = 1;
+                level_map = "Resources/levels/level";
+                level_map.append(to_string(level_id));
+                level_map.append(".txt");
+                level_name = "Level ";
+                level_name.append(to_string(level_id));
+                game = new_game(level_map);
             };
         }
     }
