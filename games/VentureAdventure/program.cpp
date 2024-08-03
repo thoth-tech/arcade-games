@@ -28,7 +28,6 @@ int main()
     string level_map = "Resources/levels/level1.txt";   // Use this to adjust starting level (e.g., for debugging)
     int level_id = 1;
     bool player_won;
-    string level_name = "Level 1";
 
     game_data game;
     game = new_game(level_map);
@@ -57,7 +56,7 @@ int main()
 
             draw_game(game);
 
-            player_won = update_game(game, level_name);
+            player_won = update_game(game, level_id);
 
             if (game.player.attacked == true)
             {
@@ -106,8 +105,6 @@ int main()
                 level_map = "Resources/levels/level";
                 level_map.append(to_string(level_id));
                 level_map.append(".txt");
-                level_name = "Level ";
-                level_name.append(to_string(level_id));
                 game = new_game(level_map);
             };
 
@@ -129,8 +126,6 @@ int main()
                 level_map = "Resources/levels/level";
                 level_map.append(to_string(level_id));
                 level_map.append(".txt");
-                level_name = "Level ";
-                level_name.append(to_string(level_id));
                 game = new_game(level_map);
             };
         }

@@ -37,7 +37,7 @@ vector<vector<int> > new_level(string file);
 
 void get_objects(game_data &game);
 
-bool update_game(game_data &game, string levelnum);
+bool update_game(game_data &game, int level_id);
 
 void draw_game(const game_data &game);
 
@@ -73,7 +73,7 @@ void start_screen();
 
 void credits();
 
-void hud(game_data &game, string levelnum);
+void draw_hud(game_data &game, int level_id);
 
 vector<string> get_verbose_debugging_message(const game_data &game);
 

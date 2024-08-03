@@ -137,7 +137,7 @@ void draw_game(const game_data &game)
 }
 
 // updates all objects
-bool update_game(game_data &game, string levelnum)
+bool update_game(game_data &game, int level_id)
 {
     update_player(game.player);
 
@@ -163,7 +163,7 @@ bool update_game(game_data &game, string levelnum)
 
     attack(game);
 
-    hud(game, levelnum);
+    draw_hud(game, level_id);
 
     return win;
 }
@@ -693,9 +693,11 @@ void credits()
     }
 }
 
-void hud(game_data &game, string levelnum)
+void draw_hud(game_data &game, int level_id)
 {
-    draw_text(levelnum , COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
+    string level_name = "Level " + to_string(level_id);
+
+    draw_text(level_name, COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
     draw_text("Collect all the Gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
     draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
     draw_text(" x 3" , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
