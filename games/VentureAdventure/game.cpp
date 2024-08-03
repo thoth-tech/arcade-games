@@ -642,7 +642,7 @@ bool level_clear(game_data &game)
             sprite_set_y(game.player.player_sprite, game.player.y_prev);
             sprite_start_animation(game.player.player_sprite, "stand_d");
             stop_music();
-            play_sound_effect("level_win");
+            play_sound_effect("level_win", 0.25f);
             return true;
         }
     }
