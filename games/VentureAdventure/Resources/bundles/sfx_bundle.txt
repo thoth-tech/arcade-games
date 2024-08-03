@@ -1,0 +1,16 @@
+// Sounds
+SOUND,diamond,diamond.wav
+SOUND,win,win.mp3
+
+// Game Music by Michael George
+
+// Sound - diamond
+// DrMinky - https://freesound.org/s/166184/
+
+// Sound - stairs
+// thejoshuachang - https://freesound.org/people/thejoshuachang/sounds/203081/
+
+// Music
+// Two Finger Johnny by Kevin MacLeod
+// Link: https://incompetech.filmmusic.io/song/5008-two-finger-johnny
+// License: http://creativecommons.org/licenses/by/4.0/

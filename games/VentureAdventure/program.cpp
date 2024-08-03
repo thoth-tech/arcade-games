@@ -5,7 +5,8 @@ using namespace std;
 
 void load_resources()
 {
-    load_resource_bundle("game_bundle", "icons.txt");
+    load_resource_bundle("art", "art_bundle.txt");
+    load_resource_bundle("sfx", "sfx_bundle.txt");
     load_music("game", "game.wav");
     load_music("intro", "intro.mp3");
     open_audio();

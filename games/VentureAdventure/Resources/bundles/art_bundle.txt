@@ -1,0 +1,21 @@
+// Tiles & Art
+BITMAP,tiles,forest_tiles.png
+BITMAP,stairs,stairs.png
+BITMAP,title,title.png
+
+// Sprite
+//BITMAP,hero,hero7.png
+
+// Objects
+BITMAP,box4,box4.png
+
+// Programming, Game Design & Development by Anthony George
+
+// Hero Attribution
+// Curt - cjc83486 - https://opengameart.org/content/rpg-character
+
+// Tile Art Attribution
+// 
+
+// Spider Art Attribution
+// Tuomo Untinen
