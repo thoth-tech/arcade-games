@@ -102,9 +102,7 @@ int main()
             if (player_won && level_id < TOTAL_LEVELS)
             {
                 level_id++;
-                level_map = "Resources/levels/level";
-                level_map.append(to_string(level_id));
-                level_map.append(".txt");
+                level_map = "Resources/levels/level" + to_string(level_id) + ".txt";
                 game = new_game(level_map);
             };
 
@@ -123,9 +121,7 @@ int main()
                 set_music_volume(MUSIC_VOLUME_LOOP);
 
                 level_id = 1;
-                level_map = "Resources/levels/level";
-                level_map.append(to_string(level_id));
-                level_map.append(".txt");
+                level_map = "Resources/levels/level" + to_string(level_id) + ".txt";
                 game = new_game(level_map);
             };
         }
