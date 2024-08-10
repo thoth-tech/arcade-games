@@ -2,3 +2,4 @@
 **/[Oo]bj/
 # .vscode/
 .DS_Store
+games/**/*.exe
