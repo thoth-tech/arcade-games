@@ -20,7 +20,7 @@ int main()
     window_toggle_border(WINDOW_NAME);
     load_resources();
 
-    const int TOTAL_LEVELS = 3;     // Remember to update this value when adding new levels
+    const int TOTAL_LEVELS = 2;     // Remember to update this value when adding new levels
     const float MUSIC_VOLUME_INTRO = 0.05;
     const float MUSIC_VOLUME_LOOP = 0.03;
 
@@ -79,14 +79,14 @@ int main()
 
             refresh_screen(60);
 
-            if (level_completed && level_id < TOTAL_LEVELS)
+            if (level_completed && level_id <= TOTAL_LEVELS)
             {
                 level_id++;
                 level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
                 game = new_game(level_map);
             };
 
-            if (level_completed && level_id >= TOTAL_LEVELS)
+            if (level_completed && level_id > TOTAL_LEVELS)
             {
                 delay(5000);
 
