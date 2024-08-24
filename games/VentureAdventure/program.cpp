@@ -30,16 +30,14 @@ int main()
     int level_id = STARTING_LEVEL;
     int current_lives = STARTING_LIVES;
     string level_map = "Resources/levels/level1.txt";
-    int level_id = 1;
-    bool is_level_completed;
+    bool is_level_completed = false;
 
     game_data game;
     game = new_game(level_map);
 
-    bool debugging_output_enabled = true;      // Change this to toggle the debugging output on/off
+    bool is_debugging_output_enabled = false;      // Change this to toggle the debugging output on/off
     vector<string> old_debug_message = { "" };
     bool still_waiting = false;
-
     
     // process start screen. could be expanded in future to be a main menu. no way to return to this screen unless game is lost or won, but there's currently no need to go back anyway
     // could also have a proper controls menu/button in future to view controls during the game rather than displayed in the hud (see game.cpp file for hud)
@@ -69,7 +67,7 @@ int main()
                 draw_text("Game Over", COLOR_BLANCHED_ALMOND, "font.ttf", font_size, text_x, text_y, option_to_screen());
             }
 
-            if (debugging_output_enabled)
+            if (is_debugging_output_enabled)
             {
                 process_debugging(game, old_debug_message, still_waiting);
             }
@@ -82,17 +80,15 @@ int main()
 
             refresh_screen(60);
 
-                        // When a level is won, loads next level until the last level
+            // When a level is won, loads next level until the last level
             if (is_level_completed && level_id < TOTAL_LEVELS)
             {
                 level_id++;
-                level_map = "Resources/levels/level";
-                level_map.append(std::to_string(level_id));
-                level_map.append(".txt");
-                level_map = "Level ";
-                level_map.append(std::to_string(level_id));
+                level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
                 play_music("game", 100);
                 set_music_volume(0.025);
+
+                write_line(level_map);
                 game = new_game(level_map);
             }
             // If last level is won or game is lost, returns to main menu. Gamer over sounds and message call are currently within the game.cpp file
@@ -118,11 +114,9 @@ int main()
                 // Resets level conditions
                 level_id = STARTING_LEVEL;
                 current_lives = STARTING_LIVES;
-                level_map = "Resources/levels/level";
-                level_map.append(std::to_string(level_id));
-                level_map.append(".txt");
-                level_map = "Level ";
-                level_map.append(std::to_string(level_id));
+                level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
+
+                write_line(level_map);
                 game = new_game(level_map);
             };
         }

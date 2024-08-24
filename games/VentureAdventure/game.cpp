@@ -5,12 +5,15 @@
  * Modifications by Deakin University SIT374 AND SIT378 Adv Game Dev Team, March 2024 to present
 */
 
-
-
 #include "game.h"
 #include "splashkit.h"
 #include <iostream>
 #include <fstream>
+#include <math.h>
+
+// TESTING and DEBUG TOOL
+// make this 'true' to enable easier level completion, will cause only 1 gem to generate.
+bool debugeasymode = true;
 
 game_data new_game(string map)
 {
@@ -207,7 +210,7 @@ void add_gem(game_data &game, int x, int y)
     gem.x_id = x/TILESIZE;
     gem.y_id = y/TILESIZE;
 
-    //if easy mode is enabled, will only add 1 gem to the level
+    // If easy mode is enabled, will only add 1 gem to the level
     if (debugeasymode == true)
     {
         if (game.gems.size() < 1)
