@@ -20,13 +20,18 @@ int main()
     window_toggle_border(WINDOW_NAME);
     load_resources();
 
-    const int TOTAL_LEVELS = 2;     // Remember to update this value when adding new levels
     const float MUSIC_VOLUME_INTRO = 0.05;
     const float MUSIC_VOLUME_LOOP = 0.03;
+    
+    const int TOTAL_LEVELS = 4;
+    const int STARTING_LEVEL = 1;
+    const int STARTING_LIVES = 3;
 
-    string level_map = "Resources/levels/level1.txt";   // Use this to adjust starting level (e.g., for debugging)
+    int level_id = STARTING_LEVEL;
+    int current_lives = STARTING_LIVES;
+    string level_map = "Resources/levels/level1.txt";
     int level_id = 1;
-    bool level_completed;
+    bool is_level_completed;
 
     game_data game;
     game = new_game(level_map);
@@ -35,6 +40,9 @@ int main()
     vector<string> old_debug_message = { "" };
     bool still_waiting = false;
 
+    
+    // process start screen. could be expanded in future to be a main menu. no way to return to this screen unless game is lost or won, but there's currently no need to go back anyway
+    // could also have a proper controls menu/button in future to view controls during the game rather than displayed in the hud (see game.cpp file for hud)
     while (!quit_requested() && !key_down(ESCAPE_KEY))
     {
         play_music("intro");
@@ -43,19 +51,14 @@ int main()
         start_screen();
         fade_music_out(1000);
 
+        // processes game/levels
         while (!quit_requested() && !key_down(ESCAPE_KEY))
         {
             process_events();
             clear_screen();
             draw_game(game);
 
-            if (!music_playing() && !sound_effect_playing("level_win"))
-            {
-                play_music("game", 100);
-                set_music_volume(MUSIC_VOLUME_LOOP);
-            }
-
-            level_completed = update_game(game, level_id);
+            is_level_completed = update_game(game, level_id, current_lives);
 
             if (game.player.attacked == true)
             {
@@ -79,29 +82,53 @@ int main()
 
             refresh_screen(60);
 
-            if (level_completed && level_id <= TOTAL_LEVELS)
+                        // When a level is won, loads next level until the last level
+            if (is_level_completed && level_id < TOTAL_LEVELS)
             {
                 level_id++;
-                level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
+                level_map = "Resources/levels/level";
+                level_map.append(std::to_string(level_id));
+                level_map.append(".txt");
+                level_map = "Level ";
+                level_map.append(std::to_string(level_id));
+                play_music("game", 100);
+                set_music_volume(0.025);
                 game = new_game(level_map);
-            };
-
-            if (level_completed && level_id > TOTAL_LEVELS)
+            }
+            // If last level is won or game is lost, returns to main menu. Gamer over sounds and message call are currently within the game.cpp file
+            else if ((is_level_completed && level_id >= TOTAL_LEVELS) || (check_gameover(game)))
             {
+                if (is_level_completed)
+                {
+                    win_screen();
+                }
+                
                 delay(5000);
 
                 play_music("intro");
                 set_music_volume(MUSIC_VOLUME_INTRO);
 
                 start_screen();
+
                 fade_music_out(1000);
 
-                level_id = 1;
-                level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
+                play_music("game", 100);
+                set_music_volume(MUSIC_VOLUME_LOOP);
+
+                // Resets level conditions
+                level_id = STARTING_LEVEL;
+                current_lives = STARTING_LIVES;
+                level_map = "Resources/levels/level";
+                level_map.append(std::to_string(level_id));
+                level_map.append(".txt");
+                level_map = "Level ";
+                level_map.append(std::to_string(level_id));
                 game = new_game(level_map);
             };
         }
     }
+
+    
 
     return 0;
 }

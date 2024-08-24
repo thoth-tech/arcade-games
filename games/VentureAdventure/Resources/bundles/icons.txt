@@ -1,8 +1,8 @@
 // Tiles & Art
 BITMAP,tiles,forest_tiles.png
-BITMAP,back,back.jpg
-BITMAP,stairs,stairs.png
+BITMAP,fire,fire.png
 BITMAP,title,title.png
+BITMAP,entry,ground_tiles.png
 
 // Sprite
 //BITMAP,hero,hero7.png
@@ -13,10 +13,14 @@ BITMAP,box4,box4.png
 
 // Sounds
 SOUND,diamond,diamond.wav
-SOUND,level_win,win.mp3
+SOUND,win,win.mp3
+SOUND,damage,damage2.wav
+SOUND,game_over,game_over.mp3
+SOUND,light_fire,lightfire.wav
 
 
 // Programming, Game Design & Development by Anthony George
+//  Modifications by Deakin University SIT374 AND SIT378 Adv Game Dev Team
 
 // Game Music by Michael George
 
@@ -24,7 +28,8 @@ SOUND,level_win,win.mp3
 // Curt - cjc83486 - https://opengameart.org/content/rpg-character
 
 // Tile Art Attribution
-// 
+// https://opengameart.org/content/lpc-forest-tiles
+// Leonard Pabin - https://opengameart.org/users/leonard-pabin
 
 // Spider Art Attribution
 // Tuomo Untinen
@@ -32,11 +37,17 @@ SOUND,level_win,win.mp3
 // Sound - diamond
 // DrMinky - https://freesound.org/s/166184/
 
-// Sound - stairs
-// thejoshuachang - https://freesound.org/people/thejoshuachang/sounds/203081/
+// Sound - lightfire
+// Pixabay - https://pixabay.com/sound-effects/torchlitthenblownout-42805/
+
+// Sound - game_over
+// Pixabay - https://pixabay.com/sound-effects/videogame-death-sound-43894/
+
+// Sound - damage, damage2 (May 2024)
+// CastielM 
 
 // Music
 // Two Finger Johnny by Kevin MacLeod
-// Link: https://incompetech.filmmusic.io/song/5008-two-finger-johnny
+// Link: https://incompetech.com/wordpress/2015/01/two-finger-johnny/
 // License: http://creativecommons.org/licenses/by/4.0/
 
