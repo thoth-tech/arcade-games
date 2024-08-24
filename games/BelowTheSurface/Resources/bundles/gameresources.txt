@@ -6,7 +6,7 @@ BITMAP, HalfBlocksBottom, half_blocks.png, 64, 32, 2, 3, 6
 BITMAP, Ladder, ladder.png, 64, 64, 1, 1, 1
 BITMAP, Pipe, pipes_64.png, 64, 64, 4, 16, 63
 BITMAP, Water, water_blocks.png, 64, 64, 2, 6, 12
-BITMAP, Toxic, toxic_blocks.png, 64, 64, 5, 1, 5
+BITMAP, Toxic, toxic_blocks.png, 64, 54, 5, 1, 5
 BITMAP, Door, Door.png, 64, 64, 3, 2, 6
 BITMAP, HoldPipes, holdable_pipes.png, 64, 64, 6, 6, 33
 BITMAP, EmptyHold, holdable_pipes_empty_clear.png, 64, 64, 6, 6, 33
