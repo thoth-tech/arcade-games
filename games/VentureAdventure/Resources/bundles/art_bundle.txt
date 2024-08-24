@@ -1,7 +1,9 @@
 // Tiles & Art
 BITMAP,tiles,forest_tiles.png
-BITMAP,stairs,stairs.png
+//BITMAP,stairs,stairs.png
+BITMAP,fire,fire.png
 BITMAP,title,title.png
+BITMAP,entry,ground_tiles.png
 
 // Sprite
 //BITMAP,hero,hero7.png
@@ -9,13 +11,15 @@ BITMAP,title,title.png
 // Objects
 BITMAP,box4,box4.png
 
-// Programming, Game Design & Development by Anthony George
+// Original Programming, Game Design & Development by Anthony George
+// Modifications by Deakin University SIT374 AND SIT378 Adv Game Dev Team
 
 // Hero Attribution
 // Curt - cjc83486 - https://opengameart.org/content/rpg-character
 
 // Tile Art Attribution
-// 
+// https://opengameart.org/content/lpc-forest-tiles
+// Leonard Pabin - https://opengameart.org/users/leonard-pabin
 
 // Spider Art Attribution
 // Tuomo Untinen
