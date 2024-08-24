@@ -24,3 +24,8 @@ SOUND,light_fire,lightfire.wav
 // Kevin MacLeod (incompetech.com)
 // Licensed under Creative Commons: By Attribution 3.0
 // http://creativecommons.org/licenses/by/3.0/
+//   note: this was previously licensed in Venture Adventure under
+//   CC-BY-4.0 via https://incompetech.filmmusic.io/song/5008-two-finger-johnny which is now 404.
+//   CC licenses apparently cannot be revoked so we could keep using CC-BY-4.0
+//   ( https://creativecommons.org/faq/#what-happens-if-the-author-decides-to-revoke-the-cc-license-to-material-i-am-using ),
+//   but switching to the 3.0 license lets us having a working website link.
