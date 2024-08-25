@@ -13,7 +13,7 @@
 
 // TESTING and DEBUG TOOL
 // make this 'true' to enable easier level completion, will cause only 1 gem to generate.
-bool debugeasymode = true;
+bool debugeasymode = false;
 
 game_data new_game(string map)
 {
