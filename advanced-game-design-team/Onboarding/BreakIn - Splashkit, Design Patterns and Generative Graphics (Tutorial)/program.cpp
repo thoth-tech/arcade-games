@@ -1,4 +1,4 @@
-#include "splashkit.h"
+#include "../../../games/splashkit mario/include/splashkit/splashkit.h"
 #include "globals.h"
 #include "types.h"
 #include "state_init.h"

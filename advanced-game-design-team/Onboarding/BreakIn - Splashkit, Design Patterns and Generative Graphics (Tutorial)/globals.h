@@ -1,6 +1,6 @@
 #pragma once
 
-#include "splashkit.h"
+#include "../../../games/splashkit mario/include/splashkit/splashkit.h"
 #include "XOR.h"
 #include "util.h"
 
