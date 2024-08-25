@@ -29,7 +29,7 @@ struct Grid {
    * Switched from direct ray-wall intersection to a step-based ray marching approach; steps along the ray, checking for collisions at each cell while simultaneously updating luminance.
 
 ```cpp
-void cast_and_illuminate_rays(Grid& grid, point_2d light_source, int num_rays, double max_distance) {
+void march_light(Grid& grid, point_2d light_source, int num_rays, double max_distance) {
    // Implementation combines ray marching and luminance updating in a single pass
    // Includes checks for diagonal wall detection to prevent light leakage
 }
