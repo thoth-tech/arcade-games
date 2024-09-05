@@ -1,12 +1,3 @@
-/*
- * This program has been written
- * By Anthony George - 220180567
- * Deakin University 
- * Modifications by Deakin University SIT374 AND SIT378 Adv Game Dev Team, March 2024 to present
-*/
-
-
-
 #include "game.h"
 #include "splashkit.h"
 #include <iostream>
