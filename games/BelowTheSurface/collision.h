@@ -365,7 +365,15 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
 
                 if (attack_success)
                 {
-                    level_enemies[i]->take_damage(1);
+                    if (level_enemies[i]->get_hp() <= 0)
+                    {
+                        play_sound_effect("EnemyDead");
+                        level_enemies[i]->set_dead(true);
+                    }
+                    else if (level_enemies[i]->get_vulnerable())
+                    {
+                        level_enemies[i]->take_damage(1); // By 1 hp.
+                    }
                 }
                 else
                 {
