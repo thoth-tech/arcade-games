@@ -1,0 +1,245 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        ".",
+        "Resources/images",
+        "F:/Documents/Deakin Files 2/Year 5/SIT374/Github Repo/arcade-games/games",
+        "levels/tiled/Extensions",
+        "levels",
+        "levels/tiled"
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        ":/automap-tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "Door.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Example.tmx": {
+            "scale": 0.532890625,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 961.7358158627767,
+                "y": 640.8444509602698
+            }
+        },
+        "ExampleMap.tmx": {
+            "scale": 0.532890625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 961.7358158627767,
+                "y": 640.8444509602698
+            }
+        },
+        "Player.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "collectables.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "decorative_blocks.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "door.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "enemies.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "enemy_collider.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "half_blocks_down.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "half_blocks_up.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "holdable_pipes.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "holdable_pipes_receiver.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "ladder.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "levels/tiled/collectables.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "levels/tiled/decorative_blocks.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "levels/tiled/half_blocks_down.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "levels/tiled/half_blocks_up.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "levels/tiled/holdable_pipes.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "levels/tiled/holdable_pipes_receiver.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "levels/tiled/solid_blocks.tsx": {
+            "scaleInDock": 1
+        },
+        "levels/tiled/untitled.tmx": {
+            "scale": 0.5294270833333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 972.7496310870636,
+                "y": 666.7584849975406
+            }
+        },
+        "multi_pipes.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "multi_pipes_receiver.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "pipes_64.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "solid_blocks.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "toxic_blocks.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "turn_pipes.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "turn_pipes_receiver.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "untitled..custom.tmx": {
+            "scale": 0.402265625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 957.0790444746551,
+                "y": 636.3954165857448
+            }
+        },
+        "untitled.custom": {
+            "scale": 0.5123487903225806,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 991.5120511559271,
+                "y": 704.5981308411216
+            }
+        },
+        "untitled.tmx": {
+            "scale": 0.25,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 854,
+                "y": 410
+            }
+        },
+        "untitled0.custom": {
+            "scale": 0.5123487903225806,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 993.4638465322183,
+                "y": 704.5981308411216
+            }
+        },
+        "untitled_0.custom": {
+            "scale": 0.5123487903225806,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 975.8976881455976,
+                "y": 626.5263157894736
+            }
+        },
+        "water_blocks.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "frame.defaultDuration": 100,
+    "last.exportedFilePath": "F:/Documents/Deakin Files 2/Year 5/SIT374/Github Repo/arcade-games/games/BelowTheSurface/levels/Example",
+    "last.imagePath": "F:/Documents/Deakin Files 2/Year 5/SIT374/Github Repo/arcade-games/games/BelowTheSurface/Resources/images",
+    "map.fixedSize": true,
+    "map.height": 1,
+    "map.lastUsedExportFilter": "below the surface map format (*.txt)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 1,
+    "openFiles": [
+    ],
+    "project": "level_editor.tiled-project",
+    "property.type": "string",
+    "recentFiles": [
+        "holdable_pipes.tsx",
+        "half_blocks_up.tsx",
+        "holdable_pipes_receiver.tsx",
+        "pipes_64.tsx",
+        "toxic_blocks.tsx",
+        "Player.tsx",
+        "ladder.tsx",
+        "decorative_blocks.tsx",
+        "enemy_collider.tsx",
+        "enemies.tsx",
+        "door.tsx",
+        "collectables.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    },
+    "tileset.type": 1
+}
