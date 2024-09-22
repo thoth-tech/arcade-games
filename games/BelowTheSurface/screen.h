@@ -155,7 +155,7 @@ class ExtraScreen : public ScreenState
         bool run_once = false;
         vector<shared_ptr<Button>> menu_buttons;
         int offset = -40;
-        int num_buttons = 3;
+        int num_buttons = 4;
         int selection = 0;
 
     public:
@@ -289,6 +289,19 @@ class CreditsScreen : public ScreenState
         CreditsScreen(){};
 
         ~CreditsScreen(){};
+
+        void update() override;
+};
+
+class ControlScreen : public ScreenState
+{
+    private:
+        bool run_once = false;
+
+    public:
+        ControlScreen(){};
+
+        ~ControlScreen(){};
 
         void update() override;
 };
@@ -512,6 +525,9 @@ string get_extras_button_text(int id)
             text = "CREDITS";
             break;
         case 3:
+            text = "CONTROLS";
+            break;
+        case 4:
             text = "BACK";
             break;
         default:
@@ -610,7 +626,7 @@ void ExtraScreen::update()
         {
             string text = get_extras_button_text(i + 1);
             shared_ptr<Button> test(new Button(bitmap_named("Button"), offset + 50, i, text));
-            offset += 100;
+            offset += 50;
             menu_buttons.push_back(test);
         }
         run_once = true;
@@ -648,8 +664,13 @@ void ExtraScreen::update()
                     this->screen->change_state(new CreditsScreen, "Credits");
                 }
                 break;
-
             case 2:
+                {
+                    play_sound_effect("Select");
+                    this->screen->change_state(new ControlScreen, "Controls");
+                }
+                break;
+            case 3:
                 {
                     play_sound_effect("Select");
                     this->screen->change_state(new MenuScreen, "Main Menu");
@@ -1058,6 +1079,37 @@ void CreditsScreen::update()
     {
         draw_text(credits[i], font_color, screen_font, font_size, 140 * scale, (pt.y + (i * height / 2)) + vertical_shift, option_scale_bmp(scale, scale));
     }
+
+    if(key_typed(RETURN_KEY) || key_typed(screen->input_key))
+        this->screen->change_state(new MenuScreen, "Menu");
+}
+
+void ControlScreen::update()
+{
+    point_2d pt = screen_center();
+    clear_screen(COLOR_BLACK);
+    draw_bitmap("MenubgDark", 0, 0, option_to_screen());
+
+    bitmap controls = bitmap_named("ControlPic");
+    bitmap controls2 = bitmap_named("ControlPic2");
+    font screen_font = font_named("DefaultFont");
+    color font_color = COLOR_WHITE;
+    int font_size = 20;
+    // more negative to go DOWN for Y
+    // more negative to go LEFT for X
+    draw_text("Controls", font_color, screen_font, 30, pt.x- text_width("Controls", screen_font, 30)/2, (pt.y - text_height("Controls", screen_font, 30)/2) - 180, option_to_screen());
+    draw_text("Move", font_color, screen_font, font_size, (pt.x- text_width("Move", screen_font, font_size)/2) + 180, (pt.y - text_height("Move", screen_font, font_size)/2) - 90, option_to_screen());
+    draw_text("P1", COLOR_RED, screen_font, font_size, (pt.x- text_width("P1", screen_font, font_size)/2) + 30, (pt.y - text_height("P1", screen_font, font_size)/2) - 90, option_to_screen());
+    draw_text("P2", COLOR_RED, screen_font, font_size, (pt.x- text_width("P2", screen_font, font_size)/2) + 330, (pt.y - text_height("P2", screen_font, font_size)/2) - 90, option_to_screen());
+    draw_text("Interact", font_color, screen_font, 15, (pt.x- text_width("Interact", screen_font, 15)/2) + 180, (pt.y - text_height("Interact", screen_font, 15)/2) + 10, option_to_screen());
+    draw_text("Attack/", font_color, screen_font, 15, (pt.x- text_width("Attack/", screen_font, 15)/2) + 180, (pt.y - text_height("Attack/", screen_font, 15)/2) - 10, option_to_screen());
+    draw_text("Jump", font_color, screen_font, font_size, (pt.x- text_width("Jump", screen_font, font_size)/2) + 180, (pt.y - text_height("Jump", screen_font, font_size)/2) + 45, option_to_screen());
+    draw_text("Dance", font_color, screen_font, font_size, (pt.x- text_width("Dance", screen_font, font_size)/2) + 150, (pt.y - text_height("Dance", screen_font, font_size)/2) + 110, option_to_screen());
+    draw_text("Pause", font_color, screen_font, font_size, (pt.x- text_width("Pause", screen_font, font_size)/2) + 200, (pt.y - text_height("Pause", screen_font, font_size)/2) + 145, option_to_screen());
+
+    draw_bitmap(controls2, (pt.x - bitmap_width(controls2)/2) + 180 , (pt.y - bitmap_height(controls2)/2) + 30 , option_to_screen());
+    draw_bitmap(controls, (pt.x - bitmap_width(controls)/2) - 200 , (pt.y - bitmap_height(controls)/2) + 30 , option_to_screen());
+
 
     if(key_typed(RETURN_KEY) || key_typed(screen->input_key))
         this->screen->change_state(new MenuScreen, "Menu");
