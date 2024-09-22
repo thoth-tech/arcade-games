@@ -1068,6 +1068,7 @@ void BackstoryScreen::update()
     font screen_font = font_named("DefaultFont");
     int font_size = 80;
     color font_color = COLOR_WHITE_SMOKE;
+    point_2d pt = screen_center();
 
     if (!music_playing())
     {
@@ -1075,7 +1076,7 @@ void BackstoryScreen::update()
         set_music_volume(0.2f);
     }
 
-    if (screen_timer(8, "BackstoryTimer"))
+    if (screen_timer(45, "BackstoryTimer"))
     {
         clear_screen(COLOR_BLACK);
         current++;
@@ -1084,9 +1085,9 @@ void BackstoryScreen::update()
     
     if(current == 0)
     {
-        point_2d pt = screen_center();
         draw_bitmap(this->name(), 0, 0, option_to_screen());
-        draw_text("Backstory", font_color, screen_font, font_size, pt.x- text_width("Backstory", screen_font, font_size)/2, (pt.y - text_height("Backstory", screen_font, font_size)/2) - 200, option_to_screen());
+        draw_text("Backstory", font_color, screen_font, font_size, pt.x- text_width("Backstory", screen_font, font_size)/2, (pt.y - text_height("Backstory", screen_font, font_size)/2) - 150, option_to_screen());
+        draw_text("Press key to continue. . .", font_color, screen_font, 20, pt.x- text_width("Press key to continue. . .", screen_font, 20)/2, (pt.y - text_height("Press key to continue. . .", screen_font, 20)/2) + 180, option_to_screen());
     }
     else if (current > max_screens - 1)
         this->screen->change_state(new MenuScreen, "Menu");
@@ -1099,6 +1100,8 @@ void BackstoryScreen::update()
         if(current > max_screens - 1)
             this->screen->change_state(new MenuScreen, "Menu");
     }
+    
+    draw_text("Press key to continue. . .", font_color, screen_font, 20, pt.x- text_width("Press key to continue. . .", screen_font, 20)/2, (pt.y - text_height("Press key to continue. . .", screen_font, 20)/2) + 180, option_to_screen());
 }
 
 void play_sounds()
