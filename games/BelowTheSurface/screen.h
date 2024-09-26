@@ -1253,8 +1253,6 @@ void PasswordScreen::update()
     {
         string password = password_screen->update();
 
-        write_line(password);
-
         if(password == "EXITEXITEXIT")
         {
             play_sound_effect("Select");
@@ -1311,7 +1309,6 @@ void PasswordScreen::update()
         //if password is full and has no underscores, shows error message
         else if(password.length() == 5 && password.find('_') == std::string::npos)
         {
-            
             password_screen->incorrect_password();
         }
 
