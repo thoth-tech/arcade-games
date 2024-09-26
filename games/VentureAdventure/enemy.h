@@ -3,8 +3,6 @@
 
 #include "splashkit.h"
 
-using namespace std;
-
 enum dir_kind
 {
     EUP,

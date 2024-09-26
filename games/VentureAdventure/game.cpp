@@ -4,10 +4,9 @@
 #include <fstream>
 #include <math.h>
 
-//TESTING and DEBUG TOOL - make this 'true' to enable easier level completion, will cause only 1 gem to generate.
+// TESTING and DEBUG TOOL
+// make this 'true' to enable easier level completion, will cause only 1 gem to generate.
 bool debugeasymode = false;
-
-using namespace std;
 
 game_data new_game(string map)
 {
@@ -42,14 +41,14 @@ vector<vector<int> > new_level(string file)
     vector<vector<int> > map;
 
     // load in the level layout from file
-    ifstream map_level;
+    std::ifstream map_level;
 
     map_level.open(file);
 
     // Check for errors
     if(map_level.fail())
     {
-        cerr << "Error Opening File" << endl;
+        std::cerr << "Error Opening File" << std::endl;
         exit(1);
     }
 
@@ -143,7 +142,7 @@ void draw_game(const game_data &game)
 }
 
 // updates all objects
-bool update_game(game_data &game, string levelnum, int lives)
+bool update_game(game_data &game, int level_id, int lives)
 {
 
     update_player(game.player);
@@ -175,16 +174,16 @@ bool update_game(game_data &game, string levelnum, int lives)
     enemy_move(game);
     
     // updates win when level is clear
-    bool win = level_clear(game);
+    bool level_completed = level_clear(game);
 
     moving(game);
 
     //Attack doesn't seem to be functional, CastielM has ended up creating different enemy collision functions
     //attack(game);
 
-    hud(game, levelnum);
+    draw_hud(game, level_id);
 
-    return win;
+    return level_completed;
 }
 
 void add_box(game_data &game, int x, int y)
@@ -204,7 +203,7 @@ void add_gem(game_data &game, int x, int y)
     gem.x_id = x/TILESIZE;
     gem.y_id = y/TILESIZE;
 
-    //if easy mode is enabled, will only add 1 gem to the level
+    // If easy mode is enabled, will only add 1 gem to the level
     if (debugeasymode == true)
     {
         if (game.gems.size() < 1)
@@ -240,24 +239,27 @@ void add_enemy(game_data &game, int x, int y)
 void remove_gem(game_data &game, int i)
 {
     int gem_index = i;
-    for(int j = 0; j < game.gems.size()-1; j++)
+    for (int j = 0; j < game.gems.size(); j++)
     {
-        if(gem_index <= j)
+        if (game.gems.size() == 1)
+            break;
+
+        else if (gem_index <= j)
         {
-            swap(game.gems[gem_index], game.gems[j + 1]);
+            std::swap(game.gems[gem_index], game.gems[j + 1]);
             gem_index++;
         }
-
     }
     game.gems.pop_back();
 }
 
-void swap(gem_data g1, gem_data g2)
-{
-    gem_data temp = g1;
-    g1 = g2;
-    g2 = temp;
-}
+// Unused - original author was accidentally using std::swap without realizing
+// void swap(gem_data g1, gem_data g2)
+// {
+//     gem_data temp = g1;
+//     g1 = g2;
+//     g2 = temp;
+// }
 
 // checks for collision between player and gem
 void gem_collision(game_data &game)
@@ -992,8 +994,8 @@ bool level_clear(game_data &game)
             sprite_set_y(game.player.player_sprite, game.player.y_prev);
             sprite_start_animation(game.player.player_sprite, "stand_d");
             stop_music();
-            float vol = 0.1;
-            play_sound_effect("win", vol);
+            float vol = 0.2;
+            play_sound_effect("level_win", vol);
             return true;
         }
     }
@@ -1063,15 +1065,17 @@ void credits()
     }
 }
 
-void hud(game_data &game, string levelnum)
+void draw_hud(game_data &game, int level_id)
 {
-    draw_text(levelnum , COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
+    string level_name = "Level " + std::to_string(level_id);
+
+    draw_text(level_name , COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
     draw_text("Collect all the gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
     draw_text("and return to camp" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 2*TILESIZE);
     draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
-    draw_text(" x "+ to_string(game.lives) , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
+    draw_text(" x "+ std::to_string(game.lives) , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
     draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(2));
-    draw_text(" x "+ to_string(game.gemCount), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
+    draw_text(" x "+ std::to_string(game.gemCount), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
     draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
     draw_text("WASD Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
     draw_text(" Joystick ", COLOR_BLACK, "font.ttf", 20, 19*TILESIZE - 5, 11*TILESIZE - 10);
@@ -1079,69 +1083,4 @@ void hud(game_data &game, string levelnum)
     draw_text("R key /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 13*TILESIZE);
     draw_text("Button 1 ", COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 14*TILESIZE - 10);
     
-}
-
-vector<string> get_verbose_debugging_message(const game_data &game)
-{
-    vector<string> message = {};
-
-    message.push_back("===== Tile Info =====");
-    message.push_back("Tile x loc: "+ to_string(static_cast<int>(game.solid[29].x)));
-    message.push_back("Tile y loc: "+ to_string(static_cast<int>(game.solid[29].y)));
-    message.push_back("tile x id: "   + to_string(static_cast<int>(game.solid[29].x/TILESIZE)));
-    message.push_back("tile y id: "   + to_string(static_cast<int>(game.solid[29].y/TILESIZE)));
-    message.push_back("=====================");
-    message.push_back("");
-    message.push_back("==== Player Info =====");
-    message.push_back("Player y_pos: "+ to_string(sprite_y(game.player.player_sprite)));
-    message.push_back("Spider y pos: "+ to_string(sprite_y(game.enemies[0].enemy_sprite)));
-    message.push_back("Player x id: "+ to_string(game.player.x_id));
-    message.push_back("Player y id: "+ to_string(game.player.y_id));
-    message.push_back("Player x pos: "+ to_string(game.player.x_pos));
-    message.push_back("Player y pos: "+ to_string(game.player.y_pos));
-    message.push_back("Player x prev: "+ to_string(game.player.x_prev));
-    message.push_back("Player y prev: "+ to_string(game.player.y_prev));
-    message.push_back("Player next: "+ to_string(game.player.next));
-    message.push_back("Player up next: "+ to_string(game.player.up_next));
-    message.push_back("Player down next: "+ to_string(game.player.down_next));
-    message.push_back("Player left next: "+ to_string(game.player.left_next));
-    message.push_back("Player right next: "+ to_string(game.player.right_next));
-    message.push_back("Gems: "+ to_string(game.gems.size()));
-    message.push_back("=======================");
-    message.push_back("");
-    message.push_back("====== Box Info 1 ======");
-    message.push_back("Box x pos: "+ to_string(game.boxes[0].x_pos));
-    message.push_back("Box y pos: "+ to_string(game.boxes[0].y_pos));
-    message.push_back("Box x prev: "+ to_string(game.boxes[0].x_prev));
-    message.push_back("Box y prev: "+ to_string(game.boxes[0].y_prev));
-    message.push_back("Box next: "+ to_string(game.boxes[0].next));
-    message.push_back("Box x id: "+ to_string(game.boxes[0].x_id));
-    message.push_back("Box y id: "+ to_string(game.boxes[0].y_id));
-    message.push_back("Box up next: "+ to_string(game.boxes[0].up_next));
-    message.push_back("Box down next: "+ to_string(game.boxes[0].down_next));
-    message.push_back("Box left next: "+ to_string(game.boxes[0].left_next));
-    message.push_back("Box right next: "+ to_string(game.boxes[0].right_next));
-    message.push_back("Box up stopped: "+ to_string(game.boxes[0].up_stopped));
-    message.push_back("Box down stopped: "+ to_string(game.boxes[0].down_stopped));
-    message.push_back("Box left stopped: "+ to_string(game.boxes[0].left_stopped));
-    message.push_back("Box right stopped: "+ to_string(game.boxes[0].right_stopped));
-    message.push_back("=======================");
-    message.push_back("");
-    message.push_back("====== Box Info 2 ======");
-    message.push_back("Box x pos: "+ to_string(game.boxes[1].x_pos));
-    message.push_back("Box y pos: "+ to_string(game.boxes[1].y_pos));
-    message.push_back("Box x id: "+ to_string(game.boxes[1].x_id));
-    message.push_back("Box y id: "+ to_string(game.boxes[1].y_id));
-    message.push_back("Box up next: "+ to_string(game.boxes[1].up_next));
-    message.push_back("Box down next: "+ to_string(game.boxes[1].down_next));
-    message.push_back("Box left next: "+ to_string(game.boxes[1].left_next));
-    message.push_back("Box right next: "+ to_string(game.boxes[1].right_next));
-    message.push_back("=======================");
-    message.push_back("");
-    message.push_back("====== Gems ======");
-    message.push_back("Gem x id: "+ to_string(game.gems[1].x_id));
-    message.push_back("Gem y id: "+ to_string(game.gems[1].y_id));
-    message.push_back("=======================");
-
-    return message;
 }

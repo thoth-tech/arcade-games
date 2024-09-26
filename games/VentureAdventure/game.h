@@ -15,9 +15,6 @@
 #define GEM   400 // gems are indicated with '400' on the map
 #define ENEMY 200 // enemies are indicated with '200' on the map 
 
-using namespace std;
-using std::vector;
-
 struct game_data
 {
     vector<vector<int> > map_array;
@@ -41,7 +38,7 @@ vector<vector<int> > new_level(string file);
 
 void get_objects(game_data &game);
 
-bool update_game(game_data &game, string levelnum, int lives);
+bool update_game(game_data &game, int level_id, int lives);
 
 void draw_game(const game_data &game);
 
@@ -53,7 +50,8 @@ void add_enemy(game_data &game, int x, int y);
 
 void remove_gem(game_data &game, int i);
 
-void swap(int &value1, int &value2);
+// Unused - original author was accidentally using std::swap without realizing
+// void swap(int &value1, int &value2);
 
 void handle_input(game_data &game);
 
@@ -93,7 +91,7 @@ void win_screen();
 
 void credits();
 
-void hud(game_data &game, string levelnum);
+void draw_hud(game_data &game, int level_id);
 
 vector<string> get_verbose_debugging_message(const game_data &game);
 
