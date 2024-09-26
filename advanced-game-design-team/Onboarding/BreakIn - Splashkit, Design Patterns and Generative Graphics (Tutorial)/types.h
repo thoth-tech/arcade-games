@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <vector>
-#include "splashkit.h"
+#include "../../../games/splashkit mario/include/splashkit/splashkit.h"
 
 struct ivec2;
 struct GameState;

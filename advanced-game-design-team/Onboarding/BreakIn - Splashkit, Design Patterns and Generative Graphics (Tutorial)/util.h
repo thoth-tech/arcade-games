@@ -1,6 +1,6 @@
 #pragma once
 
-#include "splashkit/splashkit.h"
+#include "../../../games/splashkit mario/include/splashkit/splashkit.h"
 #include "stdio.h"
 #include <stdexcept>
 
