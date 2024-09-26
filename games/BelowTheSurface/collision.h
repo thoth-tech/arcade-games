@@ -396,18 +396,25 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
             else if (collision != "None" && !level_players[j]->is_on_floor() && level_enemies[i]->get_vulnerable())
             {
                 // Jumped on enemy
-                if (level_enemies[i]->get_hp() == 0) // If HP is not 0, then take damage.
-                {
+                if (level_enemies[i]->get_hp() <= 0) // Kill enemy if it has no HP when jumped on
+                {                                    // Per enemy.h, it looks like most enemies spawn on 0 (!) HP, which is why this code is so unintuitive
                     if (!sound_effect_playing("EnemyDead"))
+                    {
                         play_sound_effect("EnemyDead");
+                    }
                     level_enemies[i]->set_dead(true);
                 }
-                else
+                else // Otherwise take damage
                 {
                     if (!sound_effect_playing("EnemyHurt"))
+                    {
                         play_sound_effect("EnemyHurt");
-                    if (level_enemies[i]->get_vulnerable())
-                        level_enemies[i]->take_damage(1); // By 1 hp.
+                    }
+
+                    if  (level_enemies[i]->get_vulnerable())
+                    {
+                        level_enemies[i]->take_damage(1);
+                    }
                 }
                 level_players[j]->change_state(new JumpRiseState, "JumpRise");
                 level_players[j]->set_player_dx(0);
