@@ -22,7 +22,7 @@
 | Move Forward  | Up arrow     |
 | Rotate Left   | Left arrow   |
 | Rotate Right  | Right arrow  |
-| Fire          | CTRL         |
+| Fire          | Left CTRL    |
 
 ## Other notes
 
