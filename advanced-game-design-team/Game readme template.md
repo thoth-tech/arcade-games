@@ -17,12 +17,12 @@
 
 ### Player 1 Controls
 
-| Key          | Action        |
-|--------------|---------------|
-| Up arrow     | Move Forward  |
-| Left arrow   | Rotate Left   |
-| Right arrow  | Rotate Right  |
-| Ctrl         | Fire          |
+| Action        | Key          |
+|---------------|--------------|
+| Move Forward  | Up arrow     |
+| Rotate Left   | Left arrow   |
+| Rotate Right  | Right arrow  |
+| Fire          | CTRL         |
 
 ## Other notes
 
