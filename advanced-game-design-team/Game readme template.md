@@ -34,4 +34,4 @@
 
 ## Credits
 
-[Make best effort to include the original author or original team of authors, plus anyone who made a massive contribution (like a full refactor) later on. Not all authors need to be explicitly credited here, as git will track that for us.]
+[Make best effort to include the original author or original team of authors, plus anyone who made a massive contribution (like a full refactor) later on. Not all authors need to be explicitly credited here, as git will track that for us. Can remove section if credit is difficult to figure out even after snooping git histories.]
