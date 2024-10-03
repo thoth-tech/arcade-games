@@ -25,7 +25,7 @@ A tetris-with-a-twist game based on Swordfight from the game Puzzle Pirates.
 
 ## Screenshots
 
-![](/Documentation/screenshot-01.png)
+![](Documentation/screenshot-01.png)
 
 ## Credits
 

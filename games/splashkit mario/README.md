@@ -25,7 +25,7 @@ A basic platforming demo made for a SplashKit tutorial.
 
 ## Screenshots
 
-![](/docs/screenshot-01.png)
+![](docs/screenshot-01.png)
 
 ## Credits
 

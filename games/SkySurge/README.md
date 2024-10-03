@@ -28,7 +28,7 @@ A vertically scrolling shooter for one player. Control an aircraft and dodge or 
 
 ## Screenshots
 
-![](/docs/screenshot-01.png)
+![](docs/screenshot-01.png)
 
 ## Credits
 

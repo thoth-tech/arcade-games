@@ -27,7 +27,7 @@ A CLI grid-based turn-based survival action game (?) for one player.
 
 ## Screenshots
 
-![](/docs/screenshot-01.png)
+![](docs/screenshot-01.png)
 
 ## Credits
 

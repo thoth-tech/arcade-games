@@ -27,9 +27,9 @@ A Sokoban clone (box pushing puzzle game) for one player. Move boxes out of the 
 
 ## Screenshots
 
-![](/Documentation/screenshot-01.png)
+![](Documentation/screenshot-01.png)
 
-![](/Documentation/screenshot-02.png)
+![](Documentation/screenshot-02.png)
 
 ## Credits
 

@@ -34,9 +34,9 @@ A racing-themed vertical dodge game supporting 1-2 players. Players must avoid c
 
 ## Screenshots
 
-![](/docs/screenshot-01.png)
+![](docs/screenshot-01.png)
 
-![](/docs/screenshot-02.png)
+![](docs/screenshot-02.png)
 
 ## Credits
 

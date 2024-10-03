@@ -38,7 +38,7 @@ A vaguely soccer-themed pong clone requiring two players. Players control paddle
 
 ## Screenshots
 
-![](/docs/screenshot-01.png)
+![](docs/screenshot-01.png)
 
 ## Credits
 

@@ -37,7 +37,7 @@ A basic pong clone requiring 2 players. Players control paddles vertically to bl
 
 ## Screenshots
 
-![](/docs/screenshot-01.png)
+![](docs/screenshot-01.png)
 
 ## Credits
 
