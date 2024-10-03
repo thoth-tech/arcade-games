@@ -33,6 +33,7 @@ A vaguely soccer-themed pong clone requiring two players. Players control paddle
 
 ## Other notes
 
+- Documentation from the original author is available in `/docs/`.
 - BUG: it's possible to move the ball into paddle (or vice versa), causing issues with collision handling.
 
 ## Screenshots
