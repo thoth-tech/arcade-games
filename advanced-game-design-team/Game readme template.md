@@ -3,7 +3,7 @@
 ## Technical overview
 
 - **Language:** C++ / C#
-- **Current scope:** Low / Medium / High _[How much stuff does the project currently do? Is there lots of code covering many different game systems? Quantity of project files and their average length is a good guideline.]_
+- **Current scope:** Small / Medium / Large _[How much stuff does the project currently do? Is there lots of code covering many different game systems? Quantity of project files and their average length is a good guideline.]_
 - **Code quality:** Poor / Fair / Good / Excellent _[Poor = does not meet minimum quality standards (should be rare!). Excellent = Not necessarily perfect, but very good - good enough that the program's implementations can be used as reference.]_
 - **Gameplay implementation:** Incomplete / Complete _[Complete games may still have room for further expansion by adding new levels / mechanics etc, but have a complete start-to-finish gameplay loop implemented.]_
 
