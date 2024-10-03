@@ -11,6 +11,13 @@
 
 A racing-themed vertical dodge game supporting 1 player. The player must avoid collisions with other cars while they drive along a road.
 
+### Player 1 Controls
+
+| Action      | Key         |
+|-------------|-------------|
+| Turn Left   | Left arrow  |
+| Turn Right  | Right arrow |
+
 ## Other
 
 - There are two sub-projects within this project: "basic" and "advanced". The advanced version supercedes the basic version, and is what is described in this readme.
@@ -18,4 +25,4 @@ A racing-themed vertical dodge game supporting 1 player. The player must avoid c
 
 ## Screenshots
 
-TODO
+![](docs/screenshot-01.png)
