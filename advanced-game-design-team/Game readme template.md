@@ -7,7 +7,7 @@
 - **Code quality:** Poor / Fair / Good / Excellent _[Poor = does not meet minimum quality standards (should be rare!). Excellent = Not necessarily perfect, but very good - good enough that the program's implementations can be used as reference.]_
 - **Gameplay implementation:** Incomplete / Complete _[Complete games may still have room for further expansion by adding new levels / mechanics etc, but have a complete start-to-finish gameplay loop implemented.]_
 
-Build using [`command`], run using [`command2`].
+[Because build and run commands can vary by platform etc, it may be best to not explicitly list them, and to instead link to documentation]
 
 ## Gameplay overview
 
