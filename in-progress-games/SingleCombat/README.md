@@ -2,7 +2,7 @@
 
 ## Technical overview
 
-- **Language:** C++ / C#
+- **Language:** C++
 - **Current scope:** Small
 - **Code quality:** Fair
 - **Gameplay implementation:** Incomplete
