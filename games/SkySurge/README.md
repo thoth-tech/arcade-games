@@ -19,10 +19,12 @@ A vertically scrolling shooter for one player. Control an aircraft and dodge or 
 | Move Left    | Left arrow   |
 | Move Right   | Right arrow  |
 | Move Down    | Down arrow   |
+| Shoot        | SPACE        |
 
 ## Other notes
 
 - Documentation from the original author can be found in `/docs/`, though it describes the game as though it were complete so could be thought of as more of a to-do list than a description of the current game.
+- BUG: the game can run significantly faster while the player isn't shooting because the game's primary rendering loop is not correctly configured.
 
 ## Screenshots
 
