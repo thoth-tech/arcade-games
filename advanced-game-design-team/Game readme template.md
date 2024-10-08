@@ -1,13 +1,19 @@
 # Repo Name
 
+[Provide basic instructions to build and run. Try to make them platform agnostic, and link to relevant documentation. If applicable, make note of any additional dependencies not covered by a normal SplashKit installation.]
+
+1. Requires a [SplashKit installation](https://splashkit.io/installation/).
+2. Build using `skm clang++ *.cpp -o game-name` while in the project folder.
+3. Run using `./game-name` while in the project folder.
+
+_See also: usage documentation for [skm](https://github.com/splashkit/skm/blob/master/README.MD) and [SplashKit](https://splashkit.io/guides/using-splashkit/0-overview/)._
+
 ## Technical overview
 
 - **Language:** C++ / C#
 - **Current scope:** Small / Medium / Large _[How much stuff does the project currently do? Is there lots of code covering many different game systems? Quantity of project files and their average length is a good guideline.]_
 - **Code quality:** Poor / Fair / Good / Excellent _[Poor = does not meet minimum quality standards (should be rare!). Excellent = Not necessarily perfect, but very good - good enough that the program's implementations can be used as reference.]_
 - **Gameplay implementation:** Incomplete / Complete _[Complete games may still have room for further expansion by adding new levels / mechanics etc, but have a complete start-to-finish gameplay loop implemented.]_
-
-[Because build and run commands can vary by platform etc, it may be best to not explicitly list them, and to instead link to documentation]
 
 ## Gameplay overview
 
