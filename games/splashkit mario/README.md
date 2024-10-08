@@ -1,5 +1,11 @@
 # SplashKit Mario
 
+1. Requires a [SplashKit installation](https://splashkit.io/installation/).
+2. Build using `skm clang++ *.cpp -o splashkit-mario` while in the project folder.
+3. Run using `./splashkit-mario` while in the project folder.
+
+_See also: usage documentation for [skm](https://github.com/splashkit/skm/blob/master/README.MD) and [SplashKit](https://splashkit.io/guides/using-splashkit/0-overview/)._
+
 ## Technical overview
 
 - **Language:** C++
