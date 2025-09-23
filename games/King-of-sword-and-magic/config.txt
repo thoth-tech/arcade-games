@@ -1,0 +1,31 @@
+--------------------------------------------------------------------
+
+# The title of your game 
+title=King of Sword and Magic
+
+# The name of the author 
+author=Runqi Liu
+
+# The genre of your game
+genre=2D RPG
+
+# A Description of your game
+description=Use sword and magic to start an adventure
+
+# A classification rating to advise the nature of the content 
+rating=PG
+
+# Programming language the game is written in  
+language=C#
+
+# Path to your game thumbnail image (eg. images/icon.png)
+image=Assets/File/cover.png
+
+# Location of git repo (eg. https://github.com/thoth-tech/arcade-games)
+repository=https://github.com/thoth-tech/arcade-games
+
+# [Optional] Uncomment to include path to the game executable (game.exe)
+executable=start-the-game/My-project.exe
+
+# [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
+#compile-command=skm g++ *.cpp
