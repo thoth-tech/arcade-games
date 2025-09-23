@@ -1,0 +1,11 @@
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild*/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+CrashReports/
+*.csproj
+*.sln
+*.user
