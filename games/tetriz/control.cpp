@@ -1,4 +1,3 @@
-
 #include "control.h"
 #include "define.h"
 #include "game.h"
@@ -7,24 +6,17 @@ namespace gm
     char command;
 
     std::map<char, std::function<void()>> comm_func{
-        {KEY_Q, command_quit},
         {KEY_ESCAPE, command_quit},
-        {KEY_W, command_rotate_R},
-        {KEY_UP, command_rotate_R},
-        {KEY_Z, command_rotate_L},
-        {KEY_X, command_rotate_2},
+        {KEY_W, command_pause},
         {KEY_S, command_down},
-        {KEY_DOWN, command_down},
         {KEY_A, command_left},
-        {KEY_LEFT, command_left},
         {KEY_D, command_right},
-        {KEY_RIGHT, command_right},
-        {KEY_C, command_hold},
         {KEY_R, command_reset},
+        {KEY_F, command_drop},
+        {KEY_T, command_rotate_L},
+        {KEY_G, command_rotate_2},
+        {KEY_Y, command_hold},
         {KEY_H, command_help},
-        {KEY_SPACE, command_drop},
-        {KEY_P, command_pause},
-
     };
 #ifdef __linux__
     char getch()

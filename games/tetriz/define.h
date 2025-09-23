@@ -29,17 +29,16 @@
 
 using namespace std::chrono_literals;
 
-#define KEY_Q 'q'
 #define KEY_W 'w'
 #define KEY_S 's'
 #define KEY_A 'a'
 #define KEY_D 'd'
-#define KEY_Z 'z'
-#define KEY_X 'x'
-#define KEY_C 'c'
 #define KEY_R 'r'
+#define KEY_F 'f'
+#define KEY_T 't'
+#define KEY_G 'g'
+#define KEY_Y 'y'
 #define KEY_H 'h'
-#define KEY_P 'p'
 
 
 #ifdef __linux__
