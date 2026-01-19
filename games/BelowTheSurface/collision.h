@@ -96,7 +96,7 @@ void check_solid_block_collisions(vector<vector<shared_ptr<Block>>> solid_blocks
                     level_players[k]->set_player_dy(0);
                     level_players[k]->set_on_floor(false);
                     sprite_set_y(level_players[k]->get_player_sprite(), sprite_y(level_players[k]->get_player_sprite()) + 5);
-                    level_players[k]->change_state(new JumpFallState, "JumpFall");
+                    level_players[k]->request_state_change(new JumpFallState, "JumpFall");
                     break;
                 }
                 else if (collision == "Left")
@@ -158,7 +158,7 @@ void check_door_block_collisions(shared_ptr<DoorBlock> door, vector<shared_ptr<P
             {
                 level_players[i]->set_player_won(true);
                 door->open_portal();
-                level_players[i]->change_state(new DanceState, "Dance");
+                level_players[i]->request_state_change(new DanceState, "Dance");
             }
     }
 }
@@ -221,7 +221,7 @@ void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, unorder
                     level_players[k]->set_on_ladder(true);
                     sprite_set_y(level_players[k]->get_player_sprite(), sprite_y(level_players[k]->get_player_sprite()) - 10);
                     level_players[k]->set_player_dx(0);
-                    level_players[k]->change_state(new ClimbState, "Climb");
+                    level_players[k]->request_state_change(new ClimbState, "Climb");
                     level_players[k]->set_on_floor(false);
                     break;
                 }
@@ -383,7 +383,7 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
                     {
                         level_players[j]->player_health -= 1;
                         start_timer(damage_timer);
-                        level_players[j]->change_state(new HurtState, "Hurt");
+                        level_players[j]->request_state_change(new HurtState, "Hurt");
                     }
 
                     int time = timer_ticks(damage_timer) / 1000;
@@ -416,7 +416,7 @@ void check_enemy_player_collisions(vector<shared_ptr<Enemy>> level_enemies, vect
                         level_enemies[i]->take_damage(1);
                     }
                 }
-                level_players[j]->change_state(new JumpRiseState, "JumpRise");
+                level_players[j]->request_state_change(new JumpRiseState, "JumpRise");
                 level_players[j]->set_player_dx(0);
             }
         }

@@ -33,6 +33,8 @@ class SnakeMachine
 {
     private:
         SnakeMachineState *state;
+        SnakeMachineState *next_state;
+        string next_state_type;
         sprite enemy_sprite;
         bool facing_left;
         vector<std::shared_ptr<Player>> level_players;
@@ -51,6 +53,12 @@ class SnakeMachine
         {
             delete state;
         };
+        
+        void request_state_change(SnakeMachineState *new_state, string type)
+        {
+            this->next_state = new_state;
+            this->next_state_type = type;
+        };
 
         void change_state(SnakeMachineState *new_state, string type)
         {
@@ -59,6 +67,15 @@ class SnakeMachine
             this->state = new_state;
             this->state->set_state(this, type);
         };
+        
+        void apply_next_state()
+        {
+            if (this->next_state != nullptr)
+            {
+                change_state(this->next_state, this->next_state_type);
+                this->next_state = nullptr;
+            }
+        }
 
         void update()
         {
@@ -139,7 +156,7 @@ void SnakeIdle::update()
         double y_dist = snake_pos.y - player_pos.y;
         if(abs(x_dist) < 320 && abs(y_dist) < 17)
         {
-            this->snake->change_state(new SnakeCharge, "Charge");
+            this->snake->request_state_change(new SnakeCharge, "Charge");
             break;
         }
     }
@@ -162,5 +179,5 @@ void SnakeCharge::update()
 
     charge_time += 0.03;
     if(charge_time > 2)
-        this->snake->change_state(new SnakeIdle, "Idle");
+        this->snake->request_state_change(new SnakeIdle, "Idle");
 }

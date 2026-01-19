@@ -152,6 +152,7 @@ class BlobBehaviour : public Behaviour
             this->blob_machine->set_facing_left(facing_left);
             fall_to_ground();
             this->blob_machine->update();
+            this->blob_machine->apply_next_state();
         };
 };
 
@@ -180,6 +181,7 @@ class SnakeBehaviour : public Behaviour
             this->snake_machine->set_facing_left(facing_left);
             fall_to_ground();
             this->snake_machine->update();
+            this->snake_machine->apply_next_state();
         };
         
         void face_player()
@@ -238,6 +240,7 @@ class RatBehaviour : public Behaviour
             this->rat_machine->set_facing_left(facing_left);
             fall_to_ground();
             this->rat_machine->update();
+            this->rat_machine->apply_next_state();
         };
 
         void random_actions()
@@ -252,7 +255,7 @@ class RatBehaviour : public Behaviour
 
                 if(choice1 > 990)
                 {
-                    this->rat_machine->change_state(new RatIdle, "Idle");
+                    this->rat_machine->request_state_change(new RatIdle, "Idle");
                 }
                 if(choice2 > 980)
                 {
@@ -288,6 +291,7 @@ class WaterRatBehaviour : public Behaviour
             this->boss_machine->set_facing_left(facing_left);
             fall_to_ground();
             this->boss_machine->update();
+            this->boss_machine->apply_next_state();
         };
 
         void backwards_behaviour()
@@ -331,7 +335,7 @@ class WaterRatBehaviour : public Behaviour
         {
             if(state == 0)
             {
-                this->boss_machine->change_state(new BossDying, "Dying");
+                this->boss_machine->request_state_change(new BossDying, "Dying");
             }
         }
 };
@@ -374,6 +378,7 @@ class FlyBehaviour : public Behaviour
             this->fly_machine->set_facing_left(facing_left);
             this->fly_machine->set_flying_up(flying_up);
             this->fly_machine->update();
+            this->fly_machine->apply_next_state();
 
             if(type == "Purp")
                 face_random_direction();
@@ -425,6 +430,7 @@ class TentacleBehaviour : public Behaviour
             this->tentacle_machine->set_facing_left(facing_left);
             fall_to_ground();
             this->tentacle_machine->update();
+            this->tentacle_machine->apply_next_state();
         };
 
 };

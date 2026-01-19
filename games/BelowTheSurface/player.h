@@ -47,6 +47,8 @@ class Player
 {
     private:
         PlayerState *state;
+        PlayerState *next_state = nullptr;
+        string next_state_type;
         sprite player_sprite;
         point_2d position;
         bool facing_left;
@@ -84,6 +86,12 @@ class Player
             delete state;
         };
 
+        void request_state_change(PlayerState *new_state, string type)
+        {
+            this->next_state = new_state;
+            this->next_state_type = type;
+        };
+
         void change_state(PlayerState *new_state, string type)
         {
             if (this->state != nullptr)
@@ -91,6 +99,15 @@ class Player
             this->state = new_state;
             this->state->set_state(this, type);
         };
+        
+        void apply_next_state()
+        {
+            if (this->next_state != nullptr)
+            {
+                change_state(this->next_state, this->next_state_type);
+                this->next_state = nullptr;
+            }
+        }
 
         void update()
         {
@@ -530,28 +547,28 @@ void IdleState::get_input()
     if (key_down(player->input.left_key))
     {
         this->player->set_facing_left(true);
-        this->player->change_state(new RunState(0), "RunLeft");
+        this->player->request_state_change(new RunState(0), "RunLeft");
     }
     if (key_down(player->input.right_key))
     {
         this->player->set_facing_left(false);
-        this->player->change_state(new RunState(0), "RunRight");
+        this->player->request_state_change(new RunState(0), "RunRight");
     }
     if ((key_typed(player->input.jump_key) || key_typed(player->input.jump_key2)) && player->is_on_floor())
     {
-        this->player->change_state(new JumpRiseState, "JumpRise");
+        this->player->request_state_change(new JumpRiseState, "JumpRise");
     }
     if (key_typed(Z_KEY))
     {
-        this->player->change_state(new DanceState, "Dance");
+        this->player->request_state_change(new DanceState, "Dance");
     }
     if (key_typed(player->input.attack_key))
     {
-        this->player->change_state(new AttackState, "Attack");
+        this->player->request_state_change(new AttackState, "Attack");
     }
     if (key_down(player->input.crouch_key))
     {
-        this->player->change_state(new CrouchState, "Crouch");
+        this->player->request_state_change(new CrouchState, "Crouch");
     }
 }
 
@@ -601,11 +618,11 @@ void RunState::get_input()
 {
     if (key_released(player->input.left_key) || key_released(player->input.right_key))
     {
-        this->player->change_state(new IdleState, "Idle");
+        this->player->request_state_change(new IdleState, "Idle");
     }
     if ((key_typed(player->input.jump_key) || key_typed(player->input.jump_key2)) && player->is_on_floor())
     {
-        this->player->change_state(new JumpRiseState, "JumpRise");
+        this->player->request_state_change(new JumpRiseState, "JumpRise");
     }
 }
 
@@ -637,7 +654,7 @@ void JumpRiseState::update()
     if ((initial_y - current_y) > max_jump_height)
     {
         sprite_set_dy(player->get_player_sprite(), 0);
-        this->player->change_state(new JumpFallState, "JumpFall");
+        this->player->request_state_change(new JumpFallState, "JumpFall");
     }
 }
 
@@ -674,11 +691,11 @@ void JumpFallState::update()
     {
         sprite_set_dy(player->get_player_sprite(), 0);
         if (player->is_facing_left() && key_down(player->input.left_key) && player->is_on_floor())
-            this->player->change_state(new RunState(sprite_dx(player->get_player_sprite())), "RunLeft");
+            this->player->request_state_change(new RunState(sprite_dx(player->get_player_sprite())), "RunLeft");
         else if (!player->is_facing_left() && key_down(player->input.right_key) && player->is_on_floor())
-            this->player->change_state(new RunState(sprite_dx(player->get_player_sprite())), "RunRight");
+            this->player->request_state_change(new RunState(sprite_dx(player->get_player_sprite())), "RunRight");
         else
-            this->player->change_state(new IdleState, "Idle");
+            this->player->request_state_change(new IdleState, "Idle");
     }
 }
 
@@ -687,11 +704,11 @@ void JumpFallState::get_input()
     if (player->is_on_floor())
     {
         if (key_down(player->input.left_key) && player->is_facing_left())
-            this->player->change_state(new RunState(sprite_dx(player->get_player_sprite())), "RunLeft");
+            this->player->request_state_change(new RunState(sprite_dx(player->get_player_sprite())), "RunLeft");
         else if (key_down(player->input.right_key) && !player->is_facing_left())
-            this->player->change_state(new RunState(sprite_dx(player->get_player_sprite())), "RunRight");
+            this->player->request_state_change(new RunState(sprite_dx(player->get_player_sprite())), "RunRight");
         else
-            this->player->change_state(new IdleState, "Idle");
+            this->player->request_state_change(new IdleState, "Idle");
     }
     else
     {
@@ -726,7 +743,7 @@ void DanceState::get_input()
 {
     if (key_typed(Z_KEY))
     {
-        this->player->change_state(new IdleState, "Idle");
+        this->player->request_state_change(new IdleState, "Idle");
     }//this is a test please don't use this for actual actions!
 }
 
@@ -751,7 +768,7 @@ void AttackState::update()
         sprite_fall(player->get_player_sprite());
 
     if (sprite_animation_has_ended(player_sprite))
-        this->player->change_state(new IdleState, "Idle");
+        this->player->request_state_change(new IdleState, "Idle");
     update_sprite(player_sprite);
 }
 
@@ -786,7 +803,7 @@ void CrouchState::get_input()
 {
      if (key_released(player->input.crouch_key))
     {
-        this->player->change_state(new IdleState, "Idle");
+        this->player->request_state_change(new IdleState, "Idle");
     }
 }
 
@@ -809,7 +826,7 @@ void HurtState::update()
 
     draw_sprite(player_sprite);
     if (sprite_animation_has_ended(player_sprite))
-        this->player->change_state(new IdleState, "Idle");
+        this->player->request_state_change(new IdleState, "Idle");
     update_sprite(player_sprite);
 }
 
@@ -834,7 +851,7 @@ void ClimbState::update()
 
     if (!player->is_on_ladder())
     {
-        this->player->change_state(new IdleState, "Idle");
+        this->player->request_state_change(new IdleState, "Idle");
     }
 }
 
@@ -879,7 +896,7 @@ void ClimbState::get_input()
 
         if(player->is_on_floor())
         {
-            this->player->change_state(new IdleState, "Idle");
+            this->player->request_state_change(new IdleState, "Idle");
         }
     }
     if (key_released(player->input.jump_key) || key_released(player->input.jump_key2) || key_released(player->input.crouch_key))
@@ -928,7 +945,7 @@ void DyingState::update()
     else
     {
         stop_timer(dying_timer);
-        this->player->change_state(new SpawningState, "Spawn");
+        this->player->request_state_change(new SpawningState, "Spawn");
     }
 }
 
@@ -969,7 +986,7 @@ void SpawningState::update()
     else
     {
         stop_timer(spawn_timer);
-        this->player->change_state(new IdleState, "Idle");
+        this->player->request_state_change(new IdleState, "Idle");
     }
         
 }
