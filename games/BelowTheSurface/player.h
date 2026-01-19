@@ -484,7 +484,7 @@ void player_draw_pipe(Player *player)
 {
     if(player->with_pipe())
     {
-        point_2d position = center_point(player->get_player_sprite());
+        point_2d position = sprite_center_point(player->get_player_sprite());
         bitmap pipe = player->get_held_pipe()->get_bitmap();
         drawing_options opts = option_defaults();
         opts.draw_cell = player->get_held_pipe()->get_cell();

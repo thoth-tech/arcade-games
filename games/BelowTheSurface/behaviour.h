@@ -190,8 +190,8 @@ class SnakeBehaviour : public Behaviour
                 if(change_direction)
                     continue;
                     
-                point_2d player_center = to_screen(center_point(level_players[i]->get_player_sprite()));
-                point_2d enemy_center = to_screen(center_point(enemy_sprite));
+                point_2d player_center = to_screen(sprite_center_point(level_players[i]->get_player_sprite()));
+                point_2d enemy_center = to_screen(sprite_center_point(enemy_sprite));
 
                 double dist = player_center.x - enemy_center.x;
 
@@ -313,8 +313,8 @@ class WaterRatBehaviour : public Behaviour
 
         void face_player()
         {
-            point_2d player_center = to_screen(center_point(level_players[0]->get_player_sprite()));
-            point_2d enemy_center = to_screen(center_point(enemy_sprite));
+            point_2d player_center = to_screen(sprite_center_point(level_players[0]->get_player_sprite()));
+            point_2d enemy_center = to_screen(sprite_center_point(enemy_sprite));
 
             if(enemy_center.x < player_center.x)
                 facing_left = true;
