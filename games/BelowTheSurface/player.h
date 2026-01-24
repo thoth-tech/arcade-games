@@ -47,7 +47,7 @@ class Player
 {
     private:
         PlayerState *state;
-        PlayerState *next_state = nullptr;
+        PlayerState *next_state;
         string next_state_type;
         sprite player_sprite;
         point_2d position;
@@ -68,7 +68,7 @@ class Player
         int player_lives = 3;
         int player_health = 3;
 
-        Player(PlayerState *state, sprite player_sprite, point_2d initial_position, bool facing_left, player_input input) : state(nullptr)
+        Player(PlayerState *state, sprite player_sprite, point_2d initial_position, bool facing_left, player_input input) : state(nullptr), next_state(nullptr)
         {
             this->change_state(state, "Initial");
             this->player_sprite = player_sprite;

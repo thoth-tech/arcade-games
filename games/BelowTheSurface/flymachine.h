@@ -42,7 +42,7 @@ class FlyMachine
         bool flying_up = true;
         
     public:
-        FlyMachine(FlyMachineState *state, sprite enemy_sprite) : state(nullptr)
+        FlyMachine(FlyMachineState *state, sprite enemy_sprite) : state(nullptr), next_state(nullptr)
         {
             this->enemy_sprite = enemy_sprite;
             sprite_start_animation(enemy_sprite, "LeftFly");

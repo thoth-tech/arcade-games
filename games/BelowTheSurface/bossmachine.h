@@ -42,7 +42,7 @@ class BossMachine
         vector<std::shared_ptr<Player>> level_players;
         
     public:
-        BossMachine(BossMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr)
+        BossMachine(BossMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr), next_state(nullptr)
         {
             this->enemy_sprite = enemy_sprite;
             this->level_players = level_players;
