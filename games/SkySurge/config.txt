@@ -30,4 +30,5 @@ repository=https://github.com/ayanmasood/arcade-games.git
 #executable=game.exe
 
 # [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
-#compile-command=skm g++ *.cpp -o game
+# Disambiguate from "Sky Surge.sln" so dotnet publish picks the .csproj
+compile-command=skm dotnet publish Sky_Surge.csproj

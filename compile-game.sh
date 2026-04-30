@@ -48,8 +48,10 @@ if [[ $language == "C#" ]]; then
 			skm dotnet publish -o ./compiled/
 		fi
 	else
-		echo Appending output flag and name/loc 
+		echo Appending output flag and name/loc
 		command+=" -o ./compiled/"
+		echo "Running compile command: $command"
+		eval $command
 	fi
 else
 	#Assume C++ Language or Makefile

@@ -140,8 +140,8 @@ void check_ball_out_of_map(game_data &game)
     // Draw the scores on the screen
     if (game.screen == 3)
     {
-        draw_text(to_string(game.player1.score), COLOR_RED, "font1", 60, 5, 200, option_to_screen());
-        draw_text(to_string(game.player2.score), COLOR_BLUE, "font1", 60, 1245, 200, option_to_screen());
+        draw_text(std::to_string(game.player1.score), COLOR_RED, "font1", 60, 5, 200, option_to_screen());
+        draw_text(std::to_string(game.player2.score), COLOR_BLUE, "font1", 60, 1245, 200, option_to_screen());
     }
 }
 
@@ -328,9 +328,9 @@ void draw_game(game_data &game)
         // Draw the player names and scores
         draw_text("Player 1", COLOR_RED, "font2", 40, 100, 0, option_to_screen());
         draw_text("Player 2", COLOR_BLUE, "font2", 40, 880, 0, option_to_screen());
-        draw_text(to_string(game.player1.score), COLOR_RED, "font1", 60, 5, 200, option_to_screen());
-        draw_text(to_string(game.player2.score), COLOR_BLUE, "font1", 60, 1245, 200, option_to_screen());
-        draw_text("Score " + to_string(GAME_FINISH_SCORE) + " to win", COLOR_YELLOW, "font2", 30, 480, 680, option_to_screen());
+        draw_text(std::to_string(game.player1.score), COLOR_RED, "font1", 60, 5, 200, option_to_screen());
+        draw_text(std::to_string(game.player2.score), COLOR_BLUE, "font1", 60, 1245, 200, option_to_screen());
+        draw_text("Score " + std::to_string(GAME_FINISH_SCORE) + " to win", COLOR_YELLOW, "font2", 30, 480, 680, option_to_screen());
         if (key_down(ESCAPE_KEY))
         {
             game.player1.score = 3;

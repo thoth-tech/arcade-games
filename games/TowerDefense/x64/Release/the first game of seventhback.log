@@ -1,0 +1,34 @@
+﻿  bullet_manager.h
+  enemy_manager.h
+  main.cpp
+E:\vs2022项目\the first game of seventhback\the first game of seventhback\upgrade_panel.h(35,75): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+E:\vs2022项目\the first game of seventhback\the first game of seventhback\upgrade_panel.h(35,28): warning C4244: “初始化”: 从“double”转换到“const int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+E:\vs2022项目\the first game of seventhback\the first game of seventhback\upgrade_panel.h(81,50): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+E:\vs2022项目\the first game of seventhback\the first game of seventhback\upgrade_panel.h(81,24): warning C4244: “初始化”: 从“double”转换到“const int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+E:\vs2022项目\the first game of seventhback\the first game of seventhback\upgrade_panel.h(99,50): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+E:\vs2022项目\the first game of seventhback\the first game of seventhback\upgrade_panel.h(99,24): warning C4244: “初始化”: 从“double”转换到“const int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+E:\vs2022项目\the first game of seventhback\the first game of seventhback\upgrade_panel.h(117,50): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+E:\vs2022项目\the first game of seventhback\the first game of seventhback\upgrade_panel.h(117,24): warning C4244: “初始化”: 从“double”转换到“const int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+    正在创建库 E:\vs2022项目\the first game of seventhback\x64\Release\the first game of seventhback.lib 和对象 E:\vs2022项目\the first game of seventhback\x64\Release\the first game of seventhback.exp
+  正在生成代码
+  1 of 2739 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  the first game of seventhback.vcxproj -> E:\vs2022项目\the first game of seventhback\x64\Release\the first game of seventhback.exe
