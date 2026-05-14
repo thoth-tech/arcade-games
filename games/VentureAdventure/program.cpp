@@ -25,10 +25,8 @@ int main()
     
     const int TOTAL_LEVELS = 4;
     const int STARTING_LEVEL = 1;
-    const int STARTING_LIVES = 3;
 
     int level_id = STARTING_LEVEL;
-    int current_lives = STARTING_LIVES;
     string level_map = "Resources/levels/level1.txt";
     bool is_level_completed = false;
 
@@ -56,7 +54,7 @@ int main()
             clear_screen();
             draw_game(game);
 
-            is_level_completed = update_game(game, level_id, current_lives);
+            is_level_completed = update_game(game, level_id, game.lives);
 
             if (game.player.attacked == true)
             {
@@ -113,7 +111,6 @@ int main()
 
                 // Resets level conditions
                 level_id = STARTING_LEVEL;
-                current_lives = STARTING_LIVES;
                 level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
 
                 write_line(level_map);

@@ -25,6 +25,7 @@ game_data new_game(string map)
 
     new_game.gemCount = 0;
     new_game.gameover = false;
+    new_game.lives = 3;
 
     // pass in the map to be displayed 
     get_objects(new_game);
