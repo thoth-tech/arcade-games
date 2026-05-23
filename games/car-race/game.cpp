@@ -325,7 +325,7 @@ void draw_game(game_data &game)
         draw_sprite(game.finish_line);
     }
 
-    draw_text(to_string((int)game.score), COLOR_WHITE, "digi", 50, 650, 10, option_to_screen());
+    draw_text(std::to_string((int)game.score), COLOR_WHITE, "digi", 50, 650, 10, option_to_screen());
     draw_car(game.car);
     if (game.twoPlayer)
     {

@@ -108,8 +108,8 @@ int main()
         controls_p1(player_1);
         controls_p2(player_2);
 
-        draw_text(to_string(score_1), COLOR_ANTIQUE_WHITE, "roboto", 40, (SCREEN_WIDTH / 2) - 50, 20);
-        draw_text(to_string(score_2), COLOR_ANTIQUE_WHITE, "roboto", 40, (SCREEN_WIDTH / 2) + 50, 20);
+        draw_text(std::to_string(score_1), COLOR_ANTIQUE_WHITE, "roboto", 40, (SCREEN_WIDTH / 2) - 50, 20);
+        draw_text(std::to_string(score_2), COLOR_ANTIQUE_WHITE, "roboto", 40, (SCREEN_WIDTH / 2) + 50, 20);
 
         if(sprite_x(ball.ball_sprite) <= 0)
         { 

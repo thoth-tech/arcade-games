@@ -95,7 +95,7 @@ int main()
         {
             stop_sound_effect("carmotor");
             draw_bitmap("ending", 0, 0, option_to_screen());
-            draw_text("Score: " + to_string((int)game.score), COLOR_WHITE, "digi", 70, 100, 400, option_to_screen());
+            draw_text("Score: " + std::to_string((int)game.score), COLOR_WHITE, "digi", 70, 100, 400, option_to_screen());
             if (key_typed(RETURN_KEY))
             {
                 game = new_game();
