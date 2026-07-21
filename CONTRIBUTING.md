@@ -1,11 +1,10 @@
 # Guide to Contribute a Game to the Arcade Machine
 
-This guide takes you through the steps required for your game to be added into the arcade-machine
-library
+This guide explains the steps required to add your game to the Arcade Machine library.
 
 ---
 
-Table of contents
+## Table of Contents
 
 - [Guide to Contribute a Game to the Arcade Machine](#guide-to-contribute-a-game-to-the-arcade-machine)
   - [Coding](#coding)
@@ -48,13 +47,8 @@ int main()
 
 ### Window Size
 
-The window size of your game cannot exceed 1600 x 900, this is to allow your game to sit neatly
-inside the arcade-machine itself. Similarly, there is a minimum window size of 640 x 480, to ensure
-visibility for the user.
+The game window must not exceed 1600 × 900 pixels so that it fits correctly inside the Arcade Machine interface. A minimum window size of 640 × 480 pixels is expected to maintain visibility and readability.
 
-The window size of your game cannot exceed 1600 x 900, this is to allow your game to sit neatly
-inside the arcade-machine itself. Similarly, but mainly for aesthetic purposes, a minimum window
-size of 640 x 480 is expected.
 
 ### Window Border
 
@@ -97,9 +91,11 @@ int main()
 
 ### Other
 
-To ensure the arcade machine can retrieve files using path information, please refrain from adding whitespace to any file path.
+To ensure the Arcade Machine can retrieve files using path information, do not include whitespace in file paths.
+
 **Example:**
-Use `my-game` instead of `my game`.. etc.
+
+For example, use `my-game` instead of `my game`.
 
 ## Controls
 
