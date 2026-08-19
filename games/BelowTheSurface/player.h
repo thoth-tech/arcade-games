@@ -841,58 +841,56 @@ void ClimbState::update()
 // ClimbState Get Input Checks
 void ClimbState::get_input()
 {
+    bool moving = false;
+
     if (key_down(player->input.left_key))
     {
-        if (!is_moving)
-        {
-            sprite_start_animation(this->player->get_player_sprite(), "Climb");
-            is_moving = true;
-        }
         sprite_set_dx(player->get_player_sprite(), -CLIMB_SPEED);
+        moving = true;
     }
     else if (key_down(player->input.right_key))
     {
-        if (!is_moving)
-        {
-            sprite_start_animation(this->player->get_player_sprite(), "Climb");
-            is_moving = true;
-        }
         sprite_set_dx(player->get_player_sprite(), CLIMB_SPEED);
+        moving = true;
     }
-    else if (key_down(player->input.jump_key) || key_down(player->input.jump_key2))
+    else
     {
-        if (!is_moving)
-        {
-            sprite_start_animation(this->player->get_player_sprite(), "Climb");
-            is_moving = true;
-        }
+        sprite_set_dx(player->get_player_sprite(), 0);
+    }
+
+    if (key_down(player->input.jump_key) || key_down(player->input.jump_key2))
+    {
         sprite_set_dy(player->get_player_sprite(), -CLIMB_SPEED);
+        moving = true;
     }
     else if (key_down(player->input.crouch_key))
     {
-        if (!is_moving)
-        {
-            sprite_start_animation(this->player->get_player_sprite(), "Climb");
-            is_moving = true;
-        }
         sprite_set_dy(player->get_player_sprite(), CLIMB_SPEED);
+        moving = true;
 
-        if(player->is_on_floor())
+        if (player->is_on_floor())
         {
             this->player->change_state(new IdleState, "Idle");
         }
     }
-    if (key_released(player->input.jump_key) || key_released(player->input.jump_key2) || key_released(player->input.crouch_key))
+    else
     {
-        is_moving = false;
-        sprite_start_animation(this->player->get_player_sprite(), "ClimbIdle");
         sprite_set_dy(player->get_player_sprite(), 0);
     }
-    if(key_released(player->input.left_key) || key_released(player->input.right_key))
+
+    if (moving)
+    {
+        if (!is_moving)
+        {
+            sprite_start_animation(this->player->get_player_sprite(), "Climb");
+        }
+
+        is_moving = true;
+    }
+    else
     {
         is_moving = false;
         sprite_start_animation(this->player->get_player_sprite(), "ClimbIdle");
-        sprite_set_dx(player->get_player_sprite(), 0);
     }
 }
 
