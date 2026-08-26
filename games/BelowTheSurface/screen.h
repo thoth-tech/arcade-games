@@ -434,7 +434,10 @@ void CompanyIntroScreen::update()
     alpha = screen_effect(alpha, screen_time, "ScreenTimer", 2);
 
     if(time_up)
+    {
         this->screen->change_state(new TeamIntroScreen, "TeamIntro");
+        return; // prevents SEGFAULT
+    }
 
     if(key_typed(RETURN_KEY) || key_typed(screen->input_key))
     {
