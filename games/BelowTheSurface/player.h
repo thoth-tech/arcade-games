@@ -532,24 +532,24 @@ void IdleState::get_input()
         this->player->set_facing_left(true);
         this->player->change_state(new RunState(0), "RunLeft");
     }
-    if (key_down(player->input.right_key))
+    else if (key_down(player->input.right_key))
     {
         this->player->set_facing_left(false);
         this->player->change_state(new RunState(0), "RunRight");
     }
-    if ((key_typed(player->input.jump_key) || key_typed(player->input.jump_key2)) && player->is_on_floor())
+    else if ((key_typed(player->input.jump_key) || key_typed(player->input.jump_key2)) && player->is_on_floor())
     {
         this->player->change_state(new JumpRiseState, "JumpRise");
     }
-    if (key_typed(Z_KEY))
+    else if (key_typed(Z_KEY))
     {
         this->player->change_state(new DanceState, "Dance");
     }
-    if (key_typed(player->input.attack_key))
+    else if (key_typed(player->input.attack_key))
     {
         this->player->change_state(new AttackState, "Attack");
     }
-    if (key_down(player->input.crouch_key))
+    else if (key_down(player->input.crouch_key))
     {
         this->player->change_state(new CrouchState, "Crouch");
     }
@@ -603,7 +603,7 @@ void RunState::get_input()
     {
         this->player->change_state(new IdleState, "Idle");
     }
-    if ((key_typed(player->input.jump_key) || key_typed(player->input.jump_key2)) && player->is_on_floor())
+    else if ((key_typed(player->input.jump_key) || key_typed(player->input.jump_key2)) && player->is_on_floor())
     {
         this->player->change_state(new JumpRiseState, "JumpRise");
     }
@@ -648,7 +648,7 @@ void JumpRiseState::get_input()
         if (sprite_dx(player->get_player_sprite()) > -MAX_RUN_SPEED)
             sprite_set_dx(player->get_player_sprite(), sprite_dx(player->get_player_sprite()) - RUN_ACCEL);
     }
-    if (key_down(player->input.right_key))
+    else if (key_down(player->input.right_key))
     {
         if (sprite_dx(player->get_player_sprite()) < MAX_RUN_SPEED)
             sprite_set_dx(player->get_player_sprite(), sprite_dx(player->get_player_sprite()) + RUN_ACCEL);
@@ -881,6 +881,7 @@ void ClimbState::get_input()
         {
             this->player->change_state(new IdleState, "Idle");
         }
+        return; // to avoid SEGFAULT when this->player is lost after change_state
     }
     if (key_released(player->input.jump_key) || key_released(player->input.jump_key2) || key_released(player->input.crouch_key))
     {
