@@ -1,6 +1,7 @@
 #include "splashkit.h"
 #include "game.h"
 #include "debugging.h"
+#include <cstring>
 
 void load_resources()
 {
@@ -10,8 +11,19 @@ void load_resources()
     open_audio();
 }
 
-int main()
+int main(int argc, char** argv)
 {
+    bool running_in_arcade_controller = false;
+    if(argc > 1)
+    {
+        for(int i = 1; i < argc; i++)
+        {
+            if(std::strcmp(argv[i],"--arcade-controller-required") == 0)
+            {
+                running_in_arcade_controller = true;
+            }
+        }
+    }
     const string WINDOW_NAME = "VentureAdventure";
     const int WINDOW_WIDTH = 672;
     const int WINDOW_HEIGHT = SCREEN_HEIGHT;
@@ -32,8 +44,33 @@ int main()
     string level_map = "Resources/levels/level1.txt";
     bool is_level_completed = false;
 
+
+    key_list_t required_keylist = 
+    {
+        W_KEY,
+        S_KEY,
+        A_KEY,
+        D_KEY,
+        R_KEY,
+        RETURN_KEY,
+        ESCAPE_KEY
+    };
+    if(running_in_arcade_controller)
+    {
+        required_keylist = 
+        {
+            UP_KEY,
+            DOWN_KEY,
+            LEFT_KEY,
+            RIGHT_KEY,
+            P1_B1_KEY,
+            P1_START_KEY,
+            ESCAPE_KEY
+        };
+    }
+
     game_data game;
-    game = new_game(level_map);
+    game = new_game(level_map, required_keylist);
 
     bool is_debugging_output_enabled = false;      // Change this to toggle the debugging output on/off
     vector<string> old_debug_message = { "" };
@@ -41,16 +78,16 @@ int main()
     
     // process start screen. could be expanded in future to be a main menu. no way to return to this screen unless game is lost or won, but there's currently no need to go back anyway
     // could also have a proper controls menu/button in future to view controls during the game rather than displayed in the hud (see game.cpp file for hud)
-    while (!quit_requested() && !key_down(ESCAPE_KEY))
+    while (!quit_requested() && !key_down(game.key_list.EXIT_KEY))
     {
         play_music("intro");
         set_music_volume(MUSIC_VOLUME_INTRO);
 
-        start_screen();
+        start_screen(game);
         fade_music_out(1000);
 
         // processes game/levels
-        while (!quit_requested() && !key_down(ESCAPE_KEY))
+        while (!quit_requested() && !key_down(game.key_list.EXIT_KEY))
         {
             process_events();
             clear_screen();
@@ -73,9 +110,9 @@ int main()
             }
 
             // Intended for use when soft-locked/trapped by boxes without needing to restart game. Will reset gems and player on current level, but won't reset lives
-            if (key_down(R_KEY))
+            if (key_down(game.key_list.RESET_LEVEL))
             {
-                game = new_game(level_map);
+                game = new_game(level_map, required_keylist);
             }
 
             refresh_screen(60);
@@ -89,7 +126,7 @@ int main()
                 set_music_volume(0.025);
 
                 write_line(level_map);
-                game = new_game(level_map);
+                game = new_game(level_map, required_keylist);
             }
             // If last level is won or game is lost, returns to main menu. Gamer over sounds and message call are currently within the game.cpp file
             else if ((is_level_completed && level_id >= TOTAL_LEVELS) || (check_gameover(game)))
@@ -104,7 +141,7 @@ int main()
                 play_music("intro");
                 set_music_volume(MUSIC_VOLUME_INTRO);
 
-                start_screen();
+                start_screen(game);
 
                 fade_music_out(1000);
 
@@ -117,7 +154,7 @@ int main()
                 level_map = "Resources/levels/level" + std::to_string(level_id) + ".txt";
 
                 write_line(level_map);
-                game = new_game(level_map);
+                game = new_game(level_map, required_keylist);
             };
         }
     }
