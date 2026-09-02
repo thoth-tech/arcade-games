@@ -216,15 +216,18 @@ void check_ladder_collisions(vector<vector<shared_ptr<Ladder>>> ladders, unorder
                     }
                     break;
                 }
-                else if (!(collision == "None" || collision == "Top") && (key_typed(level_players[k]->input.jump_key) || key_typed(level_players[k]->input.crouch_key)))
-                {
-                    level_players[k]->set_on_ladder(true);
-                    sprite_set_y(level_players[k]->get_player_sprite(), sprite_y(level_players[k]->get_player_sprite()) - 10);
-                    level_players[k]->set_player_dx(0);
-                    level_players[k]->change_state(new ClimbState, "Climb");
-                    level_players[k]->set_on_floor(false);
-                    break;
-                }
+                else if (!(collision == "None" || collision == "Top") &&
+                  !key_down(level_players[k]->input.crouch_key) &&
+                   level_players[k]->get_state_type() != "Climb")
+               {
+                level_players[k]->set_on_ladder(true);
+                sprite_set_y(level_players[k]->get_player_sprite(),
+                 sprite_y(level_players[k]->get_player_sprite()) - 10);
+                  level_players[k]->set_player_dx(0);
+                 level_players[k]->change_state(new ClimbState, "Climb");
+                 level_players[k]->set_on_floor(false);
+                  break;
+}
                 else if (collision != "None" && level_players[k]->get_state_type() == "Climb")
                 {
                     break;

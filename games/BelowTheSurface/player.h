@@ -484,7 +484,7 @@ void player_draw_pipe(Player *player)
 {
     if(player->with_pipe())
     {
-        point_2d position = center_point(player->get_player_sprite());
+       point_2d position = center_point(player->get_player_sprite());
         bitmap pipe = player->get_held_pipe()->get_bitmap();
         drawing_options opts = option_defaults();
         opts.draw_cell = player->get_held_pipe()->get_cell();
@@ -820,22 +820,25 @@ void HurtState::get_input()
 // ClimbState Update 
 void ClimbState::update()
 {
-    if (!run_once)
-    {
-        is_moving = true;
-        sprite_set_dx(player->get_player_sprite(), 0);
-        sprite_set_dy(player->get_player_sprite(), 0);
-        sprite_start_animation(this->player->get_player_sprite(), "Climb");
-        run_once = true;
-    }
+   if (!run_once)
+{
+    is_moving = false;
+    sprite_set_dx(player->get_player_sprite(), 0);
+    sprite_set_dy(player->get_player_sprite(), 0);
+    sprite_start_animation(this->player->get_player_sprite(), "ClimbIdle");
+    run_once = true;
+}
 
     player_draw_pipe(player);
     sprite_update_routine_continuous(this->player->get_player_sprite());
 
     if (!player->is_on_ladder())
-    {
-        this->player->change_state(new IdleState, "Idle");
-    }
+{
+    sprite_set_dx(player->get_player_sprite(), 0);
+    sprite_set_dy(player->get_player_sprite(), 0);
+    this->player->change_state(new IdleState, "Idle");
+    return;
+}
 }
 
 // ClimbState Get Input Checks
@@ -869,25 +872,65 @@ void ClimbState::get_input()
         sprite_set_dy(player->get_player_sprite(), -CLIMB_SPEED);
     }
     else if (key_down(player->input.crouch_key))
-    {
-        if (!is_moving)
-        {
-            sprite_start_animation(this->player->get_player_sprite(), "Climb");
-            is_moving = true;
-        }
-        sprite_set_dy(player->get_player_sprite(), CLIMB_SPEED);
+{
+    string drop_timer = "LadderDropP" + std::to_string(player->get_player_id());
+    timer ladder_timer = timer_named(drop_timer);
 
-        if(player->is_on_floor())
+    if (!timer_started(ladder_timer))
+    {
+        start_timer(drop_timer);
+    }
+
+    if (!is_moving)
+    {
+        sprite_start_animation(this->player->get_player_sprite(), "Climb");
+        is_moving = true;
+    }
+
+    sprite_set_dy(player->get_player_sprite(), CLIMB_SPEED);
+
+    if (timer_started(ladder_timer) && timer_ticks(drop_timer) >= 500)
+    {
+        stop_timer(drop_timer);
+        player->set_on_ladder(false);
+        player->set_on_floor(false);
+        player->change_state(new JumpFallState, "JumpFall");
+        return;
+    }
+
+    if (player->is_on_floor())
+{
+    if (timer_started(ladder_timer))
+    {
+        stop_timer(drop_timer);
+    }
+
+    player->set_on_ladder(false);
+    sprite_set_dy(player->get_player_sprite(), 0);
+    this->player->change_state(new IdleState, "Idle");
+    return;
+}
+
+}
+   if (key_released(player->input.jump_key) ||
+    key_released(player->input.jump_key2) ||
+    key_released(player->input.crouch_key))
+{
+    is_moving = false;
+    sprite_start_animation(this->player->get_player_sprite(), "ClimbIdle");
+    sprite_set_dy(player->get_player_sprite(), 0);
+
+    if (key_released(player->input.crouch_key))
+    {
+        string drop_timer = "LadderDropP" + std::to_string(player->get_player_id());
+        timer ladder_timer = timer_named(drop_timer);
+
+        if (timer_started(ladder_timer))
         {
-            this->player->change_state(new IdleState, "Idle");
+            stop_timer(drop_timer);
         }
     }
-    if (key_released(player->input.jump_key) || key_released(player->input.jump_key2) || key_released(player->input.crouch_key))
-    {
-        is_moving = false;
-        sprite_start_animation(this->player->get_player_sprite(), "ClimbIdle");
-        sprite_set_dy(player->get_player_sprite(), 0);
-    }
+}
     if(key_released(player->input.left_key) || key_released(player->input.right_key))
     {
         is_moving = false;
