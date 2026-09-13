@@ -31,6 +31,7 @@ int main(int argc, char** argv)
     open_window(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
     window_toggle_border(WINDOW_NAME);
     load_resources();
+    hide_mouse();
 
     const float MUSIC_VOLUME_INTRO = 0.05;
     const float MUSIC_VOLUME_LOOP = 0.03;
