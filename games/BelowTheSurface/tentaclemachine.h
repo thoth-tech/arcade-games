@@ -34,13 +34,15 @@ class TentacleMachine
 {
     private:
         TentacleMachineState *state;
+        TentacleMachineState *next_state;
+        string next_state_type;
         sprite enemy_sprite;
         bool facing_left;
         vector<std::shared_ptr<Player>> level_players;
         
 
     public:
-        TentacleMachine(TentacleMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr)
+        TentacleMachine(TentacleMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr), next_state(nullptr)
         {
             this->enemy_sprite = enemy_sprite;
             this->level_players = level_players;
@@ -53,6 +55,12 @@ class TentacleMachine
             delete state;
         };
 
+        void request_state_change(TentacleMachineState *new_state, string type)
+        {
+            this->next_state = new_state;
+            this->next_state_type = type;
+        };
+
         void change_state(TentacleMachineState *new_state, string type)
         {
             if (this->state != nullptr)
@@ -60,6 +68,15 @@ class TentacleMachine
             this->state = new_state;
             this->state->set_state(this, type);
         };
+
+        void apply_next_state()
+        {
+            if (this->next_state != nullptr)
+            {
+                change_state(this->next_state, this->next_state_type);
+                this->next_state = nullptr;
+            }
+        }
 
         void update()
         {
@@ -160,7 +177,7 @@ void TentacleIdle::update()
         //double y_dist = tent_pos.y - player_pos.y;
         if(abs(x_dist) < 200)
         {
-            this->tentacle->change_state(new TentaclePopUp, "PopUp");
+            this->tentacle->request_state_change(new TentaclePopUp, "PopUp");
             break;
         }
     }
@@ -171,7 +188,7 @@ void TentaclePopUp::update()
     sprite tentacle_sprite = this->tentacle->get_sprite();
 
     if(sprite_animation_has_ended(tentacle_sprite))
-        this->tentacle->change_state(new TentacleWiggle, "Wiggle");
+        this->tentacle->request_state_change(new TentacleWiggle, "Wiggle");
     else
         set_proper_direction(tentacle_sprite, "PopUp");
 }
@@ -181,7 +198,7 @@ void TentaclePopDown::update()
     sprite tentacle_sprite = this->tentacle->get_sprite();
 
     if(sprite_animation_has_ended(tentacle_sprite))
-        this->tentacle->change_state(new TentacleIdle, "Idle");
+        this->tentacle->request_state_change(new TentacleIdle, "Idle");
     else
         set_proper_direction(tentacle_sprite, "PopDown");
 }
@@ -201,7 +218,7 @@ void TentacleWiggle::update()
         double x_dist = tent_pos.x - player_pos.x; 
         if(abs(x_dist) > 200)
         {
-            this->tentacle->change_state(new TentaclePopDown, "PopDown");
+            this->tentacle->request_state_change(new TentaclePopDown, "PopDown");
             break;
         }
     }

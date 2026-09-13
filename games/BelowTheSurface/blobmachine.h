@@ -34,13 +34,15 @@ class BlobMachine
 {
     private:
         BlobMachineState *state;
+        BlobMachineState *next_state;
+        string next_state_type;
         sprite enemy_sprite;
         bool facing_left;
         vector<std::shared_ptr<Player>> level_players;
         
 
     public:
-        BlobMachine(BlobMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr)
+        BlobMachine(BlobMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr), next_state(nullptr)
         {
             this->enemy_sprite = enemy_sprite;
             this->level_players = level_players;
@@ -53,6 +55,12 @@ class BlobMachine
             delete state;
         };
 
+        void request_state_change(BlobMachineState *new_state, string type)
+        {
+            this->next_state = new_state;
+            this->next_state_type = type;
+        };
+
         void change_state(BlobMachineState *new_state, string type)
         {
             if (this->state != nullptr)
@@ -60,6 +68,15 @@ class BlobMachine
             this->state = new_state;
             this->state->set_state(this, type);
         };
+                                
+        void apply_next_state()
+        {
+            if (this->next_state != nullptr)
+            {
+                change_state(this->next_state, this->next_state_type);
+                this->next_state = nullptr;
+            }
+        }
 
         void update()
         {

@@ -35,12 +35,14 @@ class BossMachine
 {
     private:
         BossMachineState *state;
+        BossMachineState *next_state;
+        string next_state_type;
         sprite enemy_sprite;
         bool facing_left;
         vector<std::shared_ptr<Player>> level_players;
         
     public:
-        BossMachine(BossMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr)
+        BossMachine(BossMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr), next_state(nullptr)
         {
             this->enemy_sprite = enemy_sprite;
             this->level_players = level_players;
@@ -52,6 +54,12 @@ class BossMachine
         {
             delete state;
         };
+        
+        void request_state_change(BossMachineState *new_state, string type)
+        {
+            this->next_state = new_state;
+            this->next_state_type = type;
+        };
 
         void change_state(BossMachineState *new_state, string type)
         {
@@ -60,6 +68,15 @@ class BossMachine
             this->state = new_state;
             this->state->set_state(this, type);
         };
+                                        
+        void apply_next_state()
+        {
+            if (this->next_state != nullptr)
+            {
+                change_state(this->next_state, this->next_state_type);
+                this->next_state = nullptr;
+            }
+        }
 
         void update()
         {
@@ -244,7 +261,7 @@ void BossIdle::update()
         //double y_dist = boss_pos.y - player_pos.y;
         if(abs(x_dist) < 300)
         {
-            this->boss->change_state(new BossRise(0), "Rise");
+            this->boss->request_state_change(new BossRise(0), "Rise");
             break;
         }
     }
@@ -283,12 +300,12 @@ void BossMove::update()
             if(choice < 80)
             {
                 sprite_set_dx(boss_sprite, 0);
-                this->boss->change_state(new BossRise(1), "RiseAttack");
+                this->boss->request_state_change(new BossRise(1), "RiseAttack");
                 break;
             }
             else
             {
-                this->boss->change_state(new BossMoveBackwards, "MoveBackwards");
+                this->boss->request_state_change(new BossMoveBackwards, "MoveBackwards");
             }
         }
     }
@@ -337,15 +354,15 @@ void BossMoveBackwards::update()
 
         if(choice < 30)
         {
-            this->boss->change_state(new BossRise(0), "Rise");
+            this->boss->request_state_change(new BossRise(0), "Rise");
         }
         else if(choice > 33 && choice < 66)
         {
-            this->boss->change_state(new BossSpotPlayer, "Spot");
+            this->boss->request_state_change(new BossSpotPlayer, "Spot");
         }
         else
         {
-            this->boss->change_state(new BossMove, "Move");
+            this->boss->request_state_change(new BossMove, "Move");
         }
     }
 }
@@ -365,9 +382,9 @@ void BossRise::update()
     if(sprite_animation_has_ended(boss_sprite))
     {
         if(rise_type == 0)
-            this->boss->change_state(new BossBattleCry(3), "BattleCry");
+            this->boss->request_state_change(new BossBattleCry(3), "BattleCry");
         if(rise_type == 1)
-            this->boss->change_state(new BossAttack, "Attack");
+            this->boss->request_state_change(new BossAttack, "Attack");
     }
 }
 
@@ -384,7 +401,7 @@ void BossSpotPlayer::update()
         set_proper_direction(boss_sprite, "RightSpotPlayer");
 
     if(sprite_animation_has_ended(boss_sprite))
-            this->boss->change_state(new BossDescend(0), "Descend");
+            this->boss->request_state_change(new BossDescend(0), "Descend");
 }
 
 void BossBattleCry::update()
@@ -401,13 +418,13 @@ void BossBattleCry::update()
     if(sprite_animation_has_ended(boss_sprite))
     {
         if(battle_cry_type == 0)
-            this->boss->change_state(new BossSpotPlayer, "SpotPlayer");
+            this->boss->request_state_change(new BossSpotPlayer, "SpotPlayer");
         if(battle_cry_type == 1)
-            this->boss->change_state(new BossAttack, "Attack");
+            this->boss->request_state_change(new BossAttack, "Attack");
         if(battle_cry_type == 2)
-            this->boss->change_state(new BossDescend(1), "Descend");
+            this->boss->request_state_change(new BossDescend(1), "Descend");
         if(battle_cry_type == 3)
-            this->boss->change_state(new BossDescend(0), "Descend");
+            this->boss->request_state_change(new BossDescend(0), "Descend");
     }
 }
 
@@ -437,19 +454,19 @@ void BossAttack::update()
         double choice = dist(mt);
         if(choice < 30)
         {
-            this->boss->change_state(new BossDescend(1), "Descend");
+            this->boss->request_state_change(new BossDescend(1), "Descend");
         }
         else if(choice > 30 && choice < 50)
         {
-            this->boss->change_state(new BossDescend(0), "Descend");
+            this->boss->request_state_change(new BossDescend(0), "Descend");
         }
         else if(choice > 50 && choice < 90)
         {
-            this->boss->change_state(new BossAttack, "Attack");
+            this->boss->request_state_change(new BossAttack, "Attack");
         }
         else
         {
-            this->boss->change_state(new BossBattleCry(2), "BattleCry");
+            this->boss->request_state_change(new BossBattleCry(2), "BattleCry");
         }
     }
 }
@@ -466,9 +483,9 @@ void BossDescend::update()
     if(sprite_animation_has_ended(boss_sprite))
     {
         if(lower_type == 0)
-            this->boss->change_state(new BossMove, "Move");
+            this->boss->request_state_change(new BossMove, "Move");
         if(lower_type == 1)
-            this->boss->change_state(new BossMoveBackwards, "MoveBackwards");
+            this->boss->request_state_change(new BossMoveBackwards, "MoveBackwards");
     }
         
 }

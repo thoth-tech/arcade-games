@@ -35,13 +35,15 @@ class RatMachine
 {
     private:
         RatMachineState *state;
+        RatMachineState *next_state;
+        string next_state_type;
         sprite enemy_sprite;
         bool facing_left;
         vector<std::shared_ptr<Player>> level_players;
         
 
     public:
-        RatMachine(RatMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr)
+        RatMachine(RatMachineState *state, sprite enemy_sprite, vector<std::shared_ptr<Player>> level_players) : state(nullptr), next_state(nullptr)
         {
             this->enemy_sprite = enemy_sprite;
             this->level_players = level_players;
@@ -53,6 +55,12 @@ class RatMachine
         {
             delete state;
         };
+        
+        void request_state_change(RatMachineState *new_state, string type)
+        {
+            this->next_state = new_state;
+            this->next_state_type = type;
+        };
 
         void change_state(RatMachineState *new_state, string type)
         {
@@ -61,6 +69,15 @@ class RatMachine
             this->state = new_state;
             this->state->set_state(this, type);
         };
+                
+        void apply_next_state()
+        {
+            if (this->next_state != nullptr)
+            {
+                change_state(this->next_state, this->next_state_type);
+                this->next_state = nullptr;
+            }
+        }
 
         void update()
         {
@@ -185,12 +202,12 @@ void RatMove::update()
         double x_dist = rat_pos.x - player_pos.x; 
         if(abs(x_dist) < 30)
         {
-            this->rat->change_state(new RatBite, "Bite");
+            this->rat->request_state_change(new RatBite, "Bite");
             break;
         }
         if(abs(x_dist) > 300)
         {
-            this->rat->change_state(new RatCrawl, "Crawl");
+            this->rat->request_state_change(new RatCrawl, "Crawl");
             break;
         }
     }
@@ -225,7 +242,7 @@ void RatIdle::update()
         double x_dist = rat_pos.x - player_pos.x; 
         if(abs(x_dist) < 450)
         {
-            this->rat->change_state(new RatMove, "Move");
+            this->rat->request_state_change(new RatMove, "Move");
             break;
         }
     }
@@ -233,7 +250,7 @@ void RatIdle::update()
     timer += 0.01;
 
     if(timer > timer_length)
-        this->rat->change_state(new RatCrawl, "Crawl");
+        this->rat->request_state_change(new RatCrawl, "Crawl");
 }
 
 void RatBite::update()
@@ -243,7 +260,7 @@ void RatBite::update()
     sprite_set_dx(rat_sprite, 0);
 
     if(sprite_animation_has_ended(rat_sprite))
-        this->rat->change_state(new RatCrawlAway, "CrawlAway");
+        this->rat->request_state_change(new RatCrawlAway, "CrawlAway");
     else
     {
         if(this->rat->get_facing_left())
@@ -278,7 +295,7 @@ void RatCrawl::update()
         
         if(abs(x_dist) < 300)
         {
-            this->rat->change_state(new RatMove, "Move");
+            this->rat->request_state_change(new RatMove, "Move");
             break;
         }
     }
@@ -302,5 +319,5 @@ void RatCrawlAway::update()
     timer += 0.01;
 
     if(timer > 1)
-        this->rat->change_state(new RatCrawl, "Crawl");
+        this->rat->request_state_change(new RatCrawl, "Crawl");
 }

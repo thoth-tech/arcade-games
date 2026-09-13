@@ -35,12 +35,14 @@ class FlyMachine
 {
     private:
         FlyMachineState *state;
+        FlyMachineState *next_state;
+        string next_state_type;
         sprite enemy_sprite;
         bool facing_left;
         bool flying_up = true;
         
     public:
-        FlyMachine(FlyMachineState *state, sprite enemy_sprite) : state(nullptr)
+        FlyMachine(FlyMachineState *state, sprite enemy_sprite) : state(nullptr), next_state(nullptr)
         {
             this->enemy_sprite = enemy_sprite;
             sprite_start_animation(enemy_sprite, "LeftFly");
@@ -51,6 +53,12 @@ class FlyMachine
         {
             delete state;
         };
+                
+        void request_state_change(FlyMachineState *new_state, string type)
+        {
+            this->next_state = new_state;
+            this->next_state_type = type;
+        };
 
         void change_state(FlyMachineState *new_state, string type)
         {
@@ -59,6 +67,15 @@ class FlyMachine
             this->state = new_state;
             this->state->set_state(this, type);
         };
+                        
+        void apply_next_state()
+        {
+            if (this->next_state != nullptr)
+            {
+                change_state(this->next_state, this->next_state_type);
+                this->next_state = nullptr;
+            }
+        }
 
         void update()
         {

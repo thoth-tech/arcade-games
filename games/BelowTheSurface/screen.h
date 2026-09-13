@@ -38,6 +38,8 @@ class Screen
 {
     private:
         ScreenState *state;
+        ScreenState *next_state = nullptr;
+        string next_state_type;
         int tile_size;
         int players = 1;
         vector<CellSheet> cell_sheets;
@@ -63,6 +65,12 @@ class Screen
             delete state;
         };
 
+        void request_state_change(ScreenState *new_state, string type)
+        {
+            this->next_state = new_state;
+            this->next_state_type = type;
+        };
+
         void change_state(ScreenState *new_state, string type)
         {
             if (this->state != nullptr)
@@ -70,6 +78,15 @@ class Screen
             this->state = new_state;
             this->state->set_state(this, type);
         };
+
+        void apply_next_state()
+        {
+            if (this->next_state != nullptr)
+            {
+                change_state(this->next_state, this->next_state_type);
+                this->next_state = nullptr;
+            }
+        }
 
         void update()
         {
@@ -229,7 +246,7 @@ class LevelScreen : public ScreenState
                     {
                         this->screen->level_number += 1;
                         this->screen->current_level = get_next_level(this->screen->level_number, this->screen->get_cell_sheets(), this->screen->get_tile_size(), this->screen->get_players());
-                        this->screen->change_state(new PreLevelScreen, "Pre Level");
+                        this->screen->request_state_change(new PreLevelScreen, "Pre Level");
                     }
                 }
 
@@ -239,7 +256,7 @@ class LevelScreen : public ScreenState
                     {
                         this->screen->level_number -= 1;
                         this->screen->current_level = get_next_level(this->screen->level_number, this->screen->get_cell_sheets(), this->screen->get_tile_size(), this->screen->get_players());
-                        this->screen->change_state(new PreLevelScreen, "Pre Level");
+                        this->screen->request_state_change(new PreLevelScreen, "Pre Level");
                     }
                 }
             }
@@ -434,13 +451,13 @@ void CompanyIntroScreen::update()
     alpha = screen_effect(alpha, screen_time, "ScreenTimer", 2);
 
     if(time_up)
-        this->screen->change_state(new TeamIntroScreen, "TeamIntro");
+        this->screen->request_state_change(new TeamIntroScreen, "TeamIntro");
 
     if(key_typed(RETURN_KEY) || key_typed(screen->input_key))
     {
         stop_timer("ScreenTimer");
         reset_timer("ScreenTimer");
-        this->screen->change_state(new TeamIntroScreen, "TeamIntro");
+        this->screen->request_state_change(new TeamIntroScreen, "TeamIntro");
     }
 }
 
@@ -474,13 +491,13 @@ void TeamIntroScreen::update()
     alpha = screen_effect(alpha, screen_time, "ScreenTimer", 2);
 
     if(time_up)
-        this->screen->change_state(new MenuScreen, "Menu");
+        this->screen->request_state_change(new MenuScreen, "Menu");
 
     if(key_typed(RETURN_KEY) || key_typed(screen->input_key))
     {
         stop_timer("ScreenTimer");
         reset_timer("ScreenTimer");
-        this->screen->change_state(new MenuScreen, "Menu");
+        this->screen->request_state_change(new MenuScreen, "Menu");
     }
 }
 
@@ -581,7 +598,7 @@ void MenuScreen::update()
                     play_sound_effect("Select");
                     this->screen->set_players(1);
                     stop_music();
-                    this->screen->change_state(new PreLevelScreen, "Pre Level");
+                    this->screen->request_state_change(new PreLevelScreen, "Pre Level");
                 }
                 break;
             case 1:
@@ -589,19 +606,19 @@ void MenuScreen::update()
                     play_sound_effect("Select");
                     this->screen->set_players(2);
                     stop_music();
-                    this->screen->change_state(new PreLevelScreen, "Pre Level");
+                    this->screen->request_state_change(new PreLevelScreen, "Pre Level");
                 }
                 break;
             case 2:
                 {
                     play_sound_effect("Select");
-                    this->screen->change_state(new PasswordScreen, "Password");
+                    this->screen->request_state_change(new PasswordScreen, "Password");
                 }
             break;
             case 3:
                 {
                     play_sound_effect("Select");
-                    this->screen->change_state(new ExtraScreen, "Extras");
+                    this->screen->request_state_change(new ExtraScreen, "Extras");
                 }
             break;
                 case 4:
@@ -655,25 +672,25 @@ void ExtraScreen::update()
             case 0:
                 {
                     play_sound_effect("Select");
-                    this->screen->change_state(new BackstoryScreen, "Backstory");
+                    this->screen->request_state_change(new BackstoryScreen, "Backstory");
                 }
                 break;
             case 1:
                 {
                     play_sound_effect("Select");
-                    this->screen->change_state(new CreditsScreen, "Credits");
+                    this->screen->request_state_change(new CreditsScreen, "Credits");
                 }
                 break;
             case 2:
                 {
                     play_sound_effect("Select");
-                    this->screen->change_state(new ControlScreen, "Controls");
+                    this->screen->request_state_change(new ControlScreen, "Controls");
                 }
                 break;
             case 3:
                 {
                     play_sound_effect("Select");
-                    this->screen->change_state(new MenuScreen, "Main Menu");
+                    this->screen->request_state_change(new MenuScreen, "Main Menu");
                 }
                 break;
             default:
@@ -739,11 +756,11 @@ void PreLevelScreen::update()
     {
         stop_timer("ScreenTimer");
         reset_timer("ScreenTimer");
-        this->screen->change_state(new LevelScreen, "Level");
+        this->screen->request_state_change(new LevelScreen, "Level");
     }
 
     if(time_up)
-        this->screen->change_state(new LevelScreen, "Level");
+        this->screen->request_state_change(new LevelScreen, "Level");
 }
 
 string get_pause_text(int id)
@@ -795,12 +812,12 @@ void LevelScreen::update()
                 {
                     stop_music();
                     this->screen->level_number += 1;
-                    this->screen->change_state(new PreLevelScreen, "Pre Level");
+                    this->screen->request_state_change(new PreLevelScreen, "Pre Level");
                 }
                 else
                 {
                     stop_music();
-                    this->screen->change_state(new WinScreen, "Win");
+                    this->screen->request_state_change(new WinScreen, "Win");
                 }
             }
         }
@@ -811,7 +828,7 @@ void LevelScreen::update()
                 stop_music();
                 this->screen->level_number = 1;
                 this->screen->current_level = get_next_level(this->screen->level_number,this->screen->get_cell_sheets(),this->screen->get_tile_size(),this->screen->get_players());
-                this->screen->change_state(new GameOverScreen, "GameOver");
+                this->screen->request_state_change(new GameOverScreen, "GameOver");
             }
         }
 
@@ -853,7 +870,7 @@ void LevelScreen::update()
                         stop_music();
                         this->screen->level_number = 1;
                         this->screen->current_level = get_next_level(this->screen->level_number,this->screen->get_cell_sheets(),this->screen->get_tile_size(),this->screen->get_players());
-                        this->screen->change_state(new MenuScreen, "Menu");
+                        this->screen->request_state_change(new MenuScreen, "Menu");
                         break;
                     }
                 default:
@@ -941,12 +958,12 @@ void GameOverScreen::update()
         {
             case 0:
                 {
-                    this->screen->change_state(new PreLevelScreen, "PreLevel");
+                    this->screen->request_state_change(new PreLevelScreen, "PreLevel");
                     break;
                 }
             case 1:
                 {
-                    this->screen->change_state(new MenuScreen, "Menu");
+                    this->screen->request_state_change(new MenuScreen, "Menu");
                     break;
                 }
             default:
@@ -1022,12 +1039,12 @@ void WinScreen::update()
         {
             case 0:
                 {
-                    this->screen->change_state(new PreLevelScreen, "PreLevel");
+                    this->screen->request_state_change(new PreLevelScreen, "PreLevel");
                     break;
                 }
             case 1:
                 {
-                    this->screen->change_state(new MenuScreen, "Menu");
+                    this->screen->request_state_change(new MenuScreen, "Menu");
                     break;
                 }
             default:
@@ -1081,7 +1098,7 @@ void CreditsScreen::update()
     }
 
     if(key_typed(RETURN_KEY) || key_typed(screen->input_key))
-        this->screen->change_state(new MenuScreen, "Menu");
+        this->screen->request_state_change(new MenuScreen, "Menu");
 }
 
 void ControlScreen::update()
@@ -1112,7 +1129,7 @@ void ControlScreen::update()
 
 
     if(key_typed(RETURN_KEY) || key_typed(screen->input_key))
-        this->screen->change_state(new MenuScreen, "Menu");
+        this->screen->request_state_change(new MenuScreen, "Menu");
 }
 
 void BackstoryScreen::update()
@@ -1142,7 +1159,7 @@ void BackstoryScreen::update()
         draw_text("Press key to continue. . .", font_color, screen_font, 20, pt.x- text_width("Press key to continue. . .", screen_font, 20)/2, (pt.y - text_height("Press key to continue. . .", screen_font, 20)/2) + 180, option_to_screen());
     }
     else if (current > max_screens - 1)
-        this->screen->change_state(new MenuScreen, "Menu");
+        this->screen->request_state_change(new MenuScreen, "Menu");
     else
         draw_bitmap(this->name(), 0, 0, option_to_screen());
 
@@ -1150,7 +1167,7 @@ void BackstoryScreen::update()
     {
         current++;
         if(current > max_screens - 1)
-            this->screen->change_state(new MenuScreen, "Menu");
+            this->screen->request_state_change(new MenuScreen, "Menu");
     }
     
     draw_text("Press key to continue. . .", font_color, screen_font, 20, pt.x- text_width("Press key to continue. . .", screen_font, 20)/2, (pt.y - text_height("Press key to continue. . .", screen_font, 20)/2) + 180, option_to_screen());
@@ -1167,7 +1184,7 @@ void enter_level(int level_number, Screen* screen)
 {
     screen->level_number = level_number;
     play_sounds();
-    screen->change_state(new PreLevelScreen, "Pre Level");
+    screen->request_state_change(new PreLevelScreen, "Pre Level");
 }
 
 string get_password_text(int id)
@@ -1240,7 +1257,7 @@ void PasswordScreen::update()
                     }
                 case 2:
                     {
-                        this->screen->change_state(new MenuScreen, "Menu");
+                        this->screen->request_state_change(new MenuScreen, "Menu");
                         break;
                     }
                 default:
@@ -1256,7 +1273,7 @@ void PasswordScreen::update()
         if(password == "EXITEXITEXIT")
         {
             play_sound_effect("Select");
-            this->screen->change_state(new MenuScreen, "Menu");
+            this->screen->request_state_change(new MenuScreen, "Menu");
         }
         else if(password == "START")
         {

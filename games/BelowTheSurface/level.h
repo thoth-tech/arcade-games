@@ -214,6 +214,7 @@ class Level
                     level_players[i]->update();
                     level_players[i]->get_input();
                     level_players[i]->update_hitbox();
+                    level_players[i]->apply_next_state();
                 }
 
                 if (level_players[i]->has_player_won())
@@ -240,7 +241,7 @@ class Level
                         for(int i = 0; i < level_players.size(); i++)
                         {
                             if(level_players[i]->get_state_type() != "Dance")
-                                level_players[i]->change_state(new DanceState, "Dance");
+                                level_players[i]->request_state_change(new DanceState, "Dance");
                         }
                     }
                 }
@@ -268,7 +269,7 @@ class Level
                 //if player 1 fall out of the camera, kill them
                 if (to_screen_y(player_pos.y) > screen_height() && level_players[i]->get_state_type() != "Dying") {
                     if(level_players[i]->get_state_type() != "Spawn")
-                        this->level_players[i]->change_state(new DyingState, "Dying");
+                        this->level_players[i]->request_state_change(new DyingState, "Dying");
                 }
 
                 // if player 2 hit the end of the camera, both player can't move
@@ -301,7 +302,7 @@ class Level
                 if (level_players[i]->player_health < 1 && level_players[i]->get_state_type() != "Dying")
                 {
                     if(level_players[i]->get_state_type() != "Spawn")
-                        this->level_players[i]->change_state(new DyingState, "Dying");
+                        this->level_players[i]->request_state_change(new DyingState, "Dying");
                 }
 
                 //If players sets out of lives

@@ -143,6 +143,7 @@ int main(int argc, char *argv[])
     while (!key_typed(ESCAPE_KEY) && !quit_requested())
     {
         screen->update();
+        screen->apply_next_state();
         process_events();
         refresh_screen(refresh_rate);
     }
