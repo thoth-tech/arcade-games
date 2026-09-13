@@ -50,3 +50,4 @@ repository=https://github.com/thoth-tech/arcade-games
 
 # [Optional] Specific compile command - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp') - Uncomment  if required
 compile-command=skm g++ *.cpp -o game
+# CI trigger: validate C++ asset-bundling into platform tarball

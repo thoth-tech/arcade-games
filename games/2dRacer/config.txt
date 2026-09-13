@@ -47,4 +47,5 @@ repository=https://github.com/yourname/yourgame
 #executable=game.exe
 
 # [Optional] Uncomment to include specific compile commands - if you have a specific compile command (eg. 'make', 'skm g++ *.cpp -lstd++')
-#compile-command=skm g++ *.cpp
+# Two demos exist (AdvancedDemo, BasicDemo); publish the AdvancedDemo project explicitly
+compile-command=skm dotnet publish AdvancedDemo/_2dRacerDemo.csproj

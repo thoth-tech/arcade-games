@@ -1,0 +1,1 @@
+Some guidance and cases on developing games using the splashkit framework are provided. We hope you can quickly get started with the framework. There are many excellent teaching cases and guidance

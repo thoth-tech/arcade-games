@@ -2,12 +2,14 @@ name: Compile Games
 on:
     repository_dispatch:
     pull_request_target:
-        types: [opened, reopened, synchronize, labeled, unlabeled]
+        types: [opened, reopened, synchronize, labeled, unlabeled, closed]
         branches: [main]
 
 jobs:
     get-game-directory:
-        if: "!contains( github.event.pull_request.labels.*.name, 'compiled')"
+        if: |
+            !contains(github.event.pull_request.labels.*.name, 'compiled') &&
+            (github.event.action != 'closed' || github.event.pull_request.merged == true)
         runs-on: ubuntu-latest
         env:
             GAME_DIR:
@@ -21,20 +23,44 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                  repository: ${{github.event.pull_request.head.repo.full_name}}
+                  repository: ${{ github.event.action == 'closed' && github.event.pull_request.base.repo.full_name || github.event.pull_request.head.repo.full_name }}
+                  ref: ${{ github.event.action == 'closed' && github.event.pull_request.merge_commit_sha || github.head_ref }}
                   fetch-depth: 0
                   submodules: "recursive"
 
             - id: get-game-directory
+              env:
+                  EVENT_ACTION: ${{ github.event.action }}
+                  PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  REPO_FULL_NAME: ${{ github.event.pull_request.base.repo.full_name }}
+                  BOOTSTRAP: ${{ vars.BOOTSTRAP || 'false' }}
               run: |
                   cd $GITHUB_WORKSPACE
-                  if [ "${GIT_BASE_REPO}" == "thoth-tech/arcade-games" ]; then
+                  if [ "${EVENT_ACTION}" == "closed" ]; then
+                    # Bootstrap detection via REST API (gh CLI silently fails in some PR contexts)
+                    PREV_TAG=$(curl -sf -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${REPO_FULL_NAME}/releases/latest" | jq -r '.tag_name // empty' 2>/dev/null || echo "")
+                    echo "PREV_TAG detection result: '${PREV_TAG}'"
+                    echo "BOOTSTRAP override: '${BOOTSTRAP}'"
+
+                    if [ "${BOOTSTRAP}" == "true" ] || [ -z "$PREV_TAG" ]; then
+                      if [ "${BOOTSTRAP}" == "true" ]; then
+                        echo "Bootstrap mode (forced via vars.BOOTSTRAP): compiling ALL games"
+                      else
+                        echo "Bootstrap mode (no previous release found): compiling ALL games"
+                      fi
+                      declare DIRECTORIES=($(ls -d games/*/ | sort))
+                    else
+                      echo "Merge event (previous release: $PREV_TAG) - compare base SHA ${PR_BASE_SHA} with HEAD"
+                      declare DIRECTORIES=($(git diff --name-only ${PR_BASE_SHA} HEAD games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
+                    fi
+                  elif [ "${GIT_BASE_REPO}" == "thoth-tech/arcade-games" ]; then
                     git remote add upstream https://github.com/thoth-tech/arcade-games.git
                     git fetch upstream
                     echo "Compare upstream ${GITHUB_BASE_REF} with origin ${GITHUB_HEAD_REF}"
                     declare DIRECTORIES=($(git diff --name-only --merge-base upstream/${GITHUB_BASE_REF} origin/${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
                   else
-                    echo "Compare origin ${GITHUB_BASE_REF} with origin ${GITHUB_HEAD_REF}"  
+                    echo "Compare origin ${GITHUB_BASE_REF} with origin ${GITHUB_HEAD_REF}"
                     declare DIRECTORIES=($(git diff --name-only --merge-base origin/${GITHUB_BASE_REF} origin/${GITHUB_HEAD_REF} games | awk -F'/' '{print "games/" $2 "/"}' | sort -u))
                   fi
                     GAME_DIR=() 
@@ -56,10 +82,13 @@ jobs:
                   for dir in "${GAME_DIR[@]}"
                   do
                       echo "$dir"
-                      if [ -f "$dir"*.csproj ]; then
-                        CSharpFound=true #if any program has a .csproj file, set the variable to true
+                      # Recursive search: some games (2dRacer, SkySurge) have .csproj in subdirectories
+                      if find "$dir" -maxdepth 3 -name "*.csproj" -print -quit | grep -q .; then
+                        CSharpFound=true
+                        echo "  -> detected as C#"
                       else
-                        NoCSharpFound=true #if any program does not have a .csproj file, set the variable to true
+                        NoCSharpFound=true
+                        echo "  -> detected as C++"
                       fi
                   done
 
@@ -78,8 +107,8 @@ jobs:
             - name: Checkout feature branch
               uses: actions/checkout@v4
               with:
-                  repository: ${{github.event.pull_request.head.repo.full_name}}
-                  ref: ${{ github.head_ref }}
+                  repository: ${{ github.event.action == 'closed' && github.event.pull_request.base.repo.full_name || github.event.pull_request.head.repo.full_name }}
+                  ref: ${{ github.event.action == 'closed' && github.event.pull_request.merge_commit_sha || github.head_ref }}
                   fetch-depth: 1
                   submodules: "recursive"
 
@@ -105,13 +134,32 @@ jobs:
             - name: Compile Game
               run: |
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+                  FAILED=()
                   for dir in ${GAME_DIR[@]}
-                  do   
-                    echo $dir                            
-                    ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-x86
+                  do
+                    echo "::group::Compile $dir (linux-x86)"
+                    if ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-x86; then
+                      echo "Compile script returned 0 for $dir"
+                    else
+                      echo "::warning::compile-game.sh exited non-zero for $dir on linux-x86"
+                      FAILED+=("$dir")
+                    fi
+                    # Verify produced tarball is non-trivial (>1KB) — empty tarballs ~100B mean compile silently failed
+                    game_name=$(basename "$dir")
+                    produced=$(ls "$GITHUB_WORKSPACE/$dir/published/${game_name}-"*.tar.gz 2>/dev/null | head -n1)
+                    if [ -z "$produced" ] || [ "$(stat -c%s "$produced" 2>/dev/null || echo 0)" -lt 1024 ]; then
+                      echo "::warning::No usable artifact for $dir on linux-x86 (file: ${produced:-none})"
+                      FAILED+=("$dir")
+                    fi
+                    echo "::endgroup::"
                   done
+                  if [ ${#FAILED[@]} -gt 0 ]; then
+                    printf '%s\n' "${FAILED[@]}" | sort -u > $GITHUB_WORKSPACE/failed-linux-x86.txt
+                    echo "Games with linux-x86 build issues:"
+                    cat $GITHUB_WORKSPACE/failed-linux-x86.txt
+                  fi
 
-            - uses: actions/upload-artifact@v3
+            - uses: actions/upload-artifact@v4
               with:
                   name: linux-programs
                   path: |
@@ -129,8 +177,8 @@ jobs:
             - name: Checkout feature branch
               uses: actions/checkout@v4
               with:
-                  repository: ${{github.event.pull_request.head.repo.full_name}}
-                  ref: ${{ github.head_ref }}
+                  repository: ${{ github.event.action == 'closed' && github.event.pull_request.base.repo.full_name || github.event.pull_request.head.repo.full_name }}
+                  ref: ${{ github.event.action == 'closed' && github.event.pull_request.merge_commit_sha || github.head_ref }}
                   fetch-depth: 1
                   submodules: "recursive"
             - name: Update Packages
@@ -159,15 +207,15 @@ jobs:
                   for dir in ${GAME_DIR[@]}
                   do
                     echo "check " $dir
-                    if [ -f "$dir"*.csproj ]; then
+                    if find "$dir" -maxdepth 3 -name "*.csproj" -print -quit | grep -q .; then
                       echo "Running for " $dir
-                      ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm
-                    fi                            
+                      ./compile-game.sh $GITHUB_WORKSPACE/$dir linux-arm || echo "::warning::compile-game.sh failed for $dir on linux-arm (C#)"
+                    fi
                   done
 
-            - uses: actions/upload-artifact@v3
+            - uses: actions/upload-artifact@v4
               with:
-                  name: arm-programs
+                  name: dotnet-arm-programs
                   path: |
                       **/games/*/published/
 
@@ -193,8 +241,8 @@ jobs:
                       7.0.x
             - uses: actions/checkout@v4
               with:
-                  repository: ${{github.event.pull_request.head.repo.full_name}}
-                  ref: ${{ github.head_ref }}
+                  repository: ${{ github.event.action == 'closed' && github.event.pull_request.base.repo.full_name || github.event.pull_request.head.repo.full_name }}
+                  ref: ${{ github.event.action == 'closed' && github.event.pull_request.merge_commit_sha || github.head_ref }}
                   fetch-depth: 1
                   submodules: "recursive"
 
@@ -203,16 +251,23 @@ jobs:
                   bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
             - name: Compile Game
               run: |
-                  export PATH=$PATH:/home/runneradmin/.splashkit 
+                  export PATH=$PATH:/home/runneradmin/.splashkit
                   export PATH=$PATH:/c/Program\ Files/dotnet
                   echo $PATH
                   read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
                   for dir in ${GAME_DIR[@]}
-                  do                               
-                    ./compile-game.sh $GITHUB_WORKSPACE/$dir win-x86
+                  do
+                    echo "::group::Compile $dir (win-x86)"
+                    ./compile-game.sh $GITHUB_WORKSPACE/$dir win-x86 || echo "::warning::compile-game.sh exited non-zero for $dir on win-x86"
+                    game_name=$(basename "$dir")
+                    produced=$(ls "$GITHUB_WORKSPACE/$dir/published/${game_name}-"*.tar.gz 2>/dev/null | head -n1)
+                    if [ -z "$produced" ] || [ "$(stat -c%s "$produced" 2>/dev/null || echo 0)" -lt 1024 ]; then
+                      echo "::warning::No usable artifact for $dir on win-x86 (file: ${produced:-none})"
+                    fi
+                    echo "::endgroup::"
                   done
 
-            - uses: actions/upload-artifact@v3
+            - uses: actions/upload-artifact@v4
               with:
                   name: windows-programs
                   path: |
@@ -225,15 +280,25 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                  repository: ${{github.event.pull_request.head.repo.full_name}}
-                  ref: ${{ github.head_ref }}
+                  repository: ${{ github.event.action == 'closed' && github.event.pull_request.base.repo.full_name || github.event.pull_request.head.repo.full_name }}
+                  ref: ${{ github.event.action == 'closed' && github.event.pull_request.merge_commit_sha || github.head_ref }}
                   fetch-depth: 1
                   submodules: "recursive"
             - name: Install Splashkit & Compile Game
               uses: pguyot/arm-runner-action@v2
               with:
-                  cpu: cortex-a8
-                  base_image: raspios_lite:latest
+                  # cortex-a53 (RPi 3) is the oldest target we still support;
+                  # binaries are forward-compatible with RPi 4 (a72) and RPi 5 (a76).
+                  # Crucially, a53 supports ARMv8 FP16 NEON intrinsics (vld1q_f16),
+                  # which the old cortex-a8 did not — that broke skm linux install's
+                  # llama.cpp build, leaving libSplashKit.so missing and every
+                  # C++ ARM link step failing with "cannot find -lSplashKit".
+                  cpu: cortex-a53
+                  # arm64 image: llama.cpp's NEON code (vzip1q_s64, vzip1q_f32 etc.)
+                  # requires AArch64 intrinsics that clang only exposes in 64-bit mode.
+                  # 32-bit raspios_lite was failing with "undeclared function" errors.
+                  # All RPi 3/4/5 support 64-bit, so switching here doesn't lose users.
+                  base_image: raspios_lite_arm64:latest
                   image_additional_mb: 4096
                   shell: bash
                   import_github_env: true
@@ -249,24 +314,124 @@ jobs:
                       # echo $PATH
                       # echo $DOTNET_ROOT
                       # dotnet --version
+                      WORKSPACE_ROOT=$(pwd)
                       bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
                       export PATH=$PATH:$HOME/.splashkit
                       sudo apt install --assume-yes libsdl2-dev libsdl2-gfx-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-image-dev libncurses-dev libpng-dev libcurl4-openssl-dev libbz2-dev libflac-dev libvorbis-dev libmikmod-dev libwebp-dev libfreetype6-dev
-                      skm linux install
+
+                      # NOTE: skm-install.sh above already invokes `skm linux install` internally,
+                      # which clones llama.cpp into ~/.splashkit/source/llama.cpp and runs cmake,
+                      # then fails at `make` due to a vcvtnq_s32_f32 redefinition between
+                      # clang 19's <arm_neon.h> on Raspbian Trixie and llama.cpp's vendored
+                      # ggml-cpu-impl.h. libSplashKit.so depends on llama/ggml static libs,
+                      # so this failure is fatal — that's why ARM releases were empty shells.
+                      #
+                      # We deliberately do NOT call `skm linux install` again here:
+                      # its first action is `git reset --hard FETCH_HEAD` on llama.cpp,
+                      # which would clobber any patch we apply. Instead we patch in place
+                      # and resume the build manually with `make && make install`.
+
+                      echo "::group::Patch llama.cpp ggml-cpu-impl.h"
+                      LLAMA_HEADER=$(find $HOME/.splashkit -path '*/ggml/src/ggml-cpu/ggml-cpu-impl.h' 2>/dev/null | head -n1)
+                      if [ -z "$LLAMA_HEADER" ]; then
+                        echo "::error::ggml-cpu-impl.h not found; SplashKit/llama.cpp layout may have changed"
+                        exit 1
+                      fi
+                      echo "Patching: $LLAMA_HEADER"
+                      # Match the function definition line by its return type + name + paren.
+                      # Works for both `static inline int32x4_t ...` and `inline static int32x4_t ...`.
+                      # Will not match the comment-only line `// vcvtnq_s32_f32` (no parenthesis).
+                      awk '
+                        /int32x4_t[ \t]+vcvtnq_s32_f32[ \t]*\(/ && !in_block {
+                          in_block=1; brace=0
+                        }
+                        {
+                          if (in_block) {
+                            n = length($0)
+                            for (i=1; i<=n; i++) {
+                              c = substr($0, i, 1)
+                              if (c == "{") brace++
+                              else if (c == "}") brace--
+                            }
+                            print "// [PATCHED OUT for clang19/GCC14 compat] " $0
+                            if (brace == 0) in_block=0
+                            next
+                          }
+                          print
+                        }
+                      ' "$LLAMA_HEADER" > "$LLAMA_HEADER.new" && mv "$LLAMA_HEADER.new" "$LLAMA_HEADER"
+                      patched=$(grep -c "PATCHED OUT" "$LLAMA_HEADER" || true)
+                      echo "Patched lines: $patched"
+                      if [ "$patched" -eq 0 ]; then
+                        echo "::error::Patch produced 0 changes; vcvtnq_s32_f32 definition not found"
+                        exit 1
+                      fi
+                      echo "::endgroup::"
+
+                      echo "::group::Resume SplashKit build manually (skip skm's git reset)"
+                      SKM_BIN_DIR="$HOME/.splashkit/source/bin"
+                      if [ ! -d "$SKM_BIN_DIR" ]; then
+                        echo "::error::SplashKit build dir not found at $SKM_BIN_DIR"
+                        exit 1
+                      fi
+                      cd "$SKM_BIN_DIR"
+                      if ! make; then
+                        echo "::error::make failed after patch; patch may be insufficient"
+                        exit 1
+                      fi
+                      if ! make install; then
+                        echo "::error::make install failed"
+                        exit 1
+                      fi
+                      GLOBAL_INSTALL="$HOME/.splashkit/global/install/skm_global_install.sh"
+                      if [ -f "$GLOBAL_INSTALL" ]; then
+                        bash "$GLOBAL_INSTALL"
+                      fi
+                      cd "$WORKSPACE_ROOT"
+                      echo "::endgroup::"
+
+                      # Sanity check: libSplashKit must exist after install
+                      if ! find $HOME/.splashkit /usr/local -name 'libSplashKit*' 2>/dev/null | grep -q .; then
+                        echo "::error::libSplashKit not found after install; ARM toolchain still broken"
+                        exit 1
+                      fi
+
+                      # Compile games with explicit failure tracking + artifact size check
+                      # (mirrors the linux-x86 job to prevent silent empty-tarball releases)
+                      FAILED=()
                       for dir in ${GAME_DIR[@]}
                       do
-                        if [ ! -f "$dir"*.csproj ]; then
-                          ./compile-game.sh $dir linux-arm
+                        if find "$dir" -maxdepth 3 -name "*.csproj" -print -quit | grep -q .; then
+                          continue
                         fi
+                        echo "::group::Compile $dir (linux-arm)"
+                        if ./compile-game.sh $dir linux-arm; then
+                          echo "Compile script returned 0 for $dir"
+                        else
+                          echo "::warning::compile-game.sh exited non-zero for $dir on linux-arm"
+                          FAILED+=("$dir")
+                        fi
+                        game_name=$(basename "$dir")
+                        produced=$(ls "$dir/published/${game_name}-"*.tar.gz 2>/dev/null | head -n1)
+                        if [ -z "$produced" ] || [ "$(stat -c%s "$produced" 2>/dev/null || echo 0)" -lt 1024 ]; then
+                          echo "::warning::No usable artifact for $dir on linux-arm (file: ${produced:-none})"
+                          FAILED+=("$dir")
+                        fi
+                        echo "::endgroup::"
                       done
+                      if [ ${#FAILED[@]} -gt 0 ]; then
+                        printf '%s\n' "${FAILED[@]}" | sort -u
+                        echo "::error::ARM build failed for the games listed above"
+                        exit 1
+                      fi
 
-            - uses: actions/upload-artifact@v3
+            - uses: actions/upload-artifact@v4
               with:
                   name: arm-programs
                   path: |
                       **/games/*/published/
 
-    push-games:
+    publish-release:
         runs-on: ubuntu-latest
         needs:
             [
@@ -278,76 +443,123 @@ jobs:
             ]
         if: |
             always() &&
+            github.event.pull_request.merged == true &&
             needs.compile-games-windows.result == 'success' &&
             needs.compile-games-linux.result == 'success' &&
             (needs.compile-games-arm.result == 'success' || needs.compile-games-arm.result == 'skipped') &&
             (needs.compile-dotnet-games-arm.result == 'success' || needs.compile-dotnet-games-arm.result == 'skipped')
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         steps:
-            - name: Checkout feature branch
-              uses: actions/checkout@v4
+            - uses: actions/checkout@v4
               with:
-                  repository: ${{github.event.pull_request.head.repo.full_name}}
-                  ref: ${{ github.head_ref }}
+                  repository: ${{ github.event.pull_request.base.repo.full_name }}
+                  ref: ${{ github.event.pull_request.merge_commit_sha }}
                   fetch-depth: 1
-                  submodules: "recursive"
 
-            - uses: actions/download-artifact@v3
+            - uses: actions/download-artifact@v4
               with:
                   name: windows-programs
                   path: ./windows-downloads
 
-            - uses: actions/download-artifact@v3
+            - uses: actions/download-artifact@v4
               with:
                   name: linux-programs
                   path: ./linux-downloads
 
-            - uses: actions/download-artifact@v3
+            - uses: actions/download-artifact@v4
+              if: needs.compile-games-arm.result == 'success'
               with:
                   name: arm-programs
                   path: ./arm-downloads
 
-            - name: Files downloaded
-              run: |
-                  read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
+            - uses: actions/download-artifact@v4
+              if: needs.compile-dotnet-games-arm.result == 'success'
+              with:
+                  name: dotnet-arm-programs
+                  path: ./arm-downloads
 
-                  FOLDERS=("windows-downloads" "linux-downloads" "arm-downloads")
-                  for dir in ${GAME_DIR[@]}
-                  do
-                    game_name=$(basename $dir)    
-                    cd $GITHUB_WORKSPACE/compiled-games
-                    if [ ! -d "${game_name}" ]; then
-                      mkdir ${game_name}
-                    else
-                      rm -rf ${game_name}/*
-                    fi     
-                    cd ${game_name}
-                    
-                    for folder in "${FOLDERS[@]}"
-                    do
-                      chmod 777 $GITHUB_WORKSPACE/$folder/games/${game_name}/*
-                      cp $GITHUB_WORKSPACE/$folder/games/${game_name}/published/* .
+            - name: Prepare release assets (merge fresh + previous)
+              run: |
+                  mkdir -p release-assets old-assets
+
+                  # Try to find previous release and download its assets for reuse
+                  PREV_TAG=$(gh release list --limit 1 --json tagName --jq '.[0].tagName // empty' 2>/dev/null || echo "")
+                  if [ -n "$PREV_TAG" ]; then
+                    echo "Reusing assets from previous release: $PREV_TAG"
+                    gh release download "$PREV_TAG" -D old-assets/ --pattern '*.tar.gz' || echo "(some/all downloads failed, continuing)"
+                  else
+                    echo "Bootstrap: no previous release found"
+                  fi
+
+                  # Mapping: platform -> fresh-build directory and tar.gz suffix used by compile-game.sh
+                  declare -A FRESH_DIR=(
+                    ["linux-x86"]="linux-downloads"
+                    ["linux-arm"]="arm-downloads"
+                    ["windows"]="windows-downloads"
+                  )
+                  declare -A FRESH_SUFFIX=(
+                    ["linux-x86"]="linux-x86"
+                    ["linux-arm"]="linux-arm"
+                    ["windows"]="win-x86"
+                  )
+
+                  # Iterate over ALL games in the repo (not just changed ones)
+                  # Minimum size threshold (1KB) — anything smaller is an empty tar.gz from a failed compile
+                  MIN_SIZE=1024
+                  for game_dir in games/*/; do
+                    game_name=$(basename "$game_dir")
+                    for platform in linux-x86 linux-arm windows; do
+                      fresh_path="${FRESH_DIR[$platform]}/games/${game_name}/published/${game_name}-${FRESH_SUFFIX[$platform]}.tar.gz"
+                      old_path="old-assets/${game_name}__${platform}.tar.gz"
+                      dest="release-assets/${game_name}__${platform}.tar.gz"
+
+                      fresh_size=0
+                      [ -f "$fresh_path" ] && fresh_size=$(stat -c%s "$fresh_path" 2>/dev/null || echo 0)
+                      old_size=0
+                      [ -f "$old_path" ] && old_size=$(stat -c%s "$old_path" 2>/dev/null || echo 0)
+
+                      if [ "$fresh_size" -ge "$MIN_SIZE" ]; then
+                        cp "$fresh_path" "$dest"
+                        echo "FRESH:   $game_name $platform (${fresh_size} bytes)"
+                      elif [ "$old_size" -ge "$MIN_SIZE" ]; then
+                        cp "$old_path" "$dest"
+                        echo "REUSE:   $game_name $platform (${old_size} bytes from $PREV_TAG)"
+                      elif [ "$fresh_size" -gt 0 ]; then
+                        echo "::warning::SKIP $game_name $platform: fresh build empty (${fresh_size}B), no usable previous asset"
+                      elif [ "$old_size" -gt 0 ]; then
+                        echo "::warning::SKIP $game_name $platform: previous asset empty (${old_size}B), no fresh build"
+                      else
+                        echo "::warning::MISSING $game_name $platform: no fresh build, no previous asset"
+                      fi
                     done
                   done
 
-            - name: Git Add, Commit, Push
+                  echo "---"
+                  echo "Final release assets:"
+                  ls -la release-assets/ | tail -n +2
+
+            - name: Generate release tag
+              id: release-tag
               run: |
-                  cd $GITHUB_WORKSPACE          
-                  git config user.name github-actions
-                  git config user.email github-actions@github.com
-                  read GAME_DIR <<< "${{ needs.get-game-directory.outputs.game-directory }}"
-                  for dir in ${GAME_DIR[@]}
-                  do
-                    game_name=$(basename $dir)          
-                    git add compiled-games/$game_name
-                  done
-                  git commit -m "Compiled Games"
-                  git push origin HEAD:${GITHUB_HEAD_REF}
+                  SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+                  DATE=$(date +'%Y%m%d')
+                  echo "tag=release-${DATE}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+
+            - name: Publish GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: ${{ steps.release-tag.outputs.tag }}
+                  name: "Arcade Games ${{ steps.release-tag.outputs.tag }}"
+                  files: release-assets/*
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     add-compiled-label:
-        needs: push-games
+        needs: publish-release
         if: |
             always() &&
-            needs.push-games.result == 'success'
+            needs.publish-release.result == 'success'
         runs-on: ubuntu-latest
         steps:
             - name: Add label
