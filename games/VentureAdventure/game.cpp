@@ -8,9 +8,11 @@
 // make this 'true' to enable easier level completion, will cause only 1 gem to generate.
 bool debugeasymode = false;
 
-game_data new_game(string map)
+game_data new_game(string map, key_list_t& required_key_list)
 {
     game_data new_game;
+
+    new_game.key_list = required_key_list;
 
     // use new_level function to load the map to new_game.map_array
     new_game.map_array = new_level(map);
@@ -423,7 +425,7 @@ void handle_input(game_data &game)
     game.player.x_id  = game.player.x_pos/TILESIZE;
     game.player.stopped = false;
 
-    if(key_down(W_KEY) && game.player.walking == false)
+    if(key_down(game.key_list.MOVE_UP) && game.player.walking == false)
     {  
         // checks for collision between box and enemy. specific based on player moving up (W key). stops box moving into enemy.
         // In future this could do possibly be changed to do something else, like destroy the enemy?
@@ -485,7 +487,7 @@ void handle_input(game_data &game)
         }
     }
 
-    if(key_down(S_KEY) && game.player.walking == false)
+    if(key_down(game.key_list.MOVE_DOWN) && game.player.walking == false)
     {
         // checks for collision between box and enemy. specific based on player moving up (W key). stops box moving into enemy
         update_enemy_position(game);
@@ -548,7 +550,7 @@ void handle_input(game_data &game)
         }
     }
 
-    if(key_down(A_KEY) && game.player.walking == false)
+    if(key_down(game.key_list.MOVE_LEFT) && game.player.walking == false)
     {
         // checks for collision between box and enemy. specific based on player moving left (A key). stops box moving into enemy
         update_enemy_position(game);
@@ -611,7 +613,7 @@ void handle_input(game_data &game)
         }   
     }
 
-    if(key_down(D_KEY) && game.player.walking == false )
+    if(key_down(game.key_list.MOVE_RIGHT) && game.player.walking == false )
     {
         // checks for collision between box and enemy. specific based on player moving right (D key). stops box moving into enemy
         update_enemy_position(game);
@@ -1013,12 +1015,12 @@ int check_lives(game_data game)
         return game.lives;
     }
 
-void start_screen()
+void start_screen(game_data& game)
 {
     int ven = 500;
     int adv = 542;
 
-    while( not key_down(RETURN_KEY) && not quit_requested() && not key_down(ESCAPE_KEY))
+    while( not key_down(game.key_list.START_KEY) && not quit_requested() && not key_down(game.key_list.EXIT_KEY))
     {
         process_events();
 
@@ -1031,7 +1033,10 @@ void start_screen()
 
         if(ven == SCREEN_HEIGHT/2-150)
         {
-            draw_text("PRESS ENTER KEY TO START", COLOR_BLANCHED_ALMOND, "font.ttf", 20, SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT-50, option_to_screen());
+            std::string start_key_text = "START";
+            if(game.key_list.START_KEY == RETURN_KEY)
+                start_key_text = "ENTER";
+            draw_text("PRESS " + start_key_text + " KEY TO START", COLOR_BLANCHED_ALMOND, "font.ttf", 20, SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT-50, option_to_screen());
             draw_text("By Anthony George", COLOR_BLANCHED_ALMOND, "font.ttf", 10, SCREEN_WIDTH/2+20, SCREEN_HEIGHT/2-50, option_to_screen());
         }
 

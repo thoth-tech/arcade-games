@@ -6,6 +6,7 @@
 #include "boxes.h"
 #include "gems.h"
 #include "enemy.h"
+#include "key_list.h"
 #include <vector>
 
 #define SCREEN_WIDTH  512
@@ -30,9 +31,10 @@ struct game_data
     int index[64];
     point_2d map_loc;
     vector<point_2d> solid;
+    key_list_t key_list;
 };
 
-game_data new_game(string map);
+game_data new_game(string map, key_list_t& required_key_list);
 
 vector<vector<int> > new_level(string file);
 
@@ -85,7 +87,7 @@ int check_lives(game_data game);
 
 void attack(game_data &game);
 
-void start_screen();
+void start_screen(game_data& game);
 
 void win_screen();
 
