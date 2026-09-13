@@ -15,6 +15,7 @@ class Camera
         double y_border_top = 0;
         double x_border_right;
         double y_border_bottom;
+        bool first_update = true;
         vector<shared_ptr<Player>> players;
 
     public:
@@ -48,11 +49,28 @@ class Camera
 
             point_2d mid_player = {mid_player_x, mid_player_y};
 
-            double sc_x = mid_player.x + - (screen_width() / 2);
-            double sc_y = mid_player.y + - (screen_height() / 2);
+            // Target position (Where the camera should be)
+            double sc_x = mid_player.x - (screen_width() / 2);
+            double sc_y = mid_player.y - (screen_height() / 2);
 
-            move_camera_to(sc_x, sc_y);
-
+            if (first_update)
+            {
+                move_camera_to(sc_x, sc_y);
+                first_update = false;
+            }
+            else 
+            {
+                // Current position
+                double cam_x = camera_x();
+                double cam_y = camera_y();
+                
+                // Next eased position
+                double smooth = 0.05;
+                cam_x += (sc_x - cam_x) * smooth;
+                cam_y += (sc_y - cam_y) * smooth;
+    
+                move_camera_to(cam_x, cam_y);
+            }
 
             if(camera_x() < x_border_left)
                 set_camera_x(x_border_left);
