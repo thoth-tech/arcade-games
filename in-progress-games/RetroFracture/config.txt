@@ -1,0 +1,25 @@
+# PLEASE ONLY EDIT CONTENT AFTER THE "=" SIGN FOR EACH CONFIGURATION SETTING
+
+# The title of your game (eg. Super Mario)
+title=RetroFracture
+
+# The name of the author (eg. Jane Doe)
+author=Riveen Haggalla
+
+# The genre of your game (eg. Platformer)
+genre=Multi-Genre Mashup
+
+# A Description of your game
+description=8-bit arcade game that switches genres each level
+
+# A classification rating to advise the nature of the content (eg. MA 15+)
+rating=PG
+
+# Programming language the game is written in (eg. C++)
+language=C++
+
+# Path to your game thumbnail image (eg. images/icon.png)
+image=assets/sprites/ui/preview.png
+
+# Location of git repo (eg. https://github.com/studioant/arcade_game)
+repository=https://github.com/RealH4D35/RetroFracture
