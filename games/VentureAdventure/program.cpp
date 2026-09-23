@@ -25,7 +25,7 @@ int main(int argc, char** argv)
         }
     }
     const string WINDOW_NAME = "VentureAdventure";
-    const int WINDOW_WIDTH = 672;
+    const int WINDOW_WIDTH = SCREEN_WIDTH + MENU_WIDTH;
     const int WINDOW_HEIGHT = SCREEN_HEIGHT;
 
     open_window(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);

@@ -9,8 +9,13 @@
 #include "key_list.h"
 #include <vector>
 
-#define SCREEN_WIDTH  512
-#define SCREEN_HEIGHT 512
+#define SCREEN_WIDTH  736
+#define SCREEN_HEIGHT 513
+#define MENU_WIDTH    176
+#define MAP_WIDTH     23
+#define MAP_HEIGHT    16
+#define CAMPFIRE_POS_X  256
+#define CAMPFIRE_POS_Y  256
 #define TILESIZE 32
 #define BOX   300 // boxes are indicated with '300' on the map 
 #define GEM   400 // gems are indicated with '400' on the map

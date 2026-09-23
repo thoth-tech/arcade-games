@@ -63,8 +63,8 @@ player_data new_player()
     result.player_sprite = create_sprite(hero_pack, result.animation);
 
     // set player in centre of map
-    sprite_set_x(result.player_sprite, 256);
-    sprite_set_y(result.player_sprite, 256);
+    sprite_set_x(result.player_sprite, CAMPFIRE_POS_X);
+    sprite_set_y(result.player_sprite, CAMPFIRE_POS_Y);
     
     // set player co-ords
     result.x_pos   = sprite_x(result.player_sprite);

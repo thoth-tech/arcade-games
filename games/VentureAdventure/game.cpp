@@ -58,9 +58,9 @@ vector<vector<int> > new_level(string file)
     vector<int> map_line;
     int temp;
 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < MAP_HEIGHT; i++)
     {
-        for (int j = 0; j < 16; j++)
+        for (int j = 0; j < MAP_WIDTH; j++)
         {
             map_level >> temp;
             map_line.push_back(temp);
@@ -77,11 +77,11 @@ vector<vector<int> > new_level(string file)
 // gets coordinates of all objects and if they are solid or not
 void get_objects(game_data &game)
 {
-    int w = SCREEN_WIDTH /TILESIZE; //16
-    int h = SCREEN_HEIGHT/TILESIZE; //16
+    int w = MAP_WIDTH;
+    int h = MAP_HEIGHT;
 
-    for (int i = 0; i < w; i++)
-        for (int j = 0; j < h; j++)
+    for (int i = 0; i < h; i++)
+        for (int j = 0; j < w; j++)
         {
             // Tiles with numbers defined between 1 and 300 are 'solid'. 
             // Excludes 'enemy' currently defined as 200, and campfire(84), so that collision is possible. This if statement needs to be adjusted if more enemy tile numbers are added)
@@ -106,25 +106,30 @@ void get_objects(game_data &game)
 // draws all objects
 void draw_game(const game_data &game)
 {
-    int w = SCREEN_WIDTH /TILESIZE; //16
-    int h = SCREEN_HEIGHT/TILESIZE; //16
+    int w = MAP_WIDTH; //16
+    int h = MAP_HEIGHT; //16
 
     bitmap hud = load_bitmap("hud", "ground_tiles.png");
     bitmap_set_cell_details(hud,32,32,16,16,256);
 
-    for (int i = 0; i < w; i++)
-        for (int j = 0; j < h; j++)
+    for (int i = 0; i < h; i++)
+        for (int j = 0; j < w; j++)
         {
             // draw grass over whole map
             draw_bitmap(game.map, j*TILESIZE, i*TILESIZE, option_with_bitmap_cell(game.index[j]));
             // draw remaining map objects
             draw_bitmap(game.map, j*TILESIZE, i*TILESIZE, option_with_bitmap_cell(game.map_array[i][j]));
         }
+
+    // extra strip of grass to cover extra 1px in the bottom
+    for (int j = 0; j < w; j++)
+        draw_bitmap(game.map, j*TILESIZE, (h)*TILESIZE, option_with_bitmap_cell(game.index[j]));
     
-    for (int i = 0; i < 17; i++)
+    
+    for (int i = 0; i < MAP_HEIGHT + 1; i++)
     {
         int count = 0;
-        for (int j = 16; j < 21; j++)
+        for (int j = MAP_WIDTH; j < MAP_WIDTH + 6; j++)
         {
             // draw hud
             draw_bitmap(hud, j*TILESIZE, i*TILESIZE, option_with_bitmap_cell(52));
@@ -988,10 +993,10 @@ bool level_clear(game_data &game)
     if(game.gems.size() == 0)
     {   
         // draws lit fire bitmap in middle when all gems collected
-        draw_bitmap(fire, SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
+        draw_bitmap(fire, CAMPFIRE_POS_X, CAMPFIRE_POS_Y);
         
         // level is complete when player returns to the fire
-        if(sprite_bitmap_collision(game.player.player_sprite, fire, SCREEN_HEIGHT/2, SCREEN_WIDTH/2))
+        if(sprite_bitmap_collision(game.player.player_sprite, fire, CAMPFIRE_POS_X, CAMPFIRE_POS_Y))
         {
             sprite_set_x(game.player.player_sprite, game.player.x_prev);
             sprite_set_y(game.player.player_sprite, game.player.y_prev);
@@ -1075,18 +1080,22 @@ void draw_hud(game_data &game, int level_id)
 {
     string level_name = "Level " + std::to_string(level_id);
 
-    draw_text(level_name , COLOR_BLACK, "font.ttf", 30, 17*TILESIZE, 0*TILESIZE);
-    draw_text("Collect all the gems" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 1*TILESIZE);
-    draw_text("and return to camp" , COLOR_BLACK, "font.ttf", 20, 16*TILESIZE+5, 2*TILESIZE);
-    draw_bitmap("hero", 17*TILESIZE, 4*TILESIZE, option_with_bitmap_cell(1));
-    draw_text(" x "+ std::to_string(game.lives) , COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 4*TILESIZE+10);
-    draw_bitmap("gems", 17*TILESIZE, 5*TILESIZE, option_with_bitmap_cell(2));
-    draw_text(" x "+ std::to_string(game.gemCount), COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 5*TILESIZE+10);
-    draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 9*TILESIZE);
-    draw_text("WASD Keys /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 10*TILESIZE);
-    draw_text(" Joystick ", COLOR_BLACK, "font.ttf", 20, 19*TILESIZE - 5, 11*TILESIZE - 10);
-    draw_text("Reset Map: ", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 12*TILESIZE);
-    draw_text("R key /", COLOR_BLACK, "font.ttf", 20, 16*TILESIZE + 5, 13*TILESIZE);
-    draw_text("Button 1 ", COLOR_BLACK, "font.ttf", 20, 18*TILESIZE, 14*TILESIZE - 10);
+    draw_text(level_name , COLOR_BLACK, "font.ttf", 30, (MAP_WIDTH + 1)*TILESIZE + 10, 0*TILESIZE);
+    draw_text("Collect all the gems" , COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH)*TILESIZE+3, 1*TILESIZE);
+    draw_text("and return to camp" , COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH + 1)*TILESIZE, 2*TILESIZE);
+    draw_bitmap("hero", (MAP_WIDTH + 2)*TILESIZE - 10, 4*TILESIZE, option_with_bitmap_cell(1));
+    draw_text(" x "+ std::to_string(game.lives) , COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH + 3)*TILESIZE - 10, 4*TILESIZE+10);
+    draw_bitmap("gems", (MAP_WIDTH + 2)*TILESIZE - 10, 5*TILESIZE, option_with_bitmap_cell(2));
+    draw_text(" x "+ std::to_string(game.gemCount), COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH + 3)*TILESIZE - 10, 5*TILESIZE+10);
+    draw_text("Move: ", COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH)*TILESIZE + 5, 9*TILESIZE);
+    if(game.key_list.MOVE_UP == UP_KEY)
+        draw_text("Arrows / Joystick ", COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH + 1)*TILESIZE + 5, 10*TILESIZE);
+    else
+        draw_text("WASD Keys", COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH + 2)*TILESIZE + 5, 10*TILESIZE);
+    draw_text("Reset Map: ", COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH)*TILESIZE + 5, 12*TILESIZE);
+    if(game.key_list.RESET_LEVEL == P1_B1_KEY)
+        draw_text("P1 Button 1 ", COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH + 2)*TILESIZE + 15, 13*TILESIZE);
+    else
+        draw_text("R key", COLOR_BLACK, "font.ttf", 20, (MAP_WIDTH + 3)*TILESIZE + 10, 12*TILESIZE);
     
 }
